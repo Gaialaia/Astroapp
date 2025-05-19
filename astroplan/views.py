@@ -59,9 +59,9 @@ def show_chart(request):
     width = 0.9
     height = 0.9
     ax1 = fig.add_axes([left, bottom, width, height], projection='polar') #center plot
-    ax1.set_theta_offset(np.pi) 
+    # ax1.set_theta_offset()
     ax1.set_rlim(-180,100)
-    ax1.set_theta_direction(-1)
+    ax1.set_theta_direction('counterclockwise')
     ax1.set_rticks([])
     ax1.set_axis_off() #'theta ax' is off 
   
@@ -77,10 +77,10 @@ def show_chart(request):
     # ax1.plot( venus[0][0], venus[0][1], zorder=2, color='silver', linestyle=':')
     ax1.plot(np.deg2rad(sun[0][0]), sun[0][1], marker='$☼$', label='sun', ms=30, mfc='gold')
     # ax1.annotate('☉', xy=(np.deg2rad(sun[0][0]), sun[0][1]))
-    ax1.plot(np.deg2rad(mercury[0][0]), mercury[0][1], 'o:b', label='merc', ms=2)
+    ax1.plot(np.deg2rad(mercury[0][0]), mercury[0][1], marker='$☿$', label='merc', ms=7)
     ax1.plot(np.deg2rad(mars[0][0]), mars[0][1], marker='$♂$', label='mars', ms=13)
     ax1.plot(np.deg2rad(jupiter[0][0]), jupiter[0][1], 'o:c', label='jupiter', ms=9)
-    ax1.plot(np.deg2rad(saturn[0][0]), saturn[0][1], 'o:k', label='saturn', ms=2)
+    ax1.plot(np.deg2rad(saturn[0][0]), saturn[0][1], marker='$♄$', label='saturn', ms=6, mfc='dimgray')
     ax1.plot(np.deg2rad(uranus[0][0]), uranus[0][1], marker='$♅$',mfc='chartreuse', label='uranus', ms=20)
     ax1.plot(np.deg2rad(neptune[0][0]), neptune[0][1], marker='$♆$', mfc='m', label='neptune', ms=20)
     ax1.plot(np.deg2rad(pluto[0][0]), pluto[0][1], 'o:k', mfc='red', label='pluto')
