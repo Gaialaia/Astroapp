@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 
 import matplotlib.pyplot as plt
+import mplcursors
 import numpy as np
 
 from datetime import datetime as dt
@@ -17,10 +18,14 @@ planet_list = ['sun','mercury','venus', 'moon', 'mars',
                  'jupiter','saturn', 'uranus', 'neptune','pluto']
 
 now = dt.now()
+date = dt(2025, 4,18, 12,00 )
+jd_date = jl.to_jd(date,fmt='jd')
+
 jd = jl.to_jd(now, fmt='jd')
 flags =  swe.FLG_SIDEREAL | swe.SIDM_DELUCE 
 
-sun = swe.calc_ut(jd, 0, flags)
+sun = swe.calc_ut(jd_date, 0, flags)
+print(sun[0][0])
 
 moon = swe.calc_ut(jd, 1, flags)
 
@@ -57,6 +62,7 @@ def show_chart(request):
     height = 0.9
     ax1 = fig.add_axes([left, bottom, width, height], projection='polar') #center plot
     # ax1.set_theta_offset()
+    mplcursors.cursor(hover=True)
     ax1.set_rlim(-130,100)
     ax1.set_theta_direction('counterclockwise')
     ax1.set_rticks([])
@@ -69,52 +75,59 @@ def show_chart(request):
     # ax2.set_theta_direction(-1)
     # ax2.set_rticks([])
 
-    ax1.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=3, mfc='deeppink')
-    ax1.annotate('♀', textcoords='offset points', xytext=(-20, 3), xycoords='data',
+    ax1.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=5, mfc='deeppink')
+    ax1.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
                  xy=(np.deg2rad(venus[0][0]), venus[0][1]), fontsize=15, color='blueviolet',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-    ax1.plot(np.deg2rad(moon[0][0]), moon[0][1], marker='o', label='moon', mfc='forestgreen')
-    ax1.annotate('☾', textcoords='offset points', xytext=(-3, 3), xycoords='data',
-                 xy=(np.deg2rad(moon[0][0]), moon[0][1]), fontsize=15, color='slateblue')
+    ax1.plot(np.deg2rad(moon[0][0]), moon[0][1], marker='o', label='moon', mfc='forestgreen', ms=5)
+    ax1.annotate('☾', textcoords='offset points', xytext=(20, 3), xycoords='data',
+                 xy=(np.deg2rad(moon[0][0]), moon[0][1]), fontsize=15, color='slateblue',
+                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-    ax1.plot(np.deg2rad(sun[0][0]), sun[0][1], marker='o', label='sun', ms=4, mfc='gold')
+    ax1.plot(np.deg2rad(sun[0][0]), sun[0][1], marker='o', label='sun', ms=8, mfc='gold')
     ax1.annotate('☼', textcoords='offset points', xytext=(20, 5), xycoords='data',
                  xy=(np.deg2rad(sun[0][0]), sun[0][1]), fontsize=15, color='midnightblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-    ax1.plot(np.deg2rad(mercury[0][0]), mercury[0][1], 'o:b', label='merc', ms=2)
+    ax1.plot(np.deg2rad(mercury[0][0]), mercury[0][1], 'o:b', label='merc', ms=5)
     ax1.annotate('☿', textcoords='offset points', xytext=(20, 5), xycoords='data',
                  xy=(np.deg2rad(mercury[0][0]), mercury[0][1]), fontsize=15, color='orange',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-    ax1.plot(np.deg2rad(mars[0][0]), mars[0][1], marker='o', label='mars', ms=3, mfc='red')
-    ax1.annotate('♂', textcoords='offset points', xytext=(-3, 3), xycoords='data',
-                 xy=(np.deg2rad(mars[0][0]), mars[0][1]), fontsize=15, color='slateblue')
+    ax1.plot(np.deg2rad(mars[0][0]), mars[0][1], marker='o', label='mars', ms=5, mfc='red')
+    ax1.annotate('♂', textcoords='offset points', xytext=(20, 3), xycoords='data',
+                 xy=(np.deg2rad(mars[0][0]), mars[0][1]), fontsize=15, color='slateblue',
+                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-    ax1.plot(np.deg2rad(jupiter[0][0]), jupiter[0][1], 'o', label='jupiter', ms=5, mfc='steelblue')
-    ax1.annotate('♃', textcoords='offset points', xytext=(-3, 3), xycoords='data',
-                 xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=17, color='slateblue')
+    ax1.plot(np.deg2rad(jupiter[0][0]), jupiter[0][1], 'o', label='jupiter', ms=7, mfc='steelblue')
+    ax1.annotate('♃', textcoords='offset points', xytext=(20, 3), xycoords='data',
+                 xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=17, color='slateblue',
+                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-    ax1.annotate(f'{round(jupiter[0][0])}°', textcoords='offset points', xytext=(-10, -10), xycoords='data',
-                 xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=8, color='navy')
+    ax1.annotate(f'{round(jupiter[0][0])}°', textcoords='offset points', xytext=(-20, 5), xycoords='data',
+                 xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=8, color='navy',
+                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-    ax1.plot(np.deg2rad(saturn[0][0]), saturn[0][1], 'o:k', label='saturn', ms=3)
-    ax1.annotate('♄', textcoords='offset points', xytext=(-10, -8), xycoords='data',
-                 xy=(np.deg2rad(saturn[0][0]), saturn[0][1]), fontsize=15)
+    ax1.plot(np.deg2rad(saturn[0][0]), saturn[0][1], 'o:k', label='saturn', ms=6)
+    ax1.annotate('♄', textcoords='offset points', xytext=(20, -20), xycoords='data',
+                 xy=(np.deg2rad(saturn[0][0]), saturn[0][1]), fontsize=15,
+                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-    ax1.plot(np.deg2rad(uranus[0][0]), uranus[0][1], marker='o', mfc='chartreuse', label='uranus', ms=8)
-    ax1.annotate('♅', textcoords='offset points', xytext=(25, 3), xycoords='data',
+    ax1.plot(np.deg2rad(uranus[0][0]), uranus[0][1], marker='o', mfc='chartreuse', label='uranus', ms=6)
+    ax1.annotate('♅', textcoords='offset points', xytext=(20, 3), xycoords='data',
                  xy=(np.deg2rad(uranus[0][0]), uranus[0][1]), fontsize=15, color='rebeccapurple',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     ax1.plot(np.deg2rad(neptune[0][0]), neptune[0][1], marker='o', label='neptune', ms=5, mfc='deepskyblue')
-    ax1.annotate('♆', textcoords='offset points', xytext=(-3, 3), xycoords='data',
-                 xy=(np.deg2rad(neptune[0][0]), neptune[0][1]), fontsize=17, color='indigo')
+    ax1.annotate('♆', textcoords='offset points', xytext=(20, 3), xycoords='data',
+                 xy=(np.deg2rad(neptune[0][0]), neptune[0][1]), fontsize=20, color='indigo',
+                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-    ax1.plot(np.deg2rad(pluto[0][0]), pluto[0][1], 'o:k', mfc='red', label='pluto')
-    ax1.annotate('♇', textcoords='offset points', xytext=(-3, 3), xycoords='data',
-                 xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=15, color='darkgoldenrod')
+    ax1.plot(np.deg2rad(pluto[0][0]), pluto[0][1], 'o:k', mfc='red', label='pluto', ms=5)
+    ax1.annotate('♇', textcoords='offset points', xytext=(20, 3), xycoords='data',
+                 xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=15, color='darkgoldenrod',
+                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
 
    
@@ -126,6 +139,7 @@ def show_chart(request):
     # plt.grid(True, color='pink') grid on
 
     plt.grid(False)
+    mplcursors.cursor(hover=True)
 
 
     plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/chart.png')  #aplha setting isn't applied if a plot saved to jpg
