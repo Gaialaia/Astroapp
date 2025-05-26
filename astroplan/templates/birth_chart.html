@@ -1,0 +1,35 @@
+{%  load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <title>Birth chart</title>
+</head>
+<body>
+
+ <div id="chart">
+       <div id="img-layers">
+
+            <img src="{% static 'plots/birth_plot.png' %}" alt = "birth chart" id="birth-chart">
+<!--           <img src="{% static 'plots/chart.png' %}" alt="plot" id="chart-plot">-->
+
+            <img src="{% static 'images/12.png' %}" alt = "chart axes" id="chart-axes">
+
+
+           <table id="planet-list" >
+                {% for p in r_deg %}
+               <tr>
+                   <th> {{ p }}</th>
+               </tr>
+               {% endfor %}
+           </table>
+        </div>
+
+ </div>>
+
+
+
+</body>
+</html>

@@ -38,7 +38,29 @@
     z-index: 1;
 
 
+}
+
+#transit-chart {
+    position: absolute;
+    z-index: 2;
+    margin:auto;
+
+}
 
 
+#birth-chart {
+    position: absolute;
+    z-index: 2;
+    margin:auto;
 
+}
+
+
+#planet-list {
+
+    width: 100%;
+}
+
+th {
+    height: 20px;
 }
