@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 
 import matplotlib.pyplot as plt
-import mplcursors
+
 import numpy as np
 
 from datetime import datetime as dt
@@ -72,11 +72,6 @@ def show_chart(request):
     ax1.set_axis_off() #'theta ax' is off
     ax1.set_thetagrids(range(0, 360, 30))
   
-    # ax2 = plt.subplot(1, 1, 1, projection='polar')
-    # ax2.set_theta_offset(np.pi) 
-    # ax2.set_rlim(-180,100)
-    # ax2.set_theta_direction(-1)
-    # ax2.set_rticks([])
 
     ax1.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=5, mfc='deeppink')
     ax1.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
@@ -132,25 +127,15 @@ def show_chart(request):
                  xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=15, color='darkgoldenrod',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-
-   
     ax1.grid(False)
     # ax2.set_thetagrids(range(0,360,30), ('')) #each sector 24deg
-
-    # plt.legend(loc='lower right')
-
-    # plt.grid(True, color='pink') grid on
-
     plt.grid(False)
 
     plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/chart.png')  #aplha setting isn't applied if a plot saved to jpg
     swe.close()
-
- 
     return render (request,'planets.html')
 
 def show_transit_chart(request):
-
 
     px = 1 / plt.rcParams['figure.dpi']
     fig = plt.figure(figsize=(870 * px, 870 * px), facecolor='violet', edgecolor='black')
@@ -170,12 +155,6 @@ def show_transit_chart(request):
     ax1.set_axis_off()  # 'theta ax' is off
     ax1.set_thetagrids(range(0, 360, 30))
 
-    # ax2 = plt.subplot(1, 1, 1, projection='polar')
-    # ax2.set_theta_offset(np.pi)
-    # ax2.set_rlim(-180,100)
-    # ax2.set_theta_direction(-1)
-    # ax2.set_rticks([])
-
     ax1.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=5, mfc='deeppink')
     ax1.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
                  xy=(np.deg2rad(venus[0][0]), venus[0][1]), fontsize=15, color='blueviolet',
@@ -231,12 +210,6 @@ def show_transit_chart(request):
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     ax1.grid(False)
-    # ax2.set_thetagrids(range(0,360,30), ('')) #each sector 24deg
-
-    # plt.legend(loc='lower right')
-
-    # plt.grid(True, color='pink') grid on
-
     plt.grid(False)
 
 
@@ -268,8 +241,6 @@ def show_birth_chart(request):
     r_deg = [round(p[0][0],2) for p in planet_list]
     p = str(r_deg).replace('.', '°').replace(',', '′,')
 
-
-
     px = 1 / plt.rcParams['figure.dpi']
     fig = plt.figure(figsize=(870 * px, 870 * px), facecolor='violet', edgecolor='black')
     fig.suptitle(f'Birth chart,{date.strftime('%B, %d, %H:%M')}', size=17)
@@ -287,12 +258,6 @@ def show_birth_chart(request):
     ax1.set_rticks([])
     ax1.set_axis_off()  # 'theta ax' is off
     ax1.set_thetagrids(range(0, 360, 30))
-
-    # ax2 = plt.subplot(1, 1, 1, projection='polar')
-    # ax2.set_theta_offset(np.pi)
-    # ax2.set_rlim(-180,100)
-    # ax2.set_theta_direction(-1)
-    # ax2.set_rticks([])
 
     ax1.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=5, mfc='deeppink')
     ax1.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
@@ -363,32 +328,3 @@ def show_birth_chart(request):
     swe.close()
 
     return render(request, 'birth_chart.html', context={'r_deg':r_deg, 'p':p})
-
-
-sun = swe.calc_ut(jd_date, 0, flags)
-moon = swe.calc_ut(jd_date, 1, flags)
-
-mercury = swe.calc_ut(jd_date, 2, flags)
-venus = swe.calc_ut(jd_date, 3, flags)
-mars = swe.calc_ut(jd_date, 4, flags)
-
-jupiter = swe.calc_ut(jd_date, 5, flags)
-saturn = swe.calc_ut(jd_date, 6, flags)
-
-uranus = swe.calc_ut(jd_date, 7, flags)
-neptune = swe.calc_ut(jd_date, 8, flags)
-pluto = swe.calc_ut(jd_date, 9, flags)
-
-planet_list = [sun, moon, mercury, venus, mars, jupiter,
-                   saturn, uranus, neptune, pluto]
-# for p in planet_list:
-#     r = round(p[0][0])
-#     print(r)
-
-
-r_deg = [round(s[0][0],2) for s in planet_list]
-
-s = str(r_deg).replace('.','°').replace(',','′,')
-
-
-print(s)
