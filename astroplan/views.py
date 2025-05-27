@@ -22,7 +22,7 @@ date = dt(1986, 2,17, 22,20 )
 jd_date = jl.to_jd(date,fmt='jd')
 
 jd = jl.to_jd(now, fmt='jd')
-flags =  swe.FLG_SIDEREAL | swe.SIDM_DELUCE 
+flags =  swe.FLG_SIDEREAL
 
 sun = swe.calc_ut(jd, 0, flags)
 print(sun[0][0])
