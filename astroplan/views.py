@@ -11,13 +11,16 @@ from datetime import datetime as dt
 import swisseph as swe
 
 import julian as jl
+from geopy.geocoders import Nominatim
+from pytz import timezone
 
 swe.set_ephe_path('/home/gaia/Документы/eph files')
 
 planet_list = ['sun','mercury','venus', 'moon', 'mars',
                  'jupiter','saturn', 'uranus', 'neptune','pluto']
 
-now = dt.now()
+
+now = dt.now(tz=timezone('Asia/Yekaterinburg'))
 date = dt(1986, 2,17, 22,20 )
 jd_date = jl.to_jd(date,fmt='jd')
 
@@ -25,17 +28,11 @@ jd = jl.to_jd(now, fmt='jd')
 flags =  swe.FLG_SIDEREAL
 
 sun = swe.calc_ut(jd, 0, flags)
-print(sun[0][0])
-
-
 moon = swe.calc_ut(jd, 1, flags)
-
-
 
 mercury = swe.calc_ut(jd,2, flags)
 venus = swe.calc_ut(jd, 3, flags)
 mars = swe.calc_ut(jd, 4, flags)
-
 
 jupiter = swe.calc_ut(jd, 5, flags)
 saturn =  swe.calc_ut(jd, 6,flags)
@@ -44,6 +41,10 @@ uranus =  swe.calc_ut(jd, 7,flags)
 neptune = swe.calc_ut(jd, 8, flags)
 pluto = swe.calc_ut(jd, 9, flags)
 
+loc = Nominatim(user_agent="GetLoc")
+getLoc = loc.geocode("Ufa, Russia")
+# houses = swe.houses(jd, getLoc.latitude, getLoc.longitude, b'P')
+houses = swe.houses_ex(jd, getLoc.latitude, getLoc.longitude, b'P', flags=swe.FLG_SIDEREAL)
 
 def chart(request):
     template = loader.get_template('test_template.html')
@@ -69,9 +70,11 @@ def show_chart(request):
     ax1.set_rlim(-130,100)
     ax1.set_theta_direction('counterclockwise')
     ax1.set_rticks([])
-    ax1.set_axis_off() #'theta ax' is off
-    ax1.set_thetagrids(range(0, 360, 30))
-  
+    # ax1.set_axis_off() #'theta ax' is off
+    # ax1.set_thetagrids(range(0, 360, 30))
+    ax1.set_thetagrids(houses[0])
+    ax1.grid(alpha=0.1)
+
 
     ax1.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=5, mfc='deeppink')
     ax1.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
@@ -127,9 +130,13 @@ def show_chart(request):
                  xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=15, color='darkgoldenrod',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-    ax1.grid(False)
+
+
+    plt.grid()
+
+
     # ax2.set_thetagrids(range(0,360,30), ('')) #each sector 24deg
-    plt.grid(False)
+
 
     plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/chart.png')  #aplha setting isn't applied if a plot saved to jpg
     swe.close()
@@ -209,8 +216,8 @@ def show_transit_chart(request):
                  xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=15, color='darkgoldenrod',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-    ax1.grid(False)
-    plt.grid(False)
+    #
+    # plt.grid(visible=True)
 
 
     plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/transit_plot.png')  # aplha setting isn't applied if a plot saved to jpg
