@@ -21,6 +21,7 @@ planet_list = ['sun','mercury','venus', 'moon', 'mars',
 
 
 now = dt.now(tz=timezone('Asia/Yekaterinburg'))
+
 date = dt(1986, 2,17, 22,20 )
 jd_date = jl.to_jd(date,fmt='jd')
 
@@ -54,7 +55,8 @@ def chart(request):
 #                  'jupiter','saturn', 'uranus', 'neptune','pluto']
 
 
-def show_chart(request):
+def show_td_chart(request):
+
     px = 1/plt.rcParams['figure.dpi']
     fig = plt.figure(figsize=(870*px, 870*px), facecolor='violet', edgecolor='black')
     fig.suptitle(f'Planet chart today,{now.strftime('%B, %d, %H:%M')}', size=17 )
@@ -70,10 +72,10 @@ def show_chart(request):
     ax1.set_rlim(-130,100)
     ax1.set_theta_direction('counterclockwise')
     ax1.set_rticks([])
-    # ax1.set_axis_off() #'theta ax' is off
-    # ax1.set_thetagrids(range(0, 360, 30))
-    ax1.set_thetagrids(houses[0])
-    ax1.grid(alpha=0.1)
+    ax1.set_axis_off() #'theta ax' is off and grid off
+    ax1.set_thetagrids(range(0, 360, 30))
+    #ax1.grid()  #wont work because the axis is off
+
 
 
     ax1.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=5, mfc='deeppink')
@@ -130,17 +132,52 @@ def show_chart(request):
                  xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=15, color='darkgoldenrod',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-
-
     plt.grid()
-
 
     # ax2.set_thetagrids(range(0,360,30), ('')) #each sector 24deg
 
-
-    plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/chart.png')  #aplha setting isn't applied if a plot saved to jpg
+    plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/today_chart.png')  #aplha setting isn't applied if a plot saved to jpg
     swe.close()
     return render (request,'planets.html')
+
+
+def show_chart_houses(request):
+
+    px = 1 / plt.rcParams['figure.dpi']
+    fig = plt.figure(figsize=(870 * px, 870 * px), facecolor='violet', edgecolor='black')
+    # fig.suptitle(f'Planet chart today,{now.strftime('%B, %d, %H:%M')}', size=17)
+    fig.patch.set_alpha(0.0)
+
+    left = 0.05
+    bottom = 0.05
+    width = 0.9
+    height = 0.9
+    ax1 = fig.add_axes([left, bottom, width, height], projection='polar')  # center plot
+    # ax1.set_theta_offset()
+
+    loc = Nominatim(user_agent="GetLoc")
+    getLoc = loc.geocode("Ufa, Russia")
+    # houses = swe.houses(jd, getLoc.latitude, getLoc.longitude, b'P')
+    houses = swe.houses_ex(jd, getLoc.latitude, getLoc.longitude, b'R', flags=swe.FLG_SIDEREAL)
+
+    ax1.set_alpha(0.0)
+    ax1.set_rlim(-130, 100)
+    ax1.set_theta_direction(1)
+    ax1.set_rticks([])
+    # ax1.set_axis_off()  # 'theta ax' is off
+    ax1.set_thetagrids(houses[0], ['8', '9', 'MC', '11', '12', 'ASC', '2', '3', 'IC', '5', '6', 'DSC'])
+    ax1.tick_params(labelsize=20, grid_color='red', grid_linewidth=1, labelfontfamily='monospace')
+
+
+    # ax1.set_thetagrids(range(0,360,30))
+    ax1.set_theta_offset(np.pi)
+    ax1.grid(color= '#178270', linewidth=1)
+    ax1.set_alpha(0.0)
+
+    plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/house_chart.png')  # aplha setting isn't applied if a plot saved to jpg
+    swe.close()
+    return render(request, 'house_chart.html')
+
 
 def show_transit_chart(request):
 
@@ -220,6 +257,8 @@ def show_transit_chart(request):
     # plt.grid(visible=True)
 
 
+
+
     plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/transit_plot.png')  # aplha setting isn't applied if a plot saved to jpg
     swe.close()
 
@@ -246,7 +285,8 @@ def show_birth_chart(request):
                    saturn, uranus, neptune, pluto]
 
     r_deg = [round(p[0][0],2) for p in planet_list]
-    p = str(r_deg).replace('.', '°').replace(',', '′,')
+    pl_fmt = str(r_deg).replace('.', '°').replace(',', '′,')
+
 
     px = 1 / plt.rcParams['figure.dpi']
     fig = plt.figure(figsize=(870 * px, 870 * px), facecolor='violet', edgecolor='black')
@@ -328,10 +368,34 @@ def show_birth_chart(request):
     # plt.grid(True, color='pink') grid on
 
     plt.grid(False)
-    mplcursors.cursor(hover=True)
+
 
     plt.savefig(
         '/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/birth_plot.png')  # aplha setting isn't applied if a plot saved to jpg
     swe.close()
 
-    return render(request, 'birth_chart.html', context={'r_deg':r_deg, 'p':p})
+    return render(request, 'birth_chart.html', context={'r_deg':r_deg, 'pl_fmt':pl_fmt})
+
+#
+# sun = swe.calc_ut(jd_date, 0, flags)
+# moon = swe.calc_ut(jd_date, 1, flags)
+#
+# mercury = swe.calc_ut(jd_date, 2, flags)
+# venus = swe.calc_ut(jd_date, 3, flags)
+# mars = swe.calc_ut(jd_date, 4, flags)
+#
+# jupiter = swe.calc_ut(jd_date, 5, flags)
+# saturn = swe.calc_ut(jd_date, 6, flags)
+#
+# uranus = swe.calc_ut(jd_date, 7, flags)
+# neptune = swe.calc_ut(jd_date, 8, flags)
+# pluto = swe.calc_ut(jd_date, 9, flags)
+#
+# planet_list = [sun, moon, mercury, venus, mars, jupiter,
+#                    saturn, uranus, neptune, pluto]
+# r_deg = [round(p[0][0],2) for p in planet_list]
+#
+#
+# pl_fmt = []
+# pl_fmt.append(str(r_deg).replace('.', '°').replace(',', '′,'))
+# print(pl_fmt)
