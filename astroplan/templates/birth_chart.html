@@ -9,28 +9,44 @@
 </head>
 <body>
 
- <div id="chart">
-       <div id="img-layers">
-
+ <div id="chart-container">
+       <div id="chart-layers">
             <img src="{% static 'plots/birth_plot.png' %}" alt = "birth chart" id="birth-chart">
-<!--           <img src="{% static 'plots/today_chart.png' %}" alt="plot" id="chart-plot">-->
              <img src="{% static 'plots/house_chart.png' %}" alt="house axes" id="house-plot">
-
             <img src="{% static 'images/tr_zr.png' %}" alt = "chart axes" id="chart-axes">
+       </div>
 
 
-           <table id="planet-list" >
-                {% for p in pl_fmt %}
-               <tr>
-                   <th> {{ p }}</th>
-               </tr>
-               {% endfor %}
+        <div id="planet-pos--data-table">
+            <table id="planet-list" >
+                <caption> Table data </caption>
+                <thead>
+                  <tr>
+                        <th> Symbols</th>
+                        <th> Planets</th>
+                        <th> Degrees</th>
+                        <th> Sign </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                     {% for planet, sym, deg, sign in planet_deg %}
+
+                    <tr>
+                         <td> {{ deg }}</td>
+                          <td> {{ sym }}</td>
+                        <td> {{ planet }} </td>
+                        <td> {{ sign }}</td>
+
+
+                    </tr>
+                     {% endfor %}
+
+                </tbody>
            </table>
         </div>
 
  </div>>
-
-
 
 </body>
 </html>
