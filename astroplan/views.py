@@ -306,7 +306,7 @@ def show_birth_chart(request):
         if deg_intervals[i] in range(0, 31):
             sign = 'aries'
         if deg_intervals[i] in range(30, 61):
-            sign = 'taurus'
+            sign = '♉'
         if deg_intervals[i] in range(60, 91):
             sign = 'gemini'
         if deg_intervals[i] in range(90, 121):
@@ -316,13 +316,13 @@ def show_birth_chart(request):
         if deg_intervals[i] in range(150, 181):
             sign = 'virgo'
         if deg_intervals[i] in range(180, 211):
-            sign = 'libra'
+            sign = '♎'
         if deg_intervals[i] in range(210, 241):
             sign = '♏'
         if deg_intervals[i] in range(240, 271):
-            sign = 'saggitarrius'
+            sign = '♐'
         if deg_intervals[i] in range(270, 301):
-            sign = 'capricon'
+            sign = '♑'
         signs.append(sign)
 
     planet_deg = zip(conv_deg, planet_names, planet_symbols, signs)
