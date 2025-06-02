@@ -292,6 +292,10 @@ def show_birth_chart(request):
     r_deg = [round(p[0][0],2) for p in planet_list]
     conv_deg = [str(n).replace('.', '°').replace(',', '′,') for n in r_deg]
 
+    thirty_r_deg = [round(p[0][0], 2) % 30 for p in planet_list]  # convert from start point 360 to 30X12
+    r_result = [round(n, 2) for n in thirty_r_deg]  # round divided into 30 result
+    conv_r_result = [str(n).replace('.', '°').replace(',', '′,') for n in r_result]
+
 
 
     deg_intervals = [round(d[0][0]) for d in planet_list]
@@ -325,7 +329,7 @@ def show_birth_chart(request):
             sign = '♑'
         signs.append(sign)
 
-    planet_deg = zip(conv_deg, planet_names, planet_symbols, signs)
+    planet_deg = zip(conv_deg, planet_names, planet_symbols, signs, conv_r_result)
 
 
     px = 1 / plt.rcParams['figure.dpi']
@@ -418,24 +422,28 @@ def show_birth_chart(request):
                                                         'planet_names':planet_names,'planet_deg':planet_deg,
                                                         'sign': sign})
 
-# #
-sun = swe.calc_ut(jd_date, 0, flags)
-moon = swe.calc_ut(jd_date, 1, flags)
+# # #
+# sun = swe.calc_ut(jd_date, 0, flags)
+# moon = swe.calc_ut(jd_date, 1, flags)
+#
+# mercury = swe.calc_ut(jd_date, 2, flags)
+# venus = swe.calc_ut(jd_date, 3, flags)
+# mars = swe.calc_ut(jd_date, 4, flags)
+#
+# jupiter = swe.calc_ut(jd_date, 5, flags)
+# saturn = swe.calc_ut(jd_date, 6, flags)
+#
+# uranus = swe.calc_ut(jd_date, 7, flags)
+# neptune = swe.calc_ut(jd_date, 8, flags)
+# pluto = swe.calc_ut(jd_date, 9, flags)
+#
+# planet_list = [sun, moon, mercury, venus, mars, jupiter,
+#                    saturn, uranus, neptune, pluto]
+# thirty_r_deg = [round(p[0][0],2)%30 for p in planet_list] #convert from start point 360 to 30X12
 
-mercury = swe.calc_ut(jd_date, 2, flags)
-venus = swe.calc_ut(jd_date, 3, flags)
-mars = swe.calc_ut(jd_date, 4, flags)
-
-jupiter = swe.calc_ut(jd_date, 5, flags)
-saturn = swe.calc_ut(jd_date, 6, flags)
-
-uranus = swe.calc_ut(jd_date, 7, flags)
-neptune = swe.calc_ut(jd_date, 8, flags)
-pluto = swe.calc_ut(jd_date, 9, flags)
-
-planet_list = [sun, moon, mercury, venus, mars, jupiter,
-                   saturn, uranus, neptune, pluto]
-
+# r_result= [round(n,2) for n in thirty_r_deg] #round divided into 30 result
+# print(thirty_r_deg)
+# print(r_result)
 
 # print(planet_list[0][0][0])
 #
@@ -446,38 +454,38 @@ signs = []
 # for p in range(planet_list[0][0][0]), (planet_list[9][0][0]:
 
 
-deg_intervals = [round(d[0][0]) for d in planet_list]
-sign = ''
-
-for i in range(len(deg_intervals)):
-    if deg_intervals[i] in range(300,331):
-        sign = 'aqua'
-    if deg_intervals[i] in range(330,361):
-        sign = 'pisces'
-    if deg_intervals[i] in range(0,31):
-        sign = 'aries'
-    if deg_intervals[i] in range(30,61):
-        sign = 'taurus'
-    if deg_intervals[i] in range(60,91):
-        sign = 'gemini'
-    if deg_intervals[i] in range(90,121):
-        sign = 'cancer'
-    if deg_intervals[i] in range(120,151):
-        sign = 'leo'
-    if deg_intervals[i] in range(150,181):
-        sign = 'virgo'
-    if deg_intervals[i] in range(180,211):
-        sign = 'libra'
-    if deg_intervals[i] in range(210,241):
-        sign = 'scorpio'
-    if deg_intervals[i] in range(240,271):
-        sign = 'saggitarrius'
-    if deg_intervals[i] in range(270,301):
-        sign = 'capricon'
-
-    signs.append(sign)
-
-    print(deg_intervals[i],sign)
-print(signs)
+# deg_intervals = [round(d[0][0]) for d in planet_list]
+# sign = ''
+#
+# for i in range(len(deg_intervals)):
+#     if deg_intervals[i] in range(300,331):
+#         sign = 'aqua'
+#     if deg_intervals[i] in range(330,361):
+#         sign = 'pisces'
+#     if deg_intervals[i] in range(0,31):
+#         sign = 'aries'
+#     if deg_intervals[i] in range(30,61):
+#         sign = 'taurus'
+#     if deg_intervals[i] in range(60,91):
+#         sign = 'gemini'
+#     if deg_intervals[i] in range(90,121):
+#         sign = 'cancer'
+#     if deg_intervals[i] in range(120,151):
+#         sign = 'leo'
+#     if deg_intervals[i] in range(150,181):
+#         sign = 'virgo'
+#     if deg_intervals[i] in range(180,211):
+#         sign = 'libra'
+#     if deg_intervals[i] in range(210,241):
+#         sign = 'scorpio'
+#     if deg_intervals[i] in range(240,271):
+#         sign = 'saggitarrius'
+#     if deg_intervals[i] in range(270,301):
+#         sign = 'capricon'
+#
+#     signs.append(sign)
+#
+#     print(deg_intervals[i],sign)
+# print(signs)
 
 
