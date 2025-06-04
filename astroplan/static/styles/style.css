@@ -10,6 +10,7 @@
     margin: auto;
     max-width: 90%;
     background-position: center;
+    position:relative;
 
    
 }
@@ -92,19 +93,24 @@
 
 }
 
-#planet-list th, #planet-list td {
-    border: 1px solid;
 
 
+table, th, td {
+  border: 1px solid black;
 }
 
 
-#planet-pos--data-table{
-    display: flex;
-
-
+#house-cusps-positions {
 
 
 
 }
 
+.chart-data-tables {
+
+    display: inline-flex;
+
+
+
+
+}

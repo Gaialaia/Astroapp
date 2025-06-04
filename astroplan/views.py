@@ -14,6 +14,7 @@ import julian as jl
 from geopy.geocoders import Nominatim
 from pytz import timezone
 
+
 swe.set_ephe_path('/home/gaia/Документы/eph files')
 
 planet_list = ['sun','mercury','venus', 'moon', 'mars',
@@ -75,8 +76,6 @@ def show_td_chart(request):
     ax1.set_axis_off() #'theta ax' is off and grid off
     ax1.set_thetagrids(range(0, 360, 30))
     #ax1.grid()  #wont work because the axis is off
-
-
 
     ax1.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=5, mfc='deeppink')
     ax1.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
@@ -156,8 +155,7 @@ def show_chart_houses(request):
     # ax1.set_theta_offset()
 
     loc = Nominatim(user_agent="GetLoc")
-    getLoc = loc.geocode("Ufa, Russia")
-    # houses = swe.houses(jd, getLoc.latitude, getLoc.longitude, b'P')
+    getLoc = loc.geocode("Ufa, Russia", timeout=7000)
     houses = swe.houses_ex(jd, getLoc.latitude, getLoc.longitude, b'R', flags=swe.FLG_SIDEREAL)
 
     ax1.set_alpha(0.0)
@@ -175,7 +173,7 @@ def show_chart_houses(request):
     ax1.set_alpha(0.0)
 
     plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/house_chart.png')  # aplha setting isn't applied if a plot saved to jpg
-    swe.close()
+    # swe.close()
     return render(request, 'house_chart.html')
 
 
@@ -253,14 +251,8 @@ def show_transit_chart(request):
                  xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=15, color='darkgoldenrod',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-    #
-    # plt.grid(visible=True)
-
-
-
-
     plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/transit_plot.png')  # aplha setting isn't applied if a plot saved to jpg
-    swe.close()
+    # swe.close()
 
     return render(request, 'transit_chart.html')
 
@@ -331,6 +323,21 @@ def show_birth_chart(request):
 
     planet_deg = zip(conv_deg, planet_names, planet_symbols, signs, conv_r_result)
 
+    # for table with houses
+    house_names = ['8', '9', 'MC', '11', '12', 'ASC', '2', '3', 'IC', '5', '6', 'DSC']
+
+
+    loc = Nominatim(user_agent="GetLoc")
+    getLoc = loc.geocode("Ufa, Russia", timeout=7000)
+    houses = swe.houses_ex(jd, getLoc.latitude, getLoc.longitude, b'R', flags=swe.FLG_SIDEREAL)
+
+    houses_list = [round(d, 2) for d in houses[0]]
+    conv_h_deg = [str(n).replace('.', '°').replace(',', '′,') for n in houses_list]
+    thirty_r_h_deg = [round(d, 2) % 30 for d in houses_list]  # convert from start point 360 to 30X12
+    h_r_result = [round(d, 2) for d in thirty_r_h_deg]  # round divided into 30 result
+    conv_h_r_result = [str(n).replace('.', '°').replace(',', '′,') for n in h_r_result]
+    cusps_deg = zip(conv_h_deg, house_names)
+
 
     px = 1 / plt.rcParams['figure.dpi']
     fig = plt.figure(figsize=(870 * px, 870 * px), facecolor='violet', edgecolor='black')
@@ -350,20 +357,74 @@ def show_birth_chart(request):
     ax1.set_axis_off()  # 'theta ax' is off
     ax1.set_thetagrids(range(0, 360, 30))
 
-    ax1.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=5, mfc='deeppink')
+    opposition = np.arange(175.0, 185.0)
+    trine = np.arange(115.0, 125.0)
+    square = np.arange(85.0, 95.0)
+
+
+    ax1.plot(np.deg2rad(planet_list[3][0][0]), planet_list[3][0][1], marker='o', label='venus', ms=5, mfc='deeppink')
     ax1.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(venus[0][0]), venus[0][1]), fontsize=15, color='blueviolet',
+                 xy=(np.deg2rad(planet_list[3][0][0]), planet_list[3][0][1]), fontsize=15, color='blueviolet',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+    for i in range(len(planet_list) - 1):
+        z = abs(round(planet_list[3][0][0]) - round(planet_list[i + 1][0][0]))
+        if z in trine:
+            p1 = np.array([np.deg2rad(planet_list[3][0][0]), np.deg2rad(planet_list[i + 1][0][0])])
+            p2 = np.array([planet_list[3][0][1], planet_list[i+1][0][1]])
+            ax1.plot(p1, p2)
+
+        if z in square:
+            p1 = np.array([np.deg2rad(planet_list[3][0][0]), np.deg2rad(planet_list[i + 1][0][0])])
+            p2 = np.array([planet_list[3][0][1], planet_list[i+1][0][1]])
+            ax1.plot(p1, p2, lw=0.5)
+
+        if z in opposition:
+            p1 = np.array([np.deg2rad(planet_list[3][0][0]), np.deg2rad(planet_list[i + 1][0][0])])
+            p2 = np.array([planet_list[3][0][1], planet_list[i+1][0][1]])
+            ax1.plot(p1, p2)
+
+
+
 
     ax1.plot(np.deg2rad(moon[0][0]), moon[0][1], marker='o', label='moon', mfc='forestgreen', ms=5)
     ax1.annotate('☾', textcoords='offset points', xytext=(20, 3), xycoords='data',
                  xy=(np.deg2rad(moon[0][0]), moon[0][1]), fontsize=15, color='slateblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
+    for i in range(len(planet_list) - 1):
+        z = abs(round(planet_list[1][0][0]) - round(planet_list[i + 1][0][0]))
+        if z in trine:
+            p1 = np.array([np.deg2rad(moon[0][0]), np.deg2rad(planet_list[i+1][0][0])])
+            p2 = np.array([planet_list[1][0][0], moon[0][1]])
+            ax1.plot(p1, p2)
+
+        if z in square:
+            p1 = np.array([np.deg2rad(moon[0][0]), np.deg2rad(planet_list[i+1][0][0])])
+            p2 = np.array([planet_list[1][0][0], moon[0][1]])
+            ax1.plot(p1, p2)
+
+        if z in opposition:
+            p1 = np.array([np.deg2rad(moon[0][0]), np.deg2rad(planet_list[i+1][0][0])])
+            p2 = np.array([planet_list[1][0][0], moon[0][1]])
+            ax1.plot(p1, p2)
+
+
+
+
+    # for i in range(len(planet_list)-1):
+    #     if moon[0][0] - planet_list[i+1][0][0] == -178.1113473875882:
+    #         p1 = np.array([np.deg2rad(moon[0][0]), np.deg2rad(planet_list[i+1][0][0])])
+    #         p2 = np.array(planet_list[i+1][0][0], moon[0][1])
+    #         ax1.plot(p1, p2)
+
+
     ax1.plot(np.deg2rad(sun[0][0]), sun[0][1], marker='o', label='sun', ms=8, mfc='gold')
     ax1.annotate('☼', textcoords='offset points', xytext=(20, 5), xycoords='data',
                  xy=(np.deg2rad(sun[0][0]), sun[0][1]), fontsize=15, color='midnightblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+
 
     ax1.plot(np.deg2rad(mercury[0][0]), mercury[0][1], 'o:b', label='merc', ms=5)
     ax1.annotate('☿', textcoords='offset points', xytext=(20, 5), xycoords='data',
@@ -404,41 +465,108 @@ def show_birth_chart(request):
                  xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=15, color='darkgoldenrod',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
+    # x = np.array([np.deg2rad(mars[0][0]),np.deg2rad(venus[0][0])])
+    # y = np.array([mars[0][1], venus[0][1]])
+    # ax1.plot(x, y)
+    # ax1.plot([np.deg2rad(mars[0][1])])
+
     ax1.grid(False)
-    # ax2.set_thetagrids(range(0,360,30), ('')) #each sector 24deg
-
-    # plt.legend(loc='lower right')
-
-    # plt.grid(True, color='pink') grid on
-
     plt.grid(False)
-
 
     plt.savefig(
         '/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/birth_plot.png')  # aplha setting isn't applied if a plot saved to jpg
     swe.close()
 
-    return render(request, 'birth_chart.html', context={'conv_deg':conv_deg, 'planet_list': planet_list,
-                                                        'planet_names':planet_names,'planet_deg':planet_deg,
-                                                        'sign': sign})
+    return render(request, 'birth_chart.html',
+                  context={'planet_deg':planet_deg,'cusps_deg':cusps_deg} )
 
-# # #
-# sun = swe.calc_ut(jd_date, 0, flags)
-# moon = swe.calc_ut(jd_date, 1, flags)
+sun = swe.calc_ut(jd_date, 0, flags)
+moon = swe.calc_ut(jd_date, 1, flags)
+
+mercury = swe.calc_ut(jd_date, 2, flags)
+venus = swe.calc_ut(jd_date, 3, flags)
+mars = swe.calc_ut(jd_date, 4, flags)
+
+jupiter = swe.calc_ut(jd_date, 5, flags)
+saturn = swe.calc_ut(jd_date, 6, flags)
+
+uranus = swe.calc_ut(jd_date, 7, flags)
+neptune = swe.calc_ut(jd_date, 8, flags)
+pluto = swe.calc_ut(jd_date, 9, flags)
 #
-# mercury = swe.calc_ut(jd_date, 2, flags)
-# venus = swe.calc_ut(jd_date, 3, flags)
-# mars = swe.calc_ut(jd_date, 4, flags)
+# #
+planet_list = [sun, moon, mercury, venus, mars, jupiter,
+                   saturn, uranus, neptune, pluto]
 #
-# jupiter = swe.calc_ut(jd_date, 5, flags)
-# saturn = swe.calc_ut(jd_date, 6, flags)
+# planet_deg = [i[0][0] for i in planet_list]
+# orbis = 5
 #
-# uranus = swe.calc_ut(jd_date, 7, flags)
-# neptune = swe.calc_ut(jd_date, 8, flags)
-# pluto = swe.calc_ut(jd_date, 9, flags)
+# opposition = np.arange(175.0, 185.0)
+op = np.arange(175.0,185.0)
+trine = np.arange(115.0,125.0)
+square = np.arange(85.0, 95.0)
+# # print(planet_deg)
+print(planet_list[3][0][0])
+print(venus[0][0])
+for i in range(len(planet_list)-1):
+
+    z = abs(round(planet_list[2][0][0]) - round(planet_list[i+1][0][0]))
+    if z in trine:
+        print(z)
+    if z in square:
+        print(z)
+    if z in op:
+        print(z)
 #
-# planet_list = [sun, moon, mercury, venus, mars, jupiter,
-#                    saturn, uranus, neptune, pluto]
+#
+#
+#
+#
+#
+#
+# #
+#
+# #
+# #
+#
+# #
+#
+#
+# # print(sun[0][0])
+# # print(sun[0][0]-planet_list[1][0][0])
+# # print(opposition)
+
+
+# planet_deg2 = [i[0][0] for i in planet_list]
+# print(saturn[0][0])
+
+
+#
+# for i in range(len(planet_deg)-1):
+#     if (planet_deg[i] - planet_deg[i+1]) in np.arange(175.0,180.0):
+#         print(planet_deg[i])
+
+# count = 0
+# print(len(planet_deg))
+# for i in range(len(planet_deg)-1):
+#     dif = planet_deg[0] - planet_deg[i+1]
+#
+
+
+
+
+
+
+
+
+
+# my_list = [5,5,8,3,8]
+# for i in range(len(my_list)-1):
+#     if my_list[i] - my_list[i+1] == 0:
+#         print(my_list[i])
+
+
+
 # thirty_r_deg = [round(p[0][0],2)%30 for p in planet_list] #convert from start point 360 to 30X12
 
 # r_result= [round(n,2) for n in thirty_r_deg] #round divided into 30 result
@@ -449,7 +577,7 @@ def show_birth_chart(request):
 #
 # print(range(planet_list[0],planet_list[9]))
 
-signs = []
+# signs = []
 
 # for p in range(planet_list[0][0][0]), (planet_list[9][0][0]:
 
@@ -487,5 +615,11 @@ signs = []
 #
 #     print(deg_intervals[i],sign)
 # print(signs)
+
+
+
+
+
+
 
 
