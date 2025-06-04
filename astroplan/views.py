@@ -361,80 +361,56 @@ def show_birth_chart(request):
     trine = np.arange(115.0, 125.0)
     square = np.arange(85.0, 95.0)
 
+    def aspect(planet_number):
+        for i in range(len(planet_list) - 1):
+            z = abs(round(planet_list[planet_number][0][0]) - round(planet_list[i + 1][0][0]))
+            if z in trine:
+                p1 = np.array([np.deg2rad(planet_list[planet_number][0][0]), np.deg2rad(planet_list[i + 1][0][0])])
+                p2 = np.array([planet_list[planet_number][0][1], planet_list[i + 1][0][1]])
+                ax1.plot(p1, p2)
+
+            if z in square:
+                p1 = np.array([np.deg2rad(planet_list[planet_number][0][0]), np.deg2rad(planet_list[i + 1][0][0])])
+                p2 = np.array([planet_list[planet_number][0][1], planet_list[i + 1][0][1]])
+                ax1.plot(p1, p2, lw=0.5)
+
+            if z in opposition:
+                p1 = np.array([np.deg2rad(planet_list[planet_number][0][0]), np.deg2rad(planet_list[i + 1][0][0])])
+                p2 = np.array([planet_list[planet_number][0][1], planet_list[i + 1][0][1]])
+                ax1.plot(p1, p2)
 
     ax1.plot(np.deg2rad(planet_list[3][0][0]), planet_list[3][0][1], marker='o', label='venus', ms=5, mfc='deeppink')
     ax1.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
                  xy=(np.deg2rad(planet_list[3][0][0]), planet_list[3][0][1]), fontsize=15, color='blueviolet',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-
-    for i in range(len(planet_list) - 1):
-        z = abs(round(planet_list[3][0][0]) - round(planet_list[i + 1][0][0]))
-        if z in trine:
-            p1 = np.array([np.deg2rad(planet_list[3][0][0]), np.deg2rad(planet_list[i + 1][0][0])])
-            p2 = np.array([planet_list[3][0][1], planet_list[i+1][0][1]])
-            ax1.plot(p1, p2)
-
-        if z in square:
-            p1 = np.array([np.deg2rad(planet_list[3][0][0]), np.deg2rad(planet_list[i + 1][0][0])])
-            p2 = np.array([planet_list[3][0][1], planet_list[i+1][0][1]])
-            ax1.plot(p1, p2, lw=0.5)
-
-        if z in opposition:
-            p1 = np.array([np.deg2rad(planet_list[3][0][0]), np.deg2rad(planet_list[i + 1][0][0])])
-            p2 = np.array([planet_list[3][0][1], planet_list[i+1][0][1]])
-            ax1.plot(p1, p2)
-
-
-
+    aspect(3)
 
     ax1.plot(np.deg2rad(moon[0][0]), moon[0][1], marker='o', label='moon', mfc='forestgreen', ms=5)
     ax1.annotate('☾', textcoords='offset points', xytext=(20, 3), xycoords='data',
                  xy=(np.deg2rad(moon[0][0]), moon[0][1]), fontsize=15, color='slateblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-    for i in range(len(planet_list) - 1):
-        z = abs(round(planet_list[1][0][0]) - round(planet_list[i + 1][0][0]))
-        if z in trine:
-            p1 = np.array([np.deg2rad(moon[0][0]), np.deg2rad(planet_list[i+1][0][0])])
-            p2 = np.array([planet_list[1][0][0], moon[0][1]])
-            ax1.plot(p1, p2)
-
-        if z in square:
-            p1 = np.array([np.deg2rad(moon[0][0]), np.deg2rad(planet_list[i+1][0][0])])
-            p2 = np.array([planet_list[1][0][0], moon[0][1]])
-            ax1.plot(p1, p2)
-
-        if z in opposition:
-            p1 = np.array([np.deg2rad(moon[0][0]), np.deg2rad(planet_list[i+1][0][0])])
-            p2 = np.array([planet_list[1][0][0], moon[0][1]])
-            ax1.plot(p1, p2)
-
-
-
-
-    # for i in range(len(planet_list)-1):
-    #     if moon[0][0] - planet_list[i+1][0][0] == -178.1113473875882:
-    #         p1 = np.array([np.deg2rad(moon[0][0]), np.deg2rad(planet_list[i+1][0][0])])
-    #         p2 = np.array(planet_list[i+1][0][0], moon[0][1])
-    #         ax1.plot(p1, p2)
-
+    aspect(2)
 
     ax1.plot(np.deg2rad(sun[0][0]), sun[0][1], marker='o', label='sun', ms=8, mfc='gold')
     ax1.annotate('☼', textcoords='offset points', xytext=(20, 5), xycoords='data',
                  xy=(np.deg2rad(sun[0][0]), sun[0][1]), fontsize=15, color='midnightblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-
-
+    aspect(0)
 
     ax1.plot(np.deg2rad(mercury[0][0]), mercury[0][1], 'o:b', label='merc', ms=5)
     ax1.annotate('☿', textcoords='offset points', xytext=(20, 5), xycoords='data',
                  xy=(np.deg2rad(mercury[0][0]), mercury[0][1]), fontsize=15, color='orange',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
+    aspect(2)
+
     ax1.plot(np.deg2rad(mars[0][0]), mars[0][1], marker='o', label='mars', ms=5, mfc='red')
     ax1.annotate('♂', textcoords='offset points', xytext=(20, 3), xycoords='data',
                  xy=(np.deg2rad(mars[0][0]), mars[0][1]), fontsize=15, color='slateblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+    aspect(4)
 
     ax1.plot(np.deg2rad(jupiter[0][0]), jupiter[0][1], 'o', label='jupiter', ms=7, mfc='steelblue')
     ax1.annotate('♃', textcoords='offset points', xytext=(20, 3), xycoords='data',
@@ -444,26 +420,29 @@ def show_birth_chart(request):
     ax1.annotate(f'{round(jupiter[0][0])}°', textcoords='offset points', xytext=(-20, 5), xycoords='data',
                  xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=8, color='navy',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+    aspect(5)
 
     ax1.plot(np.deg2rad(saturn[0][0]), saturn[0][1], 'o:k', label='saturn', ms=6)
     ax1.annotate('♄', textcoords='offset points', xytext=(20, -20), xycoords='data',
                  xy=(np.deg2rad(saturn[0][0]), saturn[0][1]), fontsize=15,
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+    aspect(6)
 
     ax1.plot(np.deg2rad(uranus[0][0]), uranus[0][1], marker='o', mfc='chartreuse', label='uranus', ms=6)
     ax1.annotate('♅', textcoords='offset points', xytext=(20, 3), xycoords='data',
                  xy=(np.deg2rad(uranus[0][0]), uranus[0][1]), fontsize=15, color='rebeccapurple',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-
+    aspect(7)
     ax1.plot(np.deg2rad(neptune[0][0]), neptune[0][1], marker='o', label='neptune', ms=5, mfc='deepskyblue')
     ax1.annotate('♆', textcoords='offset points', xytext=(20, 3), xycoords='data',
                  xy=(np.deg2rad(neptune[0][0]), neptune[0][1]), fontsize=20, color='indigo',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-
+    aspect(8)
     ax1.plot(np.deg2rad(pluto[0][0]), pluto[0][1], 'o:k', mfc='red', label='pluto', ms=5)
     ax1.annotate('♇', textcoords='offset points', xytext=(20, 3), xycoords='data',
                  xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=15, color='darkgoldenrod',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+    aspect(9)
 
     # x = np.array([np.deg2rad(mars[0][0]),np.deg2rad(venus[0][0])])
     # y = np.array([mars[0][1], venus[0][1]])
