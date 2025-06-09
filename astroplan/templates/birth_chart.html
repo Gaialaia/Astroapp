@@ -16,6 +16,31 @@
             <img src="{% static 'images/tr_zr.png' %}" alt = "chart axes" id="chart-axes">
        </div>
 
+      <div class="chart-data-tables">
+            <table id="planet-list" >
+                <caption> Planet position data </caption>
+                <thead>
+                  <tr>
+                        <th> Symbols</th>
+                        <th> Planets</th>
+                        <th> Degrees</th>
+                        <th> Sign </th>
+                       <th> 30 degress </th>
+                  </tr>
+                </thead>
+                <tbody>
+                     {% for planet, sym, deg, sign, thdeg in planet_deg %}
+                    <tr>
+                         <td> {{ deg }}</td>
+                        <td> {{ sym }}</td>
+                        <td> {{ planet }} </td>
+                        <td> {{ sign }}</td>
+                        <td> {{ thdeg }}</td>
+                    </tr>
+                     {% endfor %}
+                </tbody>
+           </table>
+
  </div>
 
 
