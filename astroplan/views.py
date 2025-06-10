@@ -277,9 +277,15 @@ def show_birth_chart(request):
     trine = np.arange(115.0, 125.0)
     square = np.arange(85.0, 95.0)
 
-    ops = []
+
+    sqaures = []
+    trines = []
+    oppositions = []
+    aspected_planet =[]
+    sq_angle = []
 
     names_and_coords = list(zip(planet_names, planet_list))
+    aspect_table_squares = zip(aspected_planet, sq_angle, sqaures)
 
     def aspect(planet_number):
         # for i in range(len(planet_list) - 1):
@@ -289,32 +295,35 @@ def show_birth_chart(request):
         #         p2 = np.array([planet_list[planet_number][0][1], planet_list[i + 1][0][1]])
         #         ax1.plot(p1, p2, lw=0.5, color='springgreen')
 
-                # tr.append(planet_numbers[planet_number])
-                # tr.append(planet_numbers[i])
-
         for i in range(len(names_and_coords) - 1):
 
-            z = abs(round(names_and_coords[planet_number][1][0][0]) - round(pp[i + 1][1][0][0]))
+            z = abs(round(names_and_coords[planet_number][1][0][0]) - round(names_and_coords[i + 1][1][0][0]))
             if z in square:
                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
                                np.deg2rad(names_and_coords[i + 1][1][0][0])])
                 p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
                 ax1.plot(p1, p2, lw=0.5, color='firebrick')
 
-                ops.append(names_and_coords[planet_number][0])
-                ops.append(names_and_coords[i+1][0])
+                # ops.append(names_and_coords[planet_number][0])
+
+                aspected_planet.append(names_and_coords[planet_number][0])
+                sq_angle.append(z)
+                sqaures.append(names_and_coords[i+1][0])
+                aspect_table_squares = zip(aspected_planet, sq_angle, sqaures)
+
+
 
             if z in opposition:
                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
                                np.deg2rad(names_and_coords[i + 1][1][0][0])])
                 p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
-                ax1.plot(p1, p2, lw=0.5, color='dimgrey')
+                ax1.plot(p1, p2, lw=0.5, color='magenta')
 
             if z in trine:
                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
                                np.deg2rad(names_and_coords[i + 1][1][0][0])])
                 p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
-                ax1.plot(p1, p2, lw=0.5, color='dimgrey')
+                ax1.plot(p1, p2, lw=0.8, color='lime')
 
 
 
@@ -326,6 +335,7 @@ def show_birth_chart(request):
                  xy=(np.deg2rad(planet_list[3][0][0]), planet_list[3][0][1]), fontsize=15, color='blueviolet',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
     aspect(3)
+
 
     ax1.plot(np.deg2rad(moon[0][0]), moon[0][1], marker='o', label='moon', mfc='forestgreen', ms=5)
     ax1.annotate('☾', textcoords='offset points', xytext=(20, 3), xycoords='data',
@@ -400,7 +410,8 @@ def show_birth_chart(request):
     swe.close()
 
     return render(request, 'birth_chart.html',
-                  context={'planet_deg':planet_deg,'cusps_deg':cusps_deg, 'ops':ops} )
+                  context={'planet_deg':planet_deg,'cusps_deg':cusps_deg,
+                           'ats': aspect_table_squares})
 
 planet_numbers = {0:'Sun' , 1:'Moon', 2:'Mercury', 3:'Venus',
                   4:'Mars',5:'Jupiter', 6:'Saturn', 7:'Uranus',
@@ -429,8 +440,8 @@ planet_names = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter',
 
 
 pp = list(zip(planet_names, planet_list))
-print(pp[1][1][0][1])
-print(pp[[1][0]])
+# print(pp[1][1][0][1])
+# print(pp[[1][0]])
 
 
 # # planet_deg = [i[0][0] for i in planet_list]
@@ -444,20 +455,28 @@ square = np.arange(85.0, 95.0)
 
 
 aspect_list = []
+
 for i in range(len(pp)-1):
 
-    z = abs(round(pp[3][1][0][0]) - round(pp[i+1][1][0][0]))
+    z = abs(round(pp[6][1][0][0]) - round(pp[i+1][1][0][0]))
+
+
+    # aspect_list.append(pp[i + 1][0])
 
 
     if z in square:
-        aspect_list.append(pp[3][0])
-        aspect_list.append(pp[i+1][0])
-        aspect_list.
+        aspect_list.append(pp[i + 1][0])
 
-        # print(z,pp[3][0],pp[i+1][0])
         print(aspect_list)
 
+
+for p  in aspect_list:
+    print(p)
+
+
+
 # print(planet_list[])
+# print(z,pp[3][0],pp[i+1][0])
 
 # for p in planet_numbers.values():
 #     c = swe.calc_ut(jd_date, p, flags)
