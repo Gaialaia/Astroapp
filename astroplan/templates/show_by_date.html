@@ -10,21 +10,14 @@
 <body>
 
     <form method="POST" action="/show_by_date/">
-
          {% csrf_token %}
-
-           <label for="date"> Enter date </label>
+           <label> Enter date </label>
         <input type="datetime-local" name="user_date">
-
-<!--         <input type="year" name="user_date">-->
-
+             <label> Enter city </label>
         <input type="text" name="city">
-
+        <label> Enter country </label>
         <input type="text" name="country">
-
         <button type="submit"> Submit </button>
-
-
     </form>
 
 </body>

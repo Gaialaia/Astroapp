@@ -20,12 +20,14 @@ from .models import Chart
 from .forms import ChartForm
 from . utils import build_plot
 
+from timezonefinder import TimezoneFinder
+
 
 swe.set_ephe_path('/home/gaia/Документы/eph files')
 
 now = dt.now(tz=timezone('Asia/Yekaterinburg'))
 
-date = dt(1986, 2,17, 22,20 )
+date = dt(1986, 2,17, 22,20)
 jd_date = jl.to_jd(date,fmt='jd')
 
 jd = jl.to_jd(now, fmt='jd')
@@ -55,7 +57,25 @@ houses = swe.houses_ex(jd, getLoc.latitude, getLoc.longitude, b'P', flags=swe.FL
 
 def show_td_chart(request):
 
-    chart = build_plot(dt.now())
+    chart = build_plot(dt.now(tz=timezone('Asia/Yekaterinburg')))
+
+    if request.method == 'POST':
+        users_date = request.POST.get('user_date')
+        d = dt.strptime(users_date, '%Y-%m-%dT%H:%M')
+        city = request.POST.get('city')
+        country = request.POST.get('country')
+        loc = Nominatim(user_agent="GetLoc")
+        loc_coords = loc.geocode(f"{city, country}", timeout=7000)
+        loc_tz = TimezoneFinder().timezone_at(lng=loc_coords.latitude, lat=loc_coords.longitude)
+
+
+
+
+        chart = build_plot(dt.now(loc_tz))
+
+        # return HttpResponse(f'Received {d}, {city},{country}' )
+
+        return render(request, 'planets.html', {'chart': chart})
 
 
     return render(request, 'planets.html', {'chart':chart})
@@ -69,6 +89,9 @@ def show_by_date(request):
         d = dt.strptime(users_date, '%Y-%m-%dT%H:%M')
         city = request.POST.get('city')
         country = request.POST.get('country')
+        loc = Nominatim(user_agent="GetLoc")
+        loc_coords = loc.geocode(f"{city, country}", timeout=7000)
+        loc_tz = TimezoneFinder().timezone_at(lng=loc_coords.latitude, lat=loc_coords.longitude)
 
 
         chart = build_plot(d)
@@ -76,9 +99,6 @@ def show_by_date(request):
         # return HttpResponse(f'Received {d}, {city},{country}' )
 
         return render(request, 'planets.html', {'chart': chart})
-
-
-
 
 
     return render(request, 'show_by_date.html')

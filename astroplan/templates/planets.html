@@ -19,6 +19,17 @@
             <img src="{% static 'images/tr_zr.png' %}" alt = "zodiac ring" id="zodiac_ring_tr">
         </div>
 
+        <form method="POST" action="/show_by_date/" id="chart_data_table">
+         {% csrf_token %}
+           <label> Enter date </label>
+        <input type="datetime-local" name="user_date">
+             <label> Enter city </label>
+        <input type="text" name="city">
+        <label> Enter country </label>
+        <input type="text" name="country">
+        <button type="submit"> Submit </button>
+    </form>
+
         <div class="chart-data-tables">
             <table id="planet-list" >
                 <caption> Planet position data </caption>
