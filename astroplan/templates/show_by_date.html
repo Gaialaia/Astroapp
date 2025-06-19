@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+</head>
+<body>
+
+    <form method="POST" action="/show_by_date/">
+
+         {% csrf_token %}
+
+           <label for="date"> Enter date </label>
+        <input type="datetime-local" name="user_date">
+
+<!--         <input type="year" name="user_date">-->
+
+        <input type="text" name="city">
+
+        <input type="text" name="country">
+
+        <button type="submit"> Submit </button>
+
+
+    </form>
+
+</body>
+</html>

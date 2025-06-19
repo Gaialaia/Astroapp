@@ -13,11 +13,11 @@
 
     <div id="chart-container">
         <div id="chart-layers">
-          <img src="{% static 'plots/today_chart.png' %}" alt="plot" id="chart-plot">
+<!--          <img src="{% static 'plots/today_chart.png' %}" alt="plot" id="chart-plot">-->
+            <img src= "{% static 'plots/chart.png' %}" alt="plot" id="chart-plot">
+<!--            <img src="data:image/png;base64, {{chart|safe}}" id="chart-plot">-->
             <img src="{% static 'images/tr_zr.png' %}" alt = "zodiac ring" id="zodiac_ring_tr">
         </div>
-
-
 
         <div class="chart-data-tables">
             <table id="planet-list" >
@@ -133,6 +133,9 @@
                 </tbody>
 
          </table>
+
+
+
 
         </div>
 
