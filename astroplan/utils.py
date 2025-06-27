@@ -15,29 +15,24 @@ from django.template.context_processors import request
 from geopy.geocoders import Nominatim
 from pytz import timezone
 
+
+
 flags = swe.FLG_SIDEREAL
 
 
-def get_graph():
-    buffer = BytesIO()
-    plt.savefig('astroplan/static/plots/chart.png')
-    buffer.seek(0)
-    image_png = buffer.getvalue()
-    graph = base64.b64encode(image_png)
-    graph = graph.decode('utf-8')
-    buffer.close()
-    return graph
+# def get_graph():
+#     buffer = BytesIO()
+#     plt.savefig('astroplan/static/plots/')
+#     buffer.seek(0)
+#     image_png = buffer.getvalue()
+#     graph = base64.b64encode(image_png)
+#     graph = graph.decode('utf-8')
+#     buffer.close()
+#     return graph
 
 
-def build_plot(timestamp:dt):
-
-    # date = dt(year, month,day, hour, minutes)
-
-    # date = dt(dt.year, dt.month, dt.day, dt.hour, dt.minute)
-
+def build_plot(timestamp:dt, filename):
     jd = jl.to_jd(timestamp, fmt='jd')
-
-
 
     sun = swe.calc_ut(jd, 0, flags)
     moon = swe.calc_ut(jd, 1, flags)
@@ -56,16 +51,13 @@ def build_plot(timestamp:dt):
 
     px = 1 / plt.rcParams['figure.dpi']
     plt.switch_backend('AGG')
-    fig = plt.figure(figsize=(870 * px, 870 * px), facecolor='violet', edgecolor='black')
+    fig = plt.figure(figsize=(870 * px, 870 * px))
     fig.suptitle(f'Planet chart for ,{timestamp.strftime('%Y, %B, %d, %H:%M')}', size=17)
     fig.patch.set_alpha(0.0)
     # graph = get_graph()
 
-    left = 0.05
-    bottom = 0.05
-    width = 0.9
-    height = 0.9
-    ax1 = fig.add_axes([left, bottom, width, height], projection='polar')  # center plot
+    ax1 = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')  # center plot
+    # center plot
     # ax1.set_theta_offset()
 
     ax1.set_rlim(-130, 100)
@@ -278,30 +270,26 @@ def build_plot(timestamp:dt):
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(9)
+
     swe.close()
-
-
     plt.grid()
-    graph = get_graph()
-    return graph
 
-
-
-    # plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/today_chart.png')
-    # plt.show()
-    # return render(request, 'planets.html', context={'planet_deg': planet_deg,
-    #                                                 'ats': aspect_table_squares, 'ato': aspect_table_ops,
-    #                                                 'att': aspect_table_t, 'atc': aspect_table_c})
+    plt.savefig(f'/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/{filename}.png')
 
 
 
 
 
-def process_timestamp(timestamp: dt):
-    jd = jl.to_jd(timestamp, fmt='jd')
-    return timestamp,jd
 
 
 
 
-print(process_timestamp(dt.now()))
+
+
+
+# now=dt.now()
+# def process_time(timestamp):
+#     jd = jl.to_jd(timestamp)
+#
+#     return jd
+

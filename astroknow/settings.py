@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'astroplan',
     'users',
+    'django_flatpickr',
 ]
 
 MIDDLEWARE = [
@@ -101,6 +102,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+DJANGO_FLATPICKR = {
+
+    "theme_name": "dark",
+}
+
+
+
 
 
 # Internationalization

@@ -16,12 +16,9 @@
 
 
 #chart-layers {
-
     margin: auto;
-    width: 50%;
-    padding: 10px;
 
-
+    max-width: 50%;
 
 }
 
@@ -30,6 +27,48 @@
     position: absolute;
     z-index: 2;
     margin:auto;
+
+#date-chart-plot {
+
+    position:absolute;
+    z-index: 1;
+    margin:auto;
+
+
+}
+
+
+#event-chart-plot {
+
+    position: absolute;
+    z-index: 1;
+
+}
+
+#transit-chart-plot {
+
+    position: absolute;
+    z-index: 2;
+
+}
+
+#zodiac_ring_transit_chart{
+    z-index: 3;
+
+
+}
+
+
+
+
+#zodiac_ring_tr{
+    z-index: 2;
+
+
+}
+
+
+
 
     /* opacity: 0.8; */
 
@@ -55,12 +94,7 @@
 
 }
 
-#zodiac_ring_tr{
-    position:relative;
-    z-index:3
 
-
-}
 
 
 #birth-chart {

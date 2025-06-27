@@ -4,6 +4,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
     <title>Transits</title>
 </head>
@@ -13,9 +15,33 @@
 
         <div id="img-layers">
 
-            <img src="{% static 'plots/chart.png' %}" alt = "chart" id="transit-chart">
-            <img src="{% static 'images/12.png' %}" alt = "chart axes" id="chart-axes">
+            <img src="{% static 'plots/event_chart.png' %}" alt="plot" id="event-chart-plot">
+            <img src="{% static 'plots/transit_chart.png' %}" alt="plot" id="transit-chart-plot">
+            <img src="{% static 'images/tr_zr.png' %}" alt = "zodiac ring" id="zodiac_ring_transit_chart">
+
         </div>
+
+
+      <form method="POST" action="transit_chart.html/" id="chart_data_table">
+         {% csrf_token %}
+           <label> Enter event date </label>
+        <input type="datetime-local" name="event_date">
+          <label> Enter transit date </label>
+        <input type="datetime-local" name="transit_date">
+
+<!--            <label> Enter event city </label>-->
+<!--        <input type="text" name="event_city">-->
+<!--             <label> Enter transit city </label>-->
+<!--        <input type="text" name="transit_city">-->
+
+<!--        <label> Enter  event country </label>-->
+<!--        <input type="text" name="event_country">-->
+
+<!--           <label> Enter  transit country </label>-->
+<!--        <input type="text" name="transit_country">-->
+
+        <button type="submit"> Submit </button>
+    </form>
 
 
 

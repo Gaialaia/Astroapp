@@ -13,20 +13,20 @@
 
     <div id="chart-container">
         <div id="chart-layers">
-<!--          <img src="{% static 'plots/today_chart.png' %}" alt="plot" id="chart-plot">-->
-            <img src= "{% static 'plots/chart.png' %}" alt="plot" id="chart-plot">
-<!--            <img src="data:image/png;base64, {{chart|safe}}" id="chart-plot">-->
+
+          <img src="{% static 'plots/now_chart.png' %}" alt="plot" id="chart-plot">
+<!--              <img src="{% static 'plots/chart_for_date.png' %}" alt="plot" id="date-chart-plot">-->
             <img src="{% static 'images/tr_zr.png' %}" alt = "zodiac ring" id="zodiac_ring_tr">
         </div>
 
-        <form method="POST" action="/show_by_date/" id="chart_data_table">
+        <form method="POST" action="" id="chart_data_table">
          {% csrf_token %}
-           <label> Enter date </label>
-        <input type="datetime-local" name="user_date">
-             <label> Enter city </label>
-        <input type="text" name="city">
+         <label> Enter date </label>
+        <br>  <input type="datetime-local" name="user_date"> </br>
+         <label> Enter city </label>
+           <br> <input type="text" name="city"> </br>
         <label> Enter country </label>
-        <input type="text" name="country">
+           <br> <input type="text" name="country"> </br>
         <button type="submit"> Submit </button>
     </form>
 
@@ -41,15 +41,36 @@
                   </tr>
                 </thead>
                 <tbody>
-                     {% for sym, sign, thdeg in planet_deg %}
+                     {% for sym, deg, sign in planet_data %}
                     <tr>
                          <td> {{ sym }}</td>
-                        <td> {{ thdeg }}</td>
+                        <td> {{ deg }}</td>
                         <td> {{ sign }}</td>
                     </tr>
                      {% endfor %}
                 </tbody>
            </table>
+
+              <table id="houses-table" >
+                <caption> Houses cusps data </caption>
+                <thead>
+                  <tr>
+                        <th> House </th>
+                        <th> Degrees </th>
+                        <th> Sign </th>
+                  </tr>
+                </thead>
+                <tbody>
+                     {% for hn, deg, sign in house_data %}
+                    <tr>
+                         <td> {{ hn }}</td>
+                        <td> {{ deg }}</td>
+                        <td> {{ sign }}</td>
+                    </tr>
+                     {% endfor %}
+                </tbody>
+
+
 
            <table id="squares" >
                 <thead>
@@ -74,6 +95,7 @@
 
                 </tbody>
            </table>
+
 
          <table id="oppositions">
                 <thead>
@@ -121,6 +143,7 @@
 
          </table>
 
+
          <table id="conj">
               <thead>
                   <tr>
@@ -145,15 +168,8 @@
 
          </table>
 
-
-
-
         </div>
-
     </div>
-   
-
-
     
 </body>
 </html>
