@@ -48,12 +48,13 @@
 #transit-chart-plot {
 
     position: absolute;
-    z-index: 2;
+    z-index: 1;
+    margin:auto;
 
 }
 
-#zodiac_ring_transit_chart{
-    z-index: 3;
+#zodiac_ring_transit_chart {
+    z-index: 2;
 
 
 }
