@@ -13,13 +13,272 @@
 
  <div id="chart-container">
 
+     <nav>
+
+         <p> today chart </p>
+         <p> transit chart </p>
+         <p> chart for date </p>
+         <p> colorful chart </p>
+         <p> shop </p>
+         <p> registration </p>
+
+
+
+
+     </nav>
+     <div class="chart-data-tables">
+            <table id="planet-list" >
+                <caption> Planet position data </caption>
+                <thead>
+                  <tr>
+                        <th> Planet </th>
+                        <th> Degrees </th>
+                        <th> Sign </th>
+                  </tr>
+                </thead>
+                <tbody>
+                     {% for sym, deg, sign in planet_data %}
+                    <tr>
+                         <td> {{ sym }}</td>
+                        <td> {{ deg }}</td>
+                        <td> {{ sign }}</td>
+                    </tr>
+                     {% endfor %}
+                </tbody>
+           </table>
+
+          <table id="houses-table" >
+                <caption> Houses cusps data </caption>
+                <thead>
+                  <tr>
+                        <th> House </th>
+                        <th> Degrees </th>
+                        <th> Sign </th>
+                  </tr>
+                </thead>
+                <tbody>
+                     {% for hn, deg, sign in house_data %}
+                    <tr>
+                         <td> {{ hn }}</td>
+                        <td> {{ deg }}</td>
+                        <td> {{ sign }}</td>
+                    </tr>
+                     {% endfor %}
+                </tbody>
+      </div>
+
+
+
         <div id="chart-layers">
-            <img src="{% static 'plots/transit_chart.png' %}" alt="plot" id="transit-chart-plot">
-            <img src="{% static 'images/tr_zr.png' %}" alt="zodiac ring" id="zodiac_ring_transit_chart">
+            <img src="{% static 'plots/transit_chart.png' %}" alt="plot" id="chart-plot">
+            <img src="{% static 'images/tr_zr.png' %}" alt = "zodiac ring" id="zodiac_ring_tr">
+        </div>
+
+
+     <div class="chart-data-tables">
+             <table id="tr_planet-list" >
+                <caption> Transit (?)Planet position data </caption>
+                <thead>
+                  <tr>
+                        <th> Planet </th>
+                        <th> Degrees </th>
+                        <th> Sign </th>
+                  </tr>
+                </thead>
+                <tbody>
+                     {% for sym, deg, sign in tr_planet_data %}
+                    <tr>
+                         <td> {{ sym }}</td>
+                        <td> {{ deg }}</td>
+                        <td> {{ sign }}</td>
+                    </tr>
+                     {% endfor %}
+                </tbody>
+           </table>
+
+         <table id="tr_houses-table" >
+                <caption> Transit Houses cusps data </caption>
+                <thead>
+                  <tr>
+                        <th> House </th>
+                        <th> Degrees </th>
+                        <th> Sign </th>
+                  </tr>
+                </thead>
+                <tbody>
+                     {% for hn, deg, sign in tr_house_data %}
+                    <tr>
+                         <td> {{ hn }}</td>
+                        <td> {{ deg }}</td>
+                        <td> {{ sign }}</td>
+                    </tr>
+                     {% endfor %}
+                </tbody>
+        </div>
+     </div>
+
+
+
+     <div id="chart-data">
+         <p> Event date: {{ event_date }} </p>
+           <p> Event city: {{ event_city }} </p>
+           <p> Event country: {{ event_country }} </p>
+
+
+           <p> Transit date: {{ tr_date }} </p>
+           <p> Transit city: {{ tr_city }} </p>
+           <p> Transit country: {{ tr_country }} </p>
+
+          <table id="form-cd" >
+                <caption> Planet position data </caption>
+                <thead>
+                  <tr>
+                       <th> </th>
+                        <th> Event </th>
+                        <th> Transit </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>  date   </td>
+                        <td> {{ event_date }} </td>
+                        <td> {{ tr_date }} </td>
+                    </tr>
+
+                    <tr>
+                        <td> city </td>
+                        <td> {{ event_city }}</td>
+                        <td> {{ tr_city }}</td>
+                    </tr>
+
+                    <tr>
+                        <td> country </td>
+                         <td> {{ event_country }}</td>
+                        <td> {{ tr_country }}</td>
+                    </tr>
+
+
+                </tbody>
+           </table>
+
+
+
+
+     </div>
+
+
+
+
+
+
+    <div id="all-aspects-table">
+
+                  <table id="squares" >
+                <thead>
+                  <tr>
+                        <th colspan="3"> squares ∟ </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                         <td> planet </td>
+                         <td> angle </td>
+                         <td> planet </td>
+                    </tr>
+                    {% for pn, angle, ap in ats %}
+                    <tr>
+                        <td> {{ pn }} </td>
+                         <td> {{ angle }} </td>
+                         <td> {{ ap }} </td>
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+           </table>
+
+
+
+         <table id="oppositions">
+                <thead>
+                  <tr>
+                        <th colspan="3"> oppositions </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                         <td> planet </td>
+                         <td> angle </td>
+                         <td> planet </td>
+                    </tr>
+                    {% for pn, angle, ap in ato %}
+                    <tr>
+                        <td> {{ pn }} </td>
+                         <td> {{ angle }} </td>
+                         <td> {{ ap }} </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+         </table>
+
+         <table id="trines">
+              <thead>
+                  <tr>
+                        <th colspan="3"> trines </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                         <td> planet </td>
+                         <td> angle </td>
+                         <td> planet </td>
+                    </tr>
+                    {% for pn, angle, ap in att %}
+                    <tr>
+                        <td> {{ pn }} </td>
+                         <td> {{ angle }} </td>
+                         <td> {{ ap }} </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+         </table>
+
+
+         <table id="conj">
+              <thead>
+                  <tr>
+                        <th colspan="3"> conjunctions </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                         <td> planet </td>
+                         <td> angle </td>
+                         <td> planet </td>
+                    </tr>
+
+                    {% for pn, angle, ap in atc %}
+                    <tr>
+                        <td> {{ pn }} </td>
+                         <td> {{ angle }} </td>
+                         <td> {{ ap }} </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+         </table>
+        </div>
 
         </div>
 
-     </div>
+       </div>
+
+
+
+
+
 
 </body>
 </html>

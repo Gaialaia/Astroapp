@@ -37,7 +37,7 @@ flags =  swe.FLG_SIDEREAL | swe.SIDM_LAHIRI
 opposition = np.arange(175.0, 185.0)
 trine = np.arange(115.0, 125.0)
 square = np.arange(85.0, 95.0)
-conjunction = np.arange(0.0, 10.0)
+conjunction = np.arange(0.00, 7.00)
 
 sqaures = []
 trines = []
@@ -60,6 +60,9 @@ cur_tr_pn = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter',
             'Saturn', 'Uranus', 'Neptune', 'Pluto','tr_Sun',
              'tr_Moon', 'tr_Mercury', 'tr_Venus', 'tr_Mars', 'tr_Jupiter',
             'tr_Saturn', 'tr_Uranus', 'tr_Neptune', 'tr_Pluto']
+
+tr_planet_names = ['tr_Sun','tr_Moon', 'tr_Mercury', 'tr_Venus', 'tr_Mars',
+                   'tr_Jupiter', 'tr_Saturn', 'tr_Uranus', 'tr_Neptune', 'tr_Pluto']
 
 cur_tr_coords = []
 
@@ -365,11 +368,11 @@ def build_transit_chart(request):
         pluto = swe.calc_ut(jd_ev, 9, flags)
 
         planet_list = [sun, moon, mercury,venus, mars, jupiter, saturn, uranus, neptune, pluto]
-        names_and_coords = list(zip(planet_names, planet_list))
+        names_and_coords = list(zip(planet_symbols, planet_list))
 
         houses = swe.houses_ex(jd_ev, get_loc.latitude, get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
         house_ax.set_thetagrids(houses[0],
-                                ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'VII', 'VIII', 'IX', 'MC', 'XI', 'XII'])
+                                ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
         house_ax.tick_params(labelsize=20, grid_color='red', grid_linewidth=1, labelfontfamily='monospace')
         house_ax.set_theta_offset(np.pi)
 
@@ -390,15 +393,15 @@ def build_transit_chart(request):
         tr_pluto = swe.calc_ut(jd_tr, 9, flags)
 
 
-        houses = swe.houses_ex(jd_tr, get_loc.latitude, get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
-        tr_house_ax.set_thetagrids(houses[0],
-                                   ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'VII', 'VIII', 'IX', 'MC', 'XI', 'XII'])
+        tr_houses = swe.houses_ex(jd_tr, get_loc.latitude, get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
+        tr_house_ax.set_thetagrids(tr_houses[0],
+                                   ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
         tr_house_ax.tick_params(labelsize=20, grid_color='#ffcc00', grid_linewidth=1, labelfontfamily='monospace')
         tr_house_ax.set_theta_offset(np.pi)
 
         tr_planet_list = [tr_sun, tr_moon, tr_mercury, tr_venus, tr_mars, tr_jupiter,
                        tr_saturn, tr_uranus, tr_neptune, tr_pluto]
-        names_and_tr_coords = list(zip(planet_names, tr_planet_list))
+        names_and_tr_coords = list(zip(planet_symbols, tr_planet_list))
 
         cur_tr_aspects.extend(planet_list)
         cur_tr_aspects.extend(tr_planet_list)
@@ -408,7 +411,9 @@ def build_transit_chart(request):
 
 
         def set_signs(name_list, deg_list):
-            round_deg = [round(d) for d in deg_list]  # rounded 360 degree list for setting signs
+            round_deg = [round(d) for d in deg_list]# rounded 360 degree list for setting signs
+            if signs:
+                signs.clear()
             for i in range(len(deg_list)):
                 if round_deg[i] in range(300, 331):
                     sign = '♒'
@@ -434,6 +439,7 @@ def build_transit_chart(request):
                     sign = '♐'
                 if round_deg[i] in range(270, 301):
                     sign = '♑'
+
                 signs.append(sign)
             deg_list_thirty = [round(c % 30, 2) for c in deg_list]
             deg_form = [str(n).replace('.', '°').replace(',', '′,') for n in deg_list_thirty]
@@ -650,10 +656,16 @@ def build_transit_chart(request):
 
 
         return render(request, 'transit_chart.html',
-                      context={'planet_data': set_signs(planet_names, [p[0][0] for p in planet_list]),
+                      context={'planet_data': set_signs(planet_symbols, [p[0][0] for p in planet_list]),
                                'house_data': set_signs(house_names, list(houses[0])),
                                'ats': aspect_table_squares, 'ato': aspect_table_ops,
-                               'att': aspect_table_t, 'atc': aspect_table_c})
+                               'att': aspect_table_t, 'atc': aspect_table_c,
+                               'tr_planet_data': set_signs(tr_planet_names, [p[0][0] for p in tr_planet_list]),
+                               'tr_house_data': set_signs(house_names, list(tr_houses[0])), 'event_date': d,
+                               'event_city': event_chart.event_city,  'event_country': event_chart.event_country,
+                               'tr_date': tr_d, 'tr_city': tr_chart.transit_city, 'tr_country': tr_chart.transit_country,
+
+                               })
 
     return render(request, 'transit_form.html',
                   context={'tr_form': tr_form})

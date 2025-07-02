@@ -19,6 +19,18 @@
     margin: auto;
 
     max-width: 50%;
+    display: inline;
+
+}
+
+.nav p {
+
+    display: inline;
+
+}
+
+.nav {
+    display: inline ;
 
 }
 
@@ -116,8 +128,14 @@
 
 table, th, td {
   border: 1px solid black;
+  text-align: center;
 }
 
+.th {
+
+    font-variant-caps: all-petite-caps;
+
+}
 
 #house-cusps-positions {
 
@@ -125,13 +143,28 @@ table, th, td {
 
 }
 
-.chart-data-tables {
+#event-chart-data {
     display: inline;
+
 
 }
 
 .table {
 
     display: inline;
+
+}
+
+.chart-data-tables {
+
+    display: inline;
+
+
+
+}
+
+.div {
+
+    display: inline-block;
 
 }
