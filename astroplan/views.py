@@ -90,7 +90,6 @@ def show_td_chart(request):
 
     fig = plt.figure(figsize=(870 * px, 870 * px))
     fig.patch.set_alpha(0.0)
-    fig.suptitle(f'Planet chart today,{now.strftime('%B, %d, %H:%M')}', size=17)
 
     planet_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')  # center plot
     house_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')
@@ -181,8 +180,9 @@ def show_td_chart(request):
 
                 aspected_planet.append(names_and_coords[planet_number][0])
                 sq_angle.append(f'{z}°')
+                sq_unique = list(set(sq_angle))
                 sqaures.append(names_and_coords[i + 1][0])
-                aspect_table_squares = zip(aspected_planet, sq_angle, sqaures)
+                aspect_table_squares = zip(aspected_planet, sq_unique, sqaures)
 
             if z in opposition:
                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
@@ -292,11 +292,11 @@ def show_td_chart(request):
 
     plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/now_chart.png')
 
-    return render(request, 'planets.html',
+    return render(request, 'layout.html',
                   context={'planet_data':set_signs(planet_names,[p[0][0] for p in planet_list]),
                            'house_data': set_signs(house_names, list(houses[0])),
                 'ats': aspect_table_squares, 'ato': aspect_table_ops,
-                'att': aspect_table_t, 'atc': aspect_table_c})
+                'att': aspect_table_t, 'atc': aspect_table_c, 'date': now.strftime('%B, %d, %H:%M')})
 
 
 

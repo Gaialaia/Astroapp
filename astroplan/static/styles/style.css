@@ -139,8 +139,6 @@ table, th, td {
 
 #house-cusps-positions {
 
-
-
 }
 
 #event-chart-data {
@@ -149,22 +147,5 @@ table, th, td {
 
 }
 
-.table {
-
-    display: inline;
-
-}
-
-.chart-data-tables {
-
-    display: inline;
 
 
-
-}
-
-.div {
-
-    display: inline-block;
-
-}
