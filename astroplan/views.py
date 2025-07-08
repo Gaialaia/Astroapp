@@ -134,19 +134,19 @@ def show_td_chart(request):
             if round_deg[i] in range(300, 331):
                 sign = '♒'
             if round_deg[i] in range(330, 361):
-                sign = 'pisces'
+                sign = '♓'
             if round_deg[i] in range(0, 31):
-                sign = 'aries'
+                sign = '♈'
             if round_deg[i] in range(30, 61):
                 sign = '♉'
             if round_deg[i] in range(60, 91):
-                sign = 'gemini'
+                sign = '♊'
             if round_deg[i] in range(90, 121):
-                sign = 'cancer'
+                sign = '♋'
             if round_deg[i] in range(120, 151):
-                sign = 'leo'
+                sign = '♌'
             if round_deg[i] in range(150, 181):
-                sign = 'virgo'
+                sign = '♍'
             if round_deg[i] in range(180, 211):
                 sign = '♎'
             if round_deg[i] in range(210, 241):
@@ -192,8 +192,9 @@ def show_td_chart(request):
 
                 aspected_planet_op.append(names_and_coords[planet_number][0])
                 op_angle.append(f'{z}°')
+                op_unique = list(set(op_angle))
                 oppositions.append(names_and_coords[i + 1][0])
-                aspect_table_ops = zip(aspected_planet_op, op_angle, oppositions)
+                aspect_table_ops = zip(aspected_planet_op, op_unique, oppositions)
 
             if z in trine:
                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
@@ -205,7 +206,7 @@ def show_td_chart(request):
                 trines.append(names_and_coords[i + 1][0])
                 aspect_table_t = zip(aspected_planet_t, t_angle, trines)
 
-            if z in conjunctions:
+            if z in conjunction:
                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
                                np.deg2rad(names_and_coords[i + 1][1][0][0])])
                 p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
