@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-
+import matplotlib
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -85,6 +85,7 @@ tf = TimezoneFinder()
 loc = Nominatim(user_agent="GetLoc")
 
 px = 1 / plt.rcParams['figure.dpi']
+matplotlib.rcParams['axes.edgecolor'] = 'aliceblue'
 
 def show_td_chart(request):
 
@@ -94,6 +95,7 @@ def show_td_chart(request):
     planet_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')  # center plot
     house_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')
     house_ax.patch.set_alpha(0.0)
+    house_ax.set_facecolor('aliceblue')
 
     planet_ax.set_rlim(-130, 100)
     planet_ax.set_theta_direction('counterclockwise')
@@ -165,7 +167,8 @@ def show_td_chart(request):
     house_ax.set_theta_direction(1)
     house_ax.set_rticks([])
     house_ax.set_thetagrids(houses[0], ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
-    house_ax.tick_params(labelsize=20, grid_color='red', grid_linewidth=1, labelfontfamily='monospace')
+    house_ax.tick_params(labelsize=20, grid_color='aliceblue', grid_linewidth=1, labelfontfamily='monospace',
+                         labelcolor='aliceblue')
     # house_ax.set_theta_offset(np.pi)
 
     def aspect(planet_number):
@@ -218,48 +221,48 @@ def show_td_chart(request):
 
     planet_ax.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=5, mfc='deeppink')
     planet_ax.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(venus[0][0]), venus[0][1]), fontsize=15, color='blueviolet',
+                 xy=(np.deg2rad(venus[0][0]), venus[0][1]), fontsize=15, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(3)
 
     planet_ax.plot(np.deg2rad(moon[0][0]), moon[0][1], marker='o', label='moon', mfc='forestgreen', ms=5)
     planet_ax.annotate('☾', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(moon[0][0]), moon[0][1]), fontsize=15, color='slateblue',
+                 xy=(np.deg2rad(moon[0][0]), moon[0][1]), fontsize=15, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(1)
 
     planet_ax.plot(np.deg2rad(sun[0][0]), sun[0][1], marker='o', label='sun', ms=8, mfc='gold')
     planet_ax.annotate('☼', textcoords='offset points', xytext=(20, 5), xycoords='data',
-                 xy=(np.deg2rad(sun[0][0]), sun[0][1]), fontsize=15, color='midnightblue',
+                 xy=(np.deg2rad(sun[0][0]), sun[0][1]), fontsize=15, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(0)
 
     planet_ax.plot(np.deg2rad(mercury[0][0]), mercury[0][1], 'o:b', label='merc', ms=5)
     planet_ax.annotate('☿', textcoords='offset points', xytext=(20, 5), xycoords='data',
-                 xy=(np.deg2rad(mercury[0][0]), mercury[0][1]), fontsize=15, color='orange',
+                 xy=(np.deg2rad(mercury[0][0]), mercury[0][1]), fontsize=15, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(2)
 
     planet_ax.plot(np.deg2rad(mars[0][0]), mars[0][1], marker='o', label='mars', ms=5, mfc='red')
     planet_ax.annotate('♂', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(mars[0][0]), mars[0][1]), fontsize=15, color='slateblue',
+                 xy=(np.deg2rad(mars[0][0]), mars[0][1]), fontsize=15, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(4)
 
     planet_ax.plot(np.deg2rad(jupiter[0][0]), jupiter[0][1], 'o', label='jupiter', ms=7, mfc='steelblue')
     planet_ax.annotate('♃', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=17, color='slateblue',
+                 xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=17, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(5)
 
     planet_ax.annotate(f'{round(jupiter[0][0])}°', textcoords='offset points', xytext=(-20, 5), xycoords='data',
-                 xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=8, color='navy',
+                 xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=8, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     planet_ax.plot(np.deg2rad(saturn[0][0]), saturn[0][1], 'o:k', label='saturn', ms=6)
@@ -271,21 +274,21 @@ def show_td_chart(request):
 
     planet_ax.plot(np.deg2rad(uranus[0][0]), uranus[0][1], marker='o', mfc='chartreuse', label='uranus', ms=6)
     planet_ax.annotate('♅', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(uranus[0][0]), uranus[0][1]), fontsize=15, color='rebeccapurple',
+                 xy=(np.deg2rad(uranus[0][0]), uranus[0][1]), fontsize=15, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(7)
 
     planet_ax.plot(np.deg2rad(neptune[0][0]), neptune[0][1], marker='o', label='neptune', ms=5, mfc='deepskyblue')
     planet_ax.annotate('♆', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(neptune[0][0]), neptune[0][1]), fontsize=20, color='indigo',
+                 xy=(np.deg2rad(neptune[0][0]), neptune[0][1]), fontsize=20, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(8)
 
     planet_ax.plot(np.deg2rad(pluto[0][0]), pluto[0][1], 'o:k', mfc='red', label='pluto', ms=5)
     planet_ax.annotate('♇', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=15, color='darkgoldenrod',
+                 xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=15, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(9)
@@ -497,14 +500,14 @@ def build_transit_chart(request):
         planet_ax.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=5, mfc='deeppink')
         planet_ax.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
                            xy=(np.deg2rad(venus[0][0]), venus[0][1]), fontsize=15, color='blueviolet',
-                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                           arrowprops=dict(facecolor='aliceblue', arrowstyle='-', edgecolor='aliceblue'))
 
         # aspect(3, all_aspects, planet_ax)
 
         transit_ax.plot(np.deg2rad(tr_venus[0][0]), tr_venus[0][1], marker='o', label='venus', ms=5, mfc='#b31277')
         transit_ax.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
                            xy=(np.deg2rad(tr_venus[0][0]), tr_venus[0][1]), fontsize=15, color='#ffaa00',
-                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                           arrowprops=dict(facecolor='aliceblue', arrowstyle='-'))
 
         aspect(3, all_aspects, transit_ax)
 
@@ -512,28 +515,28 @@ def build_transit_chart(request):
         planet_ax.plot(np.deg2rad(moon[0][0]), moon[0][1], marker='o', label='moon', mfc='forestgreen', ms=5)
         planet_ax.annotate('☾', textcoords='offset points', xytext=(20, 3), xycoords='data',
                            xy=(np.deg2rad(moon[0][0]), moon[0][1]), fontsize=15, color='slateblue',
-                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                           arrowprops=dict(facecolor='aliceblue', arrowstyle='-', edgecolor='aliceblue'))
 
         # aspect(1, all_aspects, planet_ax)
 
         transit_ax.plot(np.deg2rad(tr_moon[0][0]), tr_moon[0][1], marker='o', label='moon', mfc='#b31277', ms=5)
         transit_ax.annotate('☾', textcoords='offset points', xytext=(20, 3), xycoords='data',
                            xy=(np.deg2rad(tr_moon[0][0]), tr_moon[0][1]), fontsize=15, color='#ffaa00',
-                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                           arrowprops=dict(facecolor='aliceblue', arrowstyle='-', edgecolor='purple'))
 
         aspect(1, all_aspects, transit_ax)
 
         planet_ax.plot(np.deg2rad(sun[0][0]), sun[0][1], marker='o', label='sun', ms=8, mfc='gold')
         planet_ax.annotate('☼', textcoords='offset points', xytext=(20, 5), xycoords='data',
                            xy=(np.deg2rad(sun[0][0]), sun[0][1]), fontsize=15, color='midnightblue',
-                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                           arrowprops=dict(facecolor='aliceblue', arrowstyle='-', edgecolor='purple'))
 
         # aspect(0, all_aspects, planet_ax)
 
         transit_ax.plot(np.deg2rad(tr_sun[0][0]), tr_sun[0][1], marker='o', label='sun', ms=8, mfc='#b31277')
         transit_ax.annotate('☼', textcoords='offset points', xytext=(20, 5), xycoords='data',
                             xy=(np.deg2rad(tr_sun[0][0]), tr_sun[0][1]), fontsize=15, color='#ffaa00',
-                            arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                            arrowprops=dict(facecolor='aliceblue', arrowstyle='-', edgecolor='purple'))
 
 
         aspect(0, all_aspects, transit_ax)
@@ -542,7 +545,7 @@ def build_transit_chart(request):
         planet_ax.plot(np.deg2rad(mercury[0][0]), mercury[0][1], 'o:b', label='merc', ms=5)
         planet_ax.annotate('☿', textcoords='offset points', xytext=(20, 5), xycoords='data',
                            xy=(np.deg2rad(mercury[0][0]), mercury[0][1]), fontsize=15, color='orange',
-                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                           arrowprops=dict(facecolor='aliceblue', arrowstyle='-', edgecolor=''))
 
         # aspect(2, all_aspects, planet_ax)
 
