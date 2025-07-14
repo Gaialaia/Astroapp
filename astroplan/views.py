@@ -174,8 +174,8 @@ def show_td_chart(request):
     def aspect(planet_number):
 
         for i in range(len(names_and_coords) - 1):
-            z = abs(round(names_and_coords[planet_number][1][0][0]) - round(names_and_coords[i + 1][1][0][0]))
-            if z in square:
+            z = abs(round(names_and_coords[planet_number][1][0][0],2) - round(names_and_coords[i + 1][1][0][0],2))
+            if z in square and names_and_coords [planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
                                np.deg2rad(names_and_coords[i + 1][1][0][0])])
                 p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
@@ -187,7 +187,7 @@ def show_td_chart(request):
                 sqaures.append(names_and_coords[i + 1][0])
                 aspect_table_squares = zip(aspected_planet, sq_unique, sqaures)
 
-            if z in opposition:
+            if z in opposition and names_and_coords [planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
                                np.deg2rad(names_and_coords[i + 1][1][0][0])])
                 p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
@@ -199,7 +199,7 @@ def show_td_chart(request):
                 oppositions.append(names_and_coords[i + 1][0])
                 aspect_table_ops = zip(aspected_planet_op, op_unique, oppositions)
 
-            if z in trine:
+            if z in trine and names_and_coords [planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
                                np.deg2rad(names_and_coords[i + 1][1][0][0])])
                 p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])

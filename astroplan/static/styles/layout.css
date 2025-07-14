@@ -1,0 +1,271 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Delius&display=swap');
+
+
+
+body {
+    background-image: url("/static/images/starry_sky.jpg"); /*wallpaperflare.com*/
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: "Delius", cursive;
+    font-weight: 400;
+    font-style: normal;
+
+
+.main-container {
+    max-width: 90%;
+    margin: auto;
+}
+
+a {
+    text-decoration: none;
+
+}
+
+#hat {
+    width: 100px;
+    height: 130px;
+}
+
+ * {
+  box-sizing: border-box;
+}
+
+
+
+/*.table-symbols td {
+    font-size: xx-large;
+    padding: 8px;
+}*/
+
+.link-symbols:hover {
+    color: gold;
+    font-style: bold;
+
+}
+
+
+.link-symbols {
+    color: blue;
+    font-size: xx-large;
+}
+
+.house-meaning:hover {
+    color: lawngreen;
+
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-collapse: collapse;
+  border: none;
+
+
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  max-width: auto;
+  background-color:  rgb(159,0,255);
+  color: gold;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+
+  /* Position the tooltip */
+
+  position: absolute;
+  z-index: 1;
+  top: 105%;
+
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+
+
+
+table, th, td {
+  border: 1px solid;
+  padding: 3px;
+  text-align: center;
+  border-collapse: collapse;
+
+}
+
+th {
+
+    font-variant-caps: all-petite-caps;
+}
+
+.navigation {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    grid-template-rows: minmax(100px, auto)
+
+}
+
+#one {
+
+    color: lightblue;
+}
+
+.menu-choice {
+     background-image: linear-gradient(gold, rgba(159,0,255, 0.4));
+     text-align: center;
+     font-size: x-large;
+     align-content: center;
+     box-shadow: 10px -10px 5px lightblue;
+     border-top-right-radius: 20%;
+     color: lightblue;
+     font-variant-caps: all-petite-caps
+
+}
+
+
+.menu-choice:hover {
+     box-shadow: 10px -10px 5px hotpink;
+
+}
+
+
+.menu-choice-dd {
+    position:relative;
+    display: inline-block;
+}
+
+.menu-choice-dd-content {
+      display: none;
+      position: absolute;
+      background-color: gold;
+      width: auto;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      padding: 12px 16px;
+      z-index: 1;
+}
+
+.menu-choice-dd:hover .menu-choice-dd-content {
+  display: block;
+
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: grey;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: red;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    }
+
+
+.chart-data {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    /* grid-auto-rows: minmax(100px, auto); */
+    grid-template-rows: 2;
+    align-content: center;
+    background-color: rgba(159,0,255, 0.4);
+    color: rgb(216,218,220);
+    font-size: x-large;
+  
+}
+
+#chart-fig {
+    margin-left:auto;
+    margin-right:auto;
+
+}
+
+/*#chart-fig:hover {
+    scale: 1.5;*/
+}
+
+}
+
+
+h1 {
+    text-align: center;
+    color: aliceblue;
+}
+
+.aspects-table-data {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-column: 2/3;
+    grid-row: 2;
+    color: 'aliceblue';
+
+}
+
+.table-data {
+    margin-right: auto;
+    margin-left: auto;
+    overflow-x: scroll;
+    scrollbar-color: red;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 20px;
+}
+
+/*#planet-list {
+    position:absolute;
+    z-index: 0;
+}*/
+
+
+.chart-df {
+    display: grid;
+    grid-column: 1;
+    grid-row: 3;
+    grid-template-columns: repeat(2, 1fr);
+}
+.sign-buttons {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(12,1fr);
+    grid-template-rows: minmax(150px, auto);
+
+}
+
+.sign-button {
+    background-color: #dd0bae;
+    border-top-left-radius: 20%;
+} 
+
+
+#chart-plot {
+    position: absolute;
+    z-index: 1;
+    margin:auto;
+
+#zodiac_ring_tr{
+    z-index: 2;
+
+}
+
+
+
+
+
+
+
+

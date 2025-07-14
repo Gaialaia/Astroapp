@@ -1,0 +1,24 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <title>Transit Form </title>
+</head>
+<body>
+
+     <div id="chart-container">
+              {{ tr_form.media }}
+            <form action=" " method="post">
+                {% csrf_token %}
+                {{ tr_form.as_p }}
+                <input type="submit" value="Submit">
+            </form>
+
+     </div>
+
+</body>
+</html>
