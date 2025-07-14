@@ -125,48 +125,6 @@
 
 
             <div class="table-data">
-                 <table class="table-symbols">
-                    <caption> Symbol </caption>
-                    <thead>
-                    <tr>
-                        <th>Symbol</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><a class="link-symbols" href="#">☼</a></td>
-                        </tr>
-                        <tr>
-                            <td><a class="link-symbols" href="#">☾ </a></td>
-                        </tr>
-                        <tr>
-                            <td>☿</td>
-                        </tr>
-                        <tr>
-                            <td>♀</td>
-                        </tr>
-                        <tr>
-                            <td> ♂</td>
-                        </tr>
-                        <tr>
-                            <td>♃</td>
-                        </tr>
-                        <tr>
-                            <td>♄</td>
-                        </tr>
-                        <tr>
-                            <td> ♅</td>
-                        </tr>
-                        <tr>
-                            <td>♆</td>
-                        </tr>
-                        <tr>
-                            <td>♇</td>
-                        </tr>
-
-
-                    </tbody>
-                </table>
             <table id="planet-list" >
                 <caption> Planet position data </caption>
                 <thead>
@@ -178,8 +136,27 @@
                 </thead>
                 <tbody>
                          {% for name, deg, sign in planet_data %}
-                    <tr>
-                            <td> {{ name }}</td>
+                    <tr> {% if name == 'Sun' %}
+                        <td> {{ name }} <a href="#" class="link-symbols" style="color: gold"> ☼ </a></td>
+                        {% elif name == 'Moon' %}
+                             <td>{{ name }}  <a href="#" class='link-symbols' style="color:green"> ☾  </a>  </td>
+                         {% elif name == 'Mercury' %}
+                             <td> {{ name }}  <a href="#" class='link-symbols' style="color:grey"> ☿  </a>  </td>
+                         {% elif name == 'Venus' %}
+                             <td>{{ name }}  <a href="#" class='link-symbols' style="color:grey">  ♀ </a>  </td>
+                         {% elif name == 'Mars' %}
+                             <td>   {{ name }}  <a href="#" class='link-symbols' style="color:red">  ♂ </a> </td>
+                         {% elif name == 'Jupiter' %}
+                             <td>   {{ name }}  <a href="#" class='link-symbols' style="color:blue">  ♃ </a>  </td>
+                         {% elif name == 'Saturn' %}
+                             <td>   {{ name }}  <a href="#" class='link-symbols' style="color:brown"> ♄  </a> </td>
+                         {% elif name == 'Uranus' %}
+                             <td>   {{ name }}  <a href="#" class='link-symbols' style="color:chartreuse">  ♅ </a> </td>
+                         {% elif name == 'Neptune' %}
+                             <td>   {{ name }}  <a href="#" class='link-symbols' style="color:indigo"> ♆ </a>  </td>
+                         {% elif name == 'Pluto' %}
+                             <td>  {{ name }}  <a href="#" class='link-symbols' style="color:red">  ♇ </a> </td>
+                        {% endif %}
                             <td> {{ deg }}</td>
                             <td style="font-size: xx-large"> {{ sign }}</td>
                           {% endfor %}
