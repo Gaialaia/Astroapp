@@ -260,14 +260,15 @@ swe.close()
 
 # print(names_and_coords[0][0])
 for i in range(len(names_and_coords) - 1):
-    z = abs(round(names_and_coords[2][1][0][0]) - round(names_and_coords[i + 1][1][0][0]))
-    if z in conjunction and names_and_coords [2][1][0][0] != names_and_coords[i + 1][1][0][0]:
-        aspected_planet_c.append(names_and_coords[2][0])
+    z = abs(round(names_and_coords[0][1][0][0]) - round(names_and_coords[i + 1][1][0][0]))
+    if z in conjunction and names_and_coords [0][1][0][0] != names_and_coords[i + 1][1][0][0]:
+        aspected_planet_c.append(names_and_coords[0][0])
         ap_c_unique = list(set(aspected_planet_c))
         c_angle.append(f'{z}')
         c_unique = list(set(c_angle))
         conjunctions.append(names_and_coords[i+1][0])
         ast = zip(ap_c_unique, c_unique, conjunctions)
+        print(z)
 
         print(list(ast))
 

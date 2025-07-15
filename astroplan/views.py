@@ -118,7 +118,6 @@ def show_td_chart(request):
     neptune = swe.calc_ut(jd, 8, flags)
     pluto = swe.calc_ut(jd, 9, flags)
 
-
     planet_list = [sun, moon, mercury, venus, mars, jupiter,
                    saturn, uranus, neptune, pluto]
 
@@ -169,13 +168,14 @@ def show_td_chart(request):
     house_ax.set_thetagrids(houses[0], ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
     house_ax.tick_params(labelsize=20, grid_color='aliceblue', grid_linewidth=1, labelfontfamily='monospace',
                          labelcolor='aliceblue')
+
     # house_ax.set_theta_offset(np.pi)
 
     def aspect(planet_number):
 
         for i in range(len(names_and_coords) - 1):
-            z = abs(round(names_and_coords[planet_number][1][0][0],2) - round(names_and_coords[i + 1][1][0][0],2))
-            if z in square and names_and_coords [planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
+            z = abs(round(names_and_coords[planet_number][1][0][0]) - round(names_and_coords[i + 1][1][0][0]))
+            if z in square and names_and_coords[planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
                                np.deg2rad(names_and_coords[i + 1][1][0][0])])
                 p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
@@ -187,7 +187,7 @@ def show_td_chart(request):
                 sqaures.append(names_and_coords[i + 1][0])
                 aspect_table_squares = zip(aspected_planet, sq_unique, sqaures)
 
-            if z in opposition and names_and_coords [planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
+            if z in opposition and names_and_coords[planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
                                np.deg2rad(names_and_coords[i + 1][1][0][0])])
                 p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
@@ -199,7 +199,7 @@ def show_td_chart(request):
                 oppositions.append(names_and_coords[i + 1][0])
                 aspect_table_ops = zip(aspected_planet_op, op_unique, oppositions)
 
-            if z in trine and names_and_coords [planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
+            if z in trine and names_and_coords[planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
                                np.deg2rad(names_and_coords[i + 1][1][0][0])])
                 p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
@@ -209,7 +209,7 @@ def show_td_chart(request):
                 trines.append(names_and_coords[i + 1][0])
                 aspect_table_t = zip(aspected_planet_t, t_angle, trines)
 
-            if z in conjunction and names_and_coords [planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
+            if z in conjunction and names_and_coords[planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
                                np.deg2rad(names_and_coords[i + 1][1][0][0])])
                 p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
@@ -226,43 +226,43 @@ def show_td_chart(request):
 
     planet_ax.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=5, mfc='deeppink')
     planet_ax.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(venus[0][0]), venus[0][1]), fontsize=20, color='aliceblue',
-                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                       xy=(np.deg2rad(venus[0][0]), venus[0][1]), fontsize=20, color='aliceblue',
+                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(3)
 
     planet_ax.plot(np.deg2rad(moon[0][0]), moon[0][1], marker='o', label='moon', mfc='forestgreen', ms=5)
     planet_ax.annotate('☾', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(moon[0][0]), moon[0][1]), fontsize=20, color='aliceblue',
-                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                       xy=(np.deg2rad(moon[0][0]), moon[0][1]), fontsize=20, color='aliceblue',
+                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(1)
 
     planet_ax.plot(np.deg2rad(sun[0][0]), sun[0][1], marker='o', label='sun', ms=8, mfc='gold')
     planet_ax.annotate('☼', textcoords='offset points', xytext=(20, 5), xycoords='data',
-                 xy=(np.deg2rad(sun[0][0]), sun[0][1]), fontsize=20, color='aliceblue',
-                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                       xy=(np.deg2rad(sun[0][0]), sun[0][1]), fontsize=20, color='aliceblue',
+                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(0)
 
     planet_ax.plot(np.deg2rad(mercury[0][0]), mercury[0][1], 'o:b', label='merc', ms=5)
     planet_ax.annotate('☿', textcoords='offset points', xytext=(20, 5), xycoords='data',
-                 xy=(np.deg2rad(mercury[0][0]), mercury[0][1]), fontsize=20, color='aliceblue',
-                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                       xy=(np.deg2rad(mercury[0][0]), mercury[0][1]), fontsize=20, color='aliceblue',
+                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(2)
 
     planet_ax.plot(np.deg2rad(mars[0][0]), mars[0][1], marker='o', label='mars', ms=5, mfc='red')
     planet_ax.annotate('♂', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(mars[0][0]), mars[0][1]), fontsize=20, color='aliceblue',
-                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                       xy=(np.deg2rad(mars[0][0]), mars[0][1]), fontsize=20, color='aliceblue',
+                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(4)
 
     planet_ax.plot(np.deg2rad(jupiter[0][0]), jupiter[0][1], 'o', label='jupiter', ms=7, mfc='steelblue')
     planet_ax.annotate('♃', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=20, color='aliceblue',
-                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                       xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=20, color='aliceblue',
+                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(5)
 
@@ -272,40 +272,281 @@ def show_td_chart(request):
 
     planet_ax.plot(np.deg2rad(saturn[0][0]), saturn[0][1], 'o:k', label='saturn', ms=6)
     planet_ax.annotate('♄', textcoords='offset points', xytext=(20, -20), xycoords='data',
-                 xy=(np.deg2rad(saturn[0][0]), saturn[0][1]), fontsize=20,
-                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                       xy=(np.deg2rad(saturn[0][0]), saturn[0][1]), fontsize=20,
+                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(6)
 
     planet_ax.plot(np.deg2rad(uranus[0][0]), uranus[0][1], marker='o', mfc='chartreuse', label='uranus', ms=6)
     planet_ax.annotate('♅', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(uranus[0][0]), uranus[0][1]), fontsize=20, color='aliceblue',
-                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                       xy=(np.deg2rad(uranus[0][0]), uranus[0][1]), fontsize=20, color='aliceblue',
+                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(7)
 
     planet_ax.plot(np.deg2rad(neptune[0][0]), neptune[0][1], marker='o', label='neptune', ms=5, mfc='deepskyblue')
     planet_ax.annotate('♆', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(neptune[0][0]), neptune[0][1]), fontsize=20, color='aliceblue',
-                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                       xy=(np.deg2rad(neptune[0][0]), neptune[0][1]), fontsize=20, color='aliceblue',
+                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(8)
 
     planet_ax.plot(np.deg2rad(pluto[0][0]), pluto[0][1], 'o:k', mfc='red', label='pluto', ms=5)
     planet_ax.annotate('♇', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=20, color='aliceblue',
-                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                       xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=20, color='aliceblue',
+                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(9)
     swe.close()
 
     plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/now_chart.png')
 
-    return render(request, 'layout.html',
-                  context={'planet_data':set_signs(planet_names,[p[0][0] for p in planet_list]),
+    chart_form = ChartForm(request.POST or None, request.FILES or None)
+
+    if chart_form.is_valid():
+        chart_form.save()
+        messages.success(request, 'Data sent')
+        chart = Chart.objects.last()
+        loc = Nominatim(user_agent="GetLoc")
+        getLoc = loc.geocode(f'{chart.city, chart.country}', timeout=7000)
+        tz = tf.timezone_at(lng=getLoc.longitude, lat=getLoc.latitude)
+        d = chart.chart_date
+        # d = dt.strptime(chart.chart_date, '%Y-%m-%d %H:%m:%s')
+        jd = jl.to_jd(d, fmt='jd')
+
+        houses = swe.houses_ex(jd, getLoc.latitude, getLoc.longitude, b'R', flags=swe.FLG_SIDEREAL)
+
+        fig = plt.figure(figsize=(870 * px, 870 * px))
+        fig.patch.set_alpha(0.0)
+        fig.suptitle(f'Planet for date ,{d.strftime('%B, %d, %H:%M')}', size=17)
+
+        planet_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')  # center plot
+
+        house_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')
+        house_ax.patch.set_alpha(0.0)
+
+        planet_ax.set_rlim(-130, 100)
+        planet_ax.set_theta_direction('counterclockwise')
+        planet_ax.set_rticks([])
+        planet_ax.set_axis_off()  # 'theta ax' is off and grid off
+        planet_ax.set_thetagrids(range(0, 360, 30))
+
+        sun = swe.calc_ut(jd, 0, flags)
+        moon = swe.calc_ut(jd, 1, flags)
+
+
+        mercury = swe.calc_ut(jd, 2, flags)
+        venus = swe.calc_ut(jd, 3, flags)
+        mars = swe.calc_ut(jd, 4, flags)
+
+        jupiter = swe.calc_ut(jd, 5, flags)
+
+        saturn = swe.calc_ut(jd, 6, flags)
+
+        uranus = swe.calc_ut(jd, 7, flags)
+        neptune = swe.calc_ut(jd, 8, flags)
+        pluto = swe.calc_ut(jd, 9, flags)
+
+        def set_signs(name_list, deg_list):
+            if signs:
+                signs.clear()
+            round_deg = [round(d) for d in deg_list]  # rounded 360 degree list for setting signs
+            for i in range(len(deg_list)):
+                if round_deg[i] in range(300, 331):
+                    sign = '♒'
+                if round_deg[i] in range(330, 361):
+                    sign = '♓'
+                if round_deg[i] in range(0, 31):
+                    sign = '♈'
+                if round_deg[i] in range(30, 61):
+                    sign = '♉'
+                if round_deg[i] in range(60, 91):
+                    sign = '♊'
+                if round_deg[i] in range(90, 121):
+                    sign = '♋'
+                if round_deg[i] in range(120, 151):
+                    sign = '♌'
+                if round_deg[i] in range(150, 181):
+                    sign = '♍'
+                if round_deg[i] in range(180, 211):
+                    sign = '♎'
+                if round_deg[i] in range(210, 241):
+                    sign = '♏'
+                if round_deg[i] in range(240, 271):
+                    sign = '♐'
+                if round_deg[i] in range(270, 301):
+                    sign = '♑'
+                signs.append(sign)
+            deg_list_thirty = [round(c % 30, 2) for c in deg_list]
+            deg_form = [str(n).replace('.', '°').replace(',', '′,') for n in deg_list_thirty]
+            m = zip(name_list, deg_form, signs)
+            return list(m)
+
+        house_ax.set_rlim(-130, 100)
+        house_ax.set_theta_direction(1)
+        house_ax.set_rticks([])
+        house_ax.set_thetagrids(houses[0],
+                                ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
+        house_ax.tick_params(labelsize=20, grid_color='aliceblue', grid_linewidth=1, labelfontfamily='monospace',
+                             labelcolor='aliceblue')
+
+        # house_ax.set_theta_offset(np.pi)
+
+        def aspect(planet_number):
+
+            for i in range(len(names_and_coords) - 1):
+                z = abs(round(names_and_coords[planet_number][1][0][0]) - round(names_and_coords[i + 1][1][0][0]))
+                if z in square and names_and_coords[planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
+                    p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
+                                   np.deg2rad(names_and_coords[i + 1][1][0][0])])
+                    p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
+                    planet_ax.plot(p1, p2, lw=0.5, color='firebrick')
+
+                    aspected_planet.append(names_and_coords[planet_number][0])
+                    sq_angle.append(f'{z}°')
+                    sq_unique = list(set(sq_angle))
+                    sqaures.append(names_and_coords[i + 1][0])
+                    aspect_table_squares = zip(aspected_planet, sq_unique, sqaures)
+
+                if z in opposition and names_and_coords[planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
+                    p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
+                                   np.deg2rad(names_and_coords[i + 1][1][0][0])])
+                    p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
+                    planet_ax.plot(p1, p2, lw=0.5, color='magenta')
+
+                    aspected_planet_op.append(names_and_coords[planet_number][0])
+                    op_angle.append(f'{z}°')
+                    op_unique = list(set(op_angle))
+                    oppositions.append(names_and_coords[i + 1][0])
+                    aspect_table_ops = zip(aspected_planet_op, op_unique, oppositions)
+
+                if z in trine and names_and_coords[planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
+                    p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
+                                   np.deg2rad(names_and_coords[i + 1][1][0][0])])
+                    p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
+                    planet_ax.plot(p1, p2, lw=0.8, color='lime')
+                    aspected_planet_t.append(names_and_coords[planet_number][0])
+                    t_angle.append(f'{z}°')
+                    trines.append(names_and_coords[i + 1][0])
+                    aspect_table_t = zip(aspected_planet_t, t_angle, trines)
+
+                if z in conjunction and names_and_coords[planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
+                    p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
+                                   np.deg2rad(names_and_coords[i + 1][1][0][0])])
+                    p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
+                    planet_ax.plot(p1, p2, lw=0.8, color='lime')
+                    aspected_planet_c.clear()
+                    aspected_planet_c.append(names_and_coords[planet_number][0])
+                    ap_c_unique = list(set(aspected_planet_c))
+                    c_angle.clear()
+                    c_angle.append(f'{z}°')
+                    ca_unique = list(set(aspected_planet_c))
+                    conjunctions.clear()
+                    conjunctions.append(names_and_coords[i + 1][0])
+                    aspect_table_c = zip(ap_c_unique, ca_unique, conjunctions)
+
+        planet_ax.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=5, mfc='deeppink')
+        planet_ax.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
+                           xy=(np.deg2rad(venus[0][0]), venus[0][1]), fontsize=20, color='aliceblue',
+                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+        aspect(3)
+
+        planet_ax.plot(np.deg2rad(moon[0][0]), moon[0][1], marker='o', label='moon', mfc='forestgreen', ms=5)
+        planet_ax.annotate('☾', textcoords='offset points', xytext=(20, 3), xycoords='data',
+                           xy=(np.deg2rad(moon[0][0]), moon[0][1]), fontsize=20, color='aliceblue',
+                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+        aspect(1)
+
+        planet_ax.plot(np.deg2rad(sun[0][0]), sun[0][1], marker='o', label='sun', ms=8, mfc='gold')
+        planet_ax.annotate('☼', textcoords='offset points', xytext=(20, 5), xycoords='data',
+                           xy=(np.deg2rad(sun[0][0]), sun[0][1]), fontsize=20, color='aliceblue',
+                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+        aspect(0)
+
+        planet_ax.plot(np.deg2rad(mercury[0][0]), mercury[0][1], 'o:b', label='merc', ms=5)
+        planet_ax.annotate('☿', textcoords='offset points', xytext=(20, 5), xycoords='data',
+                           xy=(np.deg2rad(mercury[0][0]), mercury[0][1]), fontsize=20, color='aliceblue',
+                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+        aspect(2)
+
+        planet_ax.plot(np.deg2rad(mars[0][0]), mars[0][1], marker='o', label='mars', ms=5, mfc='red')
+        planet_ax.annotate('♂', textcoords='offset points', xytext=(20, 3), xycoords='data',
+                           xy=(np.deg2rad(mars[0][0]), mars[0][1]), fontsize=20, color='aliceblue',
+                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+        aspect(4)
+
+        planet_ax.plot(np.deg2rad(jupiter[0][0]), jupiter[0][1], 'o', label='jupiter', ms=7, mfc='steelblue')
+        planet_ax.annotate('♃', textcoords='offset points', xytext=(20, 3), xycoords='data',
+                           xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=20, color='aliceblue',
+                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+        aspect(5)
+
+        planet_ax.plot(np.deg2rad(saturn[0][0]), saturn[0][1], 'o:k', label='saturn', ms=6)
+        planet_ax.annotate('♄', textcoords='offset points', xytext=(20, -20), xycoords='data',
+                           xy=(np.deg2rad(saturn[0][0]), saturn[0][1]), fontsize=20,
+                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+        aspect(6)
+
+        planet_ax.plot(np.deg2rad(uranus[0][0]), uranus[0][1], marker='o', mfc='chartreuse', label='uranus', ms=6)
+        planet_ax.annotate('♅', textcoords='offset points', xytext=(20, 3), xycoords='data',
+                           xy=(np.deg2rad(uranus[0][0]), uranus[0][1]), fontsize=20, color='aliceblue',
+                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+        aspect(7)
+
+        planet_ax.plot(np.deg2rad(neptune[0][0]), neptune[0][1], marker='o', label='neptune', ms=5, mfc='deepskyblue')
+        planet_ax.annotate('♆', textcoords='offset points', xytext=(20, 3), xycoords='data',
+                           xy=(np.deg2rad(neptune[0][0]), neptune[0][1]), fontsize=20, color='aliceblue',
+                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+        aspect(8)
+
+        planet_ax.plot(np.deg2rad(pluto[0][0]), pluto[0][1], 'o:k', mfc='red', label='pluto', ms=5)
+        planet_ax.annotate('♇', textcoords='offset points', xytext=(20, 3), xycoords='data',
+                           xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=20, color='aliceblue',
+                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+        aspect(9)
+        swe.close()
+
+        plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/chart_for_date.png')
+
+        return render(request, 'show_by_date.html', {'chart_form': chart_form,
+                            'planet_data': set_signs(planet_names, [p[0][0] for p in planet_list]),
                            'house_data': set_signs(house_names, list(houses[0])),
-                'ats': aspect_table_squares, 'ato': aspect_table_ops,
-                'att': aspect_table_t, 'atc': aspect_table_c, 'date': now.strftime('%B, %d, %H:%M')})
+                           'ats': aspect_table_squares, 'ato': aspect_table_ops,
+                           'att': aspect_table_t, 'atc': aspect_table_c, 'date':d })
+
+    return render(request, 'layout.html',
+                  context={'planet_data': set_signs(planet_names, [p[0][0] for p in planet_list]),
+                           'house_data': set_signs(house_names, list(houses[0])),
+                           'ats': aspect_table_squares, 'ato': aspect_table_ops,
+                           'att': aspect_table_t, 'atc': aspect_table_c, 'date': now.strftime('%B, %d, %H:%M'),
+                           'chart_form': chart_form})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -681,240 +922,25 @@ def build_transit_chart(request):
 
 
 
-# def today_chart(request):
-#     if request.method == 'POST':
-#         users_date = request.POST.get('user_date')
-#
-#         jd = jl.to_jd(d, fmt='jd')
-#         city = request.POST.get('city')
-#         country = request.POST.get('country')
-#         loc = Nominatim(user_agent="GetLoc")
-#         loc_coords = loc.geocode(f"{city, country}", timeout=7000)
-#         loc_tz = TimezoneFinder().timezone_at(lng=loc_coords.latitude, lat=loc_coords.longitude)
-#
-#         fig = plt.figure(figsize=(870 * px, 870 * px), facecolor='violet', edgecolor='black')
-#         fig.suptitle(f'Planet chart today,{d.strftime('%B, %d, %H:%M')}', size=17)
-#         fig.patch.set_alpha(0.0)
-#
-#         ax1 = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')  # center plot
-#         # ax1.set_theta_offset()
-#
-#         ax1.set_rlim(-130, 100)
-#         ax1.set_theta_direction('counterclockwise')
-#         ax1.set_rticks([])
-#         ax1.set_axis_off()  # 'theta ax' is off and grid off
-#         ax1.set_thetagrids(range(0, 360, 30))
-#
-#         sun = swe.calc_ut(jd, 0, flags)
-#         moon = swe.calc_ut(jd, 1, flags)
-#
-#         mercury = swe.calc_ut(jd, 2, flags)
-#         venus = swe.calc_ut(jd, 3, flags)
-#         mars = swe.calc_ut(jd, 4, flags)
-#
-#         jupiter = swe.calc_ut(jd, 5, flags)
-#         saturn = swe.calc_ut(jd, 6, flags)
-#
-#         uranus = swe.calc_ut(jd, 7, flags)
-#         neptune = swe.calc_ut(jd, 8, flags)
-#         pluto = swe.calc_ut(jd, 9, flags)
-#
-#         planet_list = [sun, moon, mercury, venus, mars, jupiter,
-#                        saturn, uranus, neptune, pluto]
-#
-#         names_and_coords = list(zip(planet_names, planet_list))
-#
-#         r_deg = [round(p[0][0], 2) for p in planet_list]
-#         conv_deg = [str(n).replace('.', '°').replace(',', '′,') for n in r_deg]
-#
-#         thirty_r_deg = [round(p[0][0], 2) % 30 for p in planet_list]  # convert from start point 360 to 30X12
-#         r_result = [round(n, 2) for n in thirty_r_deg]  # round divided into 30 result
-#         conv_r_result = [str(n).replace('.', '°').replace(',', '′,') for n in r_result]
-#
-#         deg_intervals = [round(d[0][0]) for d in planet_list]
-#
-#         for i in range(len(deg_intervals)):
-#             if deg_intervals[i] in range(300, 331):
-#                 sign = '♒'
-#             if deg_intervals[i] in range(330, 361):
-#                 sign = 'pisces'
-#             if deg_intervals[i] in range(0, 31):
-#                 sign = 'aries'
-#             if deg_intervals[i] in range(30, 61):
-#                 sign = '♉'
-#             if deg_intervals[i] in range(60, 91):
-#                 sign = 'gemini'
-#             if deg_intervals[i] in range(90, 121):
-#                 sign = 'cancer'
-#             if deg_intervals[i] in range(120, 151):
-#                 sign = 'leo'
-#             if deg_intervals[i] in range(150, 181):
-#                 sign = 'virgo'
-#             if deg_intervals[i] in range(180, 211):
-#                 sign = '♎'
-#             if deg_intervals[i] in range(210, 241):
-#                 sign = '♏'
-#             if deg_intervals[i] in range(240, 271):
-#                 sign = '♐'
-#             if deg_intervals[i] in range(270, 301):
-#                 sign = '♑'
-#             signs.append(sign)
-#
-#         planet_deg = zip(planet_symbols, signs, conv_r_result)
-#
-#         # for table with houses
-#         house_names = ['8', '9', 'MC', '11', '12', 'ASC', '2', '3', 'IC', '5', '6', 'DSC']
-#
-#         def aspect(planet_number):
-#             for i in range(len(names_and_coords) - 1):
-#
-#                 z = abs(round(names_and_coords[planet_number][1][0][0]) - round(names_and_coords[i + 1][1][0][0]))
-#                 if z in square:
-#                     p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
-#                                    np.deg2rad(names_and_coords[i + 1][1][0][0])])
-#                     p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
-#                     ax1.plot(p1, p2, lw=0.5, color='firebrick')
-#
-#                     aspected_planet.append(names_and_coords[planet_number][0])
-#                     sq_angle.append(f'{z}°')
-#                     sqaures.append(names_and_coords[i + 1][0])
-#                     aspect_table_squares = zip(aspected_planet, sq_angle, sqaures)
-#
-#                 if z in opposition:
-#                     p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
-#                                    np.deg2rad(names_and_coords[i + 1][1][0][0])])
-#                     p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
-#                     ax1.plot(p1, p2, lw=0.5, color='magenta')
-#
-#                     aspected_planet_op.append(names_and_coords[planet_number][0])
-#                     op_angle.append(f'{z}°')
-#                     oppositions.append(names_and_coords[i + 1][0])
-#                     aspect_table_ops = zip(aspected_planet_op, op_angle, oppositions)
-#
-#                 if z in trine:
-#                     p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
-#                                    np.deg2rad(names_and_coords[i + 1][1][0][0])])
-#                     p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
-#                     ax1.plot(p1, p2, lw=0.8, color='lime')
-#                     aspected_planet_t.append(names_and_coords[planet_number][0])
-#                     t_angle.append(f'{z}°')
-#                     trines.append(names_and_coords[i + 1][0])
-#                     aspect_table_t = zip(aspected_planet_t, t_angle, trines)
-#
-#                 if z in conjunctions:
-#                     p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
-#                                    np.deg2rad(names_and_coords[i + 1][1][0][0])])
-#                     p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
-#                     ax1.plot(p1, p2, lw=0.8, color='lime')
-#                     aspected_planet_c.append(names_and_coords[planet_number][0])
-#                     c_angle.append(f'{z}°')
-#                     conjunctions.append(names_and_coords[i + 1][0])
-#                     aspect_table_c = zip(aspected_planet_c, c_angle, conjunctions)
-#
-#         ax1.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=5, mfc='deeppink')
-#         ax1.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
-#                      xy=(np.deg2rad(venus[0][0]), venus[0][1]), fontsize=15, color='blueviolet',
-#                      arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-#         aspect(3)
-#
-#         ax1.plot(np.deg2rad(moon[0][0]), moon[0][1], marker='o', label='moon', mfc='forestgreen', ms=5)
-#         ax1.annotate('☾', textcoords='offset points', xytext=(20, 3), xycoords='data',
-#                      xy=(np.deg2rad(moon[0][0]), moon[0][1]), fontsize=15, color='slateblue',
-#                      arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-#         aspect(1)
-#
-#         ax1.plot(np.deg2rad(sun[0][0]), sun[0][1], marker='o', label='sun', ms=8, mfc='gold')
-#         ax1.annotate('☼', textcoords='offset points', xytext=(20, 5), xycoords='data',
-#                      xy=(np.deg2rad(sun[0][0]), sun[0][1]), fontsize=15, color='midnightblue',
-#                      arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-#         aspect(0)
-#
-#         ax1.plot(np.deg2rad(mercury[0][0]), mercury[0][1], 'o:b', label='merc', ms=5)
-#         ax1.annotate('☿', textcoords='offset points', xytext=(20, 5), xycoords='data',
-#                      xy=(np.deg2rad(mercury[0][0]), mercury[0][1]), fontsize=15, color='orange',
-#                      arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-#         aspect(2)
-#
-#         ax1.plot(np.deg2rad(mars[0][0]), mars[0][1], marker='o', label='mars', ms=5, mfc='red')
-#         ax1.annotate('♂', textcoords='offset points', xytext=(20, 3), xycoords='data',
-#                      xy=(np.deg2rad(mars[0][0]), mars[0][1]), fontsize=15, color='slateblue',
-#                      arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-#         aspect(4)
-#
-#         ax1.plot(np.deg2rad(jupiter[0][0]), jupiter[0][1], 'o', label='jupiter', ms=7, mfc='steelblue')
-#         ax1.annotate('♃', textcoords='offset points', xytext=(20, 3), xycoords='data',
-#                      xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=17, color='slateblue',
-#                      arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-#         aspect(5)
-#
-#         ax1.annotate(f'{round(jupiter[0][0])}°', textcoords='offset points', xytext=(-20, 5), xycoords='data',
-#                      xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=8, color='navy',
-#                      arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-#         ax1.plot(np.deg2rad(saturn[0][0]), saturn[0][1], 'o:k', label='saturn', ms=6)
-#         ax1.annotate('♄', textcoords='offset points', xytext=(20, -20), xycoords='data',
-#                      xy=(np.deg2rad(saturn[0][0]), saturn[0][1]), fontsize=15,
-#                      arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-#         aspect(6)
-#
-#         ax1.plot(np.deg2rad(uranus[0][0]), uranus[0][1], marker='o', mfc='chartreuse', label='uranus', ms=6)
-#         ax1.annotate('♅', textcoords='offset points', xytext=(20, 3), xycoords='data',
-#                      xy=(np.deg2rad(uranus[0][0]), uranus[0][1]), fontsize=15, color='rebeccapurple',
-#                      arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-#         aspect(7)
-#
-#         ax1.plot(np.deg2rad(neptune[0][0]), neptune[0][1], marker='o', label='neptune', ms=5, mfc='deepskyblue')
-#         ax1.annotate('♆', textcoords='offset points', xytext=(20, 3), xycoords='data',
-#                      xy=(np.deg2rad(neptune[0][0]), neptune[0][1]), fontsize=20, color='indigo',
-#                      arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-#         aspect(8)
-#
-#         ax1.plot(np.deg2rad(pluto[0][0]), pluto[0][1], 'o:k', mfc='red', label='pluto', ms=5)
-#         ax1.annotate('♇', textcoords='offset points', xytext=(20, 3), xycoords='data',
-#                      xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=15, color='darkgoldenrod',
-#                      arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-#         aspect(9)
-#         swe.close()
-#
-#         plt.grid()
-#         plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/chart_for_date.png')
-#
-#         return render(request, 'chart_form.html', context={'planet_deg': planet_deg,
-#                                                                'ats': aspect_table_squares, 'ato': aspect_table_ops,
-#                                                                'att': aspect_table_t, 'atc': aspect_table_c})
-#     #
-#     return HttpResponseRedirect(reverse('showed chart'))
+
 
 def chart_form(request):
+
+
 
     chart_form = ChartForm(request.POST or None, request.FILES or None)
 
     if chart_form.is_valid():
         chart_form.save()
         messages.success(request, 'Data sent')
-
         chart = Chart.objects.last()
         getLoc = loc.geocode(f'{chart.city, chart.country}', timeout=7000)
         tz = tf.timezone_at(lng=getLoc.longitude, lat=getLoc.latitude)
         d = chart.chart_date
         # d = dt.strptime(chart.chart_date, '%Y-%m-%d %H:%m:%s')
-
-
-
         jd = jl.to_jd(d, fmt='jd')
 
         houses = swe.houses_ex(jd, getLoc.latitude, getLoc.longitude, b'R', flags=swe.FLG_SIDEREAL)
-
 
         fig = plt.figure(figsize=(870 * px, 870 * px))
         fig.patch.set_alpha(0.0)
@@ -1128,8 +1154,6 @@ def chart_form(request):
         return render(request, 'show_by_date.html', context={'planet_deg': planet_deg,
                                                         'ats': aspect_table_squares, 'ato': aspect_table_ops,
                                                         'att': aspect_table_t, 'atc': aspect_table_c})
-
-
     return render(request, 'chart_form.html', {'chart_form':chart_form})
 
 

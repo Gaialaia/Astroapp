@@ -38,7 +38,7 @@
             </div>
 
 
-            <div class="menu-choice"><a href="http://127.0.0.1:8000/birth_chart" target = '_blank'>My chart</a> </div>
+            <div class="menu-choice"><a href="http://127.0.0.1:8000/chart_form" target = '_blank'>My chart</a> </div>
 
             <div class="menu-choice"><a href="#" target = '_blank'>Shop</a></div>
         </nav>
@@ -264,8 +264,6 @@
 
                 <div id="chart-form">
                      {{ chart_form.media }}
-
-
                     <form action=" " method="post">
                         {% csrf_token %}
                         {{ chart_form.as_p }}
@@ -273,8 +271,6 @@
                     </form>
 
                 </div>
-
-
                 <div id="transit-form">
                         {{ tr_form.media }}
                     <form action=" " method="post">
