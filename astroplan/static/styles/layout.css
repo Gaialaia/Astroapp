@@ -103,18 +103,12 @@ th {
 .navigation {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
     grid-template-rows: minmax(100px, auto)
 
 }
 
-#one {
-
-    color: lightblue;
-}
-
 .menu-choice {
-     background-image: linear-gradient(gold, rgba(159,0,255, 0.4));
+     background-image: linear-gradient(gold, rgba(159,0,255, 0.2));
      text-align: center;
      font-size: x-large;
      align-content: center;
@@ -128,9 +122,9 @@ th {
 
 .menu-choice:hover {
      box-shadow: 10px -10px 5px hotpink;
+     color: lightblue;
 
 }
-
 
 .menu-choice-dd {
     position:relative;
@@ -177,6 +171,12 @@ th {
     }
 
 
+.menu-link {
+
+
+}
+
+
 .chart-data {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
@@ -199,7 +199,6 @@ th {
     scale: 1.5;*/
 }
 
-}
 
 
 h1 {
@@ -207,37 +206,36 @@ h1 {
     color: aliceblue;
 }
 
-.aspects-table-data {
+.oppositions:has(td:empty) {
+    display: none;
+ }
+
+
+/*.aspects-table-data {
     display: grid;
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(6,1fr);
     grid-column: 2/3;
     grid-row: 2;
     color: 'aliceblue';
+    justify-content: space-between;
+}*/
+
+
+.aspects-table-data {
+    color: aliceblue;
 
 }
+
+
 
 .table-data {
     margin-right: auto;
     margin-left: auto;
-    overflow-x: scroll;
-    scrollbar-color: red;
     margin-top: auto;
     margin-bottom: auto;
     padding: 20px;
 }
 
-/*#planet-list {
-    position:absolute;
-    z-index: 0;
-}*/
-
-
-.chart-df {
-    display: grid;
-    grid-column: 1;
-    grid-row: 3;
-    grid-template-columns: repeat(2, 1fr);
-}
 .sign-buttons {
     display: grid;
     gap: 10px;
@@ -259,6 +257,25 @@ h1 {
 
 #zodiac_ring_tr{
     z-index: 2;
+
+}
+
+.form_but {
+    border-radius: 4px;
+    background-color: gold;
+    color: rgba(159,0,255, 0.4);
+}
+
+
+.chart-df {
+    color: rgb(159,0,255);
+    background-color:aliceblue;
+    font-size: x-large;
+    border-radius: 3px; border: gold;
+}
+
+
+.chart-form {
 
 }
 

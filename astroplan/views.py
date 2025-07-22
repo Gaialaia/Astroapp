@@ -44,7 +44,7 @@ trines = []
 oppositions = []
 conjunctions = []
 
-aspected_planet = []
+aspected_planet_s = []
 aspected_planet_op = []
 aspected_planet_t = []
 aspected_planet_c = []
@@ -52,6 +52,7 @@ sq_angle = []
 op_angle = []
 t_angle = []
 c_angle = []
+
 
 planet_names = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter',
                 'Saturn', 'Uranus', 'Neptune', 'Pluto']
@@ -74,7 +75,7 @@ planet_symbols = ['☼', '☾', '☿', '♀', '♂', '♃', '♄', '♅', '♆',
 # house_names = ['8', '9', 'MC', '11', '12', 'ASC', '2', '3', 'IC', '5', '6', 'DSC']
 
 house_names = ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII']
-aspect_table_squares = zip(aspected_planet, sq_angle, sqaures)
+aspect_table_squares = zip(aspected_planet_s, sq_angle, sqaures)
 aspect_table_ops = zip(aspected_planet_op, op_angle, oppositions)
 aspect_table_t = zip(aspected_planet_t, t_angle, trines)
 aspect_table_c = zip(aspected_planet_c, c_angle, conjunctions)
@@ -121,7 +122,8 @@ def show_td_chart(request):
     planet_list = [sun, moon, mercury, venus, mars, jupiter,
                    saturn, uranus, neptune, pluto]
 
-    names_and_coords = list(zip(planet_names, planet_list))
+
+    names_and_coords = list(zip(planet_names, planet_list)) #for main chart
 
     loc = Nominatim(user_agent="GetLoc")
     getLoc = loc.geocode("Ufa, Russia", timeout=7000)
@@ -169,8 +171,6 @@ def show_td_chart(request):
     house_ax.tick_params(labelsize=20, grid_color='aliceblue', grid_linewidth=1, labelfontfamily='monospace',
                          labelcolor='aliceblue')
 
-    # house_ax.set_theta_offset(np.pi)
-
     def aspect(planet_number):
 
         for i in range(len(names_and_coords) - 1):
@@ -181,11 +181,12 @@ def show_td_chart(request):
                 p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
                 planet_ax.plot(p1, p2, lw=0.5, color='firebrick')
 
-                aspected_planet.append(names_and_coords[planet_number][0])
+                aspected_planet_s.append(names_and_coords[planet_number][0])
                 sq_angle.append(f'{z}°')
                 sq_unique = list(set(sq_angle))
+                sqaures.clear()
                 sqaures.append(names_and_coords[i + 1][0])
-                aspect_table_squares = zip(aspected_planet, sq_unique, sqaures)
+                aspect_table_squares = zip(aspected_planet_s, sq_unique, sqaures)
 
             if z in opposition and names_and_coords[planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
@@ -196,6 +197,7 @@ def show_td_chart(request):
                 aspected_planet_op.append(names_and_coords[planet_number][0])
                 op_angle.append(f'{z}°')
                 op_unique = list(set(op_angle))
+                oppositions.clear()
                 oppositions.append(names_and_coords[i + 1][0])
                 aspect_table_ops = zip(aspected_planet_op, op_unique, oppositions)
 
@@ -206,6 +208,7 @@ def show_td_chart(request):
                 planet_ax.plot(p1, p2, lw=0.8, color='lime')
                 aspected_planet_t.append(names_and_coords[planet_number][0])
                 t_angle.append(f'{z}°')
+                trines.clear()
                 trines.append(names_and_coords[i + 1][0])
                 aspect_table_t = zip(aspected_planet_t, t_angle, trines)
 
@@ -297,6 +300,7 @@ def show_td_chart(request):
                        arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(9)
+
     swe.close()
 
     plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/now_chart.png')
@@ -316,13 +320,12 @@ def show_td_chart(request):
 
         houses = swe.houses_ex(jd, getLoc.latitude, getLoc.longitude, b'R', flags=swe.FLG_SIDEREAL)
 
-        fig = plt.figure(figsize=(870 * px, 870 * px))
-        fig.patch.set_alpha(0.0)
-        fig.suptitle(f'Planet for date ,{d.strftime('%B, %d, %H:%M')}', size=17)
+        fig_form = plt.figure(figsize=(870 * px, 870 * px))
+        fig_form.patch.set_alpha(0.0)
 
-        planet_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')  # center plot
+        planet_ax = fig_form.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')  # center plot
 
-        house_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')
+        house_ax = fig_form.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')
         house_ax.patch.set_alpha(0.0)
 
         planet_ax.set_rlim(-130, 100)
@@ -340,12 +343,16 @@ def show_td_chart(request):
         mars = swe.calc_ut(jd, 4, flags)
 
         jupiter = swe.calc_ut(jd, 5, flags)
-
         saturn = swe.calc_ut(jd, 6, flags)
 
         uranus = swe.calc_ut(jd, 7, flags)
         neptune = swe.calc_ut(jd, 8, flags)
         pluto = swe.calc_ut(jd, 9, flags)
+
+        planet_list_form =  [sun, moon, mercury, venus, mars, jupiter,
+                   saturn, uranus, neptune, pluto]
+
+        names_and_coords = list(zip(planet_names, planet_list_form))  # for chart for date
 
         def set_signs(name_list, deg_list):
             if signs:
@@ -390,8 +397,6 @@ def show_td_chart(request):
         house_ax.tick_params(labelsize=20, grid_color='aliceblue', grid_linewidth=1, labelfontfamily='monospace',
                              labelcolor='aliceblue')
 
-        # house_ax.set_theta_offset(np.pi)
-
         def aspect(planet_number):
 
             for i in range(len(names_and_coords) - 1):
@@ -402,11 +407,11 @@ def show_td_chart(request):
                     p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
                     planet_ax.plot(p1, p2, lw=0.5, color='firebrick')
 
-                    aspected_planet.append(names_and_coords[planet_number][0])
+                    aspected_planet_s.append(names_and_coords[planet_number][0])
                     sq_angle.append(f'{z}°')
                     sq_unique = list(set(sq_angle))
                     sqaures.append(names_and_coords[i + 1][0])
-                    aspect_table_squares = zip(aspected_planet, sq_unique, sqaures)
+                    aspect_table_squares = zip(aspected_planet_s, sq_unique, sqaures)
 
                 if z in opposition and names_and_coords[planet_number][1][0][0] != names_and_coords[i + 1][1][0][0]:
                     p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
@@ -514,22 +519,24 @@ def show_td_chart(request):
                            arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
         aspect(9)
+
         swe.close()
 
         plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/chart_for_date.png')
 
-        return render(request, 'show_by_date.html', {'chart_form': chart_form,
-                            'planet_data': set_signs(planet_names, [p[0][0] for p in planet_list]),
+        return render(request, 'show_by_date.html' , {'chart_form': chart_form,
+                            'planet_data': set_signs(planet_names, [p[0][0] for p in planet_list_form]),
                            'house_data': set_signs(house_names, list(houses[0])),
                            'ats': aspect_table_squares, 'ato': aspect_table_ops,
                            'att': aspect_table_t, 'atc': aspect_table_c, 'date':d })
+
 
     return render(request, 'layout.html',
                   context={'planet_data': set_signs(planet_names, [p[0][0] for p in planet_list]),
                            'house_data': set_signs(house_names, list(houses[0])),
                            'ats': aspect_table_squares, 'ato': aspect_table_ops,
                            'att': aspect_table_t, 'atc': aspect_table_c, 'date': now.strftime('%B, %d, %H:%M'),
-                           'chart_form': chart_form})
+                           'chart_form': chart_form,'planet_names': planet_names})
 
 
 
@@ -642,7 +649,6 @@ def build_transit_chart(request):
         tr_neptune = swe.calc_ut(jd_tr, 8, flags)
         tr_pluto = swe.calc_ut(jd_tr, 9, flags)
 
-
         tr_houses = swe.houses_ex(jd_tr, get_loc.latitude, get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
         tr_house_ax.set_thetagrids(tr_houses[0],
                                    ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
@@ -657,8 +663,6 @@ def build_transit_chart(request):
         cur_tr_aspects.extend(tr_planet_list)
 
         all_aspects = list(zip(cur_tr_pn, cur_tr_aspects))
-
-
 
         def set_signs(name_list, deg_list):
             round_deg = [round(d) for d in deg_list]# rounded 360 degree list for setting signs

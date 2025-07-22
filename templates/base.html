@@ -1,32 +1,32 @@
-
-{% load static%}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'styles/layout.css' %}">
-    <title>Document</title>
+    <title> {% block title %} Title {% endblock %}</title>
 </head>
 <body>
-
     <div class="main-container">
-        
-        <div> <img src="/static/images/hat.png" alt="hat" id="hat"> </div>
+       {% block main-container %}
+        <nav class="navigation">
+                {% block navigation %}
+            <div> <img src="/static/images/hat.png" alt="hat" id="hat"> </div>
 
         <nav class="navigation">
-            <div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));"> <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/" target = '_blank'> Today chart </a>
-                <div class="dropdown-content">
-                     <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
-                </div>
+            <div class="menu-choice" id="one"> <a href="https://gaiaalaya.pythonanywhere.com/home/" target = '_blank'> Today chart </a>
+            <div class="dropdown-content">
+                 <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
             </div>
 
-            <div class="menu-choice" > <a  class="menu-link" href="http://127.0.0.1:8000/transit_form" target = '_blank'>Transits</a></div>
-            <div class="menu-choice" >  <a href="#" target = '_blank'>Wheel Year</a></div>
-            <div class="menu-choice">  <a href="#" target = '_blank'>Interpretations</a></div>
+            </div>
+            <div class="menu-choice"> <a href="http://127.0.0.1:8000/transit_form" target = '_blank'>Transits</a></div>
+            <div class="menu-choice">  <a href="https://gaiaalaya.pythonanywhere.com/home/" target = '_blank'>Wheel Year</a></div>
+            <div class="menu-choice">  <a href="https://gaiaalaya.pythonanywhere.com/home/" target = '_blank'>Interpretations</a></div>
+
             <div class="menu-choice">
                 <div class="menu-choice-dd">
                        Creative Astrology
@@ -38,10 +38,12 @@
             </div>
             <div class="menu-choice"><a href="http://127.0.0.1:8000/chart_form" target = '_blank'>My chart</a> </div>
             <div class="menu-choice"><a href="#" target = '_blank'>Shop</a></div>
+            {% endblock %}
         </nav>
 
         <div class="chart-data">
-            <div class="table-data">
+            {% block chart-data %}
+             <div class="table-data">
                 <table id="house-cusps-table">
                     <caption> House cusps data </caption>
                 <thead>
@@ -80,32 +82,23 @@
                         {% endif %}
                         <td> {{ deg }}</td>
                         <td style="font-size: xx-large"> {{ sign }}</td>
+
                     </tr>
                      {% endfor %}
                 </tbody>
                 </table>
+            {% endblock %}
             </div>
-       
 
             <div id="chart-fig">
+                 {% block chart-fig %}
                 <h1> Planet chart for {{ date }}</h1>
-                  <img src="{% static 'plots/now_chart.png' %}" alt="plot" id="chart-plot">
-                    <img src="{% static 'images/tr_zr.png' %}" alt = "zodiac ring" id="zodiac_ring_tr">
+                     {% endblock %}
             </div>
 
-
             <div class="table-data">
-                <h3> Chart for any date </h3>
-                <div class="chart-form">
-                     {{ chart_form.media }}
-                    <form class="chart-forms" action="/show_by_date/" target="_blank"  method="post">
-                        {% csrf_token %}
-                        {{ chart_form.as_p }}
-                        <input class="chart-df" type="submit" value="Submit">
-                    </form>
-                </div>
-
-            <table id="planet-list" >
+                 {% block table-data %}
+                <table id="planet-list" >
                 <caption> Planet position data </caption>
                 <thead>
                   <tr>
@@ -122,7 +115,7 @@
                            </td>
                         {% elif name == 'Moon' %}
                              <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                           ☾ <span class="tooltiptext"> {{ name }}  </span></a> </td>
+                           ☾ <span class="tooltiptext"> {{ name }}  </span></a>
                          {% elif name == 'Mercury' %}
                              <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">
                             <span class="tooltiptext">  {{ name }}  </span>  </a>  </td>
@@ -154,161 +147,114 @@
                     </tr>
                 </tbody>
            </table>
+                     {% endblock %}
             </div>
-        </div>
 
-          <div class="aspects-table-data" >
-                 <table id="all-aspects" >
-                    <thead>
-                        <tr>
-                         <th colspan="3"> ASPECTS </th>
-                     </tr>
-                     <tr>
-                         <th> planet </th>
-                         <th> angle </th>
-                         <th> planet </th>
-                    </tr>
+            <div class="aspects-table-data" >
+                 {% block aspects-table-data %}
+                <table id="squares" >
+                <thead>
+                  <tr>
+                        <th colspan="3"> squares ∟ </th>
+                  </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                         <td> planet </td>
+                         <td> angle </td>
+                         <td> planet </td>
+                    </tr>
                     {% for pn, angle, ap in ats %}
                     <tr>
                         <td> {{ pn }} </td>
                          <td> {{ angle }} </td>
                          <td> {{ ap }} </td>
+
                     </tr>
                     {% endfor %}
+                </tbody>
+           </table>
 
-                     {% for pn, angle, ap in att %}
+         <table id="oppositions">
+                <thead>
+                  <tr>
+                        <th colspan="3"> oppositions </th>
+                  </tr>
+                </thead>
+                <tbody>
                     <tr>
-                        <td> {{ pn }} </td>
-                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> square  </span></td>
-                         <td> {{ ap }} </td>
+                         <td> planet </td>
+                         <td> angle </td>
+                         <td> planet </td>
                     </tr>
-                    {% endfor %}
-                     {% for pn, angle, ap in ato %}
-                    <tr>
-                        <td> {{ pn }} </td>
-                        <td> {{ angle }} </td>
-                         <td> {{ ap }} </td>
-                        {% endfor %}
-                    </tr>
-
-                      {% for pn, angle, ap in atc %}
+                    {% for pn, angle, ap in ato %}
                     <tr>
                         <td> {{ pn }} </td>
                          <td> {{ angle }} </td>
                          <td> {{ ap }} </td>
-                         {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+         </table>
+
+         <table id="trines">
+              <thead>
+                  <tr>
+                        <th colspan="3"> trines </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                         <td> planet </td>
+                         <td> angle </td>
+                         <td> planet </td>
+                    </tr>
+                    {% for pn, angle, ap in att %}
+                    <tr>
+                        <td> {{ pn }} </td>
+                         <td> {{ angle }} </td>
+                         <td> {{ ap }} </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+         </table>
+         <table id="conj">
+              <thead>
+                  <tr>
+                        <th colspan="3"> conjunctions </th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                         <td> planet </td>
+                         <td> angle </td>
+                         <td> planet </td>
                     </tr>
 
-                        </tbody>
-                    </table>
-                  </div>
+                    {% for pn, angle, ap in atc %}
+                    <tr>
+                        <td> {{ pn }} </td>
+                         <td> {{ angle }} </td>
+                         <td> {{ ap }} </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+         </table>
+                {% endblock %}
+            </div>
 
-<!--        <div class="aspects-table-data" >-->
-<!--                 <table id="squares" >-->
-<!--                    <thead>-->
-<!--                        <tr>-->
-<!--                         <th colspan="3"> squares ∟ </th>-->
-<!--                     </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                    <tr>-->
-<!--                         <td> planet </td>-->
-<!--                         <td> angle </td>-->
-<!--                         <td> planet </td>-->
-<!--                    </tr>-->
-<!--                    {% for pn, angle, ap in ats %}-->
-<!--                    <tr>-->
-<!--                        <td> {{ pn }} </td>-->
-<!--                         <td> {{ angle }} </td>-->
-<!--                         <td> {{ ap }} </td>-->
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
-<!--                </tbody>-->
-<!--           </table>-->
-<!--            <table class="oppositions">-->
-<!--                <thead>-->
-<!--                    <tr>-->
-<!--                     <th colspan="3"> Oppositions </th>-->
-<!--                    </tr>-->
-<!--                       <tr>-->
-<!--                     <th> planet </th>-->
-<!--                     <th> angle </th>-->
-<!--                     <th> planet </th>-->
-<!--                    </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                    {% for pn, angle, ap in ato %}-->
-<!--                    <tr>-->
-<!--                        <td> </td>-->
-<!--                         <td>  </td>-->
-<!--                         <td>  </td>-->
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
-<!--                </tbody>-->
-<!--            </table>-->
-<!--            <table id="trines">-->
-<!--              <thead>-->
-<!--                  <tr>-->
-<!--                        <th colspan="3"> trines </th>-->
-<!--                  </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                    <tr>-->
-<!--                         <td> planet </td>-->
-<!--                         <td> angle </td>-->
-<!--                         <td> planet </td>-->
-<!--                    </tr>-->
-<!--                    {% for pn, angle, ap in att %}-->
-<!--                    <tr>-->
-<!--                        <td> {{ pn }} </td>-->
-<!--                         <td> {{ angle }} </td>-->
-<!--                         <td> {{ ap }} </td>-->
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
-<!--                </tbody>-->
-<!--            </table>-->
-<!--            <table id="conj">-->
-<!--              <thead>-->
-<!--                  <tr>-->
-<!--                        <th colspan="3"> conjunctions </th>-->
-<!--                  </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                    <tr>-->
-<!--                         <td> planet </td>-->
-<!--                         <td> angle </td>-->
-<!--                         <td> planet </td>-->
-<!--                    </tr>-->
+        </div>
+            <div class="chart-df">
+                 {% block chart-df %}
 
-<!--                    {% for pn, angle, ap in atc %}-->
-<!--                    <tr>-->
-<!--                        <td> {{ pn }} </td>-->
-<!--                         <td> {{ angle }} </td>-->
-<!--                         <td> {{ ap }} </td>-->
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
-<!--                </tbody>-->
-<!--            </table>-->
-<!--        </div>-->
+                    {% endblock %}
+            </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-          <div class="sign-buttons">
-                <div class="sign-button"> <img src="/static/images/aries.svg"></div>
+            <div class="sign-buttons">
+                {% block sign-buttons %}
+                  <div class="sign-button"> <img src="/static/images/aries.svg"></div>
                 <div class="sign-button"> <img src="/static/images/taurus.svg"> </div>
                 <div class="sign-button " style="background-color: fuchsia">4</div>
                 <div class="sign-button">5</div>
@@ -320,35 +266,16 @@
                 <div class="sign-button">6</div>
                 <div class="sign-button">5</div>
                 <div class="sign-button">6</div>
+                    {% endblock %}
             </div>
 
-          <div class="divtab" style="background-color: lightblue;">
-            <table>
-                 {% for pn, angle, ap in atc %}
-                <tr>
-                   <td> {{ pn }}</td>
+        <footer>
 
-                </tr>
-                <tr>
-                    <td> {{ ap }} </td>
-                     <td> {{ angle }} </td>
-
-                </tr>
-                   {% endfor %}
-            </table>
-
-        </div>
-
-
-
-
-
-        <footer> footer
+            {% block footer %}
+                    {% endblock %}
             <img src="">
         </footer>
-
-
+    {% endblock %}
     </div>
-
 </body>
 </html>

@@ -5,20 +5,81 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/layout.css' %}">
     <title>Transit Form </title>
 </head>
 <body>
 
-     <div id="chart-container">
+<div class="main-container">
+     <nav class="navigation">
+            <div class="menu-choice"> <a   class="menu-link" href="http://127.0.0.1:8000/show_td_chart/"  onclick="openPage('Transits', this)"> Today chart </a>
+                <div class="dropdown-content">
+                     <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            <div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));"> <a   class="menu-link"  href="http://127.0.0.1:8000/transit_form" onclick="openPage('Transits', this)">Transits</a></div>
+            <div class="menu-choice">  <a class="menu-link"  href="https://gaiaalaya.pythonanywhere.com/home/" target = '_blank'>Wheel Year</a></div>
+            <div class="menu-choice">  <a href="https://gaiaalaya.pythonanywhere.com/home/" target = '_blank'>Interpretations</a></div>
+            <div class="menu-choice">
+                <div class="menu-choice-dd">
+                       Creative Astrology
+                       <div class="menu-choice-dd-content">
+                        <a href="#"> colorful chart </a>
+                           <a href="#"> imaginery chart </a>
+                         </div>
+                </div>
+            </div>
+            <div class="menu-choice"><a href="http://127.0.0.1:8000/chart_form" target = '_blank'>My chart</a> </div>
+            <div class="menu-choice"><a href="#" target = '_blank'>Shop</a></div>
+        </nav>
+
+    <script>
+          function openPage(pageName,elmnt) {
+          var i, menu-choice, menu-link;
+          menu-choice = document.getElementsByClassName("menu-choice");
+          for (i = 0; i < menu-choice.length; i++) {
+            menu-choice[i].style.display = "none";
+          }
+          menu-link = document.getElementsByClassName("menu-link");
+          for (i = 0; i <  menu-link.length; i++) {
+            menu-link[i].style.backgroundColor = "";
+          }
+          document.getElementById(pageName).style.display = "block";
+          elmnt.style.backgroundColor = color;
+            }
+          document.getElementById("defaultOpen").click();
+    </script>
+
+     <div class="chart-form" style="background-color: rgba(159,0,255, 0.4);">
+         <h1> Transit chart for any date </h1>
               {{ tr_form.media }}
             <form action=" " method="post">
                 {% csrf_token %}
                 {{ tr_form.as_p }}
                 <input type="submit" value="Submit">
             </form>
-
      </div>
+    <div class="sign-buttons">
+                <div class="sign-button"> <img src="/static/images/aries.svg"></div>
+                <div class="sign-button"> <img src="/static/images/taurus.svg"> </div>
+                <div class="sign-button " style="background-color: fuchsia">4</div>
+                <div class="sign-button">5</div>
+                <div class="sign-button">6</div>
+                 <div class="sign-button"> <img src="/static/images/aries.svg"></div>
+                <div class="sign-button"> <img src="/static/images/taurus.svg"> </div>
+                <div class="sign-button">4</div>
+                <div class="sign-button">5</div>
+                <div class="sign-button">6</div>
+                <div class="sign-button">5</div>
+                <div class="sign-button">6</div>
+            </div>
+
+
+
+
+</div>
 
 </body>
 </html>
