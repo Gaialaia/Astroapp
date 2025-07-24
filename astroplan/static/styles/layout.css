@@ -10,6 +10,7 @@ body {
     font-family: "Delius", cursive;
     font-weight: 400;
     font-style: normal;
+    font-size: 17px;
 
 
 .main-container {
@@ -84,21 +85,25 @@ a {
   visibility: visible;
 }
 
-
-
-
 table, th, td {
-  border: 1px solid;
-  padding: 3px;
+
   text-align: center;
-  border-collapse: collapse;
+  height: fit-content;
+  width: fit-content;
+  padding: 0.5px;
 
 }
 
 th {
-
     font-variant-caps: all-petite-caps;
+
+    border: 1px solid;
 }
+
+td {
+    border: 1px solid;
+}
+
 
 .navigation {
     display: grid;
@@ -110,12 +115,16 @@ th {
 .menu-choice {
      background-image: linear-gradient(gold, rgba(159,0,255, 0.2));
      text-align: center;
-     font-size: x-large;
+     font-size: 150%;
+     font-stretch: 100%;
+     font-weight: 600;
      align-content: center;
      box-shadow: 10px -10px 5px lightblue;
      border-top-right-radius: 20%;
      color: lightblue;
-     font-variant-caps: all-petite-caps
+     font-variant-caps: all-petite-caps;
+
+
 
 }
 
@@ -172,7 +181,7 @@ th {
 
 
 .menu-link {
-
+    padding: 5px;
 
 }
 
@@ -189,9 +198,24 @@ th {
   
 }
 
+.transit-data {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    /* grid-auto-rows: minmax(100px, auto); */
+    height: fit-content;
+    width: fit-content;
+    grid-template-rows: 2;
+    align-content: center;
+    background-color: rgba(159,0,255, 0.4);
+    color: rgb(216,218,220);
+    font-size: x-large;
+    gap: 2px;
+
 #chart-fig {
     margin-left:auto;
     margin-right:auto;
+    height: fit-content;
+    width: fit-content;
 
 }
 
@@ -225,8 +249,6 @@ h1 {
     color: aliceblue;
 
 }
-
-
 
 .table-data {
     margin-right: auto;
@@ -276,11 +298,34 @@ h1 {
 
 
 .chart-form {
+    height: fit-content;
+    width: fit-content;
+  }
 
+
+
+#form-info {
+  font-size: x-large;
+  position: absolute;
+  display: flex;
+  background-color: red;
+  justify-content: space-between;
+}
+
+
+.transit-data div table {
+    padding: 10px;
 }
 
 
 
+
+.table-div {
+    border: 1px solid;
+    padding: 4px;
+    height: fit-content;
+    width: fit-content;
+}
 
 
 

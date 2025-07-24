@@ -35,32 +35,24 @@
             <div class="menu-choice"><a href="#" target = '_blank'>Shop</a></div>
         </nav>
 
-    <script>
-          function openPage(pageName,elmnt) {
-          var i, menu-choice, menu-link;
-          menu-choice = document.getElementsByClassName("menu-choice");
-          for (i = 0; i < menu-choice.length; i++) {
-            menu-choice[i].style.display = "none";
-          }
-          menu-link = document.getElementsByClassName("menu-link");
-          for (i = 0; i <  menu-link.length; i++) {
-            menu-link[i].style.backgroundColor = "";
-          }
-          document.getElementById(pageName).style.display = "block";
-          elmnt.style.backgroundColor = color;
-            }
-          document.getElementById("defaultOpen").click();
-    </script>
 
-     <div class="chart-form" style="background-color: rgba(159,0,255, 0.4);">
-         <h1> Transit chart for any date </h1>
-              {{ tr_form.media }}
-            <form action=" " method="post">
-                {% csrf_token %}
-                {{ tr_form.as_p }}
-                <input type="submit" value="Submit">
-            </form>
-     </div>
+             <div class="chart-form">
+                <h1> Planet chart for {{ date }}</h1>
+                  <img src="{% static 'plots/tr_chart_now.png' %}" alt="plot" id="chart-plot">
+                    <img src="{% static 'images/tr_zr.png' %}" alt = "zodiac ring" id="zodiac_ring_tr">
+             </div>
+
+             <div class="chart-form">
+                <h1> Transit chart for any date </h1>
+                {{ tr_form.media }}
+                    <form class="chart-forms" action="/transit_form/" target="_blank"  method="post">
+                    {% csrf_token %}
+                    {{ tr_form.as_p }}
+                    <input type="submit" value="Submit">
+                    </form>
+               </div>
+
+
     <div class="sign-buttons">
                 <div class="sign-button"> <img src="/static/images/aries.svg"></div>
                 <div class="sign-button"> <img src="/static/images/taurus.svg"> </div>
@@ -75,9 +67,6 @@
                 <div class="sign-button">5</div>
                 <div class="sign-button">6</div>
             </div>
-
-
-
 
 </div>
 

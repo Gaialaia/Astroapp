@@ -12,7 +12,7 @@ from datetime import datetime as dt
 import swisseph as swe
 
 import julian as jl
-from django.urls import reverse
+
 
 from geopy.geocoders import Nominatim
 from pytz import timezone
@@ -22,6 +22,7 @@ from .forms import ChartForm, TransitChartForm
 
 
 from timezonefinder import TimezoneFinder
+from .utils import build_plot
 
 
 swe.set_ephe_path('/home/gaia/Документы/eph files')
@@ -132,7 +133,7 @@ def show_td_chart(request):
     def set_signs(name_list, deg_list):
         if signs:
             signs.clear()
-        round_deg = [round(d) for d in deg_list]  # rounded 360 degree list for setting signs
+        round_deg = [round(d) for d in deg_list]
         for i in range(len(deg_list)):
             if round_deg[i] in range(300, 331):
                 sign = '♒'
@@ -560,6 +561,9 @@ def show_td_chart(request):
 
 def build_transit_chart(request):
 
+    chart_date = dt.now()
+    chart = build_plot(chart_date, 'tr_chart_now')
+
     tr_form = TransitChartForm(request.POST or None, request.FILES or None)
 
     if tr_form.is_valid():
@@ -580,7 +584,6 @@ def build_transit_chart(request):
 
         fig = plt.figure(figsize=(870 * px, 870 * px))
         fig.patch.set_alpha(0.0)
-        # fig.suptitle(f'Planet chart today,{now.strftime('%B, %d, %H:%M')}', size=17)
 
         planet_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')# center plot
         planet_ax.set_rlim(-130, 100)
@@ -665,35 +668,35 @@ def build_transit_chart(request):
         all_aspects = list(zip(cur_tr_pn, cur_tr_aspects))
 
         def set_signs(name_list, deg_list):
-            round_deg = [round(d) for d in deg_list]# rounded 360 degree list for setting signs
             if signs:
                 signs.clear()
+            round_deg = [round(d) for d in deg_list]# rounded 360 degree list for setting signs
             for i in range(len(deg_list)):
-                if round_deg[i] in range(300, 331):
-                    sign = '♒'
-                if round_deg[i] in range(330, 361):
-                    sign = 'pisces'
-                if round_deg[i] in range(0, 31):
-                    sign = 'aries'
-                if round_deg[i] in range(30, 61):
-                    sign = '♉'
-                if round_deg[i] in range(60, 91):
-                    sign = 'gemini'
-                if round_deg[i] in range(90, 121):
-                    sign = 'cancer'
-                if round_deg[i] in range(120, 151):
-                    sign = 'leo'
-                if round_deg[i] in range(150, 181):
-                    sign = 'virgo'
-                if round_deg[i] in range(180, 211):
-                    sign = '♎'
-                if round_deg[i] in range(210, 241):
-                    sign = '♏'
-                if round_deg[i] in range(240, 271):
-                    sign = '♐'
-                if round_deg[i] in range(270, 301):
-                    sign = '♑'
-
+                for i in range(len(deg_list)):
+                    if round_deg[i] in range(300, 331):
+                        sign = '♒'
+                    if round_deg[i] in range(330, 361):
+                        sign = '♓'
+                    if round_deg[i] in range(0, 31):
+                        sign = '♈'
+                    if round_deg[i] in range(30, 61):
+                        sign = '♉'
+                    if round_deg[i] in range(60, 91):
+                        sign = '♊'
+                    if round_deg[i] in range(90, 121):
+                        sign = '♋'
+                    if round_deg[i] in range(120, 151):
+                        sign = '♌'
+                    if round_deg[i] in range(150, 181):
+                        sign = '♍'
+                    if round_deg[i] in range(180, 211):
+                        sign = '♎'
+                    if round_deg[i] in range(210, 241):
+                        sign = '♏'
+                    if round_deg[i] in range(240, 271):
+                        sign = '♐'
+                    if round_deg[i] in range(270, 301):
+                        sign = '♑'
                 signs.append(sign)
             deg_list_thirty = [round(c % 30, 2) for c in deg_list]
             deg_form = [str(n).replace('.', '°').replace(',', '′,') for n in deg_list_thirty]
@@ -703,18 +706,16 @@ def build_transit_chart(request):
 
         def aspect(planet_number, coords_list, ax_name):
             for i in range(len(coords_list) - 1):
-
                 z = abs(round(coords_list[planet_number][1][0][0]) - round(coords_list[i + 1][1][0][0]))
                 if z in square:
                     p1 = np.array([np.deg2rad(coords_list[planet_number][1][0][0]),
                                    np.deg2rad(coords_list[i + 1][1][0][0])])
                     p2 = np.array([coords_list[planet_number][1][0][1], coords_list[i + 1][1][0][1]])
                     ax_name.plot(p1, p2, lw=0.5, color='firebrick')
-
-                    aspected_planet.append(coords_list[planet_number][0])
+                    aspected_planet_s.append(coords_list[planet_number][0])
                     sq_angle.append(f'{z}°')
                     sqaures.append(coords_list[i + 1][0])
-                    aspect_table_squares = zip(aspected_planet, sq_angle, sqaures)
+                    aspect_table_squares = zip(aspected_planet_s, sq_angle, sqaures)
 
                 if z in opposition:
                     p1 = np.array([np.deg2rad(coords_list[planet_number][1][0][0]),
@@ -737,7 +738,7 @@ def build_transit_chart(request):
                     trines.append(coords_list[i + 1][0])
                     aspect_table_t = zip(aspected_planet_t, t_angle, trines)
 
-                if z in conjunctions:
+                if z in conjunction:
                     p1 = np.array([np.deg2rad(coords_list[planet_number][1][0][0]),
                                    np.deg2rad(coords_list[i + 1][1][0][0])])
                     p2 = np.array([coords_list[planet_number][1][0][1], coords_list[i + 1][1][0][1]])
@@ -779,7 +780,7 @@ def build_transit_chart(request):
         planet_ax.plot(np.deg2rad(sun[0][0]), sun[0][1], marker='o', label='sun', ms=8, mfc='gold')
         planet_ax.annotate('☼', textcoords='offset points',xytext=(20, 5), xycoords='data',
                            xy=(np.deg2rad(sun[0][0]), sun[0][1]), color='midnightblue',
-                           arrowprops=dict(facecolor='aliceblue', arrowstyle='-', edgecolor='purple', fontsize=20))
+                           arrowprops=dict(facecolor='aliceblue', arrowstyle='-', edgecolor='purple'))
 
         # aspect(0, all_aspects, planet_ax)
 
@@ -795,7 +796,7 @@ def build_transit_chart(request):
         planet_ax.plot(np.deg2rad(mercury[0][0]), mercury[0][1], 'o:b', label='merc', ms=5)
         planet_ax.annotate('☿', textcoords='offset points', xytext=(20, 5), xycoords='data',
                            xy=(np.deg2rad(mercury[0][0]), mercury[0][1]), fontsize=15, color='orange',
-                           arrowprops=dict(facecolor='aliceblue', arrowstyle='-', edgecolor='', fontsize=20))
+                           arrowprops=dict(facecolor='aliceblue', arrowstyle='-', edgecolor='purple'))
 
         # aspect(2, all_aspects, planet_ax)
 
@@ -910,7 +911,7 @@ def build_transit_chart(request):
 
 
         return render(request, 'transit_chart.html',
-                      context={'planet_data': set_signs(planet_symbols, [p[0][0] for p in planet_list]),
+                      context={'planet_data': set_signs(planet_names, [p[0][0] for p in planet_list]),
                                'house_data': set_signs(house_names, list(houses[0])),
                                'ats': aspect_table_squares, 'ato': aspect_table_ops,
                                'att': aspect_table_t, 'atc': aspect_table_c,
@@ -918,11 +919,10 @@ def build_transit_chart(request):
                                'tr_house_data': set_signs(house_names, list(tr_houses[0])), 'event_date': d,
                                'event_city': event_chart.event_city,  'event_country': event_chart.event_country,
                                'tr_date': tr_d, 'tr_city': tr_chart.transit_city, 'tr_country': tr_chart.transit_country,
-
                                })
 
     return render(request, 'transit_form.html',
-                  context={'tr_form': tr_form})
+                  context={'tr_form': tr_form, 'chart_date': date})
 
 
 
