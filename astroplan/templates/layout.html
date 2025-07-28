@@ -1,5 +1,6 @@
 
-{% load static%}
+{% load static %}
+{% load crispy_forms_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -43,10 +44,9 @@
         <div class="chart-data">
                 <div class="chart-form">
                       <h3> Chart for any date </h3>
-                     {{ chart_form.media }}
                     <form class="chart-forms" action="/show_by_date/" target="_blank"  method="post">
                         {% csrf_token %}
-                        {{ chart_form.as_p }}
+                        {{ chart_form | crispy }}
                         <input class="chart-df" type="submit" value="Submit">
                     </form>
                 <table id="planet-list" >

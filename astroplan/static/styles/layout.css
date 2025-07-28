@@ -297,9 +297,11 @@ h1 {
 }
 
 
-.chart-form {
+.chart-forms {
     height: fit-content;
     width: fit-content;
+    background-color: red;
+    color: blue;
   }
 
 
@@ -329,5 +331,10 @@ h1 {
 
 
 
+.tr-chart-form {
+    margin-left: auto;
+    margin-right: auto;
+    color: gold;
+}
 
 

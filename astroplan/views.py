@@ -930,8 +930,6 @@ def build_transit_chart(request):
 
 def chart_form(request):
 
-
-
     chart_form = ChartForm(request.POST or None, request.FILES or None)
 
     if chart_form.is_valid():
@@ -989,38 +987,46 @@ def chart_form(request):
 
         deg_intervals = [round(d[0][0]) for d in planet_list]
 
-        for i in range(len(deg_intervals)):
-            if deg_intervals[i] in range(300, 331):
-                sign = '♒'
-            if deg_intervals[i] in range(330, 361):
-                sign = 'pisces'
-            if deg_intervals[i] in range(0, 31):
-                sign = 'aries'
-            if deg_intervals[i] in range(30, 61):
-                sign = '♉'
-            if deg_intervals[i] in range(60, 91):
-                sign = 'gemini'
-            if deg_intervals[i] in range(90, 121):
-                sign = 'cancer'
-            if deg_intervals[i] in range(120, 151):
-                sign = 'leo'
-            if deg_intervals[i] in range(150, 181):
-                sign = 'virgo'
-            if deg_intervals[i] in range(180, 211):
-                sign = '♎'
-            if deg_intervals[i] in range(210, 241):
-                sign = '♏'
-            if deg_intervals[i] in range(240, 271):
-                sign = '♐'
-            if deg_intervals[i] in range(270, 301):
-                sign = '♑'
-            signs.append(sign)
+        def set_signs(name_list, deg_list):
+            if signs:
+                signs.clear()
+            round_deg = [round(d) for d in deg_list]  # rounded 360 degree list for setting signs
+            for i in range(len(deg_list)):
+                if round_deg[i] in range(300, 331):
+                    sign = '♒'
+                if round_deg[i] in range(330, 361):
+                    sign = '♓'
+                if round_deg[i] in range(0, 31):
+                    sign = '♈'
+                if round_deg[i] in range(30, 61):
+                    sign = '♉'
+                if round_deg[i] in range(60, 91):
+                    sign = '♊'
+                if round_deg[i] in range(90, 121):
+                    sign = '♋'
+                if round_deg[i] in range(120, 151):
+                    sign = '♌'
+                if round_deg[i] in range(150, 181):
+                    sign = '♍'
+                if round_deg[i] in range(180, 211):
+                    sign = '♎'
+                if round_deg[i] in range(210, 241):
+                    sign = '♏'
+                if round_deg[i] in range(240, 271):
+                    sign = '♐'
+                if round_deg[i] in range(270, 301):
+                    sign = '♑'
+                signs.append(sign)
+            deg_list_thirty = [round(c % 30, 2) for c in deg_list]
+            deg_form = [str(n).replace('.', '°').replace(',', '′,') for n in deg_list_thirty]
+            m = zip(name_list, deg_form, signs)
+            return list(m)
+
 
         planet_deg = zip(planet_symbols, signs, conv_r_result)
 
         # for table with houses
         house_names = ['8', '9', 'MC', '11', '12', 'ASC', '2', '3', 'IC', '5', '6', 'DSC']
-
 
 
         house_ax.set_rlim(-130, 100)

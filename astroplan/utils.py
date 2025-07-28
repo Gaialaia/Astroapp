@@ -52,7 +52,7 @@ def build_plot(timestamp:dt, filename):
     px = 1 / plt.rcParams['figure.dpi']
     plt.switch_backend('AGG')
     fig = plt.figure(figsize=(870 * px, 870 * px))
-    fig.suptitle(f'Planet chart for ,{timestamp.strftime('%Y, %B, %d, %H:%M')}', size=17)
+    fig.suptitle("Today chart", size=17, color='aliceblue')
     fig.patch.set_alpha(0.0)
     # graph = get_graph()
 
