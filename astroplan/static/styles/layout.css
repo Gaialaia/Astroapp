@@ -28,6 +28,7 @@ a {
     height: 130px;
 }
 
+
  * {
   box-sizing: border-box;
 }
@@ -289,20 +290,9 @@ h1 {
 }
 
 
-.chart-df {
-    color: rgb(159,0,255);
-    background-color:aliceblue;
-    font-size: x-large;
-    border-radius: 3px; border: gold;
-}
 
 
-.chart-forms {
-    height: fit-content;
-    width: fit-content;
-    background-color: red;
-    color: blue;
-  }
+
 
 
 

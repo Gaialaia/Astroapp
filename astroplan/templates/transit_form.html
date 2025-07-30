@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'styles/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/form_style.css' %}" media="all">
     <title>Transit Form </title>
 </head>
 <body>
@@ -45,8 +46,9 @@
 
                     <form class="chart-forms" action="/transit_form/" target="_blank"  method="post">
                     {% csrf_token %}
+                        {{ tr_form.media }}
                     {{ tr_form | crispy }}
-                    <input type="submit" value="Submit">
+                    <button class="show-chart" type="submit"> Show transits </button>
                     </form>
                </div>
              </div>

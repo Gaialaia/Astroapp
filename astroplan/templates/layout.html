@@ -8,6 +8,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'styles/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/form_style.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'styles/custom_flatpickr_styles.css' %}">
+
     <title>Document</title>
 </head>
 <body>
@@ -45,9 +48,10 @@
                 <div class="chart-form">
                       <h3> Chart for any date </h3>
                     <form class="chart-forms" action="/show_by_date/" target="_blank"  method="post">
+                        {{ chart_form.media }}
                         {% csrf_token %}
                         {{ chart_form | crispy }}
-                        <input class="chart-df" type="submit" value="Submit">
+                        <button type="submit" class="show-chart"> Show chart </button>
                     </form>
                 <table id="planet-list" >
                 <caption> Planet position data </caption>

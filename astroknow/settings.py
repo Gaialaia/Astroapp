@@ -106,10 +106,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-DJANGO_FLATPICKR = {
-
-    "theme_name": "dark",
-}
+# DJANGO_FLATPICKR = {
+#
+#     "theme_name": "dark",
+# }
 
 
 

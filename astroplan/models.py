@@ -21,7 +21,7 @@ class Chart(models.Model):
 class TransitChart(models.Model):
     objects = None
 
-    event_date = models.DateTimeField(default=now, help_text='Birth, holiday, marriage etc')
+    event_date = models.DateTimeField(default=now)
     event_city = models.CharField(default='Ufa')
     event_country = models.CharField(default='Russia')
 
