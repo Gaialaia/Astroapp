@@ -114,16 +114,20 @@ td {
 }
 
 .menu-choice {
-     background-image: linear-gradient(gold, rgba(159,0,255, 0.2));
+     background-image: linear-gradient(gold, rgba(159,0,255, 0.0));
      text-align: center;
      font-size: 150%;
      font-stretch: 100%;
      font-weight: 600;
      align-content: center;
-     box-shadow: 10px -10px 5px lightblue;
+     box-shadow: 10px 10 5px lightblue;
      border-top-right-radius: 20%;
      color: lightblue;
      font-variant-caps: all-petite-caps;
+     border-left: solid 3px lightblue;
+
+
+
 
 
 
@@ -131,7 +135,7 @@ td {
 
 
 .menu-choice:hover {
-     box-shadow: 10px -10px 5px hotpink;
+     box-shadow: 10px -4px 5px hotpink;
      color: lightblue;
 
 }
@@ -196,7 +200,8 @@ td {
     background-color: rgba(159,0,255, 0.4);
     color: rgb(216,218,220);
     font-size: x-large;
-  
+     background-image: linear-gradient(rgba(159,0,255, 0.0), rgba(159,0,255, 0.3) );
+
 }
 
 .transit-data {
@@ -283,25 +288,19 @@ h1 {
 
 }
 
-.form_but {
-    border-radius: 4px;
-    background-color: gold;
-    color: rgba(159,0,255, 0.4);
-}
 
 
-
-
-
-
-
-
-#form-info {
+.form-info {
   font-size: x-large;
   position: absolute;
   display: flex;
   background-color: red;
-  justify-content: space-between;
+  justify-content: center;
+}
+
+.transit-info {
+
+    align-items: end;
 }
 
 

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static 'styles/form_style.css' %}" media="all">
     <link rel="stylesheet" href="{% static 'styles/custom_flatpickr_styles.css' %}">
 
-    <title>Document</title>
+    <title>Today Chart Main </title>
 </head>
 <body>
 
@@ -35,7 +35,7 @@
                 <div class="menu-choice-dd">
                        Creative Astrology
                        <div class="menu-choice-dd-content">
-                        <a href="#"> colorful chart </a>
+                        <a href="http://127.0.0.1:8000/design_your_chart"> colorful chart </a>
                            <a href="#"> imaginery chart </a>
                          </div>
                 </div>
@@ -51,7 +51,7 @@
                         {{ chart_form.media }}
                         {% csrf_token %}
                         {{ chart_form | crispy }}
-                        <button type="submit" class="show-chart"> Show chart </button>
+                        <button class="show-chart" type="submit" > Show chart </button>
                     </form>
                 <table id="planet-list" >
                 <caption> Planet position data </caption>
@@ -200,110 +200,6 @@
                 </table>
             </div>
         </div>
-
-
-
-<!--        <div class="aspects-table-data" >-->
-<!--                 <table id="squares" >-->
-<!--                    <thead>-->
-<!--                        <tr>-->
-<!--                         <th colspan="3"> squares ∟ </th>-->
-<!--                     </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                    <tr>-->
-<!--                         <td> planet </td>-->
-<!--                         <td> angle </td>-->
-<!--                         <td> planet </td>-->
-<!--                    </tr>-->
-<!--                    {% for pn, angle, ap in ats %}-->
-<!--                    <tr>-->
-<!--                        <td> {{ pn }} </td>-->
-<!--                         <td> {{ angle }} </td>-->
-<!--                         <td> {{ ap }} </td>-->
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
-<!--                </tbody>-->
-<!--           </table>-->
-<!--            <table class="oppositions">-->
-<!--                <thead>-->
-<!--                    <tr>-->
-<!--                     <th colspan="3"> Oppositions </th>-->
-<!--                    </tr>-->
-<!--                       <tr>-->
-<!--                     <th> planet </th>-->
-<!--                     <th> angle </th>-->
-<!--                     <th> planet </th>-->
-<!--                    </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                    {% for pn, angle, ap in ato %}-->
-<!--                    <tr>-->
-<!--                        <td> </td>-->
-<!--                         <td>  </td>-->
-<!--                         <td>  </td>-->
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
-<!--                </tbody>-->
-<!--            </table>-->
-<!--            <table id="trines">-->
-<!--              <thead>-->
-<!--                  <tr>-->
-<!--                        <th colspan="3"> trines </th>-->
-<!--                  </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                    <tr>-->
-<!--                         <td> planet </td>-->
-<!--                         <td> angle </td>-->
-<!--                         <td> planet </td>-->
-<!--                    </tr>-->
-<!--                    {% for pn, angle, ap in att %}-->
-<!--                    <tr>-->
-<!--                        <td> {{ pn }} </td>-->
-<!--                         <td> {{ angle }} </td>-->
-<!--                         <td> {{ ap }} </td>-->
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
-<!--                </tbody>-->
-<!--            </table>-->
-<!--            <table id="conj">-->
-<!--              <thead>-->
-<!--                  <tr>-->
-<!--                        <th colspan="3"> conjunctions </th>-->
-<!--                  </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                    <tr>-->
-<!--                         <td> planet </td>-->
-<!--                         <td> angle </td>-->
-<!--                         <td> planet </td>-->
-<!--                    </tr>-->
-
-<!--                    {% for pn, angle, ap in atc %}-->
-<!--                    <tr>-->
-<!--                        <td> {{ pn }} </td>-->
-<!--                         <td> {{ angle }} </td>-->
-<!--                         <td> {{ ap }} </td>-->
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
-<!--                </tbody>-->
-<!--            </table>-->
-<!--        </div>-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
           <div class="sign-buttons">
                 <div class="sign-button"> <img src="/static/images/aries.svg"></div>

@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
+from pycirclize import Circos
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -543,22 +544,6 @@ def show_td_chart(request):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def build_transit_chart(request):
 
     chart_date = dt.now()
@@ -919,7 +904,7 @@ def build_transit_chart(request):
                                'tr_house_data': set_signs(house_names, list(tr_houses[0])), 'event_date': d,
                                'event_city': event_chart.event_city,  'event_country': event_chart.event_country,
                                'tr_date': tr_d, 'tr_city': tr_chart.transit_city, 'tr_country': tr_chart.transit_country,
-                               })
+                               'lat':get_loc.latitude,'lng':get_loc.longitude })
 
     return render(request, 'transit_form.html',
                   context={'tr_form': tr_form, 'chart_date': date})
@@ -1166,6 +1151,10 @@ def chart_form(request):
                                                         'att': aspect_table_t, 'atc': aspect_table_c})
     return render(request, 'chart_form.html', {'chart_form':chart_form})
 
+
+
+
+# def design_chart():
 
 
 

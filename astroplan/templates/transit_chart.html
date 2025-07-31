@@ -138,20 +138,19 @@
                 </table>
                     </div>
 
-            <div id="chart-fig" style="">
-                <div id="form-info" style="display:flex; display: justify-content: space-between;" >
-                    <div class="event-data">
+            <div id="chart-fig">
+                <div class="form-info" style="display:flex" >
+                    <div class="event-info">
                        <p> Event date: {{ event_date }} </p>
-                       <p> Event city: {{ event_city }} </p>
+                       <p> Event city: {{ event_city }}, {{ lng }} {{ lat }} </p>
                        <p> Event country: {{ event_country }} </p>
                     </div>
-                    <div class="event-data">
+                    <div class="transit-info">
                         <p> Transit date: {{ tr_date }} </p>
                        <p> Transit city: {{ tr_city }} </p>
                        <p> Transit country: {{ tr_country }} </p>
                     </div>
                 </div>
-
                 <img src="{% static 'plots/transit_chart.png' %}" alt="plot" id="chart-plot">
                 <img src="{% static 'images/tr_zr.png' %}" alt = "zodiac ring" id="zodiac_ring_tr">
             </div>
