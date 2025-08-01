@@ -15,8 +15,10 @@ class Chart(models.Model):
     city = models.CharField(default='Ufa')
     country = models.CharField(default='Russia')
 
-    def _sag_str_sag_(self):
+    def __str__(self):
         return f'{self.chart_date}, {self.city}, {self.country}'
+
+
 
 class TransitChart(models.Model):
     objects = None
@@ -29,7 +31,7 @@ class TransitChart(models.Model):
     transit_city = models.CharField(default=None)
     transit_country = models.CharField(default=None)
 
-    def _sag_str_sag_(self):
+    def __str__(self):
         return (f'{self.event_date}, {self.event_city}, {self.event_country}'
                 f'{self.transit_date},{self.transit_city},  {self.transit_country}')
 
@@ -132,9 +134,9 @@ class ZodiacInColors(models.Model):
     pluto_marker_c = models.CharField(max_length=20)
     
     
-    def _sag_str_sag_(self):
+    def __str__(self):
         return (f'{self.chart_date}, {self.chart_city}, {self.chart_country}'
-                # f'{self.track_aries_axis_ec},{self.track_aries_axis_tc},{self.track_aries_axis_tc}'
+                f'{self.track_aries_axis_ec},{self.track_aries_axis_tc},{self.track_aries_axis_tc}'
                 f'{self.track_leo_axis_ec},{self.track_leo_axis_tc},{self.track_leo_axis_tc}'
                 f'{self.track_sag_axis_ec},{self.track_sag_axis_tc},{self.track_sag_axis_tc}'
                 f'{self.track_aqua_axis_ec},{self.track_aqua_axis_tc},{self.track_aqua_axis_tc}'

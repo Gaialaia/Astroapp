@@ -164,14 +164,6 @@ class ZodiacInColorForm(forms.ModelForm):
     
    
   
- 
-    
-    
-    # class Media:
-    #     css = {
-    #         'all': ['/static/styles/form_style.css']
-    #     }
-
 
 
 

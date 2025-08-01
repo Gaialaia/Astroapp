@@ -218,8 +218,8 @@ td {
     gap: 2px;
 
 #chart-fig {
-    margin-left:auto;
-    margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
     height: fit-content;
     width: fit-content;
 
@@ -285,6 +285,7 @@ h1 {
 
 #zodiac_ring_tr{
     z-index: 2;
+    margin: auto;
 
 }
 
