@@ -189,7 +189,6 @@ edge_color_list = []
 text_color_list =[]
 
 def draw_zodiac_one_color(face_color, edge_color, text_color):
-
     for s in sectors.keys():
         zodiac_sector = circos.get_sector(s)
         zodiac_track = zodiac_sector.add_track((80,100))
@@ -226,9 +225,6 @@ sign_colors_z = zip(sectors.keys(), face_color_list, edge_color_list, text_color
 sign_colors = list(sign_colors_z)
 
 
-
-
-
 # for t in sign_colors:
 #     zodiac_sector = circos.get_sector(t[0])
 #     zodiac_track = zodiac_sector.add_track((80,100))
@@ -250,3 +246,6 @@ def draw_zodiac_df_color(list_name):
     fig.savefig('tr_for7.png')
 
 draw_zodiac_df_color(sign_colors)
+
+
+

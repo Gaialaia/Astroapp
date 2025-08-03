@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
-
+from pycirclize import circos
+import string, random
 import numpy as np
 
 from datetime import datetime as dt
@@ -280,7 +281,18 @@ def build_plot(timestamp:dt, filename):
 
 
 
+def draw_zodiac_df_color(list_name):
+    for t in list_name:
+        zodiac_sector = circos.get_sector(t[0])
+        zodiac_track = zodiac_sector.add_track((80, 100))
+        zodiac_track.axis(fc=t[1], ec=t[2], lw=2)
+        zodiac_track.text(f'{t[0]}', size=27, color=t[3])
 
+    fig = circos.plotfig()
+    fig.patch.set_alpha(0.0)
+    fig.savefig('tr_for7.png')
+
+draw_zodiac_df_color(sign_colors)
 
 
 

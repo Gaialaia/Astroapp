@@ -35,7 +35,7 @@ transit_z.patch.set_alpha(0.0)
 
 house_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar', facecolor='red')
 house_ax.patch.set_alpha(0.0)
-#
+# #
 ax1.set_rlim(-130,100)
 ax1.set_theta_direction('counterclockwise')
 ax1.set_rticks([])
@@ -69,7 +69,7 @@ t_angle = []
 c_angle = []
 #
 flags = swe.FLG_SIDEREAL | swe.SIDM_LAHIRI
-#
+# #
 sun = swe.calc_ut(jd, 0, flags)
 moon = swe.calc_ut(jd, 1, flags)
 
@@ -79,7 +79,7 @@ mars = swe.calc_ut(jd, 4, flags)
 
 jupiter = swe.calc_ut(jd, 5, flags)
 saturn = swe.calc_ut(jd, 6, flags)
-
+#
 uranus = swe.calc_ut(jd, 7, flags)
 neptune = swe.calc_ut(jd, 8, flags)
 pluto = swe.calc_ut(jd, 9, flags)
@@ -89,23 +89,23 @@ planet_names = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter',
                     'Saturn', 'Uranus', 'Neptune', 'Pluto']
 planet_list = [sun, moon, mercury, venus, mars, jupiter,
                    saturn, uranus, neptune, pluto]
-
+#
 names_and_coords = list(zip(planet_names, planet_list))
 
 
 house_names = ['8', '9', 'MC', '11', '12', 'ASC', '2', '3', 'IC', '5', '6', 'DSC']
-
+#
 loc = Nominatim(user_agent="GetLoc")
 getLoc = loc.geocode("Ufa, Russia", timeout=7000)
 houses = swe.houses_ex(jd, getLoc.latitude, getLoc.longitude, b'R', flags=swe.FLG_SIDEREAL)
-#
+# #
 house_ax.set_rlim(-130, 100)
 house_ax.set_theta_direction(1)
 house_ax.set_rticks([])
 house_ax.set_thetagrids(houses[0], ['8', '9', 'MC', '11', '12', 'ASC', '2', '3', 'IC', '5', '6', 'DSC'])
 house_ax.tick_params(labelsize=20, grid_color='red', grid_linewidth=1, labelfontfamily='monospace')
 house_ax.set_theta_offset(np.pi)
-
+#
 def aspect(planet_number):
         for i in range(len(names_and_coords) - 1):
 
@@ -156,7 +156,7 @@ def aspect(planet_number):
             #     conjunctions.append(names_and_coords[i + 1][0])
             #     names_unique = list(set(conjunctions))
             #
-            #     aspect_table_c = zip(aspected_planet_c, c_unique, names_unique)
+                aspect_table_c = zip(aspected_planet_c, c_unique, names_unique)
                 # print(c_unique)
                 # print(list(aspect_table_c))
                 # print(list(aspect_table_c))
@@ -177,7 +177,7 @@ ax1.annotate('☾', textcoords='offset points', xytext=(20, 3), xycoords='data',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
 aspect(1)
-
+#
 ax1.plot(np.deg2rad(sun[0][0]), sun[0][1], marker='o', label='sun', ms=8, mfc='gold')
 ax1.annotate('☼', textcoords='offset points', xytext=(20, 5), xycoords='data',
                  xy=(np.deg2rad(sun[0][0]), sun[0][1]), fontsize=50, color='midnightblue',
@@ -233,14 +233,57 @@ aspect(8)
 
 ax1.plot(np.deg2rad(pluto[0][0]), pluto[0][1], 'o:k', mfc='red', label='pluto', ms=5)
 ax1.annotate('♇', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=50, color='darkgoldenrod',
+                 xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=250, color='darkgoldenrod',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
 
 aspect(9)
 swe.close()
 # plt.savefig('chart_and_houses.png')
-plt.show()
+
+# fig = plt.figure(figsize=(870*px, 870*px))
+# fig.suptitle(f'Planet chart today,{now.strftime('%B, %d, %H:%M')}', size=17 )
+# fig.patch.set_alpha(0.0)
+#
+# exp_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar', facecolor='red') #center plot
+# exp_ax.set_rlim(-130,100)
+# exp_ax.set_theta_direction('counterclockwise')
+# exp_ax.set_rticks([])
+# exp_ax.set_axis_off() #'theta ax' is off and grid off
+# exp_ax.set_thetagrids(range(0, 360, 30))
+#
+#
+# planet_symbols = ['☼', '☾', '☿', '♀', '♂', '♃', '♄', '♅', '♆', '♇']
+# pd = {swe.get_planet_name(0): ('☼', 'yellow',5, 17),
+#       swe.get_planet_name(1): ('☾', 'blue',5, 17),
+#       swe.get_planet_name(2): ('☿', 'grey', 5, 17),
+#       swe.get_planet_name(3): ('♀', 'sienna', 5, 17),
+#       swe.get_planet_name(4): ('♂', 'red', 5, 17),
+#       swe.get_planet_name(5): ('♃', 'teal', 5, 17),
+#       swe.get_planet_name(6): ('♄', 'slategrey', 5, 17),
+#       swe.get_planet_name(7): ('♅', 'chartreuse', 5, 17),
+#       swe.get_planet_name(8): ('♆', 'indigo', 5, 17),
+#       swe.get_planet_name(9): ('♇', 'darkmagenta', 5, 17)
+#       }
+#
+# # print(pd[swe.get_planet_name(0)][0])
+#
+# for pn in range(0,10):
+#     planet = swe.calc_ut(jd,pn,flags)
+#     exp_ax.plot(np.deg2rad(planet[0][0]), planet[0][1], 'o', mfc=pd[swe.get_planet_name(pn)][1], ms=pd[swe.get_planet_name(pn)][2])
+#     exp_ax.annotate(f'{pd[swe.get_planet_name(pn)][0]}', textcoords='offset points', xytext=(20, 3), xycoords='data',
+#                  xy=(np.deg2rad(planet[0][0]), planet[0][1]), fontsize=pd[swe.get_planet_name(pn)][3], color='darkgoldenrod',
+#                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+#
+# plt.show()
+
+
+
+
+
+
+
+
 
 
 
