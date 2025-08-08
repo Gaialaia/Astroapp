@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.forms import DateTimeInput
+
 from django.utils import timezone
 from datetime import datetime as dt
 
@@ -11,7 +12,7 @@ class Chart(models.Model):
 
     objects = None
 
-    chart_date = models.DateTimeField(default=now)
+    chart_date = models.DateTimeField(default=timezone.now)
     city = models.CharField(default='Ufa')
     country = models.CharField(default='Russia')
 
@@ -94,11 +95,11 @@ class ZodiacInColors(models.Model):
     degrees_ticks_color = models.CharField(max_length=20)
 
     sun_symbol_c = models. CharField(max_length=20)
-    sun_symbol_s = models.IntegerField(max_length=3)
+    sun_symbol_s = models.IntegerField()
     sun_marker_c = models.CharField(max_length=20)
 
     moon_symbol_c = models.CharField(max_length=20)
-    moon_symbol_s = models.IntegerField(max_length=3)
+    moon_symbol_s = models.IntegerField()
     moon_marker_c = models.CharField(max_length=20)
 
     mercury_symbol_c = models.CharField(max_length=20)
@@ -106,31 +107,31 @@ class ZodiacInColors(models.Model):
     mercury_marker_c = models.CharField(max_length=20 )
 
     venus_symbol_c = models.CharField(max_length=20)
-    venus_symbol_s = models.IntegerField(max_length=3)
+    venus_symbol_s = models.IntegerField()
     venus_marker_c = models.CharField(max_length=20)
 
     mars_symbol_c = models.CharField(max_length=20 )
-    mars_symbol_s = models.IntegerField(max_length=3)
+    mars_symbol_s = models.IntegerField()
     mars_marker_c = models.CharField(max_length=20)
 
     jupiter_symbol_c = models.CharField(max_length=20)
-    jup_symbol_s = models.IntegerField(max_length=3)
+    jup_symbol_s = models.IntegerField()
     jup_marker_c = models.CharField(max_length=20)
 
     saturn_symbol_c = models.CharField(max_length=20)
-    saturn_symbol_s = models.IntegerField(max_length=3)
+    saturn_symbol_s = models.IntegerField()
     saturn_marker_c = models.CharField(max_length=20)
 
     uranus_symbol_c = models.CharField(max_length=20)
-    uranus_symbol_s = models.IntegerField(max_length=3)
+    uranus_symbol_s = models.IntegerField()
     uranus_marker_c = models.CharField(max_length=20)
 
     neptune_symbol_c = models.CharField(max_length=20 )
-    neptune_symbol_s = models.IntegerField(max_length=3)
+    neptune_symbol_s = models.IntegerField()
     neptune_marker_c = models.CharField(max_length=20 )
 
     pluto_symbol_c = models.CharField(max_length=20)
-    pluto_symbol_s = models.IntegerField(max_length=3)
+    pluto_symbol_s = models.IntegerField()
     pluto_marker_c = models.CharField(max_length=20)
     
     

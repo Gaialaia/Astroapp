@@ -92,7 +92,6 @@
             <div id="chart-fig">
                 <h1> Planet chart for {{ date }}</h1>
                   <img src="{% static 'plots/chart_for_date.png' %}" alt="plot" id="chart-plot">
-                    <img src="{% static 'images/tr_zr.png' %}" alt = "zodiac ring" id="zodiac_ring_tr">
             </div>
             <div class="table-data">
             <table id="planet-list" >
@@ -193,119 +192,6 @@
                         </tbody>
                     </table>
                   </div>
-
-
-
-<!--            <div class="aspects-table-data" >-->
-<!--&lt;!&ndash;                {% if ats %}&ndash;&gt;-->
-<!--                 <table id="squares" >-->
-<!--                <thead>-->
-<!--                  <tr>-->
-<!--                        <th colspan="3"> squares ∟ </th>-->
-<!--                  </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                    <tr>-->
-<!--                         <td> planet </td>-->
-<!--                         <td> angle </td>-->
-<!--                         <td> planet </td>-->
-<!--                    </tr>-->
-<!--                    {% for pn, angle, ap in ats %}-->
-<!--                    <tr>-->
-<!--                        <td> {{ pn }} </td>-->
-<!--                         <td> {{ angle }} </td>-->
-<!--                         <td> {{ ap }} </td>-->
-
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
-<!--                </tbody>-->
-<!--           </table>-->
-<!--&lt;!&ndash;                {% endif %}&ndash;&gt;-->
-
-<!--&lt;!&ndash;                {% if not ats %}&ndash;&gt;-->
-<!--&lt;!&ndash;                <p> no squares aspects </p>&ndash;&gt;-->
-<!--&lt;!&ndash;                {% endif %}&ndash;&gt;-->
-
-<!--&lt;!&ndash;         {% if ato %}&ndash;&gt;-->
-<!--         <table id="oppositions">-->
-<!--                <thead>-->
-<!--                  <tr>-->
-<!--                        <th colspan="3"> oppositions </th>-->
-<!--                  </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                    <tr>-->
-<!--                         <td> planet </td>-->
-<!--                         <td> angle </td>-->
-<!--                         <td> planet </td>-->
-<!--                    </tr>-->
-<!--                    {% for pn, angle, ap in ato %}-->
-<!--                    <tr>-->
-<!--                        <td> {{ pn }} </td>-->
-<!--                         <td> {{ angle }} </td>-->
-<!--                         <td> {{ ap }} </td>-->
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
-<!--                </tbody>-->
-
-<!--         </table>-->
-<!--&lt;!&ndash;                {% endif %}&ndash;&gt;-->
-
-<!--&lt;!&ndash;                  {% if not ato %}&ndash;&gt;-->
-<!--&lt;!&ndash;                <p> no opposition aspects </p>&ndash;&gt;-->
-<!--&lt;!&ndash;                {% endif %}&ndash;&gt;-->
-
-
-<!--&lt;!&ndash;                {% if att %}&ndash;&gt;-->
-<!--         <table id="trines">-->
-<!--              <thead>-->
-<!--                  <tr>-->
-<!--                        <th colspan="3"> trines </th>-->
-<!--                  </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                    <tr>-->
-<!--                         <td> planet </td>-->
-<!--                         <td> angle </td>-->
-<!--                         <td> planet </td>-->
-<!--                    </tr>-->
-<!--                    {% for pn, angle, ap in att %}-->
-<!--                    <tr>-->
-<!--                        <td> {{ pn }} </td>-->
-<!--                         <td> {{ angle }} </td>-->
-<!--                         <td> {{ ap }} </td>-->
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
-<!--                </tbody>-->
-<!--         </table>-->
-<!--                {% endif %}-->
-
-<!--&lt;!&ndash;          {% if atc %}&ndash;&gt;-->
-<!--         <table id="conj">-->
-<!--              <thead>-->
-<!--                  <tr>-->
-<!--                        <th colspan="3"> conjunctions </th>-->
-<!--                  </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                    <tr>-->
-<!--                         <td> planet </td>-->
-<!--                         <td> angle </td>-->
-<!--                         <td> planet </td>-->
-<!--                    </tr>-->
-
-<!--                    {% for pn, angle, ap in atc %}-->
-<!--                    <tr>-->
-<!--                        <td> {{ pn }} </td>-->
-<!--                         <td> {{ angle }} </td>-->
-<!--                         <td> {{ ap }} </td>-->
-<!--                    </tr>-->
-<!--                    {% endfor %}-->
-<!--                </tbody>-->
-
-<!--         </table>-->
-<!--&lt;!&ndash;                {% endif %}&ndash;&gt;-->
-<!--            </div>-->
 
         </div>
             <div class="chart-df">

@@ -217,13 +217,7 @@ td {
     font-size: x-large;
     gap: 2px;
 
-#chart-fig {
-    margin-left: auto;
-    margin-right: auto;
-    height: fit-content;
-    width: fit-content;
 
-}
 
 /*#chart-fig:hover {
     scale: 1.5;*/
@@ -278,25 +272,38 @@ h1 {
 } 
 
 
-#chart-plot {
-    position: absolute;
-    z-index: 1;
-    margin:auto;
+.chart-fig {
 
-#zodiac_ring_tr{
-    z-index: 2;
-    margin: auto;
+    height: fit-content;
+    width: fit-content;
+    text-align: center;
 
 }
+
+#chart-plot {
+    /*display: block;
+    position: absolute;
+    z-index: 1;*/
+    margin-left: auto;
+    margin-right: auto;
+
+ }
+
+
+/* #zodiac_ring_tr {
+    z-index: 2;
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+} */
 
 
 
 .form-info {
   font-size: x-large;
-  position: absolute;
   display: flex;
-  background-color: red;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .transit-info {
@@ -308,8 +315,6 @@ h1 {
 .transit-data div table {
     padding: 10px;
 }
-
-
 
 
 .table-div {

@@ -111,6 +111,7 @@
                          <th> planet </th>
                     </tr>
                 </thead>
+
                 <tbody>
                     {% for pn, angle, ap in ats %}
                     <tr>
@@ -123,14 +124,14 @@
                      {% for pn, angle, ap in att %}
                     <tr>
                         <td> {{ pn }} </td>
-                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> square  </span></td>
+                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> trine  </span></td>
                          <td> {{ ap }} </td>
                     </tr>
                     {% endfor %}
                      {% for pn, angle, ap in ato %}
                     <tr>
                         <td> {{ pn }} </td>
-                        <td> {{ angle }} </td>
+                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> opposition  </span></td>
                          <td> {{ ap }} </td>
                         {% endfor %}
                     </tr>
@@ -138,7 +139,7 @@
                       {% for pn, angle, ap in atc %}
                     <tr>
                         <td> {{ pn }} </td>
-                         <td> {{ angle }} </td>
+                           <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> conjunction  </span></td>
                          <td> {{ ap }} </td>
                          {% endfor %}
                     </tr>
@@ -148,10 +149,10 @@
                     </div>
 
 
-            <div id="chart-fig" style="background-color: none;">
+            <div class ="chart-fig" style="background-color: blue;">
                 <h1> Planet chart for {{ date }}</h1>
-                  <img src="{% static 'plots/now_chart.png' %}" alt="plot" id="chart-plot" >
-                    <img src="{% static 'images/tr_zr.png' %}" alt = "zodiac ring" id="zodiac_ring_tr">
+                  <img src="{% static 'plots/now_chart.png' %}" alt="plot" id="chart-plot" style="background-color: none"  >
+                   
             </div>
 
 
@@ -215,27 +216,6 @@
                 <div class="sign-button">5</div>
                 <div class="sign-button">6</div>
             </div>
-
-          <div class="divtab" style="background-color: lightblue;">
-            <table>
-                 {% for pn, angle, ap in atc %}
-                <tr>
-                   <td> {{ pn }}</td>
-
-                </tr>
-                <tr>
-                    <td> {{ ap }} </td>
-                     <td> {{ angle }} </td>
-
-                </tr>
-                   {% endfor %}
-            </table>
-
-        </div>
-
-
-
-
 
         <footer> footer
             <img src="">
