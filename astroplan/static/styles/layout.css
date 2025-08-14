@@ -91,13 +91,12 @@ table, th, td {
   text-align: center;
   height: fit-content;
   width: fit-content;
-  padding: 0.5px;
+  padding: 1px;
 
 }
 
 th {
     font-variant-caps: all-petite-caps;
-
     border: 1px solid;
 }
 
@@ -125,12 +124,6 @@ td {
      color: lightblue;
      font-variant-caps: all-petite-caps;
      border-left: solid 3px lightblue;
-
-
-
-
-
-
 }
 
 
@@ -193,15 +186,16 @@ td {
 
 .chart-data {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr 1fr;
     /* grid-auto-rows: minmax(100px, auto); */
     grid-template-rows: 2;
     align-content: center;
     background-color: rgba(159,0,255, 0.4);
     color: rgb(216,218,220);
     font-size: x-large;
-     background-image: linear-gradient(rgba(159,0,255, 0.0), rgba(159,0,255, 0.3) );
-
+    background-image: linear-gradient(rgba(159,0,255, 0.0), rgba(159,0,255, 0.3) );
+    padding: 106px;
+    padding-bottom: 56px;
 }
 
 .transit-data {
@@ -216,6 +210,8 @@ td {
     color: rgb(216,218,220);
     font-size: x-large;
     gap: 2px;
+    padding: 106px;
+    padding-bottom: 56px;
 
 
 
@@ -245,17 +241,13 @@ h1 {
 }*/
 
 
-.aspects-table-data {
-    color: aliceblue;
-
-}
-
 .table-data {
     margin-right: auto;
     margin-left: auto;
     margin-top: auto;
     margin-bottom: auto;
-    padding: 20px;
+    padding: 17px;
+
 }
 
 .sign-buttons {
@@ -273,12 +265,19 @@ h1 {
 
 
 .chart-fig {
-
     height: fit-content;
     width: fit-content;
     text-align: center;
+    padding: 17px;
 
 }
+
+.chart-form {
+    padding: 17px;
+    align-items: center;
+
+}
+
 
 #chart-plot {
     /*display: block;

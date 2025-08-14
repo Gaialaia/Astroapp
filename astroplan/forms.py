@@ -55,23 +55,23 @@ class ZodiacInColorForm(forms.ModelForm):
         widgets = {'chart_date': DateTimePickerInput()}
         
         labels = {'track_aries_axis_fc': 'Aries axis face color',
-                  'track_aries_axis_ec' :'Aries axis ed:Ge color',
+                  'track_aries_axis_ec' :'Aries axis edge color',
                   'track_aries_axis_tc' : 'Aries text color',
 
                   'track_leo_axis_fc': 'Leo axis face color',
-                  'track_leo_axis_ec': 'Leo axis ed:Ge color',
+                  'track_leo_axis_ec': 'Leo axis edge color',
                   'track_leo_axis_tc': 'Leo text color',
 
                   'track_sag_axis_fc' : 'Sagittarius axis face color',
-                  'track_sag_axis_ec': 'Sagittarius axis ed:Ge color',
+                  'track_sag_axis_ec': 'Sagittarius axis edge color',
                   'track_sag_axis_tc': 'Sagittarius text color',
                   
                   'track_aqua_axis_fc': 'Aquarius axis face color',
-                  'track_aqua_axis_ec': 'Aquarius axis ed:Ge color',
+                  'track_aqua_axis_ec': 'Aquarius axis edge color',
                   'track_aqua_axis_tc': 'Aquarius text color',
                   
                   'track_gemini_axis_fc': 'Gemini axis face color',
-                  'track_gemini_axis_ec':'Gemini axis ed:Ge color',
+                  'track_gemini_axis_ec':'Gemini axis edge color',
                   'track_gemini_axis_tc': 'Gemini text color',
 
                   'track_libra_axis_fc':'Libra axis face color',
@@ -83,7 +83,7 @@ class ZodiacInColorForm(forms.ModelForm):
                   'track_scorpio_axis_tc': 'Scorpio text color',
                   
                   'track_cancer_axis_fc': 'Cancer axis face color',
-                  'track_cancer_axis_ec': 'Cancer axis ed:Ge color',
+                  'track_cancer_axis_ec': 'Cancer axis edge color',
                   'track_cancer_axis_tc': 'Cancer text color',
 
                   'track_pisces_axis_fc' : 'Pisces axis face color',
@@ -99,7 +99,7 @@ class ZodiacInColorForm(forms.ModelForm):
                   'track_virgo_axis_tc': 'Virgo text color',
                   
                   'track_capricorn_axis_fc': 'Capricorn axis face color',
-                  'track_capricorn_axis_ec':'Capricorn axis ed:Ge color',
+                  'track_capricorn_axis_ec':'Capricorn axis edge color',
                   'track_capricorn_axis_tc':'Capricorn text color',
                   
                   'degrees_track_ec' : 'Degrees track face color',

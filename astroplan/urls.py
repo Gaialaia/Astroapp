@@ -12,6 +12,7 @@ urlpatterns = [
     path('design_your_chart/', views.design_chart, name='design your chart'),
     path('designed_chart/', views.design_chart, name='designed chart')
 
+
     # path('today_chart/', views.today_chart, name='td chart'),
     # path('birth_chart/', views.show_birth_chart, name='birth chart'),
     # path('houses_chart/', views.show_chart_houses, name='house axes'),

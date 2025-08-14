@@ -13,7 +13,6 @@
 
   <div class="main-container">
       <div> <img src="/static/images/hat.png" alt="hat" id="hat"> </div>
-
         <nav class="navigation">
             <div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));"> <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/" target = '_blank'> Today chart </a>
                 <div class="dropdown-content">
@@ -38,9 +37,9 @@
             <div class="menu-choice"><a href="#" target = '_blank'>Shop</a></div>
         </nav>
 
-
-      <div class="transit-data">
-          <div class="table-div">
+      <div class="chart-data">
+          <div>
+        <div class="table-data">
             <table id="planet-list" >
                 <caption> Planet position data </caption>
                 <thead>
@@ -85,14 +84,14 @@
                                   ♇  <span class="tooltiptext">{{ name }}</span></a></td>
                         {% endif %}
                             <td> {{ deg }}</td>
-                            <td style="font-size: xx-large"> {{ sign }}</td>
+                            <td style=""> {{ sign }}</td>
                           {% endfor %}
                     </tr>
                 </tbody>
            </table>
-              </div>
+          </div>
 
-                <div class="table-div">
+          <div class="table-data">
               <table id="house-cusps-table">
                     <caption> House cusps data </caption>
                 <thead>
@@ -130,30 +129,16 @@
                         <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Results  </span> </td>
                         {% endif %}
                         <td> {{ deg }}</td>
-                        <td style="font-size: xx-large"> {{ sign }}</td>
+                        <td style=""> {{ sign }}</td>
                     </tr>
                      {% endfor %}
                 </tbody>
                 </table>
                     </div>
+              </div>
 
-            <div class="chart-fig" style="background-color: none">
-                <div class="form-info" style="display:flex" >
-                    <div class="event-info">
-                       <p> Event date: {{ event_date }} </p>
-                       <p> Event city: {{ event_city }}, {{ lng }} {{ lat }} </p>
-                       <p> Event country: {{ event_country }} </p>
-                    </div>
-                    <div class="transit-info">
-                        <p> Transit date: {{ tr_date }} </p>
-                       <p> Transit city: {{ tr_city }} </p>
-                       <p> Transit country: {{ tr_country }} </p>
-                    </div>
-                </div>
-                <img src="{% static 'plots/transit_chart.png' %}" alt="plot" id="chart-plot">
-            </div>
-
-          <div class="table-div">
+      <div>
+          <div class="table-data">
              <table id="tr_planet-list" >
                 <caption> Transit planet position data </caption>
                 <thead>
@@ -206,7 +191,7 @@
           </div>
 
 
-          <div class="table-div">
+          <div class="table-data">
          <table id="tr_houses-table" >
                 <caption> Transit Houses cusps data </caption>
                 <thead>
@@ -226,10 +211,29 @@
                      {% endfor %}
                 </tbody>
              </table>
-              </div>
+          </div>
+      </div>
 
-    <div class="table-div">
-    <div id="all-aspects-table">
+
+            <div class="chart-fig" style="background-color: none">
+                <div class="form-info" style="display:flex" >
+                    <div class="event-info">
+                       <p> Event date: {{ event_date }} </p>
+                       <p> Event city: {{ event_city }}, {{ lng }} {{ lat }} </p>
+                       <p> Event country: {{ event_country }} </p>
+                    </div>
+                    <div class="transit-info">
+                        <p> Transit date: {{ tr_date }} </p>
+                       <p> Transit city: {{ tr_city }} </p>
+                       <p> Transit country: {{ tr_country }} </p>
+                    </div>
+                </div>
+                <img src="{% static 'plots/transit_chart.png' %}" alt="plot" id="chart-plot">
+            </div>
+
+
+
+    <div class="table-data">
         <table id="all-aspects">
                      <caption> Aspects </caption>
                     <thead>
@@ -772,8 +776,29 @@
 
                         </tbody>
                     </table>
-                    </div>
+
         </div>
+
+        </div>
+
+       <div class="sign-buttons">
+                <div class="sign-button"> <img src="/static/images/aries.svg"></div>
+                <div class="sign-button"> <img src="/static/images/taurus.svg"> </div>
+                <div class="sign-button " style="background-color: fuchsia">4</div>
+                <div class="sign-button">5</div>
+                <div class="sign-button">6</div>
+                 <div class="sign-button"> <img src="/static/images/aries.svg"></div>
+                <div class="sign-button"> <img src="/static/images/taurus.svg"> </div>
+                <div class="sign-button">4</div>
+                <div class="sign-button">5</div>
+                <div class="sign-button">6</div>
+                <div class="sign-button">5</div>
+                <div class="sign-button">6</div>
+            </div>
+
+        <footer> footer
+            <img src="">
+        </footer>
 
 
 </body>
