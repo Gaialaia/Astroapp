@@ -215,7 +215,7 @@ def show_td_chart(request):
             if aspect in trine and coords_value[pl][4] != coords_value[value + 1][4]:
                 pl_one = np.array([np.deg2rad(coords_value[pl][4]), np.deg2rad(coords_value[value + 1][4])])
                 pl_two = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
-                planet_ax.plot(pl_one, pl_two, color='green', lw=0.5)
+                planet_ax.plot(pl_one, pl_two, color='#3fff00', lw=0.8)
 
                 aspected_planet_t.append(coords_value[pl][0])
 
@@ -226,7 +226,14 @@ def show_td_chart(request):
             if aspect in opposition and coords_value[pl][4] != coords_value[value + 1][4]:
                 pl_one = np.array([np.deg2rad(coords_value[pl][4]), np.deg2rad(coords_value[value + 1][4])])
                 pl_two = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
-                planet_ax.plot(pl_one, pl_two, color='pink', lw=0.5)
+                if aspect == range(179,181):
+                    planet_ax.plot(pl_one, pl_two, color='#0400ff', lw=1.5)
+                elif aspect == range(181,184):
+                    planet_ax.plot(pl_one, pl_two, color='#0400ff', lw=1.0)
+                elif aspect == range(183,186):
+                    planet_ax.plot(pl_one, pl_two, color='#0400ff', lw=1.0)
+
+                planet_ax.plot(pl_one, pl_two, color='#0400ff', lw=0.8)
 
                 aspected_planet_op.append(coords_value[pl][0])
                 op_angle.append(f'{aspect}°')
@@ -237,7 +244,7 @@ def show_td_chart(request):
             if aspect in square and coords_value[pl][4] != coords_value[value + 1][4]:
                 pl_one = np.array([np.deg2rad(coords_value[pl][4]), np.deg2rad(coords_value[value + 1][4])])
                 pl_two = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
-                planet_ax.plot(pl_one, pl_two, color='firebrick', lw=0.5)
+                planet_ax.plot(pl_one, pl_two, color='#fd0048', lw=0.8)
 
                 aspected_planet_s.append(coords_value[pl][0])
                 sq_angle.append(f'{aspect}°')
@@ -248,7 +255,7 @@ def show_td_chart(request):
             if aspect in conjunction and coords_value[pl][4] != coords_value[value + 1][4]:
                 pl_one = np.array([np.deg2rad(coords_value[pl][4]), np.deg2rad(coords_value[value + 1][4])])
                 pl_two = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
-                planet_ax.plot(pl_one, pl_two, color='green', lw=0.5)
+                planet_ax.plot(pl_one, pl_two, color='#8aed07', lw=0.8)
 
                 aspected_planet_c.append(coords_value[pl][0])
                 c_angle.append(f'{aspect}°')
@@ -404,7 +411,19 @@ def show_td_chart(request):
                 if aspect in opposition and form_coords_value[pl][4] != form_coords_value[value + 1][4]:
                     pl_one = np.array([np.deg2rad(form_coords_value[pl][4]), np.deg2rad(form_coords_value[value + 1][4])])
                     pl_two = np.array([np.deg2rad(form_coords_value[pl][5]), np.deg2rad(form_coords_value[value + 1][5])])
-                    planet_ax.plot(pl_one, pl_two, color='pink', lw=0.5)
+                    if aspect == range(179, 181):
+                        planet_ax.plot(pl_one, pl_two, color='#0400ff', lw=1.5)
+                    elif aspect == range(181, 184):
+                        planet_ax.plot(pl_one, pl_two, color='#0400ff', lw=1.0)
+                    elif aspect == range(183, 186):
+                        planet_ax.plot(pl_one, pl_two, color='#0400ff', lw=1.0)
+                    elif aspect == 177:
+                        planet_ax.plot(pl_one, pl_two, color='red', lw=1.0)
+
+
+                    planet_ax.plot(pl_one, pl_two, color='#ffd700', lw=0.8)
+
+
 
                     aspected_planet_op.append(form_coords_value[pl][0])
                     op_angle.append(f'{aspect}°')
@@ -414,7 +433,7 @@ def show_td_chart(request):
                 if aspect in square and form_coords_value[pl][4] != form_coords_value[value + 1][4]:
                     pl_one = np.array([np.deg2rad(form_coords_value[pl][4]), np.deg2rad(form_coords_value[value + 1][4])])
                     pl_two = np.array([np.deg2rad(form_coords_value[pl][5]), np.deg2rad(form_coords_value[value + 1][5])])
-                    planet_ax.plot(pl_one, pl_two, color='firebrick', lw=0.5)
+                    planet_ax.plot(pl_one, pl_two, color='#F1A019', lw=0.8)
 
                     aspected_planet_s.append(form_coords_value[pl][0])
                     sq_angle.append(f'{aspect}°')
@@ -424,7 +443,7 @@ def show_td_chart(request):
                 if aspect in conjunction and form_coords_value[pl][4] != form_coords_value[value + 1][4]:
                     pl_one = np.array([np.deg2rad(form_coords_value[pl][4]), np.deg2rad(form_coords_value[value + 1][4])])
                     pl_two = np.array([np.deg2rad(form_coords_value[pl][5]), np.deg2rad(form_coords_value[value + 1][5])])
-                    planet_ax.plot(pl_one, pl_two, color='green', lw=0.5)
+                    planet_ax.plot(pl_one, pl_two, color='green', lw=0.8)
 
                     aspected_planet_c.append(form_coords_value[pl][0])
                     c_angle.append(f'{aspect}°')
@@ -1012,7 +1031,7 @@ def design_chart(request):
 
         sector_sag = circos.get_sector("♐︎")
         track_sag = sector_sag.add_track((95, 80))
-        track_sag.axis(fc=zf.track_sag_axis_fc, ec=zf.track_sag_axis_fc, lw=2)
+        track_sag.axis(fc=zf.track_sag_axis_fc, ec=zf.track_sag_axis_ec, lw=2)
         track_sag.text(f'{"♐︎"}', size=27, color=zf.track_leo_axis_tc)
 
         sector_aqua = circos.get_sector("♒︎")
@@ -1254,6 +1273,13 @@ def design_chart(request):
 
 
 
+def my_chart(request):
+   return render(request, 'my_chart.html',
+                  context={})
+
+
+def do_shopping(request):
+    return render(request, 'shop.html')
 
 
 

@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib.image as mpi
 from pycirclize import circos
 import string, random
 import numpy as np
@@ -52,10 +53,16 @@ def build_plot(timestamp:dt, filename):
 
     px = 1 / plt.rcParams['figure.dpi']
     plt.switch_backend('AGG')
+
+    img = mpi.imread('astroplan/static/images/tr_zr_1.png')
     fig = plt.figure(figsize=(870 * px, 870 * px))
-    fig.suptitle("Today chart", size=17, color='aliceblue')
+    # fig.suptitle("Today chart", size=17, color='aliceblue')
     fig.patch.set_alpha(0.0)
     # graph = get_graph()
+
+    ax_img = fig.add_axes((0.05, 0.05, 0.9, 0.9))
+    ax_img.imshow(img)
+    ax_img.axis('off')
 
     ax1 = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')  # center plot
     # center plot
@@ -292,7 +299,7 @@ def draw_zodiac_df_color(list_name):
     fig.patch.set_alpha(0.0)
     fig.savefig('tr_for7.png')
 
-draw_zodiac_df_color(sign_colors)
+
 
 
 

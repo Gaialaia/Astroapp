@@ -198,6 +198,13 @@ td {
     padding-bottom: 56px;
 }
 
+#cfl-layout {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 10px;
+}
+
+
 .transit-data {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
