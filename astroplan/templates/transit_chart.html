@@ -14,14 +14,14 @@
   <div class="main-container">
       <div> <img src="/static/images/hat.png" alt="hat" id="hat"> </div>
         <nav class="navigation">
-            <div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));"> <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/" target = '_blank'> Today chart </a>
+            <div class="menu-choice"> <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/" target = '_blank'> Today chart </a>
                 <div class="dropdown-content">
                      <a href="#">Link 1</a>
                     <a href="#">Link 2</a>
                     <a href="#">Link 3</a>
                 </div>
             </div>
-            <div class="menu-choice" > <a  class="menu-link" href="http://127.0.0.1:8000/transit_form" target = '_blank'>Transits</a></div>
+            <div class="menu-choice"  style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));" > <a  class="menu-link" href="http://127.0.0.1:8000/transit_form" target = '_blank'>Transits</a></div>
             <div class="menu-choice" >  <a class="menu-link" href="#" target = '_blank'>Wheel Year</a></div>
             <div class="menu-choice">  <a class="menu-link" href="#" target = '_blank'>Interpretations</a></div>
             <div class="menu-choice">
@@ -244,535 +244,570 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for name, angle, ap in ats %}
-                    <tr> {% if name == '☼TR' %}
-                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                           ☼TR <span class="tooltiptext"> Sun </span></a></td>
-                        {% elif name == '☾TR' %}
-                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                           ☾TR <span class="tooltiptext"> Moon </span></a> </td>
-                         {% elif name == '☿TR' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:grey">
-                           ☿TR  <span class="tooltiptext">  Mercury  </span>  </a>  </td>
-                         {% elif name == '♀TR' %}
-                             <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">
-                                ♀TR   <span class="tooltiptext"> Venus </span></a>  </td>
-                         {% elif name == '♂TR' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                 ♂TR   <span class="tooltiptext"> Mars  </span>  </a> </td>
-                         {% elif name == '♃TR' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                ♃TR   <span class="tooltiptext"> Jupiter </span></a>  </td>
-                         {% elif name == '♄TR' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                 ♄TR   <span class="tooltiptext">  Saturn  </span> </a> </td>
-                         {% elif name == '♅TR' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                  ♅TR   <span class="tooltiptext">  Uranus  </span> </a> </td>
-                         {% elif name == '♆TR' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                   ♆TR  <span class="tooltiptext"> Neptune </span></a>  </td>
-                         {% elif name == '♇TR' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                  ♇TR   <span class="tooltiptext"> Pluto </span></a></td>
-
-                        {% elif name == '☼' %}
-                            <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                               ☼ <span class="tooltiptext"> {{ name }}  </span></a>
-                               </td>
-                        {% elif name == '☾'  %}
-                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                               ☾ <span class="tooltiptext"> {{ name }}  </span></a> </td>
-                        {% elif name == '☿' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:grey">
-                               ☿  <span class="tooltiptext">  {{ name }}  </span>  </a>  </td>
-                        {% elif name == '♀' %}
-                                 <td class="tooltip"> <a href="#" class='link-symbols' style="color:grey">
-                                      ♀   <span class="tooltiptext"> {{ name }}</span></a>  </td>
-                        {% elif name == '♂' %}
-                                 <td class="tooltip"> <a href="#" class='link-symbols' style="color:red">
-                                    ♂   <span class="tooltiptext"> {{ name }}  </span>  </a> </td>
-                        {% elif name == '♃' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                    ♃  <span class="tooltiptext"> {{ name }} </span></a>  </td>
-                             {% elif name == '♄' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                     ♄  <span class="tooltiptext">  {{ name }}  </span> </a> </td>
-                             {% elif name ==  '♅' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                      ♅  <span class="tooltiptext">  {{ name }}  </span> </a> </td>
-                             {% elif name ==  '♆' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                       ♆ <span class="tooltiptext"> {{ name }}</span></a>  </td>
-                             {% elif name == '♇' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                      ♇  <span class="tooltiptext">{{ name }}</span></a></td>
-                            {% endif %}
-<!--                                <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> square  </span></td>-->
-                                <td> {{ angle }}</td>
-
-                        {% if ap == 'tr_Sun' %}
-                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                           ☼ <span class="tooltiptext"> Sun </span></a></td>
-                        {% elif ap == 'tr_Moon' %}
-                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                           ☾ <span class="tooltiptext"> Moon </span></a> </td>
-                         {% elif ap == 'tr_Mercury' %}
-                             <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">
-                          ☿  <span class="tooltiptext">  Mercury  </span>  </a>  </td>
-                         {% elif ap == 'tr_Venus' %}
-                             <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">
-                               ♀   <span class="tooltiptext"> Venus </span></a>  </td>
-                         {% elif ap == 'tr_Mars' %}
-                             <td class="tooltip"> <a href="#" class='link-symbols' style="color:red">
-                                ♂  <span class="tooltiptext"> Mars  </span>  </a> </td>
-                         {% elif ap == 'tr_Jupiter' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                ♃  <span class="tooltiptext"> Jupiter </span></a>  </td>
-                         {% elif ap == 'tr_Saturn' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                 ♄  <span class="tooltiptext">  Saturn  </span> </a> </td>
-                         {% elif ap == 'tr_Uranus' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                  ♅  <span class="tooltiptext">  Uranus  </span> </a> </td>
-                         {% elif ap == 'tr_Neptune' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                   ♆ <span class="tooltiptext"> Neptune </span></a>  </td>
-                         {% elif ap == 'tr_Pluto' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                  ♇  <span class="tooltiptext"> Pluto </span></a></td>
-                        {% elif ap == 'Sun' %}
-                            <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                               ☼ <span class="tooltiptext"> {{ ap }}  </span></a>
-                               </td>
-                        {% elif ap == 'Moon' %}
-                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                               ☾ <span class="tooltiptext"> {{ ap }}  </span></a> </td>
-                        {% elif ap == 'Mercury' %}
-                                 <td class="tooltip"> <a href="#" class='link-symbols' style="color:grey">
-                                 ☿ <span class="tooltiptext">  {{ ap }}  </span>  </a>  </td>
-                        {% elif ap == 'Venus' %}
-                                 <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">
-                                   ♀   <span class="tooltiptext"> {{ ap }}</span></a>  </td>
-                        {% elif name == 'Mars' %}
-                                 <td class="tooltip"> <a href="#" class='link-symbols' style="color:red">
-                                    ♂  <span class="tooltiptext"> {{ ap }}  </span>  </a> </td>
-                        {% elif ap == 'Jupiter' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                    ♃  <span class="tooltiptext"> {{ ap }} </span></a>  </td>
-                             {% elif ap == 'Saturn' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                     ♄  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>
-                             {% elif ap == 'Uranus' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                      ♅  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>
-                             {% elif ap == 'Neptune' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                       ♆ <span class="tooltiptext"> {{ ap }}</span></a>  </td>
-                             {% elif ap == 'Pluto' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                      ♇  <span class="tooltiptext">{{ ap }}</span></a></td>
-                            {% endif %}
-                         {% endfor %}
-                    </tr>
-
-                     {% for name, angle, ap in att %}
+                      {% for pn, angle, ap in ats %}
                     <tr>
-                        {% if name == 'tr_Sun' %}
-                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                           ☼ <span class="tooltiptext"> Sun </span></a></td>
-                        {% elif name == 'tr_Moon' %}
-                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                           ☾ <span class="tooltiptext"> Moon </span></a> </td>
-                         {% elif name == 'tr_Mercury' %}
-                             <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">
-                          ☿  <span class="tooltiptext">  Mercury  </span>  </a>  </td>
-                         {% elif name == 'tr_Venus' %}
-                             <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">
-                                ♂ <span class="tooltiptext"> Venus </span></a>  </td>
-                         {% elif name == 'tr_Mars' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:red">
-                                ♂  <span class="tooltiptext"> Mars  </span>  </a> </td>
-                         {% elif name == 'tr_Jupiter' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                ♃  <span class="tooltiptext"> Jupiter </span></a>  </td>
-                         {% elif name == 'tr_Saturn' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                 ♄  <span class="tooltiptext">  Saturn  </span> </a> </td>
-                         {% elif name == 'tr_Uranus' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                  ♅  <span class="tooltiptext">  Uranus  </span> </a> </td>
-                         {% elif name == 'tr_Neptune' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                   ♆ <span class="tooltiptext"> Neptune </span></a>  </td>
-                         {% elif name == 'tr_Pluto' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                  ♇  <span class="tooltiptext"> Pluto </span></a></td>
-                        {% elif name == 'Sun' %}
-                            <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                               ☼ <span class="tooltiptext"> {{ name }}  </span></a>
-                               </td>
-                        {% elif name == 'Moon' %}
-                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                               ☾ <span class="tooltiptext"> {{ name }}  </span></a> </td>
-                        {% elif name == 'Mercury' %}
-                                 <td class="tooltip"> <a href="#" class='link-symbols' style="color:grey">
-                              ☿  <span class="tooltiptext">  {{ name }}  </span>  </a>  </td>
-                        {% elif name == 'Venus' %}
-                                 <td class="tooltip">    <a href="#" class='link-symbols' style="color:grey">
-                                   ♀  <span class="tooltiptext"> {{ name }}</span></a>  </td>
-                        {% elif name == 'Mars' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                    ♂   <span class="tooltiptext"> {{ name }}  </span>  </a> </td>
-                        {% elif name == 'Jupiter' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                    ♃  <span class="tooltiptext"> {{ name }} </span></a>  </td>
-                             {% elif name == 'Saturn' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                     ♄  <span class="tooltiptext">  {{ name }}  </span> </a> </td>
-                             {% elif name == 'Uranus' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                      ♅  <span class="tooltiptext">  {{ name }}  </span> </a> </td>
-                             {% elif name == 'Neptune' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                       ♆ <span class="tooltiptext"> {{ name }}</span></a>  </td>
-                             {% elif name == 'Pluto' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                      ♇  <span class="tooltiptext">{{ name }}</span></a></td>
-                            {% endif %}
-<!--                                <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> square  </span></td>-->
-                                <td> {{ angle }}</td>
+                        <td> {{ pn }} </td>
+                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> square </span></td>
+                         <td> {{ ap }} </td>
+                    </tr>
+                    {% endfor %}
 
-                        {% if ap == 'tr_Sun' %}
-                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                           ☼ <span class="tooltiptext"> Sun </span></a></td>
-                        {% elif ap == 'tr_Moon' %}
-                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                           ☾ <span class="tooltiptext"> Moon </span></a> </td>
-                         {% elif ap == 'tr_Mercury' %}
-                             <td class="tooltip"> <a href="#" class='link-symbols' style="color:grey">
-                            ☿  <span class="tooltiptext">  Mercury  </span>  </a>  </td>
-                         {% elif ap == 'tr_Venus' %}
-                             <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">
-                               ♀   <span class="tooltiptext"> Venus </span></a>  </td>
-                         {% elif ap == 'tr_Mars' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:red">
-                               ♂  <span class="tooltiptext"> Mars  </span>  </a> </td>
-                         {% elif ap == 'tr_Jupiter' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                ♃  <span class="tooltiptext"> Jupiter </span></a>  </td>
-                         {% elif ap == 'tr_Saturn' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                 ♄  <span class="tooltiptext">  Saturn  </span> </a> </td>
-                         {% elif ap == 'tr_Uranus' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                  ♅  <span class="tooltiptext">  Uranus  </span> </a> </td>
-                         {% elif ap == 'tr_Neptune' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                   ♆ <span class="tooltiptext"> Neptune </span></a>  </td>
-                         {% elif ap == 'tr_Pluto' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                  ♇  <span class="tooltiptext"> Pluto </span></a></td>
-                        {% elif ap == 'Sun' %}
-                            <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                               ☼ <span class="tooltiptext"> {{ ap }}  </span></a>
-                               </td>
-                          {% elif ap == 'Moon' %}
-                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                               ☾ <span class="tooltiptext"> {{ ap }}  </span></a> </td>
-                        {% elif ap == 'Mercury' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:grey">
-                               ☿  <span class="tooltiptext">  {{ ap }}  </span>  </a>  </td>
-                        {% elif ap == 'Venus' %}
-                                 <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">
-                                     ♀ <span class="tooltiptext"> {{ ap }}</span></a>  </td>
-                        {% elif name == 'Mars' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:red">
-                                  ♂   <span class="tooltiptext"> {{ ap }}  </span>  </a> </td>
-                        {% elif ap == 'Jupiter' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                    ♃  <span class="tooltiptext"> {{ ap }} </span></a>  </td>
-                             {% elif ap == 'Saturn' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                     ♄  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>
-                             {% elif ap == 'Uranus' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                      ♅  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>
-                             {% elif ap == 'Neptune' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                       ♆ <span class="tooltiptext"> {{ ap }}</span></a>  </td>
-                             {% elif ap == 'Pluto' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                      ♇  <span class="tooltiptext">{{ ap }}</span></a></td>
-                            {% endif %}
+                     {% for pn, angle, ap in att %}
+                    <tr>
+                        <td> {{ pn }} </td>
+                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> trine  </span></td>
+                         <td> {{ ap }} </td>
+                    </tr>
+                    {% endfor %}
+                     {% for pn, angle, ap in ato %}
+                    <tr>
+                        <td> {{ pn }} </td>
+                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> opposition </span></td>
+                         <td> {{ ap }} </td>
                         {% endfor %}
                     </tr>
 
-                     {% for name, angle, ap in ato %}
+                      {% for pn, angle, ap in atc %}
                     <tr>
-                        {% if name == 'tr_Sun' %}
-                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                           ☼ <span class="tooltiptext"> Sun </span></a></td>
-                        {% elif name == 'tr_Moon' %}
-                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                           ☾ <span class="tooltiptext"> Moon </span></a> </td>
-                         {% elif name == 'tr_Mercury' %}
-                             <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">
-                            <span class="tooltiptext">  Mercury  </span>  </a>  </td>
-                         {% elif name == 'tr_Venus' %}
-                             <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">
-                                 <span class="tooltiptext"> Venus </span></a>  </td>
-                         {% elif name == 'tr_Mars' %}
-                             <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">
-                              ♂   <span class="tooltiptext"> Mars  </span>  </a> </td>
-                         {% elif name == 'tr_Jupiter' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                ♃  <span class="tooltiptext"> Jupiter </span></a>  </td>
-                         {% elif name == 'tr_Saturn' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                 ♄  <span class="tooltiptext">  Saturn  </span> </a> </td>
-                         {% elif name == 'tr_Uranus' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                  ♅  <span class="tooltiptext">  Uranus  </span> </a> </td>
-                         {% elif name == 'tr_Neptune' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                   ♆ <span class="tooltiptext"> Neptune </span></a>  </td>
-                         {% elif name == 'tr_Pluto' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                  ♇  <span class="tooltiptext"> Pluto </span></a></td>
-                        {% elif name == 'Sun' %}
-                            <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                               ☼ <span class="tooltiptext"> {{ name }}  </span></a>
-                               </td>
-                        {% elif name == 'Moon' %}
-                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                               ☾ <span class="tooltiptext"> {{ name }}  </span></a> </td>
-                        {% elif name == 'Mercury' %}
-                                 <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">
-                                <span class="tooltiptext">  {{ name }}  </span>  </a>  </td>
-                        {% elif name == 'Venus' %}
-                                 <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">
-                                     <span class="tooltiptext"> {{ name }}</span></a>  </td>
-                        {% elif name == 'Mars' %}
-                                 <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">
-                                 ♂    <span class="tooltiptext"> {{ name }}  </span>  </a> </td>
-                        {% elif name == 'Jupiter' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                    ♃  <span class="tooltiptext"> {{ name }} </span></a>  </td>
-                             {% elif name == 'Saturn' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                     ♄  <span class="tooltiptext">  {{ name }}  </span> </a> </td>
-                             {% elif name == 'Uranus' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                      ♅  <span class="tooltiptext">  {{ name }}  </span> </a> </td>
-                             {% elif name == 'Neptune' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                       ♆ <span class="tooltiptext"> {{ name }}</span></a>  </td>
-                             {% elif name == 'Pluto' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                      ♇  <span class="tooltiptext">{{ name }}</span></a></td>
-                            {% endif %}
-<!--                                <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> square  </span></td>-->
-                                <td> {{ angle }}</td>
-
-                        {% if ap == 'tr_Sun' %}
-                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                           ☼ <span class="tooltiptext"> Sun </span></a></td>
-                        {% elif ap == 'tr_Moon' %}
-                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                           ☾ <span class="tooltiptext"> Moon </span></a> </td>
-                         {% elif ap == 'tr_Mercury' %}
-                             <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">
-                            ☿  <span class="tooltiptext">  Mercury  </span>  </a>  </td>
-                         {% elif ap == 'tr_Venus' %}
-                             <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">
-                                 <span class="tooltiptext"> Venus </span></a>  </td>
-                         {% elif ap == 'tr_Mars' %}
-                             <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">
-                                 ♂ <span class="tooltiptext"> Mars  </span>  </a> </td>
-                         {% elif ap == 'tr_Jupiter' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                ♃  <span class="tooltiptext"> Jupiter </span></a>  </td>
-                         {% elif ap == 'tr_Saturn' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                 ♄  <span class="tooltiptext">  Saturn  </span> </a> </td>
-                         {% elif ap == 'tr_Uranus' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                  ♅  <span class="tooltiptext">  Uranus  </span> </a> </td>
-                         {% elif ap == 'tr_Neptune' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                   ♆ <span class="tooltiptext"> Neptune </span></a>  </td>
-                         {% elif ap == 'tr_Pluto' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                  ♇  <span class="tooltiptext"> Pluto </span></a></td>
-                        {% elif ap == 'Sun' %}
-                           <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                               ☼ <span class="tooltiptext"> {{ ap }}  </span></a>
-                               </td>
-                          {% elif ap == 'Moon' %}
-                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                               ☾ <span class="tooltiptext"> {{ ap }}  </span></a> </td>
-                        {% elif ap == 'Mercury' %}
-                                 <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">
-                                 ☿ <span class="tooltiptext">  {{ ap }}  </span>  </a>  </td>
-                        {% elif ap == 'Venus' %}
-                                 <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">
-                                     <span class="tooltiptext"> {{ ap }}</span></a>  </td>
-                        {% elif name == 'Mars' %}
-                                 <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">
-                                     <span class="tooltiptext"> {{ ap }}  </span>  </a> </td>
-                        {% elif ap == 'Jupiter' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                    ♃  <span class="tooltiptext"> {{ ap }} </span></a>  </td>
-                             {% elif ap == 'Saturn' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                     ♄  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>
-                             {% elif ap == 'Uranus' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                      ♅  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>
-                             {% elif ap == 'Neptune' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                       ♆ <span class="tooltiptext"> {{ ap }}</span></a>  </td>
-                             {% elif ap == 'Pluto' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                      ♇  <span class="tooltiptext">{{ ap }}</span></a></td>
-
-                        {% endif %}
-                        {% endfor %}
-
-                    </tr>
-
-                      {% for name, angle, ap in atc %}
-                    <tr>
-                        {% if name == 'tr_Sun' %}
-                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                           ☼ <span class="tooltiptext"> Sun </span></a></td>
-                        {% elif name == 'tr_Moon' %}
-                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                           ☾ <span class="tooltiptext"> Moon </span></a> </td>
-                         {% elif name == 'tr_Mercury' %}
-                             <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">
-                             ☿  <span class="tooltiptext">  Mercury  </span>  </a>  </td>
-                         {% elif name == 'tr_Venus' %}
-                             <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">
-                                 <span class="tooltiptext"> Venus </span></a>  </td>
-                         {% elif name == 'tr_Mars' %}
-                             <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">
-                                ♂ <span class="tooltiptext"> Mars  </span>  </a> </td>
-                         {% elif name == 'tr_Jupiter' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                ♃  <span class="tooltiptext"> Jupiter </span></a>  </td>
-                         {% elif name == 'tr_Saturn' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                 ♄  <span class="tooltiptext">  Saturn  </span> </a> </td>
-                         {% elif name == 'tr_Uranus' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                  ♅  <span class="tooltiptext">  Uranus  </span> </a> </td>
-                         {% elif name == 'tr_Neptune' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                   ♆ <span class="tooltiptext"> Neptune </span></a>  </td>
-                         {% elif name == 'tr_Pluto' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                  ♇  <span class="tooltiptext"> Pluto </span></a></td>
-                        {% elif name == 'Sun' %}
-                            <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                               ☼ <span class="tooltiptext"> {{ name }}  </span></a>
-                               </td>
-                        {% elif name == 'Moon' %}
-                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                               ☾ <span class="tooltiptext"> {{ name }}  </span></a> </td>
-                        {% elif name == 'Mercury' %}
-                                 <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">
-                                 ☿ <span class="tooltiptext">  {{ name }}  </span>  </a>  </td>
-                        {% elif name == 'Venus' %}
-                                 <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">
-                                     <span class="tooltiptext"> {{ name }}</span></a>  </td>
-                        {% elif name == 'Mars' %}
-                                 <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">
-                                    ♂ <span class="tooltiptext"> {{ name }}  </span>  </a> </td>
-                        {% elif name == 'Jupiter' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                    ♃  <span class="tooltiptext"> {{ name }} </span></a>  </td>
-                             {% elif name == 'Saturn' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                     ♄  <span class="tooltiptext">  {{ name }}  </span> </a> </td>
-                             {% elif name == 'Uranus' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                      ♅  <span class="tooltiptext">  {{ name }}  </span> </a> </td>
-                             {% elif name == 'Neptune' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                       ♆ <span class="tooltiptext"> {{ name }}</span></a>  </td>
-                             {% elif name == 'Pluto' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                      ♇  <span class="tooltiptext">{{ name }}</span></a></td>
-                            {% endif %}
-<!--                                <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> square  </span></td>-->
-                                <td> {{ angle }}</td>
-
-                        {% if ap == 'tr_Sun' %}
-                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                           ☼ <span class="tooltiptext"> Sun </span></a></td>
-                        {% elif ap == 'tr_Moon' %}
-                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                           ☾ <span class="tooltiptext"> Moon </span></a> </td>
-                         {% elif ap == 'tr_Mercury' %}
-                             <td class="tooltip"> <a href="#" class='link-symbols' style="color:grey">
-                           ☿   <span class="tooltiptext">  Mercury  </span>  </a>  </td>
-                         {% elif ap == 'tr_Venus' %}
-                             <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">
-                                 <span class="tooltiptext"> Venus </span></a>  </td>
-                         {% elif ap == 'tr_Mars' %}
-                             <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">
-                               ♂  <span class="tooltiptext"> Mars  </span>  </a> </td>
-                         {% elif ap == 'tr_Jupiter' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                ♃  <span class="tooltiptext"> Jupiter </span></a>  </td>
-                         {% elif ap == 'tr_Saturn' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                 ♄  <span class="tooltiptext">  Saturn  </span> </a> </td>
-                         {% elif ap == 'tr_Uranus' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                  ♅  <span class="tooltiptext">  Uranus  </span> </a> </td>
-                         {% elif ap == 'tr_Neptune' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                   ♆ <span class="tooltiptext"> Neptune </span></a>  </td>
-                         {% elif ap == 'tr_Pluto' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                  ♇  <span class="tooltiptext"> Pluto </span></a></td>
-                          {% elif ap == 'Sun' %}
-                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                               ☼  <span class="tooltiptext"> {{ ap }}  </span></a> </td>
-                        {% elif ap == 'Moon' %}
-                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                               ☾ <span class="tooltiptext"> {{ ap }}  </span></a> </td>
-                        {% elif ap == 'Mercury' %}
-                                 <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">
-                                <span class="tooltiptext">  {{ ap }}  </span>  </a>  </td>
-                        {% elif ap == 'Venus' %}
-                                 <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">
-                                     <span class="tooltiptext"> {{ ap }}</span></a>  </td>
-                        {% elif name == 'Mars' %}
-                                 <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">
-                                     <span class="tooltiptext"> {{ ap }}  </span>  </a> </td>
-                        {% elif ap == 'Jupiter' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                    ♃  <span class="tooltiptext"> {{ ap }} </span></a>  </td>
-                             {% elif ap == 'Saturn' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                     ♄  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>
-                             {% elif ap == 'Uranus' %}
-                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                      ♅  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>
-                             {% elif ap == 'Neptune' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                       ♆ <span class="tooltiptext"> {{ ap }}</span></a>  </td>
-                             {% elif ap == 'Pluto' %}
-                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                      ♇  <span class="tooltiptext">{{ ap }}</span></a></td>
-
-                        {% endif %}
-                    </tr>
+                        <td> {{ pn }} </td>
+                           <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> conjunction  </span></td>
+                         <td> {{ ap }} </td>
                          {% endfor %}
+                    </tr>
+
+
+
+
+
+<!--                    {% for name, angle, ap in ats %}-->
+<!--                    <tr> {% if name == '☼TR' %}-->
+<!--                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">-->
+<!--                           ☼TR <span class="tooltiptext"> Sun </span></a></td>-->
+<!--                        {% elif name == '☾TR' %}-->
+<!--                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                           ☾TR <span class="tooltiptext"> Moon </span></a> </td>-->
+<!--                         {% elif name == '☿TR' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                           ☿TR  <span class="tooltiptext">  Mercury  </span>  </a>  </td>-->
+<!--                         {% elif name == '♀TR' %}-->
+<!--                             <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                ♀TR   <span class="tooltiptext"> Venus </span></a>  </td>-->
+<!--                         {% elif name == '♂TR' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                 ♂TR   <span class="tooltiptext"> Mars  </span>  </a> </td>-->
+<!--                         {% elif name == '♃TR' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                ♃TR   <span class="tooltiptext"> Jupiter </span></a>  </td>-->
+<!--                         {% elif name == '♄TR' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                 ♄TR   <span class="tooltiptext">  Saturn  </span> </a> </td>-->
+<!--                         {% elif name == '♅TR' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                  ♅TR   <span class="tooltiptext">  Uranus  </span> </a> </td>-->
+<!--                         {% elif name == '♆TR' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                   ♆TR  <span class="tooltiptext"> Neptune </span></a>  </td>-->
+<!--                         {% elif name == '♇TR' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                  ♇TR   <span class="tooltiptext"> Pluto </span></a></td>-->
+
+<!--                        {% elif name == '☼' %}-->
+<!--                            <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">-->
+<!--                               ☼ <span class="tooltiptext"> {{ name }}  </span></a>-->
+<!--                               </td>-->
+<!--                        {% elif name == '☾'  %}-->
+<!--                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                               ☾ <span class="tooltiptext"> {{ name }}  </span></a> </td>-->
+<!--                        {% elif name == '☿' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                               ☿  <span class="tooltiptext">  {{ name }}  </span>  </a>  </td>-->
+<!--                        {% elif name == '♀' %}-->
+<!--                                 <td class="tooltip"> <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                      ♀   <span class="tooltiptext"> {{ name }}</span></a>  </td>-->
+<!--                        {% elif name == '♂' %}-->
+<!--                                 <td class="tooltip"> <a href="#" class='link-symbols' style="color:red">-->
+<!--                                    ♂   <span class="tooltiptext"> {{ name }}  </span>  </a> </td>-->
+<!--                        {% elif name == '♃' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                    ♃  <span class="tooltiptext"> {{ name }} </span></a>  </td>-->
+<!--                             {% elif name == '♄' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                     ♄  <span class="tooltiptext">  {{ name }}  </span> </a> </td>-->
+<!--                             {% elif name ==  '♅' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                      ♅  <span class="tooltiptext">  {{ name }}  </span> </a> </td>-->
+<!--                             {% elif name ==  '♆' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                       ♆ <span class="tooltiptext"> {{ name }}</span></a>  </td>-->
+<!--                             {% elif name == '♇' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                      ♇  <span class="tooltiptext">{{ name }}</span></a></td>-->
+<!--                            {% endif %}-->
+<!--&lt;!&ndash;                                <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> square  </span></td>&ndash;&gt;-->
+<!--                                <td> {{ angle }}</td>-->
+
+<!--                        {% if ap == 'tr_Sun' %}-->
+<!--                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">-->
+<!--                           ☼ <span class="tooltiptext"> Sun </span></a></td>-->
+<!--                        {% elif ap == 'tr_Moon' %}-->
+<!--                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                           ☾ <span class="tooltiptext"> Moon </span></a> </td>-->
+<!--                         {% elif ap == 'tr_Mercury' %}-->
+<!--                             <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">-->
+<!--                          ☿  <span class="tooltiptext">  Mercury  </span>  </a>  </td>-->
+<!--                         {% elif ap == 'tr_Venus' %}-->
+<!--                             <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">-->
+<!--                               ♀   <span class="tooltiptext"> Venus </span></a>  </td>-->
+<!--                         {% elif ap == 'tr_Mars' %}-->
+<!--                             <td class="tooltip"> <a href="#" class='link-symbols' style="color:red">-->
+<!--                                ♂  <span class="tooltiptext"> Mars  </span>  </a> </td>-->
+<!--                         {% elif ap == 'tr_Jupiter' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                ♃  <span class="tooltiptext"> Jupiter </span></a>  </td>-->
+<!--                         {% elif ap == 'tr_Saturn' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                 ♄  <span class="tooltiptext">  Saturn  </span> </a> </td>-->
+<!--                         {% elif ap == 'tr_Uranus' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                  ♅  <span class="tooltiptext">  Uranus  </span> </a> </td>-->
+<!--                         {% elif ap == 'tr_Neptune' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                   ♆ <span class="tooltiptext"> Neptune </span></a>  </td>-->
+<!--                         {% elif ap == 'tr_Pluto' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                  ♇  <span class="tooltiptext"> Pluto </span></a></td>-->
+<!--                        {% elif ap == 'Sun' %}-->
+<!--                            <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">-->
+<!--                               ☼ <span class="tooltiptext"> {{ ap }}  </span></a>-->
+<!--                               </td>-->
+<!--                        {% elif ap == 'Moon' %}-->
+<!--                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                               ☾ <span class="tooltiptext"> {{ ap }}  </span></a> </td>-->
+<!--                        {% elif ap == 'Mercury' %}-->
+<!--                                 <td class="tooltip"> <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                 ☿ <span class="tooltiptext">  {{ ap }}  </span>  </a>  </td>-->
+<!--                        {% elif ap == 'Venus' %}-->
+<!--                                 <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                   ♀   <span class="tooltiptext"> {{ ap }}</span></a>  </td>-->
+<!--                        {% elif name == 'Mars' %}-->
+<!--                                 <td class="tooltip"> <a href="#" class='link-symbols' style="color:red">-->
+<!--                                    ♂  <span class="tooltiptext"> {{ ap }}  </span>  </a> </td>-->
+<!--                        {% elif ap == 'Jupiter' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                    ♃  <span class="tooltiptext"> {{ ap }} </span></a>  </td>-->
+<!--                             {% elif ap == 'Saturn' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                     ♄  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>-->
+<!--                             {% elif ap == 'Uranus' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                      ♅  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>-->
+<!--                             {% elif ap == 'Neptune' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                       ♆ <span class="tooltiptext"> {{ ap }}</span></a>  </td>-->
+<!--                             {% elif ap == 'Pluto' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                      ♇  <span class="tooltiptext">{{ ap }}</span></a></td>-->
+<!--                            {% endif %}-->
+<!--                         {% endfor %}-->
+<!--                    </tr>-->
+
+<!--                     {% for name, angle, ap in att %}-->
+<!--                    <tr>-->
+<!--                        {% if name == 'tr_Sun' %}-->
+<!--                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">-->
+<!--                           ☼ <span class="tooltiptext"> Sun </span></a></td>-->
+<!--                        {% elif name == 'tr_Moon' %}-->
+<!--                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                           ☾ <span class="tooltiptext"> Moon </span></a> </td>-->
+<!--                         {% elif name == 'tr_Mercury' %}-->
+<!--                             <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">-->
+<!--                          ☿  <span class="tooltiptext">  Mercury  </span>  </a>  </td>-->
+<!--                         {% elif name == 'tr_Venus' %}-->
+<!--                             <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                ♂ <span class="tooltiptext"> Venus </span></a>  </td>-->
+<!--                         {% elif name == 'tr_Mars' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:red">-->
+<!--                                ♂  <span class="tooltiptext"> Mars  </span>  </a> </td>-->
+<!--                         {% elif name == 'tr_Jupiter' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                ♃  <span class="tooltiptext"> Jupiter </span></a>  </td>-->
+<!--                         {% elif name == 'tr_Saturn' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                 ♄  <span class="tooltiptext">  Saturn  </span> </a> </td>-->
+<!--                         {% elif name == 'tr_Uranus' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                  ♅  <span class="tooltiptext">  Uranus  </span> </a> </td>-->
+<!--                         {% elif name == 'tr_Neptune' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                   ♆ <span class="tooltiptext"> Neptune </span></a>  </td>-->
+<!--                         {% elif name == 'tr_Pluto' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                  ♇  <span class="tooltiptext"> Pluto </span></a></td>-->
+<!--                        {% elif name == 'Sun' %}-->
+<!--                            <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">-->
+<!--                               ☼ <span class="tooltiptext"> {{ name }}  </span></a>-->
+<!--                               </td>-->
+<!--                        {% elif name == 'Moon' %}-->
+<!--                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                               ☾ <span class="tooltiptext"> {{ name }}  </span></a> </td>-->
+<!--                        {% elif name == 'Mercury' %}-->
+<!--                                 <td class="tooltip"> <a href="#" class='link-symbols' style="color:grey">-->
+<!--                              ☿  <span class="tooltiptext">  {{ name }}  </span>  </a>  </td>-->
+<!--                        {% elif name == 'Venus' %}-->
+<!--                                 <td class="tooltip">    <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                   ♀  <span class="tooltiptext"> {{ name }}</span></a>  </td>-->
+<!--                        {% elif name == 'Mars' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                    ♂   <span class="tooltiptext"> {{ name }}  </span>  </a> </td>-->
+<!--                        {% elif name == 'Jupiter' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                    ♃  <span class="tooltiptext"> {{ name }} </span></a>  </td>-->
+<!--                             {% elif name == 'Saturn' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                     ♄  <span class="tooltiptext">  {{ name }}  </span> </a> </td>-->
+<!--                             {% elif name == 'Uranus' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                      ♅  <span class="tooltiptext">  {{ name }}  </span> </a> </td>-->
+<!--                             {% elif name == 'Neptune' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                       ♆ <span class="tooltiptext"> {{ name }}</span></a>  </td>-->
+<!--                             {% elif name == 'Pluto' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                      ♇  <span class="tooltiptext">{{ name }}</span></a></td>-->
+<!--                            {% endif %}-->
+<!--&lt;!&ndash;                                <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> square  </span></td>&ndash;&gt;-->
+<!--                                <td> {{ angle }}</td>-->
+
+<!--                        {% if ap == 'tr_Sun' %}-->
+<!--                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">-->
+<!--                           ☼ <span class="tooltiptext"> Sun </span></a></td>-->
+<!--                        {% elif ap == 'tr_Moon' %}-->
+<!--                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                           ☾ <span class="tooltiptext"> Moon </span></a> </td>-->
+<!--                         {% elif ap == 'tr_Mercury' %}-->
+<!--                             <td class="tooltip"> <a href="#" class='link-symbols' style="color:grey">-->
+<!--                            ☿  <span class="tooltiptext">  Mercury  </span>  </a>  </td>-->
+<!--                         {% elif ap == 'tr_Venus' %}-->
+<!--                             <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">-->
+<!--                               ♀   <span class="tooltiptext"> Venus </span></a>  </td>-->
+<!--                         {% elif ap == 'tr_Mars' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:red">-->
+<!--                               ♂  <span class="tooltiptext"> Mars  </span>  </a> </td>-->
+<!--                         {% elif ap == 'tr_Jupiter' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                ♃  <span class="tooltiptext"> Jupiter </span></a>  </td>-->
+<!--                         {% elif ap == 'tr_Saturn' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                 ♄  <span class="tooltiptext">  Saturn  </span> </a> </td>-->
+<!--                         {% elif ap == 'tr_Uranus' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                  ♅  <span class="tooltiptext">  Uranus  </span> </a> </td>-->
+<!--                         {% elif ap == 'tr_Neptune' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                   ♆ <span class="tooltiptext"> Neptune </span></a>  </td>-->
+<!--                         {% elif ap == 'tr_Pluto' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                  ♇  <span class="tooltiptext"> Pluto </span></a></td>-->
+<!--                        {% elif ap == 'Sun' %}-->
+<!--                            <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">-->
+<!--                               ☼ <span class="tooltiptext"> {{ ap }}  </span></a>-->
+<!--                               </td>-->
+<!--                          {% elif ap == 'Moon' %}-->
+<!--                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                               ☾ <span class="tooltiptext"> {{ ap }}  </span></a> </td>-->
+<!--                        {% elif ap == 'Mercury' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                               ☿  <span class="tooltiptext">  {{ ap }}  </span>  </a>  </td>-->
+<!--                        {% elif ap == 'Venus' %}-->
+<!--                                 <td class="tooltip">   <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                     ♀ <span class="tooltiptext"> {{ ap }}</span></a>  </td>-->
+<!--                        {% elif name == 'Mars' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:red">-->
+<!--                                  ♂   <span class="tooltiptext"> {{ ap }}  </span>  </a> </td>-->
+<!--                        {% elif ap == 'Jupiter' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                    ♃  <span class="tooltiptext"> {{ ap }} </span></a>  </td>-->
+<!--                             {% elif ap == 'Saturn' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                     ♄  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>-->
+<!--                             {% elif ap == 'Uranus' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                      ♅  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>-->
+<!--                             {% elif ap == 'Neptune' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                       ♆ <span class="tooltiptext"> {{ ap }}</span></a>  </td>-->
+<!--                             {% elif ap == 'Pluto' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                      ♇  <span class="tooltiptext">{{ ap }}</span></a></td>-->
+<!--                            {% endif %}-->
+<!--                        {% endfor %}-->
+<!--                    </tr>-->
+
+<!--                     {% for name, angle, ap in ato %}-->
+<!--                    <tr>-->
+<!--                        {% if name == 'tr_Sun' %}-->
+<!--                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">-->
+<!--                           ☼ <span class="tooltiptext"> Sun </span></a></td>-->
+<!--                        {% elif name == 'tr_Moon' %}-->
+<!--                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                           ☾ <span class="tooltiptext"> Moon </span></a> </td>-->
+<!--                         {% elif name == 'tr_Mercury' %}-->
+<!--                             <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                            <span class="tooltiptext">  Mercury  </span>  </a>  </td>-->
+<!--                         {% elif name == 'tr_Venus' %}-->
+<!--                             <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                 <span class="tooltiptext"> Venus </span></a>  </td>-->
+<!--                         {% elif name == 'tr_Mars' %}-->
+<!--                             <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">-->
+<!--                              ♂   <span class="tooltiptext"> Mars  </span>  </a> </td>-->
+<!--                         {% elif name == 'tr_Jupiter' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                ♃  <span class="tooltiptext"> Jupiter </span></a>  </td>-->
+<!--                         {% elif name == 'tr_Saturn' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                 ♄  <span class="tooltiptext">  Saturn  </span> </a> </td>-->
+<!--                         {% elif name == 'tr_Uranus' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                  ♅  <span class="tooltiptext">  Uranus  </span> </a> </td>-->
+<!--                         {% elif name == 'tr_Neptune' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                   ♆ <span class="tooltiptext"> Neptune </span></a>  </td>-->
+<!--                         {% elif name == 'tr_Pluto' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                  ♇  <span class="tooltiptext"> Pluto </span></a></td>-->
+<!--                        {% elif name == 'Sun' %}-->
+<!--                            <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">-->
+<!--                               ☼ <span class="tooltiptext"> {{ name }}  </span></a>-->
+<!--                               </td>-->
+<!--                        {% elif name == 'Moon' %}-->
+<!--                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                               ☾ <span class="tooltiptext"> {{ name }}  </span></a> </td>-->
+<!--                        {% elif name == 'Mercury' %}-->
+<!--                                 <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                <span class="tooltiptext">  {{ name }}  </span>  </a>  </td>-->
+<!--                        {% elif name == 'Venus' %}-->
+<!--                                 <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                     <span class="tooltiptext"> {{ name }}</span></a>  </td>-->
+<!--                        {% elif name == 'Mars' %}-->
+<!--                                 <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">-->
+<!--                                 ♂    <span class="tooltiptext"> {{ name }}  </span>  </a> </td>-->
+<!--                        {% elif name == 'Jupiter' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                    ♃  <span class="tooltiptext"> {{ name }} </span></a>  </td>-->
+<!--                             {% elif name == 'Saturn' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                     ♄  <span class="tooltiptext">  {{ name }}  </span> </a> </td>-->
+<!--                             {% elif name == 'Uranus' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                      ♅  <span class="tooltiptext">  {{ name }}  </span> </a> </td>-->
+<!--                             {% elif name == 'Neptune' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                       ♆ <span class="tooltiptext"> {{ name }}</span></a>  </td>-->
+<!--                             {% elif name == 'Pluto' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                      ♇  <span class="tooltiptext">{{ name }}</span></a></td>-->
+<!--                            {% endif %}-->
+<!--&lt;!&ndash;                                <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> square  </span></td>&ndash;&gt;-->
+<!--                                <td> {{ angle }}</td>-->
+
+<!--                        {% if ap == 'tr_Sun' %}-->
+<!--                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">-->
+<!--                           ☼ <span class="tooltiptext"> Sun </span></a></td>-->
+<!--                        {% elif ap == 'tr_Moon' %}-->
+<!--                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                           ☾ <span class="tooltiptext"> Moon </span></a> </td>-->
+<!--                         {% elif ap == 'tr_Mercury' %}-->
+<!--                             <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                            ☿  <span class="tooltiptext">  Mercury  </span>  </a>  </td>-->
+<!--                         {% elif ap == 'tr_Venus' %}-->
+<!--                             <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                 <span class="tooltiptext"> Venus </span></a>  </td>-->
+<!--                         {% elif ap == 'tr_Mars' %}-->
+<!--                             <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">-->
+<!--                                 ♂ <span class="tooltiptext"> Mars  </span>  </a> </td>-->
+<!--                         {% elif ap == 'tr_Jupiter' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                ♃  <span class="tooltiptext"> Jupiter </span></a>  </td>-->
+<!--                         {% elif ap == 'tr_Saturn' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                 ♄  <span class="tooltiptext">  Saturn  </span> </a> </td>-->
+<!--                         {% elif ap == 'tr_Uranus' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                  ♅  <span class="tooltiptext">  Uranus  </span> </a> </td>-->
+<!--                         {% elif ap == 'tr_Neptune' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                   ♆ <span class="tooltiptext"> Neptune </span></a>  </td>-->
+<!--                         {% elif ap == 'tr_Pluto' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                  ♇  <span class="tooltiptext"> Pluto </span></a></td>-->
+<!--                        {% elif ap == 'Sun' %}-->
+<!--                           <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">-->
+<!--                               ☼ <span class="tooltiptext"> {{ ap }}  </span></a>-->
+<!--                               </td>-->
+<!--                          {% elif ap == 'Moon' %}-->
+<!--                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                               ☾ <span class="tooltiptext"> {{ ap }}  </span></a> </td>-->
+<!--                        {% elif ap == 'Mercury' %}-->
+<!--                                 <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                 ☿ <span class="tooltiptext">  {{ ap }}  </span>  </a>  </td>-->
+<!--                        {% elif ap == 'Venus' %}-->
+<!--                                 <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                     <span class="tooltiptext"> {{ ap }}</span></a>  </td>-->
+<!--                        {% elif name == 'Mars' %}-->
+<!--                                 <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">-->
+<!--                                     <span class="tooltiptext"> {{ ap }}  </span>  </a> </td>-->
+<!--                        {% elif ap == 'Jupiter' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                    ♃  <span class="tooltiptext"> {{ ap }} </span></a>  </td>-->
+<!--                             {% elif ap == 'Saturn' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                     ♄  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>-->
+<!--                             {% elif ap == 'Uranus' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                      ♅  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>-->
+<!--                             {% elif ap == 'Neptune' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                       ♆ <span class="tooltiptext"> {{ ap }}</span></a>  </td>-->
+<!--                             {% elif ap == 'Pluto' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                      ♇  <span class="tooltiptext">{{ ap }}</span></a></td>-->
+
+<!--                        {% endif %}-->
+<!--                        {% endfor %}-->
+
+<!--                    </tr>-->
+
+<!--                      {% for name, angle, ap in atc %}-->
+<!--                    <tr>-->
+<!--                        {% if name == 'tr_Sun' %}-->
+<!--                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">-->
+<!--                           ☼ <span class="tooltiptext"> Sun </span></a></td>-->
+<!--                        {% elif name == 'tr_Moon' %}-->
+<!--                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                           ☾ <span class="tooltiptext"> Moon </span></a> </td>-->
+<!--                         {% elif name == 'tr_Mercury' %}-->
+<!--                             <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                             ☿  <span class="tooltiptext">  Mercury  </span>  </a>  </td>-->
+<!--                         {% elif name == 'tr_Venus' %}-->
+<!--                             <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                 <span class="tooltiptext"> Venus </span></a>  </td>-->
+<!--                         {% elif name == 'tr_Mars' %}-->
+<!--                             <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">-->
+<!--                                ♂ <span class="tooltiptext"> Mars  </span>  </a> </td>-->
+<!--                         {% elif name == 'tr_Jupiter' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                ♃  <span class="tooltiptext"> Jupiter </span></a>  </td>-->
+<!--                         {% elif name == 'tr_Saturn' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                 ♄  <span class="tooltiptext">  Saturn  </span> </a> </td>-->
+<!--                         {% elif name == 'tr_Uranus' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                  ♅  <span class="tooltiptext">  Uranus  </span> </a> </td>-->
+<!--                         {% elif name == 'tr_Neptune' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                   ♆ <span class="tooltiptext"> Neptune </span></a>  </td>-->
+<!--                         {% elif name == 'tr_Pluto' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                  ♇  <span class="tooltiptext"> Pluto </span></a></td>-->
+<!--                        {% elif name == 'Sun' %}-->
+<!--                            <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">-->
+<!--                               ☼ <span class="tooltiptext"> {{ name }}  </span></a>-->
+<!--                               </td>-->
+<!--                        {% elif name == 'Moon' %}-->
+<!--                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                               ☾ <span class="tooltiptext"> {{ name }}  </span></a> </td>-->
+<!--                        {% elif name == 'Mercury' %}-->
+<!--                                 <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                 ☿ <span class="tooltiptext">  {{ name }}  </span>  </a>  </td>-->
+<!--                        {% elif name == 'Venus' %}-->
+<!--                                 <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                     <span class="tooltiptext"> {{ name }}</span></a>  </td>-->
+<!--                        {% elif name == 'Mars' %}-->
+<!--                                 <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">-->
+<!--                                    ♂ <span class="tooltiptext"> {{ name }}  </span>  </a> </td>-->
+<!--                        {% elif name == 'Jupiter' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                    ♃  <span class="tooltiptext"> {{ name }} </span></a>  </td>-->
+<!--                             {% elif name == 'Saturn' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                     ♄  <span class="tooltiptext">  {{ name }}  </span> </a> </td>-->
+<!--                             {% elif name == 'Uranus' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                      ♅  <span class="tooltiptext">  {{ name }}  </span> </a> </td>-->
+<!--                             {% elif name == 'Neptune' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                       ♆ <span class="tooltiptext"> {{ name }}</span></a>  </td>-->
+<!--                             {% elif name == 'Pluto' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                      ♇  <span class="tooltiptext">{{ name }}</span></a></td>-->
+<!--                            {% endif %}-->
+<!--&lt;!&ndash;                                <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> square  </span></td>&ndash;&gt;-->
+<!--                                <td> {{ angle }}</td>-->
+
+<!--                        {% if ap == 'tr_Sun' %}-->
+<!--                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">-->
+<!--                           ☼ <span class="tooltiptext"> Sun </span></a></td>-->
+<!--                        {% elif ap == 'tr_Moon' %}-->
+<!--                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                           ☾ <span class="tooltiptext"> Moon </span></a> </td>-->
+<!--                         {% elif ap == 'tr_Mercury' %}-->
+<!--                             <td class="tooltip"> <a href="#" class='link-symbols' style="color:grey">-->
+<!--                           ☿   <span class="tooltiptext">  Mercury  </span>  </a>  </td>-->
+<!--                         {% elif ap == 'tr_Venus' %}-->
+<!--                             <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                 <span class="tooltiptext"> Venus </span></a>  </td>-->
+<!--                         {% elif ap == 'tr_Mars' %}-->
+<!--                             <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">-->
+<!--                               ♂  <span class="tooltiptext"> Mars  </span>  </a> </td>-->
+<!--                         {% elif ap == 'tr_Jupiter' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                ♃  <span class="tooltiptext"> Jupiter </span></a>  </td>-->
+<!--                         {% elif ap == 'tr_Saturn' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                 ♄  <span class="tooltiptext">  Saturn  </span> </a> </td>-->
+<!--                         {% elif ap == 'tr_Uranus' %}-->
+<!--                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                  ♅  <span class="tooltiptext">  Uranus  </span> </a> </td>-->
+<!--                         {% elif ap == 'tr_Neptune' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                   ♆ <span class="tooltiptext"> Neptune </span></a>  </td>-->
+<!--                         {% elif ap == 'tr_Pluto' %}-->
+<!--                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                  ♇  <span class="tooltiptext"> Pluto </span></a></td>-->
+<!--                          {% elif ap == 'Sun' %}-->
+<!--                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                               ☼  <span class="tooltiptext"> {{ ap }}  </span></a> </td>-->
+<!--                        {% elif ap == 'Moon' %}-->
+<!--                                 <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">-->
+<!--                               ☾ <span class="tooltiptext"> {{ ap }}  </span></a> </td>-->
+<!--                        {% elif ap == 'Mercury' %}-->
+<!--                                 <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                <span class="tooltiptext">  {{ ap }}  </span>  </a>  </td>-->
+<!--                        {% elif ap == 'Venus' %}-->
+<!--                                 <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">-->
+<!--                                     <span class="tooltiptext"> {{ ap }}</span></a>  </td>-->
+<!--                        {% elif name == 'Mars' %}-->
+<!--                                 <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">-->
+<!--                                     <span class="tooltiptext"> {{ ap }}  </span>  </a> </td>-->
+<!--                        {% elif ap == 'Jupiter' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">-->
+<!--                                    ♃  <span class="tooltiptext"> {{ ap }} </span></a>  </td>-->
+<!--                             {% elif ap == 'Saturn' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">-->
+<!--                                     ♄  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>-->
+<!--                             {% elif ap == 'Uranus' %}-->
+<!--                                 <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">-->
+<!--                                      ♅  <span class="tooltiptext">  {{ ap }}  </span> </a> </td>-->
+<!--                             {% elif ap == 'Neptune' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">-->
+<!--                                       ♆ <span class="tooltiptext"> {{ ap }}</span></a>  </td>-->
+<!--                             {% elif ap == 'Pluto' %}-->
+<!--                                 <td class="tooltip"><a href="#" class='link-symbols' style="color:red">-->
+<!--                                      ♇  <span class="tooltiptext">{{ ap }}</span></a></td>-->
+
+<!--                        {% endif %}-->
+<!--                    </tr>-->
+<!--                         {% endfor %}-->
 
                         </tbody>
                     </table>

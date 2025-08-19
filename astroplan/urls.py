@@ -10,8 +10,10 @@ urlpatterns = [
     path('transit_form/', views.build_transit_chart, name='transit form chart'),
     path('design_your_chart/', views.design_chart, name='design your chart'),
     path('designed_chart/', views.design_chart, name='designed chart'),
+    path('wheel_year/', views.wheel_year),
     path('my_chart/',views.my_chart, name='my chart'),
-    path('shop/', views.do_shopping, name='shop')
+    path('shop/', views.do_shopping, name='shop'),
+    path('interpretations/', views.interpretations)
 
     # path('today_chart/', views.today_chart, name='td chart'),
     # path('birth_chart/', views.show_birth_chart, name='birth chart'),

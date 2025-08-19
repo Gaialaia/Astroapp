@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
+from django.template.defaultfilters import length
 
 from pycirclize import Circos
 import matplotlib
@@ -128,7 +129,7 @@ def show_td_chart(request):
     house_ax.set_rticks([])
     house_ax.set_thetagrids(houses[0], ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
     house_ax.tick_params(labelsize=20, grid_color='aliceblue', grid_linewidth=1, labelfontfamily='monospace',
-                                                      labelcolor='aliceblue')
+                                                      labelcolor='aliceblue', pad=17.0)
     house_ax.set_theta_offset(np.pi)
 
     pd = {swe.get_planet_name(0): ['☼', 'yellow', 5, 25, swe.calc_ut(jd, 0, flags)[0][0],
@@ -532,9 +533,16 @@ def build_transit_chart(request):
         tr_house_ax.set_theta_direction(1)
         tr_house_ax.set_rticks([])
 
+        tr_cr_aspects_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')
+        tr_cr_aspects_ax.patch.set_alpha(0.0)
+        tr_cr_aspects_ax.set_rlim(-130, 100)
+        tr_cr_aspects_ax.set_theta_direction(1)
+        tr_cr_aspects_ax.set_rticks([])
+        tr_cr_aspects_ax.set_axis_off()
+
         jd_ev = jl.to_jd(d, fmt='jd')
 
-        pd = {swe.get_planet_name(0): ['☼', 'yellow', 5, 17, swe.calc_ut(jd_ev, 0, flags)[0][0],
+        pd_cr = {swe.get_planet_name(0): ['☼', 'yellow', 5, 17, swe.calc_ut(jd_ev, 0, flags)[0][0],
                                        swe.calc_ut(jd_ev, 0, flags)[0][1]],
               swe.get_planet_name(1): ['☾', 'blue', 5, 17, swe.calc_ut(jd_ev, 1, flags)[0][0],
                                        swe.calc_ut(jd_ev, 1, flags)[0][1]],
@@ -556,7 +564,7 @@ def build_transit_chart(request):
                                        swe.calc_ut(jd_ev, 1, flags)[0][1]]
               }
 
-        form_coords_value = list(pd.values())
+        form_coords_value = list(pd_cr.values())
 
         def set_signs(name_list, deg_list):
             if signs:
@@ -593,88 +601,6 @@ def build_transit_chart(request):
             sign_table = zip(name_list, deg_form, signs)
             return list(sign_table)
 
-        aspect_table_s = None
-        aspect_table_ops = None
-        aspect_table_c = None
-        aspect_table_t = None
-
-        aspected_planet_t.clear()
-        aspected_planet_op.clear()
-        aspected_planet_s.clear()
-        aspected_planet_c.clear()
-
-        c_angle.clear()
-        t_angle.clear()
-        sq_angle.clear()
-        c_angle.clear()
-
-        oppositions.clear()
-        sqaures.clear()
-        conjunctions.clear()
-        trines.clear()
-
-        for value in range(len(form_coords_value) - 1):
-            for pl in range(0, 10):
-                aspect = abs(round(form_coords_value[pl][4]) - round(form_coords_value[value + 1][4]))
-
-                if aspect in trine and form_coords_value[pl][4] != form_coords_value[value + 1][4]:
-                    pl_one = np.array(
-                        [np.deg2rad(form_coords_value[pl][4]), np.deg2rad(form_coords_value[value + 1][4])])
-                    pl_two = np.array(
-                        [np.deg2rad(form_coords_value[pl][5]), np.deg2rad(form_coords_value[value + 1][5])])
-                    planet_ax.plot(pl_one, pl_two, color='green', lw=0.5)
-
-                    aspected_planet_t.append(form_coords_value[pl][0])
-                    t_angle.append(f'{aspect}°')
-                    trines.append(form_coords_value[value + 1][0])
-                    aspect_table_t = zip(aspected_planet_t, t_angle, trines)
-
-                if aspect in opposition and form_coords_value[pl][4] != form_coords_value[value + 1][4]:
-                    pl_one = np.array(
-                        [np.deg2rad(form_coords_value[pl][4]), np.deg2rad(form_coords_value[value + 1][4])])
-                    pl_two = np.array(
-                        [np.deg2rad(form_coords_value[pl][5]), np.deg2rad(form_coords_value[value + 1][5])])
-                    planet_ax.plot(pl_one, pl_two, color='pink', lw=0.5)
-
-                    aspected_planet_op.append(form_coords_value[pl][0])
-                    op_angle.append(f'{aspect}°')
-                    oppositions.append(form_coords_value[value + 1][0])
-                    aspect_table_ops = zip(aspected_planet_op, op_angle, oppositions)
-
-                if aspect in square and form_coords_value[pl][4] != form_coords_value[value + 1][4]:
-                    pl_one = np.array(
-                        [np.deg2rad(form_coords_value[pl][4]), np.deg2rad(form_coords_value[value + 1][4])])
-                    pl_two = np.array(
-                        [np.deg2rad(form_coords_value[pl][5]), np.deg2rad(form_coords_value[value + 1][5])])
-                    planet_ax.plot(pl_one, pl_two, color='firebrick', lw=0.5)
-
-                    aspected_planet_s.append(form_coords_value[pl][0])
-                    sq_angle.append(f'{aspect}°')
-                    sqaures.append(form_coords_value[value + 1][0])
-                    aspect_table_s = zip(aspected_planet_s, sq_angle, sqaures)
-
-                if aspect in conjunction and form_coords_value[pl][4] != form_coords_value[value + 1][4]:
-                    pl_one = np.array(
-                        [np.deg2rad(form_coords_value[pl][4]), np.deg2rad(form_coords_value[value + 1][4])])
-                    pl_two = np.array(
-                        [np.deg2rad(form_coords_value[pl][5]), np.deg2rad(form_coords_value[value + 1][5])])
-                    planet_ax.plot(pl_one, pl_two, color='green', lw=0.5)
-
-                    aspected_planet_c.append(form_coords_value[pl][0])
-                    c_angle.append(f'{aspect}°')
-                    conjunctions.append(form_coords_value[value + 1][0])
-                    aspect_table_c = zip(aspected_planet_c, c_angle, conjunctions)
-
-                planet_ax.plot(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5], 'o',
-                               mfc=pd[swe.get_planet_name(pl)][1],
-                               ms=pd[swe.get_planet_name(pl)][2])
-                planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points', xytext=(20, 3),
-                                   xycoords='data',
-                                   xy=(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5]),
-                                   fontsize=pd[swe.get_planet_name(pl)][3],
-                                   color='darkgoldenrod',
-                                   arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-
         houses = swe.houses_ex(jd_ev, get_loc.latitude, get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
         house_ax.set_thetagrids(houses[0],
                                 ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
@@ -708,28 +634,25 @@ def build_transit_chart(request):
 
         tr_form_coords_value = list(pd.values())
 
-
         tr_houses = swe.houses_ex(jd_tr, get_loc.latitude, get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
         tr_house_ax.set_thetagrids(tr_houses[0],
-                                   ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
-        tr_house_ax.tick_params(labelsize=20, grid_color='#ffcc00', grid_linewidth=1, labelfontfamily='monospace')
+                                   ['TR ASC', 'TR II', 'TR III', 'TR IC', 'TR V', 'TR VI', 'TR DSC',
+                                    'TR VIII', 'TR IX', 'TR MC', 'TR XI', 'TR XII'])
+        tr_house_ax.tick_params(labelsize=20, grid_color='#ffcc00', grid_linewidth=1,
+                                labelfontfamily='monospace', pad=23.0)
         tr_house_ax.set_theta_offset(np.pi)
-
-
-        # cur_tr_aspects.extend(planet_list)
-        # cur_tr_aspects.extend(tr_planet_list)
-        #
-        # all_aspects = list(zip(cur_tr_pn, cur_tr_aspects))
 
         aspect_table_s = None
         aspect_table_ops = None
         aspect_table_c = None
         aspect_table_t = None
+        both_chart_apd = []
 
         aspected_planet_t.clear()
         aspected_planet_op.clear()
         aspected_planet_s.clear()
         aspected_planet_c.clear()
+        both_chart_apd.clear()
 
         c_angle.clear()
         t_angle.clear()
@@ -741,57 +664,68 @@ def build_transit_chart(request):
         conjunctions.clear()
         trines.clear()
 
-        for value in range(len(tr_form_coords_value) - 1):
+        both_chart_apd.extend(form_coords_value)
+        both_chart_apd.extend(tr_form_coords_value)
+
+        for value in range(len(both_chart_apd) - 1):
             for pl in range(0, 10):
-                aspect = abs(round(tr_form_coords_value[pl][4]) - round(tr_form_coords_value[value + 1][4]))
+                aspect = abs(round(both_chart_apd[pl][4]) - round(both_chart_apd[value + 1][4]))
 
-                if aspect in trine and tr_form_coords_value[pl][4] != tr_form_coords_value[value + 1][4]:
+                if aspect in trine and both_chart_apd[pl][4] != both_chart_apd[value + 1][4]:
                     pl_one = np.array(
-                        [np.deg2rad(tr_form_coords_value[pl][4]), np.deg2rad(tr_form_coords_value[value + 1][4])])
+                        [np.deg2rad(both_chart_apd[pl][4]), np.deg2rad(both_chart_apd[value + 1][4])])
                     pl_two = np.array(
-                        [np.deg2rad(tr_form_coords_value[pl][5]), np.deg2rad(tr_form_coords_value[value + 1][5])])
-                    transit_ax.plot(pl_one, pl_two, color='green', lw=0.5)
+                        [np.deg2rad(both_chart_apd[pl][5]), np.deg2rad(both_chart_apd[value + 1][5])])
+                    tr_cr_aspects_ax.plot(pl_one, pl_two, color='green', lw=0.5)
 
-                    aspected_planet_t.append(tr_form_coords_value[pl][0])
+                    aspected_planet_t.append(both_chart_apd[pl][0])
                     t_angle.append(f'{aspect}°')
-                    trines.append(tr_form_coords_value[value + 1][0])
+                    trines.append(both_chart_apd[value + 1][0])
                     aspect_table_t = zip(aspected_planet_t, t_angle, trines)
 
-                if aspect in opposition and tr_form_coords_value[pl][4] != tr_form_coords_value[value + 1][4]:
-                    pl_one = np.array(
-                        [np.deg2rad(tr_form_coords_value[pl][4]), np.deg2rad(tr_form_coords_value[value + 1][4])])
-                    pl_two = np.array(
-                        [np.deg2rad(tr_form_coords_value[pl][5]), np.deg2rad(tr_form_coords_value[value + 1][5])])
-                    transit_ax.plot(pl_one, pl_two, color='pink', lw=0.5)
+                if aspect in opposition and both_chart_apd[pl][4] != both_chart_apd[value + 1][4]:
+                    pl_one = np.array([np.deg2rad(both_chart_apd[pl][4]), np.deg2rad(both_chart_apd[value + 1][4])])
+                    pl_two = np.array([np.deg2rad(both_chart_apd[pl][5]), np.deg2rad(both_chart_apd[value + 1][5])])
+                    tr_cr_aspects_ax.plot(pl_one, pl_two, color='pink', lw=0.5)
 
-                    aspected_planet_op.append(tr_form_coords_value[pl][0])
+                    aspected_planet_op.append(both_chart_apd[pl][0])
                     op_angle.append(f'{aspect}°')
-                    oppositions.append(tr_form_coords_value[value + 1][0])
+                    oppositions.append(both_chart_apd[value + 1][0])
                     aspect_table_ops = zip(aspected_planet_op, op_angle, oppositions)
 
-                if aspect in square and tr_form_coords_value[pl][4] != tr_form_coords_value[value + 1][4]:
+                if aspect in square and both_chart_apd[pl][4] != both_chart_apd[value + 1][4]:
                     pl_one = np.array(
-                        [np.deg2rad(tr_form_coords_value[pl][4]), np.deg2rad(tr_form_coords_value[value + 1][4])])
+                        [np.deg2rad(both_chart_apd[pl][4]), np.deg2rad(both_chart_apd[value + 1][4])])
                     pl_two = np.array(
-                        [np.deg2rad(tr_form_coords_value[pl][5]), np.deg2rad(tr_form_coords_value[value + 1][5])])
-                    transit_ax.plot(pl_one, pl_two, color='firebrick', lw=0.5)
+                        [np.deg2rad(both_chart_apd[pl][5]), np.deg2rad(both_chart_apd[value + 1][5])])
+                    tr_cr_aspects_ax.plot(pl_one, pl_two, color='firebrick', lw=0.5)
 
-                    aspected_planet_s.append(tr_form_coords_value[pl][0])
+                    aspected_planet_s.append(both_chart_apd[pl][0])
                     sq_angle.append(f'{aspect}°')
-                    sqaures.append(tr_form_coords_value[value + 1][0])
+                    sqaures.append(both_chart_apd[value + 1][0])
                     aspect_table_s = zip(aspected_planet_s, sq_angle, sqaures)
 
-                if aspect in conjunction and tr_form_coords_value[pl][4] != tr_form_coords_value[value + 1][4]:
+                if aspect in conjunction and both_chart_apd[pl][4] != both_chart_apd[value + 1][4]:
                     pl_one = np.array(
-                        [np.deg2rad(tr_form_coords_value[pl][4]), np.deg2rad(tr_form_coords_value[value + 1][4])])
+                        [np.deg2rad(both_chart_apd[pl][4]), np.deg2rad(both_chart_apd[value + 1][4])])
                     pl_two = np.array(
-                        [np.deg2rad(tr_form_coords_value[pl][5]), np.deg2rad(tr_form_coords_value[value + 1][5])])
-                    transit_ax.plot(pl_one, pl_two, color='green', lw=0.5)
+                        [np.deg2rad(both_chart_apd[pl][5]), np.deg2rad(both_chart_apd[value + 1][5])])
+                    tr_cr_aspects_ax.plot(pl_one, pl_two, color='green', lw=0.5)
 
-                    aspected_planet_c.append(tr_form_coords_value[pl][0])
+                    aspected_planet_c.append(both_chart_apd[pl][0])
                     c_angle.append(f'{aspect}°')
-                    conjunctions.append(tr_form_coords_value[value + 1][0])
+                    conjunctions.append(both_chart_apd[value + 1][0])
                     aspect_table_c = zip(aspected_planet_c, c_angle, conjunctions)
+
+                planet_ax.plot(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5], 'o',
+                                       mfc=pd_cr[swe.get_planet_name(pl)][1],
+                                       ms=pd_cr[swe.get_planet_name(pl)][2])
+                planet_ax.annotate(f'{pd_cr[swe.get_planet_name(pl)][0]}', textcoords='offset points', xytext=(20, 3),
+                                           xycoords='data',
+                                           xy=(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5]),
+                                           fontsize=pd_cr[swe.get_planet_name(pl)][3],
+                                           color='darkgoldenrod',
+                                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
                 transit_ax.plot(np.deg2rad(tr_form_coords_value[pl][4]), tr_form_coords_value[pl][5], 'o',
                                mfc=pd[swe.get_planet_name(pl)][1],
@@ -1269,9 +1203,12 @@ def design_chart(request):
 
 
 
+def wheel_year(request):
+    return render(request, 'wheel_year.html')
 
 
-
+def interpretations(request):
+    return render(request, 'interpretations.html')
 
 def my_chart(request):
    return render(request, 'my_chart.html',

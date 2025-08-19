@@ -60,8 +60,8 @@ a {
 .tooltip {
   position: relative;
   display: inline-block;
-  border-collapse: collapse;
-  border: none;
+  /*border-collapse: collapse;
+  border: none;*/
 
 
 }
@@ -276,6 +276,7 @@ h1 {
     width: fit-content;
     text-align: center;
     padding: 17px;
+    background-color: rgba(159,0,255, 0.4);
 
 }
 

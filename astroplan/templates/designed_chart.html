@@ -26,7 +26,7 @@
             <div class="menu-choice" >  <a href="#" target = '_blank'>Wheel Year</a></div>
             <div class="menu-choice">  <a href="#" target = '_blank'>Interpretations</a></div>
             <div class="menu-choice">
-                <div class="menu-choice-dd">
+                <div class="menu-choice-dd" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4);">
                        Creative Astrology
                        <div class="menu-choice-dd-content" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
                         <a href="http://127.0.0.1:8000/design_your_chart"> colorful chart </a>
@@ -39,7 +39,8 @@
         </nav>
 
         <div class="chart-data">
-                <table id="planet-list" >
+            <div class="table-data">
+            <table id="planet-list" >
                 <caption> Planet position data </caption>
                 <thead>
                   <tr>
@@ -88,60 +89,8 @@
                     </tr>
                 </tbody>
                 </table>
-                  </div>
-
-
-            <div class ="chart-fig" style="background-color: none;">
-                <h1> Planet chart for {{ date }}</h1>
-                  <img src="{% static 'plots/designed_chart.png' %}" alt="plot" id="chart-plot" style="background-color: none"  >
-                  <a href="#"> {{ sa }} </a>
-
             </div>
-                <div class="table-data">
-                 <table id="all-aspects">
-                     <caption> Aspects </caption>
-                    <thead>
-                     <tr>
-                         <th> planet </th>
-                         <th> angle </th>
-                         <th> planet </th>
-                    </tr>
-                </thead>
 
-                <tbody>
-                    {% for pn, angle, ap in ats %}
-                    <tr>
-                        <td> {{ pn }} </td>
-                         <td> {{ angle }} </td>
-                         <td> {{ ap }} </td>
-                    </tr>
-                    {% endfor %}
-
-                     {% for pn, angle, ap in att %}
-                    <tr>
-                        <td> {{ pn }} </td>
-                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> trine  </span></td>
-                         <td> {{ ap }} </td>
-                    </tr>
-                    {% endfor %}
-                     {% for pn, angle, ap in ato %}
-                    <tr>
-                        <td> {{ pn }} </td>
-                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> opposition  </span></td>
-                         <td> {{ ap }} </td>
-                        {% endfor %}
-                    </tr>
-
-                      {% for pn, angle, ap in atc %}
-                    <tr>
-                        <td> {{ pn }} </td>
-                           <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> conjunction  </span></td>
-                         <td> {{ ap }} </td>
-                         {% endfor %}
-                    </tr>
-                        </tbody>
-                    </table>
-                    </div>
 
                 <div class="table-data">
                 <table id="house-cusps-table">
@@ -187,6 +136,60 @@
                 </tbody>
                 </table>
             </div>
+
+
+            <div class ="chart-fig" style="background-color: none;">
+                <h1> Planet chart for {{ date }}</h1>
+                  <img src="{% static 'plots/designed_chart.png' %}" alt="plot" id="chart-plot" style="background-color: none"  >
+                  <a href="#"> {{ sa }} </a>
+
+            </div>
+                <div class="table-data">
+                 <table id="all-aspects">
+                     <caption> Aspects </caption>
+                    <thead>
+                     <tr>
+                         <th> planet </th>
+                         <th> angle </th>
+                         <th> planet </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for pn, angle, ap in ats %}
+                    <tr>
+                        <td> {{ pn }} </td>
+                            <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> square </span></td>
+                         <td> {{ ap }} </td>
+                    </tr>
+                    {% endfor %}
+
+                     {% for pn, angle, ap in att %}
+                    <tr>
+                        <td> {{ pn }} </td>
+                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> trine  </span></td>
+                         <td> {{ ap }} </td>
+                    </tr>
+                    {% endfor %}
+                     {% for pn, angle, ap in ato %}
+                    <tr>
+                        <td> {{ pn }} </td>
+                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> opposition  </span></td>
+                         <td> {{ ap }} </td>
+                        {% endfor %}
+                    </tr>
+
+                      {% for pn, angle, ap in atc %}
+                    <tr>
+                        <td> {{ pn }} </td>
+                           <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> conjunction  </span></td>
+                         <td> {{ ap }} </td>
+                         {% endfor %}
+                    </tr>
+                        </tbody>
+                    </table>
+                    </div>
+
         </div>
 
           <div class="sign-buttons">
