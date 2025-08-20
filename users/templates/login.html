@@ -1,0 +1,87 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/form_style.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'styles/custom_flatpickr_styles.css' %}">
+    <title>Log In</title>
+</head>
+<body>
+
+ <div class="main-container">
+
+        <div> <img src="/static/images/hat.png" alt="hat" id="hat"> </div>
+
+        <nav class="navigation">
+            <div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));"> <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/" target = '_blank'> Today chart </a>
+                <div class="dropdown-content">
+                     <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+
+            <div class="menu-choice" > <a  class="menu-link" href="http://127.0.0.1:8000/transit_form" target = '_blank'>Transits</a></div>
+            <div class="menu-choice" >  <a href="http://127.0.0.1:8000/wheel_year" target = '_blank'>Wheel Year</a></div>
+            <div class="menu-choice">  <a href="http://127.0.0.1:8000/interpretations" target = '_blank'>Interpretations</a></div>
+
+            <div class="menu-choice">
+                <div class="menu-choice-dd">
+                       Creative Astrology
+                       <div class="menu-choice-dd-content">
+                        <a href="http://127.0.0.1:8000/design_your_chart"> colorful chart </a>
+                           <a href="#"> imaginery chart </a>
+                         </div>
+                </div>
+            </div>
+
+            <div class="menu-choice"><a href="http://127.0.0.1:8000/shop" target = '_blank'>Shop</a></div>
+
+            <div class="menu-choice">
+             <div class="menu-choice-dd">
+                 <a href="http://127.0.0.1:8000/my_chart" target = '_blank'>
+                 My chart {{ user.username }}</a>
+                    {% if user.is_authenticated %}
+                       <div class="menu-choice-dd-content">
+                        <a href="#"> Log out </a>
+                    {% else %}
+                           <a href="#"> Log In </a>
+                           <a href="#"> Sign Up </a>
+                         </div>
+                   </div>
+                 {% endif %}
+             </div>
+
+
+
+        </nav>
+
+        <div class="chart-data">
+             <div class="chart-form">
+                      <h3> Log In </h3>
+                    <form class="chart-forms" action="" target="_blank"  method="post">
+                        {{ auth_form.media }}
+                        {% csrf_token %}
+                        {{ auth_form | crispy }}
+                        <button class="show-chart" type="submit" > Log In </button>
+                    </form>
+                 </div>
+
+            <div> <a href="http://127.0.0.1:8000/register" target = '_blank'> Sign Up  </a>
+            </div>
+
+            <div>
+                Forgot password
+            </div>
+
+        </div>
+
+     </div>
+
+</body>
+</html>

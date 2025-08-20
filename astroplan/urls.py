@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 
+
 urlpatterns = [
     path('show_td_chart/', views.show_td_chart, name='showed chart'),
     path('show_by_date/', views.show_td_chart, name='show by date'),
@@ -13,7 +14,9 @@ urlpatterns = [
     path('wheel_year/', views.wheel_year),
     path('my_chart/',views.my_chart, name='my chart'),
     path('shop/', views.do_shopping, name='shop'),
-    path('interpretations/', views.interpretations)
+    path('interpretations/', views.interpretations),
+
+
 
     # path('today_chart/', views.today_chart, name='td chart'),
     # path('birth_chart/', views.show_birth_chart, name='birth chart'),

@@ -36,7 +36,14 @@
             <div class="menu-choice"><a href="#" target = '_blank'>Shop</a></div>
         </nav>
 
+     <div class="chart-data">
+             {% if user.is_authenticated %}
+               You have logged in {{ user.username }}
+            {% else %}
+              You have not logged in
+         {% endif %}
 
+         </div>
 
 
 </div>

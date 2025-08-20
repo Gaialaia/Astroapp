@@ -1,6 +1,4 @@
-
 {% load static %}
-
 {% load crispy_forms_tags %}
 
 <!DOCTYPE html>
@@ -46,28 +44,30 @@
         </nav>
 
         <div class="chart-data">
-            {% if messages %}
-                {% for message in messages %}
-             <div>
-                    {% if message.tags == 'success' %}
-                        {{ message|safe|escape }}
-            </div>
-                    {% elif message.tags == 'error' %}
-                        {{ message|safe }}
-            </div>
+            <div class="messages">
+                        {% if messages %}
+                            {% for message in messages %}
+                         <div>
+                                {% if message.tags == 'success' %}
+                                    {{ message|safe|escape }}
+                        </div>
+                                {% elif message.tags == 'error' %}
+                                    {{ message|safe }}
+                        </div>
 
-            <div>
-                    {% elif message.tags == 'info' %}
-                     {{ message|safe|escape }}
-            <div>
+                        <div>
+                                {% elif message.tags == 'info' %}
+                                 {{ message|safe|escape }}
+                        <div>
 
-            </div>
-                    {% elif message.tags == 'warning' %}
-                {{ message|safe|escape }}
-            </div>
-        {% endif %}
-    {% endfor %}
-{% endif %}
+                        </div>
+                                {% elif message.tags == 'warning' %}
+                            {{ message|safe|escape }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+             </div>
              <div class="chart-form">
                       <h3> Register here  </h3>
                     <form class="chart-forms" action="" target="_blank"  method="post">

@@ -31,6 +31,7 @@
             <div class="menu-choice" > <a  class="menu-link" href="http://127.0.0.1:8000/transit_form" target = '_blank'>Transits</a></div>
             <div class="menu-choice" >  <a href="http://127.0.0.1:8000/wheel_year" target = '_blank'>Wheel Year</a></div>
             <div class="menu-choice">  <a href="http://127.0.0.1:8000/interpretations" target = '_blank'>Interpretations</a></div>
+
             <div class="menu-choice">
                 <div class="menu-choice-dd">
                        Creative Astrology
@@ -40,12 +41,55 @@
                          </div>
                 </div>
             </div>
-             <div class="menu-choice"> <a href="http://127.0.0.1:8000/my_chart" target = '_blank'>My chart</a> </div>
+
             <div class="menu-choice"><a href="http://127.0.0.1:8000/shop" target = '_blank'>Shop</a></div>
+
+            <div class="menu-choice">
+                {% if user.is_authenticated %}
+             <div class="menu-choice-dd"> <a href="http://127.0.0.1:8000/my_chart" target = '_blank'>
+                 My chart {{ user.username }}</a>
+                       <div class="menu-choice-dd-content">
+                        <a href="{% url 'logout' %}">  Log out </a>
+                    {% else %}
+                            <div class="menu-choice-dd"> <a href="http://127.0.0.1:8000/my_chart" target = '_blank'>
+                 My chart </a>
+                                <div class="menu-choice-dd-content">
+                           <a href="{% url 'login' %}" target = '_blank'> Log In </a> <br>
+                           <a href="{% url 'register' %}" target = '_blank'> Sign Up </a>
+                         </div>
+
+
+                   </div>
+                 {% endif %}
+             </div>
+
         </nav>
 
         <div class="chart-data">
                 <div class="chart-form">
+                        <div class="messages">
+            {% if messages %}
+                {% for message in messages %}
+             <div>
+                    {% if message.tags == 'success' %}
+                        {{ message|safe|escape }}
+            </div>
+                    {% elif message.tags == 'error' %}
+                        {{ message|safe }}
+            </div>
+
+            <div>
+                    {% elif message.tags == 'info' %}
+                     {{ message|safe|escape }}
+            <div>
+
+            </div>
+                    {% elif message.tags == 'warning' %}
+                {{ message|safe|escape }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
                       <h3> Chart for any date </h3>
                     <form class="chart-forms" action="/show_by_date/" target="_blank"  method="post">
                         {{ chart_form.media }}
