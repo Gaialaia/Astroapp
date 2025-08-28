@@ -12,7 +12,7 @@ urlpatterns = [
     path('design_your_chart/', views.design_chart, name='design your chart'),
     path('designed_chart/', views.design_chart, name='designed chart'),
     path('wheel_year/', views.wheel_year),
-    path('my_chart/',views.my_chart, name='my chart'),
+
     path('shop/', views.do_shopping, name='shop'),
     path('interpretations/', views.interpretations),
 

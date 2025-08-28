@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 from django.forms import DateTimeInput
@@ -8,6 +9,7 @@ from datetime import datetime as dt
 # Create your models here.
 
 now = dt.now()
+
 class Chart(models.Model):
 
     objects = None
@@ -15,9 +17,50 @@ class Chart(models.Model):
     chart_date = models.DateTimeField(default=timezone.now)
     city = models.CharField(default='Ufa')
     country = models.CharField(default='Russia')
+    drawer =  models.ForeignKey(get_user_model(), default='drawer', on_delete=models.SET_DEFAULT)
+
+    Sun_deg = models.CharField(default='5°05')
+    Sun_sign = models.CharField(default='Aquarius')
+
+    Moon_deg = models.CharField(default='14°44')
+    Moon_sign = models.CharField(default='Taurus')
+
+    Mercury_deg = models.CharField(default='18°04')
+    Mercury_sign = models.CharField(default='Aquarius')
+
+    Venus_deg = models.CharField(default='12°05')
+    Venus_sign = models.CharField(default='Aquarius')
+
+    Mars_deg = models.CharField(default='15°21')
+    Mars_sign =  models.CharField(default='Scorpio')
+
+    Jupiter_deg = models.CharField(default='5°37')
+    Jupiter_sign = models.CharField(default='Aquarius')
+
+    Saturn_deg = models.CharField(default='15°18')
+    Saturn_sign = models.CharField(default='Scorpio')
+
+    Uranus_deg = models.CharField(default='28°05')
+    Uranus_sign = models.CharField(default='Scorpio')
+
+    Neptune_deg = models.CharField(default='11°60')
+    Neptune_sign = models.CharField(default='Sagittarius')
+
+    Pluto_deg = models.CharField(default='13°40, Libra')
+    Pluto_sign = models.CharField(default='Libra')
+
+    chart_image = models.ImageField(upload_to='chart_plots/')
 
     def __str__(self):
-        return f'{self.chart_date}, {self.city}, {self.country}'
+        return (f'{self.chart_date}, {self.city}, {self.country},'
+                f'{self.Sun_deg},{self.Sun_sign}, {self.Moon_deg},{self.Moon_sign},'
+                f' {self.Mercury_deg},{self.Mercury_sign}, {self.Venus_deg},'
+                f'{self.Venus_sign}, {self.Mars_deg}, {self.Mars_sign},'
+                f'{self.Jupiter_deg},{self.Jupiter_sign},'
+                f'{self.Saturn_deg}, {self.Saturn_sign},'
+                f'{self.Uranus_deg}, {self.Uranus_sign},'
+                f'{self.Neptune_deg}, {self.Neptune_sign},'
+                f'{self.Pluto_deg}, {self.Pluto_sign}')
 
 
 
@@ -160,4 +203,17 @@ class ZodiacInColors(models.Model):
                 f'{self.neptune_marker_c}, {self.neptune_symbol_c},{self.neptune_symbol_s}'
                 f'{self.pluto_marker_c}, {self.pluto_symbol_c},{self.pluto_symbol_s}'
                 f'{self.degrees_ticks_color}, {self.degrees_track_ec}')
+
+
+
+# class PlanetData(models.Model):
+#
+#     planet_name = models.CharField(max_length=20)
+#     planet_deg = models.CharField(max_length=16)
+#     planet_sign = models.CharField(max_length=16)
+#
+#
+#     def __str__(self):
+#         return f'{self.planet_name}, {self.planet_deg}, {self.planet_sign}'
+
 
