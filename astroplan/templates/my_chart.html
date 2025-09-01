@@ -1,10 +1,14 @@
 {% load static %}
+{% load crispy_forms_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'styles/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/form_style.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'styles/custom_flatpickr_styles.css' %}">
+
     <title>My charts </title>
 </head>
 <body>
@@ -37,15 +41,73 @@
         </nav>
 
      <div class="chart-data">
-             {% if user.is_authenticated %}
-               You have logged in {{ user.username }}
+         <div class="chart-form">
+              {% if user.is_authenticated %}
+               Welcome,  {{ user.username }}
             {% else %}
               You have not logged in
+         <a href="http://127.0.0.1:8000/login/"> Log in </a>
          {% endif %}
+                  <h2 class="">{{ form.instance.username }}
+                    <small class="">({{ form.instance.status }})</small>
+                </h2>
+                <p class="">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
+                <p class="">{{ form.instance.birthdate }}</p>
+
+             <p class="">{{ form.instance.email }}</p>
+                <p class="">{{ form.instance.description }}</p>
+               {% if user.username == form.instance.username %}
+                    <h3>   Edit Profile Information  </h3>
+                    <form class="chart-forms"  method="post">
+                        {{ form.media }}
+                        {% csrf_token %}
+                        {{ form | crispy }}
+                        <button class="show-chart" type="submit" > Update </button>
+                    </form>
+            {% endif %}
+            <a href="#">    <h3>   change password </h3></a>
+
+              <h3> Get a chart for any date </h3>
+                    <form class="chart-forms" action="" target="_blank"  method="post">
+                        {{ chart_form.media }}
+                        {% csrf_token %}
+                        {{ chart_form | crispy }}
+                        <button class="show-chart" type="submit" > Show chart </button>
+                    </form>
+            </div>
+          <div>
+        <h3> My charts </h3>
+        {% for chart in my_charts %}
+        <p> <a href="/chart/{{ chart.id }}/"  class="chart_link tooltip" style="color: aliceblue" >  {{chart.chart_name}}
+            <span class="tooltiptext"> {{ chart.chart_date }} </span></a> </p>
+        {% endfor %}
+    </div>
+        </div>
+
+
+
+          <div class="sign-buttons">
+                <div class="sign-button"> <img src="/static/images/aries.svg"></div>
+                <div class="sign-button"> <img src="/static/images/taurus.svg"> </div>
+                <div class="sign-button " style="background-color: fuchsia">4</div>
+                <div class="sign-button">5</div>
+                <div class="sign-button">6</div>
+                 <div class="sign-button"> <img src="/static/images/aries.svg"></div>
+                <div class="sign-button"> <img src="/static/images/taurus.svg"> </div>
+                <div class="sign-button">4</div>
+                <div class="sign-button">5</div>
+                <div class="sign-button">6</div>
+                <div class="sign-button">5</div>
+                <div class="sign-button">6</div>
+            </div>
+
+        <footer> footer
+            <img src="">
+        </footer>
 
          </div>
 
+     </div>
 
-</div>
 </body>
 </html>

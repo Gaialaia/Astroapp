@@ -23,7 +23,7 @@ import julian as jl
 from geopy.geocoders import Nominatim
 from pytz import timezone
 
-from .models import Chart, TransitChart, ZodiacInColors
+from .models import Chart, TransitChart, ZodiacInColors, FullChart
 from .forms import ChartForm, TransitChartForm, ZodiacInColorForm
 from .utils import build_plot
 from timezonefinder import TimezoneFinder
@@ -1472,9 +1472,22 @@ def my_chart_in_profile(request):
                                                                               [p[4] for p in form_coords_value]),
                                                      'house_data': set_signs(house_names, list(houses[0])),
                                                      'ats': aspect_table_s, 'ato': aspect_table_ops,
-                                                     'att': aspect_table_t, 'atc': aspect_table_c, 'date': d})
+                                                     'att': aspect_table_t, 'atc': aspect_table_c, 'date': d,
+                                                 })
+
+def chart_detail(request,id):
+
+    return render(request, 'chart.html', {'chart': FullChart.objects.get(id=id)})
 
 
+def delete_chart(request, id):
+
+    chart_to_delete = FullChart.objects.filter(id=id).first()
+
+    if request.method == 'POST':
+        chart_to_delete.delete()
+        messages.success(request, 'Chart deleted')
+        return redirect('my chart')
 
 
 

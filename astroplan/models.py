@@ -10,14 +10,31 @@ from datetime import datetime as dt
 
 now = dt.now()
 
+
 class Chart(models.Model):
 
     objects = None
-
     chart_date = models.DateTimeField(default=timezone.now)
     city = models.CharField(default='Ufa')
     country = models.CharField(default='Russia')
-    drawer =  models.ForeignKey(get_user_model(), default='drawer', on_delete=models.SET_DEFAULT)
+
+    def __str__(self):
+        return f'{self.chart_date}, {self.city}, {self.country}'
+
+
+
+
+
+class FullChart(models.Model):
+
+    objects = None
+
+    chart_name = models.CharField(default='My birthdate')
+    chart_date = models.DateTimeField(default=timezone.now)
+
+    city = models.CharField(default='Ufa')
+    country = models.CharField(default='Russia')
+    drawer =  models.ForeignKey(get_user_model(), on_delete=models.SET_DEFAULT, default=1)
 
     Sun_deg = models.CharField(default='5°05')
     Sun_sign = models.CharField(default='Aquarius')
@@ -46,8 +63,57 @@ class Chart(models.Model):
     Neptune_deg = models.CharField(default='11°60')
     Neptune_sign = models.CharField(default='Sagittarius')
 
-    Pluto_deg = models.CharField(default='13°40, Libra')
+    Pluto_deg = models.CharField(default='13°40')
     Pluto_sign = models.CharField(default='Libra')
+
+    first_house = models.CharField(default='Ascendant')
+    asc_deg = models.CharField(default='0°')
+    asc_sign = models.CharField(default='Aries')
+
+    second_house = models.CharField(default='What you have with & in you')
+    resource_deg = models.CharField(default='30°')
+    resource_sign = models.CharField(default='Taurus')
+
+    third_house = models.CharField(default='Mentality')
+    mental_deg = models.CharField(default='60°')
+    mental_sign = models.CharField(default='Gemini')
+
+    forth_house = models.CharField(default='Home')
+    home_deg = models.CharField(default='90°')
+    home_sign = models.CharField(default='Crab')
+
+    fifth_house = models.CharField(default='Games')
+    game_deg = models.CharField(default='120°')
+    game_sign = models.CharField(default='Crab')
+
+    sixth_house = models.CharField(default='Work')
+    work_deg = models.CharField(default='150°')
+    work_sign = models.CharField(default='Virgo')
+
+    seventh_house = models.CharField(default='Relationship')
+    rel_deg = models.CharField(default='180°')
+    rel_sign = models.CharField(default='Libra')
+
+    eighth_house = models.CharField(default='Magic')
+    magic_deg = models.CharField(default='210°')
+    magic_sign = models.CharField(default='Scorpio')
+
+    nineth_house = models.CharField(default='Esoteric knowledge')
+    esoteric_deg = models.CharField(default='230°')
+    esoteric_sign = models.CharField(default='Sagittarius')
+
+    tenth_house = models.CharField(default='Status')
+    status_deg = models.CharField(default='260°')
+    status_sign = models.CharField(default='Capricorn')
+
+    eleventh_house = models.CharField(default='Interests')
+    interests_deg = models.CharField(default='290°')
+    interests_sign = models.CharField(default='Aquarius')
+
+    twelfth_house = models.CharField(default='Benefits')
+    benefits_deg = models.CharField(default='330°')
+    benefits_sign = models.CharField(default='Pisces')
+
 
     chart_image = models.ImageField(upload_to='chart_plots/')
 
@@ -60,7 +126,20 @@ class Chart(models.Model):
                 f'{self.Saturn_deg}, {self.Saturn_sign},'
                 f'{self.Uranus_deg}, {self.Uranus_sign},'
                 f'{self.Neptune_deg}, {self.Neptune_sign},'
-                f'{self.Pluto_deg}, {self.Pluto_sign}')
+                f'{self.Pluto_deg}, {self.Pluto_sign}'
+                f'{self.first_house}, {self.asc_deg}, {self.asc_sign}',
+                f'{self.second_house}, {self.resource_deg}, {self.resource_sign}',
+                f'{self.third_house}, {self.mental_deg}, {self.mental_sign}',
+                f'{self.forth_house}, {self.home_deg}, {self.home_sign}',
+                f'{self.fifth_house}, {self.game_deg}, {self.game_sign}',
+                f'{self. sixth_house}, {self.work_deg}, {self.work_sign}',
+                f'{self.seventh_house}, {self.rel_deg}, {self.rel_sign}',
+                f'{self.eighth_house}, {self.magic_deg}, {self.magic_sign}',
+                f'{self.nineth_house}, {self.esoteric_deg}, {self.esoteric_sign}',
+                f'{self.tenth_house}, {self.status_sign}, {self.status_deg}',
+                f'{self.eleventh_house}, {self.interests_deg}, {self.interests_sign}',
+                f'{self.twelfth_house}, {self.benefits_deg}, {self.benefits_sign}',
+                )
 
 
 

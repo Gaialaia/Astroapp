@@ -204,6 +204,12 @@ td {
     gap: 10px;
 }
 
+.messages {
+    background-color: rgba(237,40,89,0.3);
+    border-radius: 30%;
+}
+
+
 
 .transit-data {
     display: grid;
@@ -211,7 +217,7 @@ td {
     /* grid-auto-rows: minmax(100px, auto); */
     height: fit-content;
     width: fit-content;
-    grid-template-rows: 2;
+    grid-template-rows: 3;
     align-content: center;
     background-color: rgba(159,0,255, 0.4);
     color: rgb(216,218,220);
@@ -276,7 +282,6 @@ h1 {
     width: fit-content;
     text-align: center;
     padding: 17px;
-    background-color: rgba(159,0,255, 0.4);
 
 }
 
@@ -337,6 +342,11 @@ h1 {
     margin-left: auto;
     margin-right: auto;
     color: gold;
+}
+
+
+.chart_link {
+    color: aliceblue;
 }
 
 
