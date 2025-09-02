@@ -41,6 +41,32 @@
         </nav>
 
      <div class="chart-data">
+         <div class="messages">
+                            {% if messages %}
+                                {% for message in messages %}
+
+                                        {% if message.tags == 'success' %}
+                                            {{ message|safe|escape }}
+
+
+
+                                        {% elif message.tags == 'error' %}
+                                            {{ message|safe }}
+
+
+
+                                        {% elif message.tags == 'info' %}
+                                              {{ message|safe|escape }}
+
+
+
+                                        {% elif message.tags == 'warning' %}
+                                            {{ message|safe|escape }}
+
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                        </div>
          <div class="chart-form">
               {% if user.is_authenticated %}
                Welcome,  {{ user.username }}
@@ -51,6 +77,8 @@
                   <h2 class="">{{ form.instance.username }}
                     <small class="">({{ form.instance.status }})</small>
                 </h2>
+                  <img src="{{ user.avatar(256) }}">
+
                 <p class="">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
                 <p class="">{{ form.instance.birthdate }}</p>
 
@@ -72,7 +100,7 @@
                         {{ chart_form.media }}
                         {% csrf_token %}
                         {{ chart_form | crispy }}
-                        <button class="show-chart" type="submit" > Show chart </button>
+                        <button class="show-chart" type="submit" > Get chart </button>
                     </form>
             </div>
           <div>

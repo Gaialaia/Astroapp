@@ -29,8 +29,8 @@ import julian as jl
 from geopy.geocoders import Nominatim
 from pytz import timezone
 
-from astroplan.models import Chart, TransitChart, ZodiacInColors
-from astroplan.forms import ChartForm, TransitChartForm, ZodiacInColorForm
+from astroplan.models import Chart, TransitChart, ZodiacInColors, FullChart
+from astroplan.forms import FullChartForm, TransitChartForm, ZodiacInColorForm
 import os
 
 from timezonefinder import TimezoneFinder
@@ -178,11 +178,12 @@ def activate(request, uidb64, token):
 
 
 def my_chart(request, username):
-    chart_form = ChartForm(request.POST or None, request.FILES or None)
+
+    chart_form = FullChartForm(request.POST or None, request.FILES or None)
 
     if chart_form.is_valid():
         chart_form.save()
-        chart = Chart.objects.last()
+        chart = FullChart.objects.last()
         get_loc = loc.geocode(f'{chart.city, chart.country}', timeout=7000)
         tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
         d = chart.chart_date
@@ -277,37 +278,87 @@ def my_chart(request, username):
 
         houses = swe.houses_ex(jd, get_loc.latitude, get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
 
-        data_for_db = [(set_signs(planet_names, [p[4] for p in form_coords_value]))]
-        chart.Sun_deg = data_for_db[0][0][1]
-        chart.Sun_sign = f' {data_for_db[0][0][2]}'
+        planet_data_for_db = [(set_signs(planet_names, [p[4] for p in form_coords_value]))]
+        chart.Sun_deg = planet_data_for_db[0][0][1]
+        chart.Sun_sign = f' {planet_data_for_db[0][0][2]}'
 
-        chart.Moon_deg = f'{data_for_db[0][1][1]}'
-        chart.Moon_sign = data_for_db[0][1][2]
+        chart.Moon_deg = f'{planet_data_for_db[0][1][1]}'
+        chart.Moon_sign = planet_data_for_db[0][1][2]
 
-        chart.Mercury_deg = f'{data_for_db[0][2][1]}'
-        chart.Mercury_sign = data_for_db[0][2][2]
+        chart.Mercury_deg = f'{planet_data_for_db[0][2][1]}'
+        chart.Mercury_sign = planet_data_for_db[0][2][2]
 
-        chart.Venus_deg = f'{data_for_db[0][3][1]}'
-        chart.Venus_sign = data_for_db[0][3][2]
+        chart.Venus_deg = f'{planet_data_for_db[0][3][1]}'
+        chart.Venus_sign = planet_data_for_db[0][3][2]
 
-        chart.Mars_deg = data_for_db[0][4][1]
-        chart.Mars_sign = data_for_db[0][4][2]
+        chart.Mars_deg = planet_data_for_db[0][4][1]
+        chart.Mars_sign = planet_data_for_db[0][4][2]
 
-        chart.Jupiter_deg = f'{data_for_db[0][5][1]}'
-        chart.Jupiter_sign = data_for_db[0][5][2]
+        chart.Jupiter_deg = f'{planet_data_for_db[0][5][1]}'
+        chart.Jupiter_sign = planet_data_for_db[0][5][2]
 
-        chart.Saturn_deg = f'{data_for_db[0][6][1]}'
-        chart.Saturn_sign = data_for_db[0][6][2]
+        chart.Saturn_deg = f'{planet_data_for_db[0][6][1]}'
+        chart.Saturn_sign = planet_data_for_db[0][6][2]
 
-        chart.Uranus = f'{data_for_db[0][7][1]}'
-        chart.Uranus_deg = data_for_db[0][7][2]
+        chart.Uranus_sign = f'{planet_data_for_db[0][7][1]}'
+        chart.Uranus_deg = planet_data_for_db[0][7][2]
 
-        chart.Neptune_deg = f'{data_for_db[0][8][1]}'
-        chart.Neptune_sign = data_for_db[0][8][2]
+        chart.Neptune_deg = f'{planet_data_for_db[0][8][1]}'
+        chart.Neptune_sign = planet_data_for_db[0][8][2]
 
-        chart.Pluto_deg = f'{data_for_db[0][9][1]}'
-        chart.Pluto_sign = data_for_db[0][9][2]
+        chart.Pluto_deg = f'{planet_data_for_db[0][9][1]}'
+        chart.Pluto_sign = planet_data_for_db[0][9][2]
 
+        hc_data_for_db = [set_signs(house_names, list(houses[0]))]
+
+        chart.first_house = hc_data_for_db[0][0][0]
+        chart.asc_deg = hc_data_for_db[0][0][1]
+        chart.asc_sign = hc_data_for_db[0][0][2]
+
+        chart.second_house = hc_data_for_db[0][1][0]
+        chart.resource_deg = hc_data_for_db[0][1][1]
+        chart.resource_sign = hc_data_for_db[0][1][2]
+
+        chart.third_house = hc_data_for_db[0][2][0]
+        chart.mental_deg = hc_data_for_db[0][2][1]
+        chart.mental_sign = hc_data_for_db[0][2][2]
+
+        chart.forth_house = hc_data_for_db[0][3][0]
+        chart.home_deg = hc_data_for_db[0][3][1]
+        chart.home_sign = hc_data_for_db[0][3][2]
+
+        chart.fifth_house = hc_data_for_db[0][4][0]
+        chart.game_deg = hc_data_for_db[0][4][1]
+        chart.game_sign = hc_data_for_db[0][4][2]
+
+        chart.sixth_house = hc_data_for_db[0][5][0]
+        chart.work_deg = hc_data_for_db[0][5][1]
+        chart.work_sign = hc_data_for_db[0][5][2]
+
+
+        chart.seventh_house = hc_data_for_db[0][6][0]
+        chart.rel_deg = hc_data_for_db[0][6][1]
+        chart.rel_sign = hc_data_for_db[0][6][2]
+
+        chart.eighth_house = hc_data_for_db[0][7][0]
+        chart.magic_deg = hc_data_for_db[0][7][1]
+        chart.magic_sign = hc_data_for_db[0][7][2]
+
+        chart.nineth_house = hc_data_for_db[0][8][0]
+        chart.esoteric_deg = hc_data_for_db[0][8][1]
+        chart.esoteric_sign = hc_data_for_db[0][8][2]
+
+        chart.tenth_house = hc_data_for_db[0][9][0]
+        chart.status_deg = hc_data_for_db[0][9][1]
+        chart.status_sign = hc_data_for_db[0][9][2]
+
+        chart.eleventh_house = hc_data_for_db[0][10][0]
+        chart.interests_deg = hc_data_for_db[0][10][1]
+        chart.interests_sign = hc_data_for_db[0][10][2]
+
+        chart.twelfth_house = hc_data_for_db[0][11][0]
+        chart.benefits_deg = hc_data_for_db[0][11][1]
+        chart.benefits_sign = hc_data_for_db[0][11][2]
         chart.save()
 
         aspect_table_s = None
@@ -421,6 +472,8 @@ def my_chart(request, username):
                                                  'att': aspect_table_t, 'atc': aspect_table_c, 'date': d})
 
 
+    my_charts = FullChart.objects.filter()
+
     if request.method == 'POST':
             user = request.user
             form = UserUpdateForm(request.POST, request.FILES, instance=user)
@@ -437,7 +490,8 @@ def my_chart(request, username):
     if user:
         form = UserUpdateForm(instance=user)
         form.fields['description'].widget.attrs = {'rows': 1}
-        return render(request, 'my_chart.html', context={'form': form, 'chart_form':chart_form})
+        return render(request, 'my_chart.html', context={'form': form, 'chart_form':chart_form,
+                                                         'my_charts':my_charts})
 
     return redirect("showed chart")
 

@@ -1,5 +1,7 @@
+
 {% load static %}
 {% load crispy_forms_tags %}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,6 +49,8 @@
         Event country : {{ chart.country }}
 
          <div class="table-data">
+
+
          <table>
              <caption> Planet data </caption>
              <thead>
@@ -220,6 +224,9 @@
                             <td> {{ chart.benefits_deg }}</td>
                              <td> {{ chart.benefits_sign }}</td>
                         </tr>
+                         </tbody>
+
+               </table>
 
 
                         <div class="chart-fig">
@@ -227,27 +234,17 @@
                         </div>
 
 
-    <button  class="show-chart"  type="submit">
-      <a href=""> Delete {{ chart_to_delete.chart_name }} </a>
-    </button>
+                        <form method ="POST" action="">
+                            {% csrf_token %}
+                            <button  class="show-chart"  type="submit">
+                             Delete {{ chart.chart_name }}
+                                </button>
+                        </form>
+
+                        <a href="{% url 'my chart' user.username %}" > Back to my charts </a>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-                   </tbody>
-
-               </table>
            </div>
 
 
