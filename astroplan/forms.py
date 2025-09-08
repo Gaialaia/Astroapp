@@ -1,17 +1,48 @@
+from email.policy import default
+
 from django.forms import DateInput, ModelForm
 from django_flatpickr.widgets import DatePickerInput, DateTimePickerInput
 
-from .models import Chart, TransitChart, ZodiacInColors
+from .models import Chart, TransitChart, ZodiacInColors, FullChart
 import datetime
 
 
 from django import forms
 
 
+class TestForm(forms.Form):
+    date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter date')
+    city = forms.CharField(label='Enter city')
+    country = forms.CharField(label='Enter country')
+
+    class Media:
+        css = {
+            'all': ['/static/styles/form_style.css']
+        }
+
+
+class FullChartForm(forms.ModelForm):
+    class Meta:
+        model = FullChart
+        fields = ['chart_name','chart_date', 'city', 'country']
+        labels = {'chart_name':'Enter event name',
+                'chart_date': 'Enter date',
+                'city': 'Enter city',
+                'country': 'Enter country'
+                  }
+        widgets = {
+            'chart_date': DateTimePickerInput()}
+
+        class Media:
+            css = {
+                'all': ['/static/styles/form_style.css']
+            }
+
+
 class ChartForm(forms.ModelForm):
     class Meta:
         model = Chart
-        fields = '__all__'
+        fields = ['chart_date', 'city', 'country']
         labels = {'chart_date': 'Enter date',
                   'city': 'Enter city',
                   'country': 'Enter country'
@@ -157,7 +188,16 @@ class ZodiacInColorForm(forms.ModelForm):
                 
                 
                 
-        
+# class PlanetDataForm(forms.ModelForm):
+#
+#     class Meta:
+#         model = PlanetData
+#         fields = '__all__'
+#
+#     class Media:
+#         css = {
+#             ' all': ['/static/styles/form_style.css']}
+
 
    
    

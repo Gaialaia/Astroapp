@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model, login, logout, authenticate
 from .forms import UserRegistrationForm, UserLoginForm, UserUpdateForm
 from .decorators import user_not_auth
@@ -109,11 +109,11 @@ def register(request):
         reg_form = UserRegistrationForm(request.POST)
         if reg_form.is_valid():
             user = reg_form.save(commit=False)
-            user.is_active = False
+            # user.is_active = False
             user.save()
-            # login(request, user)
-            activate_email(request, user, reg_form.cleaned_data.get('email'))
-            # messages.success(request, f"New account created: {user.username}")
+            login(request, user)
+            # activate_email(request, user, reg_form.cleaned_data.get('email'))
+            messages.success(request, f"New account created: {user.username}")
             return redirect('showed chart')
         else:
             for error in list(reg_form.errors.values()):
@@ -189,6 +189,7 @@ def my_chart(request, username):
         d = chart.chart_date
         # d = dt.strptime(chart.chart_date, '%Y-%m-%d %H:%m:%s')
         jd = jl.to_jd(d, fmt='jd')
+        chart.drawer = get_object_or_404(get_user_model(),username=username)
 
         pd = {swe.get_planet_name(0): ['☼', 'yellow', 5, 17, swe.calc_ut(jd, 0, flags)[0][0],
                                        swe.calc_ut(jd, 0, flags)[0][1], 10],
@@ -453,7 +454,7 @@ def my_chart(request, username):
                                    color='darkgoldenrod',
                                    arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-        plt.savefig('astroplan/static/plots/chart_for_date.png')
+        plt.savefig('astroplan/static/plots/user_chart.png')
 
         img_path = 'astroplan/media/astroplan/images/'
         fn_path = os.path.join(img_path, f'{d}.png')
@@ -464,7 +465,7 @@ def my_chart(request, username):
             chart.save()
         swe.close()
 
-        return render(request, 'my_chart_profile.html', {
+        return render(request, 'user_chart.html', {
                                                  'planet_data': set_signs(planet_names,
                                                                           [p[4] for p in form_coords_value]),
                                                  'house_data': set_signs(house_names, list(houses[0])),
@@ -472,7 +473,8 @@ def my_chart(request, username):
                                                  'att': aspect_table_t, 'atc': aspect_table_c, 'date': d})
 
 
-    my_charts = FullChart.objects.filter()
+
+
 
     if request.method == 'POST':
             user = request.user
@@ -487,6 +489,8 @@ def my_chart(request, username):
                 messages.error(request, error)
 
     user = get_user_model().objects.filter(username=username).first()
+    userid = request.user.id
+    my_charts = FullChart.objects.filter(drawer__id=userid)
     if user:
         form = UserUpdateForm(instance=user)
         form.fields['description'].widget.attrs = {'rows': 1}

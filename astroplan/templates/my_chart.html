@@ -70,14 +70,16 @@
          <div class="chart-form">
               {% if user.is_authenticated %}
                Welcome,  {{ user.username }}
+
+              <br> <img src="{{ user.make_avatar }}">
+
             {% else %}
               You have not logged in
          <a href="http://127.0.0.1:8000/login/"> Log in </a>
          {% endif %}
                   <h2 class="">{{ form.instance.username }}
-                    <small class="">({{ form.instance.status }})</small>
+
                 </h2>
-                  <img src="{{ user.avatar(256) }}">
 
                 <p class="">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
                 <p class="">{{ form.instance.birthdate }}</p>
@@ -109,6 +111,7 @@
         <p> <a href="/chart/{{ chart.id }}/"  class="chart_link tooltip" style="color: aliceblue" >  {{chart.chart_name}}
             <span class="tooltiptext"> {{ chart.chart_date }} </span></a> </p>
         {% endfor %}
+
     </div>
         </div>
 

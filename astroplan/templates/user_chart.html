@@ -87,13 +87,7 @@
                             {% endif %}
                         </div>
 
-                    <h3> Chart for any date </h3>
-                    <form class="chart-forms" action="/show_by_date/" target="_blank"  method="post">
-                        {{ chart_form.media }}
-                        {% csrf_token %}
-                        {{ chart_form | crispy }}
-                        <button class="show-chart" type="submit" > Show chart </button>
-                    </form>
+
 
                     <div class="table-data">
                         <table id="planet-list" >
@@ -197,7 +191,7 @@
 
             <div class="chart-fig" style="background-color: none;">
                 <h1> Planet chart for {{ date }}</h1>
-                  <img src="{% static 'plots/now_chart.png' %}" alt="plot" id="chart-plot" style="background-color: none"  >
+                  <img src="{% static 'plots/user_chart.png' %}" alt="plot" id="chart-plot" style="background-color: none"  >
 
             </div>
 
@@ -245,6 +239,10 @@
                      {% endfor %}
                 </tbody>
                 </table>
+                    <div>
+                    <a href="{% url 'my chart' user.username %}" style="color:aliceblue"> Back to my charts  </a>
+                    </div>
+
             </div>
         </div>
 
