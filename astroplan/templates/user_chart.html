@@ -1,22 +1,10 @@
+{% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'styles/layout.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/form_style.css' %}" media="all">
-    <link rel="stylesheet" href="{% static 'styles/custom_flatpickr_styles.css' %}">
-    <title> </title>
-</head>
-<body>
+{% block title %} Chart for your date {% endblock %}
 
- <div class="main-container">
-
-        <div> <img src="/static/images/hat.png" alt="hat" id="hat"> </div>
-
-        <nav class="navigation">
+{% block navigation %}
             <div class="menu-choice" > <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/" target = '_blank'> Today chart </a>
                 <div class="dropdown-content">
                      <a href="#">Link 1</a>
@@ -58,216 +46,49 @@
              </div>
         </nav>
 
-        <div class="chart-data">
-                <div class="chart-form">
-                    <div class="messages">
-                            {% if messages %}
-                                {% for message in messages %}
+     {% endblock %}
 
-                                        {% if message.tags == 'success' %}
-                                            {{ message|safe|escape }}
+     {% block chart-data %}
 
 
-
-                                        {% elif message.tags == 'error' %}
-                                            {{ message|safe }}
-
-
-
-                                        {% elif message.tags == 'info' %}
-                                              {{ message|safe|escape }}
-
-
-
-                                        {% elif message.tags == 'warning' %}
-                                            {{ message|safe|escape }}
-
-                            {% endif %}
-                            {% endfor %}
-                            {% endif %}
-                        </div>
-
-
+                    {% include 'includes/messages.html' %}
 
                     <div class="table-data">
-                        <table id="planet-list" >
-                <caption> Planet position data </caption>
-                <thead>
-                  <tr>
-                        <th> Planet </th>
-                        <th> Degrees </th>
-                        <th> Sign </th>
-                  </tr>
-                </thead>
-                <tbody>
-                         {% for name, deg, sign in planet_data %}
-                    <tr> {% if name == 'Sun' %}
-                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
-                           ☼ <span class="tooltiptext"> {{ name }}  </span></a>
-                           </td>
-                        {% elif name == 'Moon' %}
-                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
-                           ☾ <span class="tooltiptext"> {{ name }}  </span></a> </td>
-                         {% elif name == 'Mercury' %}
-                             <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">
-                            <span class="tooltiptext">  {{ name }}  </span>  </a>  </td>
-                         {% elif name == 'Venus' %}
-                             <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">
-                                 <span class="tooltiptext"> {{ name }}</span></a>  </td>
-                         {% elif name == 'Mars' %}
-                             <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">
-                                 <span class="tooltiptext"> {{ name }}  </span>  </a> </td>
-                         {% elif name == 'Jupiter' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
-                                ♃  <span class="tooltiptext"> {{ name }} </span></a>  </td>
-                         {% elif name == 'Saturn' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
-                                 ♄  <span class="tooltiptext">  {{ name }}  </span> </a> </td>
-                         {% elif name == 'Uranus' %}
-                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
-                                  ♅  <span class="tooltiptext">  {{ name }}  </span> </a> </td>
-                         {% elif name == 'Neptune' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
-                                   ♆ <span class="tooltiptext"> {{ name }}</span></a>  </td>
-                         {% elif name == 'Pluto' %}
-                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
-                                  ♇  <span class="tooltiptext">{{ name }}</span></a></td>
-                        {% endif %}
-                            <td> {{ deg }}</td>
-                            <td style="font-size: xx-large"> {{ sign }}</td>
-                          {% endfor %}
-                    </tr>
-                </tbody>
-                            </table>
+                        {% include 'includes/planet_list.html' %}
                         </div>
 
-                </div>
-
                 <div class="table-data">
-                 <table id="all-aspects">
-                     <caption> Aspects </caption>
-                    <thead>
-                     <tr>
-                         <th> planet </th>
-                         <th> angle </th>
-                         <th> planet </th>
-                    </tr>
-                </thead>
+                      {% include 'includes/aspects.html' %}
+            </div>
 
-                <tbody>
-                    {% for pn, angle, ap in ats %}
-                    <tr>
-                        <td> {{ pn }} </td>
-                            <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> square </span></td>
-                         <td> {{ ap }} </td>
-                    </tr>
-                    {% endfor %}
-
-                     {% for pn, angle, ap in att %}
-                    <tr>
-                        <td> {{ pn }} </td>
-                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> trine  </span></td>
-                         <td> {{ ap }} </td>
-                    </tr>
-                    {% endfor %}
-                     {% for pn, angle, ap in ato %}
-                    <tr>
-                        <td> {{ pn }} </td>
-                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> opposition  </span></td>
-                         <td> {{ ap }} </td>
-                        {% endfor %}
-                    </tr>
-
-                      {% for pn, angle, ap in atc %}
-                    <tr>
-                        <td> {{ pn }} </td>
-                           <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> conjunction  </span></td>
-                         <td> {{ ap }} </td>
-                         {% endfor %}
-                    </tr>
-                        </tbody>
-                    </table>
-                    </div>
-
-            <div class="chart-fig" style="background-color: none;">
+                 <div class="chart-fig" style="background-color: none;">
                 <h1> Planet chart for {{ date }}</h1>
                   <img src="{% static 'plots/user_chart.png' %}" alt="plot" id="chart-plot" style="background-color: none"  >
-
-            </div>
-
-
-                <div class="table-data">
-                <table id="house-cusps-table">
-                    <caption> House cusps data </caption>
-                <thead>
-                  <tr>
-                        <th> number</th>
-                        <th> Degrees </th>
-                        <th> Sign </th>
-                  </tr>
-                </thead>
-                <tbody>
-                     {% for hn, deg, sign in house_data %}
-                    <tr> {% if hn == 'ASC' %}
-                         <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Appereance </span> </td>
-                        {% elif hn == 'II' %}
-                         <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Resource </span> </td>
-                         {% elif hn == 'III' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Mental abilities </span> </td>
-                        {% elif hn == 'IC' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Housing </span> </td>
-                        {% elif hn == 'V' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Fun, entertainment, art </span> </td>
-                        {% elif hn == 'VI' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Work, service </span> </td>
-                        {% elif hn == 'DSC' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Relationship </span> </td>
-                        {% elif hn == 'VIII' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Sex, magic </span> </td>
-                        {% elif hn == 'IX' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Higher knowledge </span> </td>
-                        {% elif hn == 'MC' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Power </span> </td>
-                        {% elif hn == 'XI' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Friends, interests </span> </td>
-                        {% elif hn == 'XII' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Results  </span> </td>
-                        {% endif %}
-                        <td> {{ deg }}</td>
-                        <td style="font-size: xx-large"> {{ sign }}</td>
-                    </tr>
-                     {% endfor %}
-                </tbody>
-                </table>
-                    <div>
+                        <div>
                     <a href="{% url 'my chart' user.username %}" style="color:aliceblue"> Back to my charts  </a>
                     </div>
-
-            </div>
-        </div>
-
- <div class="sign-buttons">
-                <div class="sign-button"> <img src="/static/images/aries.svg"></div>
-                <div class="sign-button"> <img src="/static/images/taurus.svg"> </div>
-                <div class="sign-button " style="background-color: fuchsia">4</div>
-                <div class="sign-button">5</div>
-                <div class="sign-button">6</div>
-                 <div class="sign-button"> <img src="/static/images/aries.svg"></div>
-                <div class="sign-button"> <img src="/static/images/taurus.svg"> </div>
-                <div class="sign-button">4</div>
-                <div class="sign-button">5</div>
-                <div class="sign-button">6</div>
-                <div class="sign-button">5</div>
-                <div class="sign-button">6</div>
+                </div>
+                  <div class="table-data">
+                      {% include 'includes/house_cusps.html' %}
             </div>
 
-        <footer> footer
-            <img src="">
-        </footer>
+ {% endblock %}
 
 
 
 
 
-</body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

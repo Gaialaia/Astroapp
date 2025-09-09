@@ -349,4 +349,8 @@ h1 {
     color: aliceblue;
 }
 
+#transit-data {
+    margin-left: auto;
+    margin-right: auto;
+}
 

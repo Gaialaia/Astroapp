@@ -1,63 +1,7 @@
+{% extends "base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'styles/layout.css' %}">
-    <title>Wheel Year</title>
-</head>
-<body>
-
-<div class="main-container">
-
-        <div> <img src="/static/images/hat.png" alt="hat" id="hat"> </div>
-
-        <nav class="navigation">
-            <div class="menu-choice"> <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/" target = '_blank'> Today chart </a>
-                <div class="dropdown-content">
-                     <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
-                </div>
-            </div>
-            <div class="menu-choice" > <a  class="menu-link" href="http://127.0.0.1:8000/transit_form" target = '_blank'>Transits</a></div>
-            <div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));" >  <a href="#" target = '_blank'>Wheel Year</a></div>
-            <div class="menu-choice">  <a href="#" target = '_blank'>Interpretations</a></div>
-            <div class="menu-choice">
-                <div class="menu-choice-dd">
-                       Creative Astrology
-                       <div class="menu-choice-dd-content">
-                        <a href="http://127.0.0.1:8000/design_your_chart"> colorful chart </a>
-                           <a href="#"> imaginery chart </a>
-                         </div>
-                </div>
-            </div>
-             <div class="menu-choice"> <a href="http://127.0.0.1:8000/my_chart" target = '_blank'>My chart</a> </div>
-            <div class="menu-choice"><a href="http://127.0.0.1:8000/shop" target = '_blank'>Shop</a></div>
-        </nav>
-
-    <div class="chart-data" >
-        <div>
+{% block title %} Wheel Year {% endblock %}
 
 
-     <div class="sign-buttons">
-                <div class="sign-button"> <img src="/static/images/aries.svg"></div>
-                <div class="sign-button"> <img src="/static/images/taurus.svg"> </div>
-                <div class="sign-button " style="background-color: fuchsia">4</div>
-                <div class="sign-button">5</div>
-                <div class="sign-button">6</div>
-                 <div class="sign-button"> <img src="/static/images/aries.svg"></div>
-                <div class="sign-button"> <img src="/static/images/taurus.svg"> </div>
-                <div class="sign-button">4</div>
-                <div class="sign-button">5</div>
-                <div class="sign-button">6</div>
-                <div class="sign-button">5</div>
-                <div class="sign-button">6</div>
-            </div>
 
-</div>
-
-
-</body>
-</html>
