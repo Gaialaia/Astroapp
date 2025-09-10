@@ -1,33 +1,16 @@
-
+{% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
 
+{% block title %} Transit chart detail {% endblock %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'styles/layout.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/form_style.css' %}" media="all">
-    <link rel="stylesheet" href="{% static 'styles/custom_flatpickr_styles.css' %}">
-    <title>{{ chart.chart_name}}</title>
-</head>
-<body>
 
-    <div class="main-container">
- <div> <img src="/static/images/hat.png" alt="hat" id="hat"> </div>
-        <nav class="navigation">
-            <div class="menu-choice" > <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/" target = '_blank'> Today chart </a>
-                <div class="dropdown-content">
-                     <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
-                </div>
+{% block navigation %}
+<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));"> <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/"> Today chart </a>
             </div>
-
             <div class="menu-choice" > <a  class="menu-link" href="http://127.0.0.1:8000/transit_form" target = '_blank'>Transits</a></div>
-            <div class="menu-choice" >  <a href="#" target = '_blank'>Wheel Year</a></div>
-            <div class="menu-choice">  <a href="#" target = '_blank'>Interpretations</a></div>
+            <div class="menu-choice" >  <a href="http://127.0.0.1:8000/wheel_year" target = '_blank'>Wheel Year</a></div>
+            <div class="menu-choice">  <a href="http://127.0.0.1:8000/interpretations" target = '_blank'>Interpretations</a></div>
             <div class="menu-choice">
                 <div class="menu-choice-dd">
                        Creative Astrology
@@ -37,19 +20,35 @@
                          </div>
                 </div>
             </div>
-             <div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));"> <a href="http://127.0.0.1:8000/my_chart" target = '_blank'>My chart</a> </div>
-            <div class="menu-choice"><a href="#" target = '_blank'>Shop</a></div>
-        </nav>
 
-     <div class="chart-data">
+            <div class="menu-choice"><a href="http://127.0.0.1:8000/shop" target = '_blank'>Shop</a></div>
 
-         Event name : {{ chart.chart_name }}
+            <div class="menu-choice">
+                {% if user.is_authenticated %}
+             <div class="menu-choice-dd"> <a href= "{% url 'my chart' user.username %}" target = '_blank'>
+                 My chart {{ user.username }}</a>
+                       <div class="menu-choice-dd-content">
+                        <a href="{% url 'logout' %}">  Log out </a>
+                    {% else %}
+                            <div class="menu-choice-dd"> OPTION
+                                <div class="menu-choice-dd-content">
+                           <a href="{% url 'login' %}" target = '_blank'> Log In </a> <br>
+                           <a href="{% url 'register' %}" target = '_blank'> Sign Up </a>
+                         </div>
+                   </div>
+                 {% endif %}
+             </div>
+{% endblock %}
+
+                 {% block chart-data %}
+
+
+                   Event name : {{ chart.chart_name }}
         Event date: {{ chart.chart_date }}
         Event city : {{ chart.city }}
         Event country : {{ chart.country }}
 
          <div class="table-data">
-
 
          <table>
              <caption> Planet data </caption>
@@ -248,11 +247,4 @@
            </div>
 
 
-
-     </div>
-
-
-    </div>
-
-</body>
-</html>
+                 {% endblock %}

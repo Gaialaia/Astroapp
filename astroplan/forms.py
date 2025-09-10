@@ -2,7 +2,7 @@ from email.policy import default
 
 from django.forms import DateInput, ModelForm
 from django_flatpickr.widgets import DatePickerInput, DateTimePickerInput
-
+from django.utils import timezone
 from .models import Chart, TransitChart, ZodiacInColors, FullChart
 import datetime
 
@@ -76,6 +76,23 @@ class TransitChartForm(forms.ModelForm):
                   'transit_city':  'Enter city',
                   'transit_country': 'Enter country',
                   }
+
+class TransitForm(forms.Form):
+
+    event_date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter event date')
+    event_city = forms.CharField(label='Enter event city')
+    event_country = forms.CharField(label='Enter event country')
+
+    transit_date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter transit date')
+    transit_city = forms.CharField(label='Enter transit city')
+    transit_country = forms.CharField(label='Enter transit country')
+
+    class Media:
+        css = {
+            'all': ['/static/styles/form_style.css']
+        }
+
+
 
 class ZodiacInColorForm(forms.ModelForm):
     

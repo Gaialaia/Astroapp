@@ -1,0 +1,8 @@
+{% load crispy_forms_tags %}
+
+<form class="chart-forms" action="/transit_form/" target="_blank"  method="post">
+                    {% csrf_token %}
+                    {{ tr_form.media }}
+                    {{ tr_form | crispy }}
+                    <button class="show-chart" type="submit"> Show transits </button>
+                    </form>

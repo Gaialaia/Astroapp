@@ -14,11 +14,9 @@
 <body>
 
  <div class="main-container">
-
         <div> <img src="/static/images/hat.png" alt="hat" id="hat"> </div>
-
         <nav class="navigation">
-            <div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));"> <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/" target = '_blank'> Today chart </a>
+            <div class="menu-choice" > <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/" target = '_blank'> Today chart </a>
                 <div class="dropdown-content">
                      <a href="#">Link 1</a>
                     <a href="#">Link 2</a>
@@ -42,7 +40,7 @@
 
             <div class="menu-choice"><a href="http://127.0.0.1:8000/shop" target = '_blank'>Shop</a></div>
 
-            <div class="menu-choice">
+            <div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
              <div class="menu-choice-dd">
                  <a href="http://127.0.0.1:8000/my_chart" target = '_blank'>
                  My chart {{ user.username }}</a>
@@ -56,9 +54,6 @@
                    </div>
                  {% endif %}
              </div>
-
-
-
         </nav>
 
         <div class="chart-data">
@@ -70,18 +65,17 @@
                         {{ auth_form | crispy }}
                         <button class="show-chart" type="submit" > Log In </button>
                     </form>
-                 </div>
+             </div>
 
-            <div> <a href="http://127.0.0.1:8000/register" target = '_blank'> Sign Up  </a>
-            </div>
+            <a href="http://127.0.0.1:8000/register" target = '_blank'> Sign Up  </a>
+
 
             <div>
-                Forgot password
+                <a href="#" Forgot Passoword? </a>
             </div>
-
         </div>
 
-     </div>
+ </div>>
 
 </body>
 </html>

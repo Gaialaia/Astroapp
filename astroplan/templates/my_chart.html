@@ -57,6 +57,15 @@
 
               <h3> Get a chart for any date </h3>
                      {% include 'includes/form.html' %}
+
+                   <h3> Transit chart </h3>
+
+             <form class="chart-forms" target="_blank"  method="post">
+                        {{ tr_form.media }}
+                        {% csrf_token %}
+                        {{ tr_form | crispy }}
+                        <button class="show-chart" type="submit" > Show transit chart </button>
+                    </form>
             </div>
           <div>
         <h3> My charts </h3>

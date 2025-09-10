@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Activate account</title>
+</head>
+<body>
+
+ <div class="main-container">
+
+     <div class="chart-data">
+
+         {% autoescape off %}
+            Hi {{ user.username }},
+
+            Please click on the link below to confirm your registration:
+
+            http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+         {% endautoescape %}
+
+     </div>
+
+
+
+
+ </div>
+
+
+
+
+</body>
+</html>

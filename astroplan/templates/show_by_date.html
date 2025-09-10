@@ -37,9 +37,23 @@
             </div>
 
 
-            <div class="menu-choice"><a href="http://127.0.0.1:8000/chart_form" target = '_blank'>My chart</a> </div>
+            <div class="menu-choice"><a href="http://127.0.0.1:8000/shop" target = '_blank'>Shop</a></div>
 
-            <div class="menu-choice"><a href="#" target = '_blank'>Shop</a></div>
+             <div class="menu-choice">
+                {% if user.is_authenticated %}
+             <div class="menu-choice-dd"> <a href= "{% url 'my chart' user.username %}" target = '_blank'>
+                 My chart {{ user.username }}</a>
+                       <div class="menu-choice-dd-content">
+                        <a href="{% url 'logout' %}">  Log out </a>
+                    {% else %}
+                            <div class="menu-choice-dd"> OPTION
+                                <div class="menu-choice-dd-content">
+                           <a href="{% url 'login' %}" target = '_blank'> Log In </a> <br>
+                           <a href="{% url 'register' %}" target = '_blank'> Sign Up </a>
+                         </div>
+                   </div>
+                 {% endif %}
+             </div>
         </nav>
 
         <div class="chart-data">
@@ -90,7 +104,7 @@
             </div>
 
             <div id="chart-fig">
-                <h1> Planet chart for {{ date }}</h1>
+                <h1> Planet chart for {{ date }} {{ city }} {{ country }} <br> {{ latitude }} {{ longitude }}</h1>
                   <img src="{% static 'plots/chart_for_date.png' %}" alt="plot" id="chart-plot">
             </div>
             <div class="table-data">
@@ -191,29 +205,8 @@
 
                         </tbody>
                     </table>
-                  </div>
-
+                     </div>
         </div>
-            <div class="chart-df">
-
-                <div id="chart-form">
-                     {{ chart_form.media }}
-                    <form action="/show_by_date/" target="_blank"  method="post">
-                        {% csrf_token %}
-                        {{ chart_form.as_p }}
-                        <input type="submit" value="Submit">
-                    </form>
-
-                </div>
-                <div id="transit-form">
-                        {{ tr_form.media }}
-                    <form action=" " method="post">
-                        {% csrf_token %}
-                        {{ tr_form.as_p }}
-                        <input type="submit" value="Submit">
-                    </form>
-                </div>
-            </div>
 
 
             <div class="sign-buttons">

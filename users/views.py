@@ -181,6 +181,8 @@ def my_chart(request, username):
 
     chart_form = FullChartForm(request.POST or None, request.FILES or None)
 
+    tr_form = TransitChartForm(request.POST or None, request.FILES or None)
+
     if chart_form.is_valid():
         chart_form.save()
         chart = FullChart.objects.last()
@@ -473,6 +475,272 @@ def my_chart(request, username):
                                                  'att': aspect_table_t, 'atc': aspect_table_c, 'date': d})
 
 
+    if tr_form.is_valid():
+
+        tr_form.save()
+
+        tr_user_chart = TransitChart.objects.last()
+
+        get_loc = loc.geocode(f'{tr_user_chart.event_city, tr_user_chart.event_country}', timeout=7000)
+        tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
+        d = tr_user_chart.event_date
+
+        tr_chart = TransitChart.objects.last()
+        get_loc = loc.geocode(f'{tr_user_chart.transit_city, tr_user_chart.transit_country}', timeout=7000)
+        tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
+        tr_d = tr_user_chart.transit_date
+
+        img = mpi.imread('astroplan/static/images/tr_zr_1.png')
+        fig = plt.figure(figsize=(870 * px, 870 * px))
+        fig.patch.set_alpha(0.0)
+
+        ax_img = fig.add_axes((0.05, 0.05, 0.9, 0.9))
+        ax_img.imshow(img)
+        ax_img.axis('off')
+
+        planet_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')  # center plot
+        planet_ax.set_rlim(-130, 100)
+        planet_ax.set_theta_direction('counterclockwise')
+        planet_ax.set_rticks([])
+        planet_ax.set_axis_off()
+
+        house_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')
+        house_ax.patch.set_alpha(0.0)
+        house_ax.set_rlim(-130, 100)
+        house_ax.set_theta_direction(1)
+        house_ax.set_rticks([])
+
+        transit_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')
+        transit_ax.set_rlim(-130, 100)
+        transit_ax.set_theta_direction('counterclockwise')
+        transit_ax.set_rticks([])
+        transit_ax.set_axis_off()
+
+        tr_house_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')
+        tr_house_ax.patch.set_alpha(0.0)
+        tr_house_ax.set_rlim(-130, 100)
+        tr_house_ax.set_theta_direction(1)
+        tr_house_ax.set_rticks([])
+
+        tr_cr_aspects_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')
+        tr_cr_aspects_ax.patch.set_alpha(0.0)
+        tr_cr_aspects_ax.set_rlim(-130, 100)
+        tr_cr_aspects_ax.set_theta_direction(1)
+        tr_cr_aspects_ax.set_rticks([])
+        tr_cr_aspects_ax.set_axis_off()
+
+        jd_ev = jl.to_jd(d, fmt='jd')
+
+        pd_cr = {swe.get_planet_name(0): ['☼', 'yellow', 5, 17, swe.calc_ut(jd_ev, 0, flags)[0][0],
+                                          swe.calc_ut(jd_ev, 0, flags)[0][1], 10],
+                 swe.get_planet_name(1): ['☾', 'blue', 5, 17, swe.calc_ut(jd_ev, 1, flags)[0][0],
+                                          swe.calc_ut(jd_ev, 1, flags)[0][1], -25],
+                 swe.get_planet_name(2): ['☿', 'grey', 5, 17, swe.calc_ut(jd_ev, 2, flags)[0][0],
+                                          swe.calc_ut(jd_ev, 1, flags)[0][1], -25],
+                 swe.get_planet_name(3): ['♀', 'sienna', 5, 17, swe.calc_ut(jd_ev, 3, flags)[0][0],
+                                          swe.calc_ut(jd_ev, 1, flags)[0][1], 25],
+                 swe.get_planet_name(4): ['♂', 'red', 5, 17, swe.calc_ut(jd_ev, 4, flags)[0][0],
+                                          swe.calc_ut(jd_ev, 1, flags)[0][1], -10],
+                 swe.get_planet_name(5): ['♃', 'teal', 5, 17, swe.calc_ut(jd_ev, 5, flags)[0][0],
+                                          swe.calc_ut(jd_ev, 1, flags)[0][1], 0],
+                 swe.get_planet_name(6): ['♄', 'slategrey', 5, 17, swe.calc_ut(jd_ev, 6, flags)[0][0],
+                                          swe.calc_ut(jd_ev, 1, flags)[0][1], -25],
+                 swe.get_planet_name(7): ['♅', 'chartreuse', 5, 17, swe.calc_ut(jd_ev, 7, flags)[0][0],
+                                          swe.calc_ut(jd_ev, 1, flags)[0][1], 0],
+                 swe.get_planet_name(8): ['♆', 'indigo', 5, 17, swe.calc_ut(jd_ev, 8, flags)[0][0],
+                                          swe.calc_ut(jd_ev, 1, flags)[0][1], 0],
+                 swe.get_planet_name(9): ['♇', 'darkmagenta', 5, 17, swe.calc_ut(jd_ev, 9, flags)[0][0],
+                                          swe.calc_ut(jd_ev, 1, flags)[0][1], 0]}
+
+        form_coords_value = list(pd_cr.values())
+
+        def set_signs(name_list, deg_list):
+            if signs:
+                signs.clear()
+            round_deg = [round(d) for d in deg_list]
+            for i in range(len(deg_list)):
+                if round_deg[i] in range(300, 331):
+                    sign = '♒'
+                if round_deg[i] in range(330, 361):
+                    sign = '♓'
+                if round_deg[i] in range(0, 31):
+                    sign = '♈'
+                if round_deg[i] in range(30, 61):
+                    sign = '♉'
+                if round_deg[i] in range(60, 91):
+                    sign = '♊'
+                if round_deg[i] in range(90, 121):
+                    sign = '♋'
+                if round_deg[i] in range(120, 151):
+                    sign = '♌'
+                if round_deg[i] in range(150, 181):
+                    sign = '♍'
+                if round_deg[i] in range(180, 211):
+                    sign = '♎'
+                if round_deg[i] in range(210, 241):
+                    sign = '♏'
+                if round_deg[i] in range(240, 271):
+                    sign = '♐'
+                if round_deg[i] in range(270, 301):
+                    sign = '♑'
+                signs.append(sign)
+            deg_list_thirty = [round(c % 30, 2) for c in deg_list]
+            deg_form = [str(n).replace('.', '°').replace(',', '′,') for n in deg_list_thirty]
+            sign_table = zip(name_list, deg_form, signs)
+            return list(sign_table)
+
+        houses = swe.houses_ex(jd_ev, get_loc.latitude, get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
+
+        house_ax.set_thetagrids(houses[0],
+                                ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
+        house_ax.tick_params(labelsize=20, grid_color='aliceblue', grid_linewidth=0.5,
+                             labelfontfamily='monospace', labelcolor='aliceblue')
+        house_ax.set_theta_offset(np.pi)
+
+        jd_tr = jl.to_jd(tr_d, fmt='jd')
+
+        pd = {swe.get_planet_name(0): ['☼ᵀᴿ', 'yellow', 5, 17, swe.calc_ut(jd_tr, 0, flags)[0][0],
+                                       swe.calc_ut(jd_tr, 0, flags)[0][1], 10],
+              swe.get_planet_name(1): ['☾ᵀᴿ', 'blue', 5, 17, swe.calc_ut(jd_tr, 1, flags)[0][0],
+                                       swe.calc_ut(jd_tr, 1, flags)[0][1], -25],
+              swe.get_planet_name(2): ['☿ᵀᴿ', 'grey', 5, 17, swe.calc_ut(jd_tr, 2, flags)[0][0],
+                                       swe.calc_ut(jd_tr, 1, flags)[0][1], -25],
+              swe.get_planet_name(3): ['♀ᵀᴿ', 'sienna', 5, 17, swe.calc_ut(jd_tr, 3, flags)[0][0],
+                                       swe.calc_ut(jd_tr, 1, flags)[0][1], 25],
+              swe.get_planet_name(4): ['♂ᵀᴿ', 'red', 5, 17, swe.calc_ut(jd_tr, 4, flags)[0][0],
+                                       swe.calc_ut(jd_tr, 1, flags)[0][1], -10],
+              swe.get_planet_name(5): ['♃ᵀᴿ', 'teal', 5, 17, swe.calc_ut(jd_tr, 5, flags)[0][0],
+                                       swe.calc_ut(jd_tr, 1, flags)[0][1], 0],
+              swe.get_planet_name(6): ['♄ᵀᴿ', 'slategrey', 5, 17, swe.calc_ut(jd_tr, 6, flags)[0][0],
+                                       swe.calc_ut(jd_tr, 1, flags)[0][1], -25],
+              swe.get_planet_name(7): ['♅ᵀᴿ', 'chartreuse', 5, 17, swe.calc_ut(jd_tr, 7, flags)[0][0],
+                                       swe.calc_ut(jd_tr, 1, flags)[0][1], 0],
+              swe.get_planet_name(8): ['♆ᵀᴿ', 'indigo', 5, 17, swe.calc_ut(jd_tr, 8, flags)[0][0],
+                                       swe.calc_ut(jd_tr, 1, flags)[0][1], 0],
+              swe.get_planet_name(9): ['♇ᵀᴿ', 'darkmagenta', 5, 17, swe.calc_ut(jd_tr, 9, flags)[0][0],
+                                       swe.calc_ut(jd_tr, 1, flags)[0][1], 0]}
+
+        tr_form_coords_value = list(pd.values())
+
+        tr_houses = swe.houses_ex(jd_tr, get_loc.latitude, get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
+        tr_house_ax.set_thetagrids(tr_houses[0],
+                                   ['TR ASC', 'TR II', 'TR III', 'TR IC', 'TR V', 'TR VI', 'TR DSC',
+                                    'TR VIII', 'TR IX', 'TR MC', 'TR XI', 'TR XII'])
+        tr_house_ax.tick_params(labelsize=20, grid_color='chartreuse', grid_linewidth=0.5,
+                                labelfontfamily='monospace', pad=23.0, labelcolor='chartreuse')
+        tr_house_ax.set_theta_offset(np.pi)
+
+        aspect_table_s = None
+        aspect_table_ops = None
+        aspect_table_c = None
+        aspect_table_t = None
+        both_chart_apd = []
+
+        aspected_planet_t.clear()
+        aspected_planet_op.clear()
+        aspected_planet_s.clear()
+        aspected_planet_c.clear()
+        both_chart_apd.clear()
+
+        c_angle.clear()
+        t_angle.clear()
+        sq_angle.clear()
+        c_angle.clear()
+
+        oppositions.clear()
+        sqaures.clear()
+        conjunctions.clear()
+        trines.clear()
+
+        both_chart_apd.extend(form_coords_value)
+        both_chart_apd.extend(tr_form_coords_value)
+
+        for value in range(len(both_chart_apd) - 1):
+            for pl in range(0, 10):
+                aspect = abs(round(both_chart_apd[pl][4]) - round(both_chart_apd[value + 1][4]))
+
+                if aspect in trine and both_chart_apd[pl][4] != both_chart_apd[value + 1][4]:
+                    pl_one = np.array(
+                        [np.deg2rad(both_chart_apd[pl][4]), np.deg2rad(both_chart_apd[value + 1][4])])
+                    pl_two = np.array(
+                        [np.deg2rad(both_chart_apd[pl][5]), np.deg2rad(both_chart_apd[value + 1][5])])
+                    tr_cr_aspects_ax.plot(pl_one, pl_two, color='#34b806', lw=0.8)
+
+                    aspected_planet_t.append(both_chart_apd[pl][0])
+                    t_angle.append(f'{aspect}°')
+                    trines.append(both_chart_apd[value + 1][0])
+                    aspect_table_t = zip(aspected_planet_t, t_angle, trines)
+
+                if aspect in opposition and both_chart_apd[pl][4] != both_chart_apd[value + 1][4]:
+                    pl_one = np.array([np.deg2rad(both_chart_apd[pl][4]), np.deg2rad(both_chart_apd[value + 1][4])])
+                    pl_two = np.array([np.deg2rad(both_chart_apd[pl][5]), np.deg2rad(both_chart_apd[value + 1][5])])
+                    tr_cr_aspects_ax.plot(pl_one, pl_two, color='#fffe03', lw=0.8)
+
+                    aspected_planet_op.append(both_chart_apd[pl][0])
+                    op_angle.append(f'{aspect}°')
+                    oppositions.append(both_chart_apd[value + 1][0])
+                    aspect_table_ops = zip(aspected_planet_op, op_angle, oppositions)
+
+                if aspect in square and both_chart_apd[pl][4] != both_chart_apd[value + 1][4]:
+                    pl_one = np.array(
+                        [np.deg2rad(both_chart_apd[pl][4]), np.deg2rad(both_chart_apd[value + 1][4])])
+                    pl_two = np.array(
+                        [np.deg2rad(both_chart_apd[pl][5]), np.deg2rad(both_chart_apd[value + 1][5])])
+                    tr_cr_aspects_ax.plot(pl_one, pl_two, color='#ff1a00', lw=0.8)
+
+                    aspected_planet_s.append(both_chart_apd[pl][0])
+                    sq_angle.append(f'{aspect}°')
+                    sqaures.append(both_chart_apd[value + 1][0])
+                    aspect_table_s = zip(aspected_planet_s, sq_angle, sqaures)
+
+                if aspect in conjunction and both_chart_apd[pl][4] != both_chart_apd[value + 1][4]:
+                    pl_one = np.array(
+                        [np.deg2rad(both_chart_apd[pl][4]), np.deg2rad(both_chart_apd[value + 1][4])])
+                    pl_two = np.array(
+                        [np.deg2rad(both_chart_apd[pl][5]), np.deg2rad(both_chart_apd[value + 1][5])])
+                    tr_cr_aspects_ax.plot(pl_one, pl_two, color='fuchsia', lw=0.8)
+
+                    aspected_planet_c.append(both_chart_apd[pl][0])
+                    c_angle.append(f'{aspect}°')
+                    conjunctions.append(both_chart_apd[value + 1][0])
+                    aspect_table_c = zip(aspected_planet_c, c_angle, conjunctions)
+
+                planet_ax.plot(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5], 'o',
+                               mfc=pd_cr[swe.get_planet_name(pl)][1],
+                               ms=pd_cr[swe.get_planet_name(pl)][2])
+                planet_ax.annotate(f'{pd_cr[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                   xytext=(pd_cr[swe.get_planet_name(pl)][6], 3),
+                                   xycoords='data',
+                                   xy=(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5]),
+                                   fontsize=pd_cr[swe.get_planet_name(pl)][3],
+                                   color='aliceblue',
+                                   arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+                transit_ax.plot(np.deg2rad(tr_form_coords_value[pl][4]), tr_form_coords_value[pl][5], 'o',
+                                mfc=pd[swe.get_planet_name(pl)][1],
+                                ms=pd[swe.get_planet_name(pl)][2])
+                transit_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                    xytext=(pd[swe.get_planet_name(pl)][6], 3),
+                                    xycoords='data',
+                                    xy=(np.deg2rad(tr_form_coords_value[pl][4]), tr_form_coords_value[pl][5]),
+                                    fontsize=pd[swe.get_planet_name(pl)][3],
+                                    color='chartreuse',
+                                    arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+        plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/transit_user_chart.png')
+
+        return render(request, 'transit_user_chart.html',
+                      context={'planet_data': set_signs(planet_names, [p[4] for p in form_coords_value]),
+                               'house_data': set_signs(house_names, list(houses[0])),
+                               'ats': aspect_table_s, 'ato': aspect_table_ops,
+                               'att': aspect_table_t, 'atc': aspect_table_c,
+                               'tr_planet_data': set_signs(tr_planet_names, [p[4] for p in tr_form_coords_value]),
+                               'tr_house_data': set_signs(house_names, list(tr_houses[0])), 'event_date': d,
+                               'event_city': tr_user_chart.event_city, 'event_country': tr_chart.event_country,
+                               'tr_date': tr_d, 'tr_city': tr_user_chart.transit_city,
+                               'tr_country': tr_user_chart.transit_country,
+                               'lat': get_loc.latitude, 'lng': get_loc.longitude})
+
 
 
 
@@ -495,7 +763,7 @@ def my_chart(request, username):
         form = UserUpdateForm(instance=user)
         form.fields['description'].widget.attrs = {'rows': 1}
         return render(request, 'my_chart.html', context={'form': form, 'chart_form':chart_form,
-                                                         'my_charts':my_charts})
+                                                         'my_charts':my_charts, 'tr_form':tr_form})
 
     return redirect("showed chart")
 

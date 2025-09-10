@@ -1,0 +1,49 @@
+  <table id="tr_planet-list" >
+                <caption> Transit planet position data </caption>
+                <thead>
+                  <tr>
+                        <th> TP </th>
+                        <th> Degrees </th>
+                        <th> Sign </th>
+                  </tr>
+                </thead>
+                <tbody>
+                     {% for name, deg, sign in tr_planet_data %}
+                    <tr> {% if name == 'tr_Sun' %}
+                        <td class="tooltip">  <a href="#" class="link-symbols" style="color: gold">
+                           ☼ <span class="tooltiptext"> Sun </span></a>
+                           </td>
+                        {% elif name == 'tr_Moon' %}
+                             <td class="tooltip"> <a href="#" class="link-symbols" style="color: green">
+                           ☾ <span class="tooltiptext"> Moon </span></a> </td>
+                         {% elif name == 'tr_Mercury' %}
+                             <td class="tooltip"> ☿  <a href="#" class='link-symbols' style="color:grey">
+                            <span class="tooltiptext">  Mercury  </span>  </a>  </td>
+                         {% elif name == 'tr_Venus' %}
+                             <td class="tooltip">  ♀  <a href="#" class='link-symbols' style="color:grey">
+                                 <span class="tooltiptext"> Venus </span></a>  </td>
+                         {% elif name == 'tr_Mars' %}
+                             <td class="tooltip"> ♂ <a href="#" class='link-symbols' style="color:red">
+                                 <span class="tooltiptext"> Mars  </span>  </a> </td>
+                         {% elif name == 'tr_Jupiter' %}
+                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:blue">
+                                ♃  <span class="tooltiptext"> Jupiter </span></a>  </td>
+                         {% elif name == 'tr_Saturn' %}
+                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:brown">
+                                 ♄  <span class="tooltiptext">  Saturn  </span> </a> </td>
+                         {% elif name == 'tr_Uranus' %}
+                             <td class="tooltip">  <a href="#" class='link-symbols' style="color:chartreuse">
+                                  ♅  <span class="tooltiptext">  Uranus  </span> </a> </td>
+                         {% elif name == 'tr_Neptune' %}
+                             <td class="tooltip"><a href="#" class='link-symbols' style="color:indigo">
+                                   ♆ <span class="tooltiptext"> Neptune </span></a>  </td>
+                         {% elif name == 'tr_Pluto' %}
+                             <td class="tooltip"><a href="#" class='link-symbols' style="color:red">
+                                  ♇  <span class="tooltiptext"> Pluto </span></a></td>
+                        {% endif %}
+                            <td> {{ deg }}</td>
+                            <td> {{ sign }}</td>
+                          {% endfor %}
+                    </tr>
+                </tbody>
+           </table>

@@ -1,8 +1,10 @@
 
 import matplotlib
 import matplotlib.pyplot as plt
-
+import matplotlib.image as mpi
 import numpy as np
+
+import csv
 
 from datetime import datetime as dt
 
@@ -19,48 +21,29 @@ from timezonefinder import TimezoneFinder
 now = dt.now(tz=timezone('UTC'))
 
 
-
 date = dt(1986, 2,17, 17,20)
 jd = jl.to_jd(date, fmt='jd')
 
 px = 1/plt.rcParams['figure.dpi']
 matplotlib.rcParams['axes.edgecolor'] = 'darkorchid'
-fig = plt.figure(figsize=(870*px, 870*px))
-fig.suptitle(f'Planet chart today,{now.strftime('%B, %d, %H:%M')}', size=17 )
-fig.patch.set_alpha(0.0)
+loc = Nominatim(user_agent="GetLoc")
+flags =  swe.FLG_SIDEREAL | swe.SIDM_LAHIRI
 
-ax1 = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar', facecolor='red') #center plot
+planet_names = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter',
+                'Saturn', 'Uranus', 'Neptune', 'Pluto']
 
-transit_z = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')
-transit_z.patch.set_alpha(0.0)
-
-house_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar', facecolor='red')
-house_ax.patch.set_alpha(0.0)
-# #
-ax1.set_rlim(-130,100)
-ax1.set_theta_direction('counterclockwise')
-ax1.set_rticks([])
-ax1.set_axis_off() #'theta ax' is off and grid off
-ax1.set_thetagrids(range(0, 360, 30))
-
-
-transit_z.set_rlim(-800,90)
-transit_z.set_theta_direction('counterclockwise')
-transit_z.set_rticks([])
-transit_z.set_axis_off() #'theta ax' is off and grid off
-transit_z.set_thetagrids(range(0, 360, 30))
-
+house_names = ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII']
 opposition = np.arange(175.0, 185.0)
 trine = np.arange(115.0, 125.0)
 square = np.arange(85.0, 95.0)
-conjunction = np.arange(0.0, 5.0)
+conjunction = np.arange(0.00, 7.00)
 
 sqaures = []
 trines = []
 oppositions = []
 conjunctions = []
 
-aspected_planet = []
+aspected_planet_s = []
 aspected_planet_op = []
 aspected_planet_t = []
 aspected_planet_c = []
@@ -68,403 +51,224 @@ sq_angle = []
 op_angle = []
 t_angle = []
 c_angle = []
-#
-flags = swe.FLG_SIDEREAL | swe.SIDM_LAHIRI
-# #
-sun = swe.calc_ut(jd, 0, flags)
-moon = swe.calc_ut(jd, 1, flags)
 
-mercury = swe.calc_ut(jd, 2, flags)
-venus = swe.calc_ut(jd, 3, flags)
-mars = swe.calc_ut(jd, 4, flags)
+signs = []
+sign =''
 
-jupiter = swe.calc_ut(jd, 5, flags)
-saturn = swe.calc_ut(jd, 6, flags)
-#
-uranus = swe.calc_ut(jd, 7, flags)
-neptune = swe.calc_ut(jd, 8, flags)
-pluto = swe.calc_ut(jd, 9, flags)
-
-#
-# planet_names = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter',
-#                     'Saturn', 'Uranus', 'Neptune', 'Pluto']
-# planet_list = [sun, moon, mercury, venus, mars, jupiter,
-#                    saturn, uranus, neptune, pluto]
-# #
-# names_and_coords = list(zip(planet_names, planet_list))
-#
-#
-# house_names = ['8', '9', 'MC', '11', '12', 'ASC', '2', '3', 'IC', '5', '6', 'DSC']
-# #
-# loc = Nominatim(user_agent="GetLoc")
-# getLoc = loc.geocode("Ufa, Russia", timeout=7000)
-# houses = swe.houses_ex(jd, getLoc.latitude, getLoc.longitude, b'R', flags=swe.FLG_SIDEREAL)
-# # #
-# house_ax.set_rlim(-130, 100)
-# house_ax.set_theta_direction(1)
-# house_ax.set_rticks([])
-# house_ax.set_thetagrids(houses[0], ['8', '9', 'MC', '11', '12', 'ASC', '2', '3', 'IC', '5', '6', 'DSC'])
-# house_ax.tick_params(labelsize=20, grid_color='red', grid_linewidth=1, labelfontfamily='monospace')
-# house_ax.set_theta_offset(np.pi)
-# #
-# def aspect(planet_number):
-#         for i in range(len(names_and_coords) - 1):
-#
-#             z = abs(round(names_and_coords[planet_number][1][0][0]) - round(names_and_coords[i + 1][1][0][0]))
-#             if z in square:
-#                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
-#                                np.deg2rad(names_and_coords[i + 1][1][0][0])])
-#                 p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
-#                 ax1.plot(p1, p2, lw=0.5, color='firebrick')
-#
-#                 aspected_planet.append(names_and_coords[planet_number][0])
-#                 sq_angle.append(f'{z}°')
-#                 sqaures.append(names_and_coords[i + 1][0])
-#                 aspect_table_squares = zip(aspected_planet, sq_angle, sqaures)
-#
-#             if z in opposition:
-#                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
-#                                np.deg2rad(names_and_coords[i + 1][1][0][0])])
-#                 p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
-#                 ax1.plot(p1, p2, lw=0.5, color='magenta')
-#
-#                 aspected_planet_op.append(names_and_coords[planet_number][0])
-#                 op_angle.append(f'{z}°')
-#                 oppositions.append(names_and_coords[i + 1][0])
-#                 aspect_table_ops = zip(aspected_planet_op, op_angle, oppositions)
-#
-#             if z in trine:
-#                 p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
-#                                np.deg2rad(names_and_coords[i + 1][1][0][0])])
-#                 p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
-#                 ax1.plot(p1, p2, lw=0.8, color='lime')
-#                 aspected_planet_t.append(names_and_coords[planet_number][0])
-#                 t_angle.append(f'{z}°')
-#                 trines.append(names_and_coords[i + 1][0])
-#                 aspect_table_t = zip(aspected_planet_t, t_angle, trines)
-#
-#
-#             # if z in conjunction:
-#             #     p1 = np.array([np.deg2rad(names_and_coords[planet_number][1][0][0]),
-#             #                    np.deg2rad(names_and_coords[i + 1][1][0][0])])
-#             #     p2 = np.array([names_and_coords[planet_number][1][0][1], names_and_coords[i + 1][1][0][1]])
-#             #     ax1.plot(p1, p2, lw=0.8, color='lime')
-#             #     aspected_planet_c.append(names_and_coords[planet_number][0])
-#             #     c_angle.append(f'{z}°')
-#             #     c_unique = list(set(c_angle))
-#             #
-#             #
-#             #     conjunctions.append(names_and_coords[i + 1][0])
-#             #     names_unique = list(set(conjunctions))
-#             #
-#                 aspect_table_c = zip(aspected_planet_c, c_unique, names_unique)
-#                 # print(c_unique)
-#                 # print(list(aspect_table_c))
-#                 # print(list(aspect_table_c))
-#                 # print(f' names unique {names_unique}')
-#
-#
-#
-# ax1.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=5, mfc='deeppink')
-# ax1.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
-#                  xy=(np.deg2rad(venus[0][0]), venus[0][1]), fontsize=15, color='blueviolet',
-#                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-# aspect(3)
-#
-# ax1.plot(np.deg2rad(moon[0][0]), moon[0][1], marker='o', label='moon', mfc='forestgreen', ms=5)
-# ax1.annotate('☾', textcoords='offset points', xytext=(20, 3), xycoords='data',
-#                  xy=(np.deg2rad(moon[0][0]), moon[0][1]), fontsize=15, color='slateblue',
-#                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-# aspect(1)
-# #
-# ax1.plot(np.deg2rad(sun[0][0]), sun[0][1], marker='o', label='sun', ms=8, mfc='gold')
-# ax1.annotate('☼', textcoords='offset points', xytext=(20, 5), xycoords='data',
-#                  xy=(np.deg2rad(sun[0][0]), sun[0][1]), fontsize=50, color='midnightblue',
-#                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-# aspect(0)
-#
-# ax1.plot(np.deg2rad(mercury[0][0]), mercury[0][1], 'o:b', label='merc', ms=5)
-# ax1.annotate('☿', textcoords='offset points', xytext=(20, 5), xycoords='data',
-#                  xy=(np.deg2rad(mercury[0][0]), mercury[0][1]), fontsize=15, color='orange',
-#                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-# aspect(2)
-#
-# ax1.plot(np.deg2rad(mars[0][0]), mars[0][1], marker='o', label='mars', ms=5, mfc='red')
-# ax1.annotate('♂', textcoords='offset points', xytext=(20, 3), xycoords='data',
-#                  xy=(np.deg2rad(mars[0][0]), mars[0][1]), fontsize=15, color='slateblue',
-#                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-# aspect(4)
-#
-# ax1.plot(np.deg2rad(jupiter[0][0]), jupiter[0][1], 'o', label='jupiter', ms=7, mfc='steelblue')
-# ax1.annotate('♃', textcoords='offset points', xytext=(20, 3), xycoords='data',
-#                  xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=17, color='slateblue',
-#                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-# aspect(5)
-#
-# ax1.annotate(f'{round(jupiter[0][0])}°', textcoords='offset points', xytext=(-20, 5), xycoords='data',
-#                  xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=8, color='navy',
-#                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-# ax1.plot(np.deg2rad(saturn[0][0]), saturn[0][1], 'o:k', label='saturn', ms=6)
-# ax1.annotate('♄', textcoords='offset points', xytext=(20, -20), xycoords='data',
-#                  xy=(np.deg2rad(saturn[0][0]), saturn[0][1]), fontsize=15,
-#                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-# aspect(6)
-#
-# ax1.plot(np.deg2rad(uranus[0][0]), uranus[0][1], marker='o', mfc='chartreuse', label='uranus', ms=6)
-# ax1.annotate('♅', textcoords='offset points', xytext=(20, 3), xycoords='data',
-#                  xy=(np.deg2rad(uranus[0][0]), uranus[0][1]), fontsize=15, color='rebeccapurple',
-#                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-# aspect(7)
-#
-# ax1.plot(np.deg2rad(neptune[0][0]), neptune[0][1], marker='o', label='neptune', ms=5, mfc='deepskyblue')
-# ax1.annotate('♆', textcoords='offset points', xytext=(20, 3), xycoords='data',
-#                  xy=(np.deg2rad(neptune[0][0]), neptune[0][1]), fontsize=20, color='indigo',
-#                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-# aspect(8)
-#
-# ax1.plot(np.deg2rad(pluto[0][0]), pluto[0][1], 'o:k', mfc='red', label='pluto', ms=5)
-# ax1.annotate('♇', textcoords='offset points', xytext=(20, 3), xycoords='data',
-#                  xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=250, color='darkgoldenrod',
-#                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-#
-#
-# aspect(9)
-swe.close()
-
-# plt.savefig('chart_and_houses.png')
-
+# img = mpi.imread('astroplan/static/images/tr_zr_1.png')
 fig = plt.figure(figsize=(870*px, 870*px))
-fig.suptitle(f'Planet chart today,{now.strftime('%B, %d, %H:%M')}', size=17 )
 fig.patch.set_alpha(0.0)
+# ax_img = fig.add_axes((0.05, 0.05, 0.9, 0.9))
+# ax_img.imshow(img)
+# ax_img.axis('off')
 
-exp_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar', facecolor='red') #center plot
-exp_ax.set_rlim(-130,100)
-exp_ax.set_theta_direction('counterclockwise')
-exp_ax.set_rticks([])
-exp_ax.set_axis_off() #'theta ax' is off and grid off
-exp_ax.set_thetagrids(range(0, 360, 30))
-#
-#
-planet_symbols = ['☼', '☾', '☿', '♀', '♂', '♃', '♄', '♅', '♆', '♇']
-pd = {swe.get_planet_name(0): ['☼', 'yellow',5, 17, swe.calc_ut(jd,0,flags)[0][0],swe.calc_ut(jd,0,flags)[0][1]],
-      swe.get_planet_name(1): ['☾', 'blue',5, 17, swe.calc_ut(jd,1,flags)[0][0],swe.calc_ut(jd,1,flags)[0][1]],
-      swe.get_planet_name(2): ['☿', 'grey', 5, 17, swe.calc_ut(jd,2,flags)[0][0],swe.calc_ut(jd,1,flags)[0][1]],
-      swe.get_planet_name(3): ['♀', 'sienna', 5, 17,swe.calc_ut(jd,3,flags)[0][0],swe.calc_ut(jd,1,flags)[0][1]],
-      swe.get_planet_name(4): ['♂', 'red', 5, 17,swe.calc_ut(jd,4,flags)[0][0],swe.calc_ut(jd,1,flags)[0][1]],
-      swe.get_planet_name(5): ['♃', 'teal', 5, 17,swe.calc_ut(jd,5,flags)[0][0],swe.calc_ut(jd,1,flags)[0][1]],
-      swe.get_planet_name(6): ['♄', 'slategrey', 5, 17,swe.calc_ut(jd,6,flags)[0][0],swe.calc_ut(jd,1,flags)[0][1]],
-      swe.get_planet_name(7): ['♅', 'chartreuse', 5, 17,swe.calc_ut(jd,7,flags)[0][0],swe.calc_ut(jd,1,flags)[0][1]],
-      swe.get_planet_name(8): ['♆', 'indigo', 5, 17,swe.calc_ut(jd,8,flags)[0][0],swe.calc_ut(jd,1,flags)[0][1]],
-      swe.get_planet_name(9): ['♇', 'darkmagenta', 5, 17,swe.calc_ut(jd,9,flags)[0][0],swe.calc_ut(jd,1,flags)[0][1]]
-      }
+planet_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')  # center plot
+house_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')
+house_ax.patch.set_alpha(0.0)
+house_ax.set_facecolor('aliceblue')
 
-# print(pd[swe.get_planet_name(0)][4])
+planet_ax.set_rlim(-130, 100)
+planet_ax.set_theta_direction('counterclockwise')
+planet_ax.set_rticks([])
+planet_ax.set_axis_off()  # 'theta ax' is off and grid off
 
 
-# for v in pd.values():
-#     print(v[0])
 
+getLoc = loc.geocode("Ufa, Russia", timeout=7000)
+houses = swe.houses_ex(jd, getLoc.latitude, getLoc.longitude, b'R', flags=swe.FLG_SIDEREAL)
 
+house_ax.set_rlim(-130, 100)
+house_ax.set_theta_direction(1)
+house_ax.set_rticks([])
+house_ax.set_thetagrids(houses[0], ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
+house_ax.tick_params(labelsize=20, grid_color='#815684', grid_linewidth=1, labelfontfamily='monospace',
+                                                      labelcolor='aliceblue', pad=17.0)
+house_ax.set_theta_offset(np.pi)
+
+pd = {swe.get_planet_name(0): ['☼', 'yellow', 5, 25, swe.calc_ut(jd, 0, flags)[0][0],
+                                   swe.calc_ut(jd, 0, flags)[0][1], 10],
+          swe.get_planet_name(1): ['☾', 'blue', 5, 20, swe.calc_ut(jd, 1, flags)[0][0],
+                                   swe.calc_ut(jd, 1, flags)[0][1], -25],
+          swe.get_planet_name(2): ['☿', 'grey', 5, 23, swe.calc_ut(jd, 2, flags)[0][0],
+                                   swe.calc_ut(jd, 2, flags)[0][1], -25],
+          swe.get_planet_name(3): ['♀', 'sienna', 5, 22, swe.calc_ut(jd, 3, flags)[0][0],
+                                   swe.calc_ut(jd, 3, flags)[0][1],25],
+          swe.get_planet_name(4): ['♂', 'red', 5, 20, swe.calc_ut(jd, 4, flags)[0][0], swe.calc_ut(jd, 4, flags)[0][1],-10],
+          swe.get_planet_name(5): ['♃', 'teal', 5, 26, swe.calc_ut(jd, 5, flags)[0][0],
+                                   swe.calc_ut(jd, 5, flags)[0][1],0],
+          swe.get_planet_name(6): ['♄', 'slategrey', 5, 25, swe.calc_ut(jd, 6, flags)[0][0],
+                                   swe.calc_ut(jd, 6, flags)[0][1],-25],
+          swe.get_planet_name(7): ['♅', 'chartreuse', 5, 22, swe.calc_ut(jd, 7, flags)[0][0],
+                                   swe.calc_ut(jd, 7, flags)[0][1],0],
+          swe.get_planet_name(8): ['♆', 'indigo', 5, 22, swe.calc_ut(jd, 8, flags)[0][0],
+                                   swe.calc_ut(jd, 8, flags)[0][1],0],
+          swe.get_planet_name(9): ['♇', 'darkmagenta', 5, 22, swe.calc_ut(jd, 9, flags)[0][0],
+                                   swe.calc_ut(jd, 9, flags)[0][1],0]
+          }
 coords_value = list(pd.values())
-# print(coords_value[0][4])
-print(coords_value[4])
+
+def set_signs(name_list, deg_list):
+        if signs:
+            signs.clear()
+        round_deg = [round(d) for d in deg_list]
+        for i in range(len(deg_list)):
+            if round_deg[i] in range(300, 331):
+                sign = '♒'
+            if round_deg[i] in range(330, 361):
+                sign = '♓'
+            if round_deg[i] in range(0, 31):
+                sign = '♈'
+            if round_deg[i] in range(30, 61):
+                sign = '♉'
+            if round_deg[i] in range(60, 91):
+                sign = '♊'
+            if round_deg[i] in range(90, 121):
+                sign = '♋'
+            if round_deg[i] in range(120, 151):
+                sign = '♌'
+            if round_deg[i] in range(150, 181):
+                sign = '♍'
+            if round_deg[i] in range(180, 211):
+                sign = '♎'
+            if round_deg[i] in range(210, 241):
+                sign = '♏'
+            if round_deg[i] in range(240, 271):
+                sign = '♐'
+            if round_deg[i] in range(270, 301):
+                sign = '♑'
+            signs.append(sign)
+        deg_list_thirty = [round(c % 30, 2) for c in deg_list]
+        deg_form = [str(n).replace('.', '°').replace(',', '′,') for n in deg_list_thirty]
+        sign_table = zip(name_list, deg_form, signs)
+        return list(sign_table)
+
+aspect_table_s = None
+aspect_table_ops = None
+aspect_table_c = None
+aspect_table_t = None
+
+aspected_planet_t.clear()
+aspected_planet_op.clear()
+aspected_planet_s.clear()
+aspected_planet_c.clear()
+
+c_angle.clear()
+t_angle.clear()
+sq_angle.clear()
+c_angle.clear()
+
+oppositions.clear()
+sqaures.clear()
+conjunctions.clear()
+trines.clear()
 
 for value in range(len(coords_value) - 1):
-    for pl in range(0,10):
-        z = abs(round(coords_value[pl][4]) - round(coords_value[value+1][4]))
-        if z in opposition and coords_value[pl][4] != coords_value[value+1][4]:
-            print(coords_value[pl][0],f'{z}°', coords_value[value+1][0])
-        if z in square and coords_value[pl][4] != coords_value[value+1][4]:
-            print(coords_value[pl][0],z,coords_value[value + 1][0])
-        if z in conjunction and coords_value[pl][4] != coords_value[value+1][4]:
-            print(coords_value[pl][0],z, coords_value[value + 1][0])
+        for pl in range(0, 10):
+            aspect = abs(round(coords_value[pl][4]) - round(coords_value[value + 1][4]))
+
+            if aspect in trine and coords_value[pl][4] != coords_value[value + 1][4]:
+                pl_one = np.array([np.deg2rad(coords_value[pl][4]), np.deg2rad(coords_value[value + 1][4])])
+                pl_two = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
+                planet_ax.plot(pl_one, pl_two, color='#3fff00', lw=0.8)
+
+                aspected_planet_t.append(coords_value[pl][0])
+
+                t_angle.append(f'{aspect}°')
+                trines.append(coords_value[value + 1][0])
+                aspect_table_t = zip(aspected_planet_t, t_angle, trines)
+
+            if aspect in opposition and coords_value[pl][4] != coords_value[value + 1][4]:
+                pl_one = np.array([np.deg2rad(coords_value[pl][4]), np.deg2rad(coords_value[value + 1][4])])
+                pl_two = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
+                if aspect == range(179,181):
+                    planet_ax.plot(pl_one, pl_two, color='#0400ff', lw=1.5)
+                elif aspect == range(181,184):
+                    planet_ax.plot(pl_one, pl_two, color='#0400ff', lw=1.0)
+                elif aspect == range(183,186):
+                    planet_ax.plot(pl_one, pl_two, color='#0400ff', lw=1.0)
+
+                planet_ax.plot(pl_one, pl_two, color='#0400ff', lw=0.8)
+
+                aspected_planet_op.append(coords_value[pl][0])
+                op_angle.append(f'{aspect}°')
+                oppositions.append(coords_value[value + 1][0])
+                aspect_table_ops = zip(aspected_planet_op, op_angle, oppositions)
 
 
-    # print(z)
+            if aspect in square and coords_value[pl][4] != coords_value[value + 1][4]:
+                pl_one = np.array([np.deg2rad(coords_value[pl][4]), np.deg2rad(coords_value[value + 1][4])])
+                pl_two = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
+                planet_ax.plot(pl_one, pl_two, color='#fd0048', lw=0.8)
+
+                aspected_planet_s.append(coords_value[pl][0])
+                sq_angle.append(f'{aspect}°')
+                sqaures.append(coords_value[value + 1][0])
+                aspect_table_s = zip(aspected_planet_s,sq_angle,sqaures)
 
 
+            if aspect in conjunction and coords_value[pl][4] != coords_value[value + 1][4]:
+                pl_one = np.array([np.deg2rad(coords_value[pl][4]), np.deg2rad(coords_value[value + 1][4])])
+                pl_two = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
+                planet_ax.plot(pl_one, pl_two, color='#8aed07', lw=0.8)
+
+                aspected_planet_c.append(coords_value[pl][0])
+                c_angle.append(f'{aspect}°')
+                conjunctions.append(coords_value[value + 1][0])
+                aspect_table_c = zip(aspected_planet_c, c_angle, conjunctions)
+
+            planet_ax.plot(np.deg2rad(coords_value[pl][4]), coords_value[pl][5], 'o',
+                           mfc=pd[swe.get_planet_name(pl)][1],
+                           ms=pd[swe.get_planet_name(pl)][2])
+            planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                               xytext=(pd[swe.get_planet_name(pl)][6], 3),
+                               xycoords='data',
+                               xy=(np.deg2rad(coords_value[pl][4]), coords_value[pl][5]),
+                               fontsize=pd[swe.get_planet_name(pl)][3],
+                               color='aliceblue',
+                               arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
 
+# plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/now_chart.png')
+
+with open ('planet_data.csv', 'w', newline='') as pdf:
+    fieldnames = ['planet names', 'degrees', 'sign']
+    dc_writer = csv.DictWriter(pdf, fieldnames=fieldnames)
+    writer = csv.writer(pdf)
 
 
+    dc_writer.writeheader()
+    for r in set_signs(planet_names,  [p[4] for p in coords_value]):
+        dc_writer.writerow({'planet names': r[0], 'degrees': r[1], 'sign': r[2]})
 
 
-coords = []
-names = []
-
-for pn in range(0,10):
-    planet = swe.calc_ut(jd,pn,flags)
-    planet_name = swe.get_planet_name(pn)
-
-    exp_ax.plot(np.deg2rad(planet[0][0]), planet[0][1], 'o', mfc=pd[swe.get_planet_name(pn)][1], ms=pd[swe.get_planet_name(pn)][2])
-    exp_ax.annotate(f'{pd[swe.get_planet_name(pn)][0]}', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(planet[0][0]), planet[0][1]), fontsize=pd[swe.get_planet_name(pn)][3], color='darkgoldenrod',
-                 arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
-
-
-
-
-    coords.append(planet[0][0])
-    names.append(planet_name)
-    nc = list(zip(coords, names))
-
-    # print(nc)
-
-
-
-
-    # z = abs(round(planet[pn][0] - round(planet[pn + 1][0])))
-    # z = planet[pn][0] - planet[pn + 1][0]
-
-
-#
 # plt.show()
 
+# for r in set_signs(planet_names,  [p[4] for p in coords_value]):
+#      print(r)
 
 
+u = [(set_signs(planet_names,  [p[4] for p in coords_value]))]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+h = [set_signs(house_names, list(houses[0]))]
+# print(type(f'{u[0][1][1]}'), u[0][1][2])
 #
+# filename = f'{now}.png'
 #
+# print(filename)
 
-# print(names_and_coords[0][0])
-# for i in range(len(names_and_coords) - 1):
-#     z = abs(round(names_and_coords[0][1][0][0]) - round(names_and_coords[i + 1][1][0][0]))
-#     if z in conjunction and names_and_coords [0][1][0][0] != names_and_coords[i + 1][1][0][0]:
-#         aspected_planet_c.append(names_and_coords[0][0])
-#         ap_c_unique = list(set(aspected_planet_c))
-#         c_angle.append(f'{z}')
-#         c_unique = list(set(c_angle))
-#         conjunctions.append(names_and_coords[i+1][0])
-#         ast = zip(ap_c_unique, c_unique, conjunctions)
-#         print(z)
+# print(list(aspect_table_s))
+# print(aspected_planet_s)
+# print(sq_angle)
+# print(sqaures)
 #
-#         print(list(ast))
-
-
-
-    # if z in conjunction:
-    #     aspected_planet_c.append(names_and_coords[8][0])
-    #     print(aspected_planet_c)
-    #     c_angle.append(f'{z}°')
-    #
-    #
-    #     conjunctions.append(names_and_coords[i + 1][0])
-    #
-    #
-    #     aspect_table_c = zip(aspected_planet_c, c_angle, conjunctions)
-
-
-
-
+# from hashlib import md5
+# def avatar(email, size):
 #
-# print(f'planet name: {names_and_coords[0][0]}, lat {names_and_coords[0][1][0][0]}, long {names_and_coords[0][1][0][1]}')
+#     digest = md5(email.lower().encode('utf-8')).hexdigest()
+#     return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
 #
-# thirty_r_deg = [round(p[0][0], 2) % 30 for p in planet_list]  # convert from start point 360 to 30X12
-# r_result = [round(n, 2) for n in thirty_r_deg]  # round divided into 30 result
-# conv_r_result = [str(n).replace('.', '°').replace(',', '′,') for n in r_result]
+# print(avatar('volodeya@gmail.com', 128))
 
-
-# hr_deg = [round(p) for p in houses[0]]
-#
-# hr_deg_d = [round(p, 2) % 30 for p in houses[0]]
-# hr_result =  [round(n, 2) for n in hr_deg_d]
-# conv_hr_result = [str(n).replace('.', '°').replace(',', '′,') for n in hr_result]
-# hn = zip(conv_hr_result,house_names )
-#
-#
-# signs = []
-
-
-# def set_signs(deg_intervals):
-
-
-
-
-# def set_signs(name_list,deg_list):
-#     round_deg = [round(d) for d in deg_list]  #rounded 360 degree list for setting signs
-#     if signs:
-#         signs.clear()
-#     for i in range(len(deg_list)):
-#         if round_deg[i] in range(300, 331):
-#             sign = '♒'
-#         if round_deg[i] in range(330, 361):
-#             sign = 'pisces'
-#         if round_deg[i] in range(0, 31):
-#             sign = 'aries'
-#         if round_deg[i] in range(30, 61):
-#             sign = '♉'
-#         if round_deg[i] in range(60, 91):
-#             sign = 'gemini'
-#         if round_deg[i] in range(90, 121):
-#             sign = 'cancer'
-#         if round_deg[i] in range(120, 151):
-#             sign = 'leo'
-#         if round_deg[i] in range(150, 181):
-#             sign = 'virgo'
-#         if round_deg[i] in range(180, 211):
-#             sign = '♎'
-#         if round_deg[i] in range(210, 241):
-#             sign = '♏'
-#         if round_deg[i] in range(240, 271):
-#             sign = '♐'
-#         if round_deg[i] in range(270, 301):
-#             sign = '♑'
-#
-#
-#         signs.append(sign)
-#     deg_list_thirty = [round(c%30,2)for c in deg_list]
-#     deg_form = [str(n).replace('.', '°').replace(',', '′,') for n in deg_list_thirty]
-#     m = zip(name_list,deg_form, signs)
-#
-#     return list(m)
-
-
-jd = jl.to_jd(date, fmt='jd')
-sun = swe.calc_ut(jd, 0, flags)
-moon = swe.calc_ut(jd, 1, flags)
-
-mercury = swe.calc_ut(jd, 2, flags)
-venus = swe.calc_ut(jd, 3, flags)
-mars = swe.calc_ut(jd, 4, flags)
-
-jupiter = swe.calc_ut(jd, 5, flags)
-saturn = swe.calc_ut(jd, 6, flags)
-
-uranus = swe.calc_ut(jd, 7, flags)
-neptune = swe.calc_ut(jd, 8, flags)
-pluto = swe.calc_ut(jd, 9, flags)
-
-tr_planet_list = [sun, moon, mercury, venus, mars, jupiter,
-                   saturn, uranus, neptune, pluto]
-
-
-
-
-
-
-
-
-
+lc = loc.geocode("Tulip", timeout=7000)
+print(lc.latitude, lc.longitude)
+print(lc)

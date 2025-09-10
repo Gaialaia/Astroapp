@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %} Your transit chart {% endblock %}
+
+
+{% block navigation %}
+<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));"> <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/" target = '_blank'> Today chart </a>
+            </div>
+            <div class="menu-choice" > <a  class="menu-link" href="http://127.0.0.1:8000/transit_form" target = '_blank'>Transits</a></div>
+            <div class="menu-choice" >  <a href="http://127.0.0.1:8000/wheel_year" target = '_blank'>Wheel Year</a></div>
+            <div class="menu-choice">  <a href="http://127.0.0.1:8000/interpretations" target = '_blank'>Interpretations</a></div>
+            <div class="menu-choice">
+                <div class="menu-choice-dd">
+                       Creative Astrology
+                       <div class="menu-choice-dd-content">
+                        <a href="http://127.0.0.1:8000/design_your_chart"> colorful chart </a>
+                           <a href="#"> imaginery chart </a>
+                         </div>
+                </div>
+            </div>
+
+            <div class="menu-choice"><a href="http://127.0.0.1:8000/shop" target = '_blank'>Shop</a></div>
+
+            <div class="menu-choice">
+                {% if user.is_authenticated %}
+             <div class="menu-choice-dd"> <a href= "{% url 'my chart' user.username %}" target = '_blank'>
+                 My chart {{ user.username }}</a>
+                       <div class="menu-choice-dd-content">
+                        <a href="{% url 'logout' %}">  Log out </a>
+                    {% else %}
+                            <div class="menu-choice-dd"> OPTION
+                                <div class="menu-choice-dd-content">
+                           <a href="{% url 'login' %}" target = '_blank'> Log In </a> <br>
+                           <a href="{% url 'register' %}" target = '_blank'> Sign Up </a>
+                         </div>
+                   </div>
+                 {% endif %}
+             </div>
+{% endblock %}
+
+ {% block chart-data %}
+
+                 <div class="table-data">
+                        {% if messages %}
+                        {% include 'includes/messages.html' %}
+                        {% endif %}
+                        {% include 'includes/planet_list.html' %}
+                      {% include 'includes/house_cusps.html' %}
+                `   </div>
+
+                    <div class="table-data">
+                      {% include 'includes/transit_planets_position.html' %}
+                      {% include 'includes/transit_house_cusps.html' %}
+                     </div>
+
+
+                 <div class="chart-fig" style="background-color: none;">
+                    <div class="form-info" style="display:flex" >
+                        <div class="event-info">
+                           <p> Event date: {{ event_date }} </p>
+                           <p> Event city: {{ event_city }}, {{ lng }} {{ lat }} </p>
+                           <p> Event country: {{ event_country }} </p>
+                        </div>
+                        <div class="transit-info" style="color: chartreuse">
+                            <p> Transit date: {{ tr_date }} </p>
+                            <p> Transit city: {{ tr_city }} </p>
+                            <p> Transit country: {{ tr_country }} </p>
+                        </div>
+                    </div>
+                        <img src="{% static 'plots/transit_user_chart.png' %}" alt="plot" id="chart-plot">
+                       <a href="{% url 'my chart' user.username %}" style="color:aliceblue"> Back to my charts  </a>
+                 </div>
+
+
+                     <div class="table-data">
+                      {% include 'includes/transit_aspects.html' %}
+                        </div>
+{% endblock %}

@@ -15,7 +15,7 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return f'{self.username}'
 
-    def avatar(self, size):
+    def make_avatar(self, size=128):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
 

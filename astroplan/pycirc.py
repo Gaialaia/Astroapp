@@ -89,16 +89,16 @@ circos = Circos(sectors)
 #
 # fig = circos.plotfig()
 # fig.patch.set_alpha(0.0)
-# fig.savefig('tr_zr_1.png')
+# fig.savefig('tr_zr_1.png', pad_inches=0.0)
 
 
 
 
 
 
-########################################################################
+#######################################################################
 
-
+#
 # color = '#330033'
 #
 # sector_aries = circos.get_sector("♈︎")
@@ -188,25 +188,30 @@ circos = Circos(sectors)
 edge_color_list = []
 text_color_list =[]
 
-def draw_zodiac_one_color(face_color, edge_color, text_color):
+def draw_zodiac_one_color(face_color, edge_color, text_color, font_size, line_width):
     for s in sectors.keys():
         zodiac_sector = circos.get_sector(s)
         zodiac_track = zodiac_sector.add_track((80,100))
-        zodiac_track.axis(fc=face_color, ec=edge_color, lw=2)
-        zodiac_track.text(f'{s}',size=27,color=text_color)
+        zodiac_track.axis(fc=face_color, ec=edge_color, lw=line_width)
+        zodiac_track.text(f'{s}',size=font_size,color=text_color)
+
+        for sector in circos.sectors:
+            # sector.axis(lw=1, ec="thistle")  # turn off sector line (axis)
+
+            track_deg = sector.add_track((95, 100))
+            track_deg.axis(ec='#660033')
+            track_deg.grid(y_grid_num=None, x_grid_interval=1, color='blue')
+
 
     fig = circos.plotfig()
     fig.patch.set_alpha(0.0)
-    fig.savefig('tr_for.png')
+    fig.savefig('tr_one_cc.png', pad_inches=0.3)
 
-
-# draw_zodiac('green', 'red', 'blue')
+#
+draw_zodiac_one_color('#A800D8','aliceblue','#2BC200', 30,3)
 
 
 import random, string
-
-
-
 face_color_list = []
 choice_list = list(string.hexdigits)
 
@@ -225,15 +230,6 @@ sign_colors_z = zip(sectors.keys(), face_color_list, edge_color_list, text_color
 sign_colors = list(sign_colors_z)
 
 
-# for t in sign_colors:
-#     zodiac_sector = circos.get_sector(t[0])
-#     zodiac_track = zodiac_sector.add_track((80,100))
-#     zodiac_track.axis(fc=t[1], ec=t[2], lw=2)
-#     zodiac_track.text(f'{t[0]}' , size=27, color=t[3])
-# fig = circos.plotfig()
-# fig.patch.set_alpha(0.0)
-# fig.savefig('tr_for6.png')
-
 def draw_zodiac_df_color(list_name):
     for t in list_name:
         zodiac_sector = circos.get_sector(t[0])
@@ -241,11 +237,11 @@ def draw_zodiac_df_color(list_name):
         zodiac_track.axis(fc=t[1], ec=t[2], lw=2)
         zodiac_track.text(f'{t[0]}', size=27, color=t[3])
 
-    fig = circos.plotfig()
+    fig = circos.plotfig(figsize=(8.3,8.3))
     fig.patch.set_alpha(0.0)
-    fig.savefig('tr_for7.png')
+    fig.savefig('tr_for8.png', pad_inches=0.0)
 
-draw_zodiac_df_color(sign_colors)
+# draw_zodiac_df_color(sign_colors)
 
 
 
