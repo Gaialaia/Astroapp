@@ -29,11 +29,13 @@ import julian as jl
 from geopy.geocoders import Nominatim
 from pytz import timezone
 
-from astroplan.models import Chart, TransitChart, ZodiacInColors, FullChart
-from astroplan.forms import FullChartForm, TransitChartForm, ZodiacInColorForm
+from astroplan.models import Chart, TransitChart, ZodiacInColors, FullChart, TransitFullChart
+from astroplan.forms import FullChartForm, TransitFullChartForm, ZodiacInColorForm
 import os
 
 from timezonefinder import TimezoneFinder
+
+
 
 flags =  swe.FLG_SIDEREAL | swe.SIDM_LAHIRI
 
@@ -181,7 +183,7 @@ def my_chart(request, username):
 
     chart_form = FullChartForm(request.POST or None, request.FILES or None)
 
-    tr_form = TransitChartForm(request.POST or None, request.FILES or None)
+    tr_form = TransitFullChartForm(request.POST or None, request.FILES or None)
 
     if chart_form.is_valid():
         chart_form.save()
@@ -479,16 +481,16 @@ def my_chart(request, username):
 
         tr_form.save()
 
-        tr_user_chart = TransitChart.objects.last()
+        tr_user_chart = TransitFullChart.objects.last()
 
         get_loc = loc.geocode(f'{tr_user_chart.event_city, tr_user_chart.event_country}', timeout=7000)
         tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
         d = tr_user_chart.event_date
 
-        tr_chart = TransitChart.objects.last()
         get_loc = loc.geocode(f'{tr_user_chart.transit_city, tr_user_chart.transit_country}', timeout=7000)
         tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
         tr_d = tr_user_chart.transit_date
+        tr_user_chart.drawer = get_object_or_404(get_user_model(), username=username)
 
         img = mpi.imread('astroplan/static/images/tr_zr_1.png')
         fig = plt.figure(figsize=(870 * px, 870 * px))
@@ -530,6 +532,7 @@ def my_chart(request, username):
         tr_cr_aspects_ax.set_axis_off()
 
         jd_ev = jl.to_jd(d, fmt='jd')
+        jd_tr = jl.to_jd(d, fmt='jd')
 
         pd_cr = {swe.get_planet_name(0): ['☼', 'yellow', 5, 17, swe.calc_ut(jd_ev, 0, flags)[0][0],
                                           swe.calc_ut(jd_ev, 0, flags)[0][1], 10],
@@ -552,7 +555,7 @@ def my_chart(request, username):
                  swe.get_planet_name(9): ['♇', 'darkmagenta', 5, 17, swe.calc_ut(jd_ev, 9, flags)[0][0],
                                           swe.calc_ut(jd_ev, 1, flags)[0][1], 0]}
 
-        form_coords_value = list(pd_cr.values())
+        cr_form_coords_value = list(pd_cr.values())
 
         def set_signs(name_list, deg_list):
             if signs:
@@ -590,12 +593,20 @@ def my_chart(request, username):
             return list(sign_table)
 
         houses = swe.houses_ex(jd_ev, get_loc.latitude, get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
+        tr_houses = swe.houses_ex(jd_tr, get_loc.latitude, get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
 
         house_ax.set_thetagrids(houses[0],
                                 ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
         house_ax.tick_params(labelsize=20, grid_color='aliceblue', grid_linewidth=0.5,
                              labelfontfamily='monospace', labelcolor='aliceblue')
         house_ax.set_theta_offset(np.pi)
+
+        tr_house_ax.set_thetagrids(tr_houses[0],
+                                   ['TR ASC', 'TR II', 'TR III', 'TR IC', 'TR V', 'TR VI', 'TR DSC',
+                                    'TR VIII', 'TR IX', 'TR MC', 'TR XI', 'TR XII'])
+        tr_house_ax.tick_params(labelsize=20, grid_color='chartreuse', grid_linewidth=0.5,
+                                labelfontfamily='monospace', pad=23.0, labelcolor='chartreuse')
+        tr_house_ax.set_theta_offset(np.pi)
 
         jd_tr = jl.to_jd(tr_d, fmt='jd')
 
@@ -622,13 +633,172 @@ def my_chart(request, username):
 
         tr_form_coords_value = list(pd.values())
 
-        tr_houses = swe.houses_ex(jd_tr, get_loc.latitude, get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
-        tr_house_ax.set_thetagrids(tr_houses[0],
-                                   ['TR ASC', 'TR II', 'TR III', 'TR IC', 'TR V', 'TR VI', 'TR DSC',
-                                    'TR VIII', 'TR IX', 'TR MC', 'TR XI', 'TR XII'])
-        tr_house_ax.tick_params(labelsize=20, grid_color='chartreuse', grid_linewidth=0.5,
-                                labelfontfamily='monospace', pad=23.0, labelcolor='chartreuse')
-        tr_house_ax.set_theta_offset(np.pi)
+        planet_data_for_db = [(set_signs(planet_names, [p[4] for p in cr_form_coords_value]))]
+
+        tr_user_chart.Sun_deg = planet_data_for_db[0][0][1]
+        tr_user_chart.Sun_sign = f' {planet_data_for_db[0][0][2]}'
+
+        tr_user_chart.Moon_deg = f'{planet_data_for_db[0][1][1]}'
+        tr_user_chart.Moon_sign = planet_data_for_db[0][1][2]
+
+        tr_user_chart.Mercury_deg = f'{planet_data_for_db[0][2][1]}'
+        tr_user_chart.Mercury_sign = planet_data_for_db[0][2][2]
+
+        tr_user_chart.Venus_deg = f'{planet_data_for_db[0][3][1]}'
+        tr_user_chart.Venus_sign = planet_data_for_db[0][3][2]
+
+        tr_user_chart.Mars_deg = planet_data_for_db[0][4][1]
+        tr_user_chart.Mars_sign = planet_data_for_db[0][4][2]
+
+        tr_user_chart.Jupiter_deg = f'{planet_data_for_db[0][5][1]}'
+        tr_user_chart.Jupiter_sign = planet_data_for_db[0][5][2]
+
+        tr_user_chart.Saturn_deg = f'{planet_data_for_db[0][6][1]}'
+        tr_user_chart.Saturn_sign = planet_data_for_db[0][6][2]
+
+        tr_user_chart.Uranus_sign = f'{planet_data_for_db[0][7][1]}'
+        tr_user_chart.Uranus_deg = planet_data_for_db[0][7][2]
+
+        tr_user_chart.Neptune_deg = f'{planet_data_for_db[0][8][1]}'
+        tr_user_chart.Neptune_sign = planet_data_for_db[0][8][2]
+
+        tr_user_chart.Pluto_deg = f'{planet_data_for_db[0][9][1]}'
+        tr_user_chart.Pluto_sign = planet_data_for_db[0][9][2]
+
+        hc_data_for_db = [set_signs(house_names, list(houses[0]))]
+
+        tr_user_chart.first_house = hc_data_for_db[0][0][0]
+        tr_user_chart.asc_deg = hc_data_for_db[0][0][1]
+        tr_user_chart.asc_sign = hc_data_for_db[0][0][2]
+
+        tr_user_chart.second_house = hc_data_for_db[0][1][0]
+        tr_user_chart.resource_deg = hc_data_for_db[0][1][1]
+        tr_user_chart.resource_sign = hc_data_for_db[0][1][2]
+
+        tr_user_chart.third_house = hc_data_for_db[0][2][0]
+        tr_user_chart.mental_deg = hc_data_for_db[0][2][1]
+        tr_user_chart.mental_sign = hc_data_for_db[0][2][2]
+
+        tr_user_chart.forth_house = hc_data_for_db[0][3][0]
+        tr_user_chart.home_deg = hc_data_for_db[0][3][1]
+        tr_user_chart.home_sign = hc_data_for_db[0][3][2]
+
+        tr_user_chart.fifth_house = hc_data_for_db[0][4][0]
+        tr_user_chart.game_deg = hc_data_for_db[0][4][1]
+        tr_user_chart.game_sign = hc_data_for_db[0][4][2]
+
+        tr_user_chart.sixth_house = hc_data_for_db[0][5][0]
+        tr_user_chart.work_deg = hc_data_for_db[0][5][1]
+        tr_user_chart.work_sign = hc_data_for_db[0][5][2]
+
+        tr_user_chart.seventh_house = hc_data_for_db[0][6][0]
+        tr_user_chart.rel_deg = hc_data_for_db[0][6][1]
+        tr_user_chart.rel_sign = hc_data_for_db[0][6][2]
+
+        tr_user_chart.eighth_house = hc_data_for_db[0][7][0]
+        tr_user_chart.magic_deg = hc_data_for_db[0][7][1]
+        tr_user_chart.magic_sign = hc_data_for_db[0][7][2]
+
+        tr_user_chart.nineth_house = hc_data_for_db[0][8][0]
+        tr_user_chart.esoteric_deg = hc_data_for_db[0][8][1]
+        tr_user_chart.esoteric_sign = hc_data_for_db[0][8][2]
+
+        tr_user_chart.tenth_house = hc_data_for_db[0][9][0]
+        tr_user_chart.status_deg = hc_data_for_db[0][9][1]
+        tr_user_chart.status_sign = hc_data_for_db[0][9][2]
+
+        tr_user_chart.eleventh_house = hc_data_for_db[0][10][0]
+        tr_user_chart.interests_deg = hc_data_for_db[0][10][1]
+        tr_user_chart.interests_sign = hc_data_for_db[0][10][2]
+
+        tr_user_chart.twelfth_house = hc_data_for_db[0][11][0]
+        tr_user_chart.benefits_deg = hc_data_for_db[0][11][1]
+        tr_user_chart.benefits_sign = hc_data_for_db[0][11][2]
+
+        tr_planet_data_for_db = [(set_signs(planet_names, [p[4] for p in tr_form_coords_value]))]
+
+        tr_user_chart.tr_Sun_deg = tr_planet_data_for_db[0][0][1]
+        tr_user_chart.tr_Sun_sign = tr_planet_data_for_db[0][0][2]
+
+        tr_user_chart.tr_Moon_deg = tr_planet_data_for_db[0][1][1]
+        tr_user_chart.tr_Moon_sign = tr_planet_data_for_db[0][1][2]
+
+        tr_user_chart.tr_Mercury_deg = tr_planet_data_for_db[0][2][1]
+        tr_user_chart.tr_Mercury_sign = tr_planet_data_for_db[0][2][2]
+
+        tr_user_chart.tr_Venus_deg = tr_planet_data_for_db[0][3][1]
+        tr_user_chart.tr_Venus_sign = tr_planet_data_for_db[0][3][2]
+
+        tr_user_chart.tr_Mars_deg = tr_planet_data_for_db[0][4][1]
+        tr_user_chart.tr_Mars_sign = tr_planet_data_for_db[0][4][2]
+
+        tr_user_chart.tr_Jupiter_deg = tr_planet_data_for_db[0][5][1]
+        tr_user_chart.tr_Jupiter_sign = tr_planet_data_for_db[0][5][2]
+
+        tr_user_chart.tr_Saturn_deg = tr_planet_data_for_db[0][6][1]
+        tr_user_chart.tr_Saturn_sign = tr_planet_data_for_db[0][6][2]
+
+        tr_user_chart.tr_Uranus_deg = tr_planet_data_for_db[0][7][1]
+        tr_user_chart.tr_Uranus_sign = tr_planet_data_for_db[0][7][2]
+
+        tr_user_chart.tr_Neptune_deg = tr_planet_data_for_db[0][8][1]
+        tr_user_chart.tr_Neptune_sign = tr_planet_data_for_db[0][8][2]
+
+        tr_user_chart.tr_Pluto_deg = tr_planet_data_for_db[0][9][1]
+        tr_user_chart.tr_Pluto_sign = tr_planet_data_for_db[0][9][1]
+
+        tr_hc_data_for_db = [set_signs(house_names, list(tr_houses[0]))]
+
+        tr_user_chart.tr_first_house = tr_hc_data_for_db[0][0][0]
+        tr_user_chart.tr_asc_deg = tr_hc_data_for_db[0][1][1]
+        tr_user_chart.tr_asc_sign = tr_hc_data_for_db[0][1][2]
+
+        tr_user_chart.tr_second_house = tr_hc_data_for_db[0][1][0]
+        tr_user_chart.tr_resource_deg = tr_hc_data_for_db[0][1][1]
+        tr_user_chart.tr_resource_sign = tr_hc_data_for_db[0][1][2]
+
+        tr_user_chart.tr_third_house = tr_hc_data_for_db[0][2][0]
+        tr_user_chart.tr_mental_deg = tr_hc_data_for_db[0][2][1]
+        tr_user_chart.tr_mental_sign = tr_hc_data_for_db[0][2][2]
+
+        tr_user_chart.tr_forth_house = tr_hc_data_for_db[0][3][0]
+        tr_user_chart.tr_home_deg = tr_hc_data_for_db[0][3][1]
+        tr_user_chart.tr_home_sign = tr_hc_data_for_db[0][3][2]
+
+        tr_user_chart.tr_fifth_house = tr_hc_data_for_db[0][4][0]
+        tr_user_chart.tr_game_deg = tr_hc_data_for_db[0][4][1]
+        tr_user_chart.tr_game_sign = tr_hc_data_for_db[0][4][2]
+
+        tr_user_chart.tr_sixth_house = tr_hc_data_for_db[0][5][0]
+        tr_user_chart.tr_work_deg = tr_hc_data_for_db[0][5][1]
+        tr_user_chart.tr_work_sign = tr_hc_data_for_db[0][5][2]
+
+        tr_user_chart.tr_seventh_house = tr_hc_data_for_db[0][6][0]
+        tr_user_chart.tr_rel_deg = tr_hc_data_for_db[0][6][1]
+        tr_user_chart.tr_rel_sign = tr_hc_data_for_db[0][6][2]
+
+        tr_user_chart.tr_eighth_house = tr_hc_data_for_db[0][7][0]
+        tr_user_chart.tr_magic_deg = tr_hc_data_for_db[0][7][1]
+        tr_user_chart.tr_magic_sign = tr_hc_data_for_db[0][7][2]
+
+        tr_user_chart.tr_nineth_house = tr_hc_data_for_db[0][8][0]
+        tr_user_chart.tr_esoteric_deg = tr_hc_data_for_db[0][8][1]
+        tr_user_chart.tr_esoteric_sign = tr_hc_data_for_db[0][8][2]
+
+        tr_user_chart.tr_tenth_house = tr_hc_data_for_db[0][9][0]
+        tr_user_chart.tr_status_deg = tr_hc_data_for_db[0][9][1]
+        tr_user_chart.tr_status_sign = tr_hc_data_for_db[0][9][2]
+
+        tr_user_chart.tr_eleventh_house = tr_hc_data_for_db[0][10][0]
+        tr_user_chart.tr_interests_deg = tr_hc_data_for_db[0][10][1]
+        tr_user_chart.tr_interests_sign = tr_hc_data_for_db[0][10][2]
+
+        tr_user_chart.tr_twelfth_house = tr_hc_data_for_db[0][11][0]
+        tr_user_chart.tr_benefits_deg = tr_hc_data_for_db[0][11][1]
+        tr_user_chart.tr_benefits_sign = tr_hc_data_for_db[0][11][2]
+
+
+        tr_user_chart.save()
 
         aspect_table_s = None
         aspect_table_ops = None
@@ -652,7 +822,7 @@ def my_chart(request, username):
         conjunctions.clear()
         trines.clear()
 
-        both_chart_apd.extend(form_coords_value)
+        both_chart_apd.extend(cr_form_coords_value)
         both_chart_apd.extend(tr_form_coords_value)
 
         for value in range(len(both_chart_apd) - 1):
@@ -705,13 +875,13 @@ def my_chart(request, username):
                     conjunctions.append(both_chart_apd[value + 1][0])
                     aspect_table_c = zip(aspected_planet_c, c_angle, conjunctions)
 
-                planet_ax.plot(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5], 'o',
+                planet_ax.plot(np.deg2rad(cr_form_coords_value[pl][4]), cr_form_coords_value[pl][5], 'o',
                                mfc=pd_cr[swe.get_planet_name(pl)][1],
                                ms=pd_cr[swe.get_planet_name(pl)][2])
                 planet_ax.annotate(f'{pd_cr[swe.get_planet_name(pl)][0]}', textcoords='offset points',
                                    xytext=(pd_cr[swe.get_planet_name(pl)][6], 3),
                                    xycoords='data',
-                                   xy=(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5]),
+                                   xy=(np.deg2rad(cr_form_coords_value[pl][4]), cr_form_coords_value[pl][5]),
                                    fontsize=pd_cr[swe.get_planet_name(pl)][3],
                                    color='aliceblue',
                                    arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
@@ -727,16 +897,25 @@ def my_chart(request, username):
                                     color='chartreuse',
                                     arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-        plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/transit_user_chart.png')
+        plt.savefig('astroplan/static/plots/tr_user_chart.png')
 
-        return render(request, 'transit_user_chart.html',
-                      context={'planet_data': set_signs(planet_names, [p[4] for p in form_coords_value]),
+        img_path = 'astroplan/media/astroplan/images/'
+        fn_path = os.path.join(img_path, f'{d}.png')
+        plt.savefig(fn_path)
+
+        with open(fn_path, 'rb') as f:
+            tr_user_chart.tr_chart_image.save(f'{d}.png', f)
+            tr_user_chart.save()
+        swe.close()
+
+        return render(request, 'tr_user_chart_dtl.html',
+                      context={'planet_data': set_signs(planet_names, [p[4] for p in cr_form_coords_value]),
                                'house_data': set_signs(house_names, list(houses[0])),
                                'ats': aspect_table_s, 'ato': aspect_table_ops,
                                'att': aspect_table_t, 'atc': aspect_table_c,
                                'tr_planet_data': set_signs(tr_planet_names, [p[4] for p in tr_form_coords_value]),
                                'tr_house_data': set_signs(house_names, list(tr_houses[0])), 'event_date': d,
-                               'event_city': tr_user_chart.event_city, 'event_country': tr_chart.event_country,
+                               'event_city': tr_user_chart.event_city, 'event_country': tr_user_chart.event_country,
                                'tr_date': tr_d, 'tr_city': tr_user_chart.transit_city,
                                'tr_country': tr_user_chart.transit_country,
                                'lat': get_loc.latitude, 'lng': get_loc.longitude})
@@ -759,11 +938,13 @@ def my_chart(request, username):
     user = get_user_model().objects.filter(username=username).first()
     userid = request.user.id
     my_charts = FullChart.objects.filter(drawer__id=userid)
+    my_tr_charts = TransitFullChart.objects.filter(drawer__id=userid)
     if user:
         form = UserUpdateForm(instance=user)
         form.fields['description'].widget.attrs = {'rows': 1}
         return render(request, 'my_chart.html', context={'form': form, 'chart_form':chart_form,
-                                                         'my_charts':my_charts, 'tr_form':tr_form})
+                                                         'my_charts': my_charts, 'tr_form':tr_form,
+                                                         'my_tr_charts': my_tr_charts})
 
     return redirect("showed chart")
 

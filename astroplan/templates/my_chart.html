@@ -70,8 +70,13 @@
           <div>
         <h3> My charts </h3>
         {% for chart in my_charts %}
-        <p> <a href="/chart/{{ chart.id }}/"  class="chart_link tooltip" style="color: aliceblue" >  {{chart.chart_name}}
+        <p> <a href="/chart/{{ chart.id }}/"  class="chart_link tooltip" style="color: aliceblue" >  {{ chart.chart_name }}
             <span class="tooltiptext"> {{ chart.chart_date }} </span></a> </p>
+        {% endfor %}
+                  <h3> My transit charts </h3>
+        {% for tr_user_chart in my_tr_charts %}
+        <p> <a href="/tr_chart/{{ tr_user_chart.id }}/"  class="chart_link tooltip" style="color: aliceblue" >  {{ tr_user_chart.transit_name }} /
+            {{ tr_user_chart.event_name }} </a> </p>
         {% endfor %}
 
     </div>

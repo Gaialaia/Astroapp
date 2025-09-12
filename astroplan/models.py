@@ -6,7 +6,6 @@ from django.forms import DateTimeInput
 from django.utils import timezone
 from datetime import datetime as dt
 
-# Create your models here.
 
 now = dt.now()
 
@@ -34,7 +33,7 @@ class FullChart(models.Model):
 
     city = models.CharField(default='Ufa')
     country = models.CharField(default='Russia')
-    drawer =  models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1)
+    drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1)
 
     Sun_deg = models.CharField(default='5°05')
     Sun_sign = models.CharField(default='Aquarius')
@@ -143,22 +142,20 @@ class FullChart(models.Model):
 
 
 
-class TransitFullChartForm(models.Model):
+class TransitFullChart(models.Model):
 
     objects = None
 
-    event_chart_name = models.CharField(default='My birthdate')
-    event_chart_date = models.DateTimeField(default=timezone.now)
+    event_name = models.CharField(default='My birthdate')
+    event_date = models.DateTimeField(default=timezone.now)
     event_city = models.CharField(default='Ufa')
     event_country = models.CharField(default='Russia')
 
-    transit_chart_name = models.CharField(default='Graduation')
-    transit_chart_date = models.DateTimeField(default=timezone.now)
+    transit_name = models.CharField(default='Graduation')
+    transit_date = models.DateTimeField(default=timezone.now)
     transit_city = models.CharField(default='Los-Angeles')
     transit_country = models.CharField(default='USA')
 
-
-    drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1)
 
     Sun_deg = models.CharField(default='5°05')
     Sun_sign = models.CharField(default='Aquarius')
@@ -318,9 +315,11 @@ class TransitFullChartForm(models.Model):
     tr_benefits_sign = models.CharField(default='Pisces')
 
     tr_chart_image = models.ImageField(upload_to='chart_plots/')
+    drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1)
+
 
     def __str__(self):
-        return (f'{self.event_chart_date}, {self.event_city}, {self.event_country},'
+        return (f'{self.event_date}, {self.event_city}, {self.event_country}, {self.event_name},'
                 f'{self.Sun_deg},{self.Sun_sign}, {self.Moon_deg},{self.Moon_sign},'
                 f' {self.Mercury_deg},{self.Mercury_sign}, {self.Venus_deg},'
                 f'{self.Venus_sign}, {self.Mars_deg}, {self.Mars_sign},'
@@ -341,7 +340,7 @@ class TransitFullChartForm(models.Model):
                 f'{self.tenth_house}, {self.status_sign}, {self.status_deg},'
                 f'{self.eleventh_house}, {self.interests_deg}, {self.interests_sign},'
                 f'{self.twelfth_house}, {self.benefits_deg}, {self.benefits_sign},'
-                f'{self.transit_chart_date}, {self.transit_city}, {self.transit_country}, {self.transit_chart_name},'
+                f'{self.transit_date}, {self.transit_city}, {self.transit_country}, {self.transit_name},'
                 f'{self.tr_Sun_deg},{self.tr_Sun_sign}, {self.tr_Moon_deg},{self.tr_Moon_sign},'
                 f' {self.tr_Mercury_deg},{self.tr_Mercury_sign}, {self.tr_Venus_deg},'
                 f'{self.tr_Venus_sign}, {self.tr_Mars_deg}, {self.tr_Mars_sign},'

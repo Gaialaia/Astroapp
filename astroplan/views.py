@@ -24,8 +24,8 @@ import julian as jl
 from geopy.geocoders import Nominatim
 from pytz import timezone
 
-from .models import Chart, TransitChart, ZodiacInColors, FullChart
-from .forms import ChartForm, TransitChartForm, ZodiacInColorForm, TestForm, TransitForm
+from .models import Chart, TransitChart, ZodiacInColors, FullChart, TransitFullChart
+from .forms import ChartForm, TransitFullChartForm, ZodiacInColorForm, TestForm, TransitForm
 from .utils import build_plot
 from timezonefinder import TimezoneFinder
 
@@ -771,12 +771,6 @@ def build_transit_chart(request):
         plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/transit_chart.png')
 
 
-
-
-
-
-
-
         return render(request, 'transit_chart.html',
                       context={'planet_data': set_signs(planet_names, [p[4]for p in form_coords_value]),
                                'house_data': set_signs(house_names, list(houses[0])),
@@ -1262,18 +1256,27 @@ def chart_detail(request,id):
     username = request.user.username
     userid = request.user.id
 
-
-
-
     if request.method == 'POST':
         chart_to_delete.delete()
         messages.success(request, 'Chart deleted')
         return redirect('my chart', username=username)
 
-    return render(request, 'chart.html', {'chart': FullChart.objects.get(id=id)})
+    return render(request, 'chart_db_detail.html', {'chart': FullChart.objects.get(id=id)})
 
 
+def tr_chart_detail(request,id):
 
+    tr_chart_to_delete = TransitFullChart.objects.filter(id=id).first()
+
+    username = request.user.username
+    userid = request.user.id
+
+    if request.method == 'POST':
+        tr_chart_to_delete.delete()
+        messages.success(request, 'Chart deleted')
+        return redirect('my chart', username=username)
+
+    return render(request, 'transit_chart_db_detail.html', {'tr_chart': TransitFullChart.objects.get(id=id)})
 
 
 

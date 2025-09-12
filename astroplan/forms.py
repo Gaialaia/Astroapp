@@ -3,7 +3,7 @@ from email.policy import default
 from django.forms import DateInput, ModelForm
 from django_flatpickr.widgets import DatePickerInput, DateTimePickerInput
 from django.utils import timezone
-from .models import Chart, TransitChart, ZodiacInColors, FullChart
+from .models import Chart, TransitChart, ZodiacInColors, FullChart, TransitFullChart
 import datetime
 
 
@@ -55,28 +55,6 @@ class ChartForm(forms.ModelForm):
                 'all': ['/static/styles/form_style.css']
             }
 
-
-class TransitChartForm(forms.ModelForm):
-
-    class Meta:
-        model = TransitChart
-        fields = '__all__'
-
-        class Media:
-            css = {
-                'all': ['/static/styles/form_style.css']
-            }
-        widgets = {'event_date': DateTimePickerInput(),
-                   'transit_date': DateTimePickerInput()
-                   }
-        labels = {'event_date': 'Enter an event date',
-                  'event_city': 'Enter city',
-                  'event_country': 'Enter country',
-                  'transit_date': 'Enter transit date',
-                  'transit_city':  'Enter city',
-                  'transit_country': 'Enter country',
-                  }
-
 class TransitForm(forms.Form):
 
     event_date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter event date')
@@ -92,6 +70,33 @@ class TransitForm(forms.Form):
             'all': ['/static/styles/form_style.css']
         }
 
+class TransitFullChartForm(forms.ModelForm):
+
+    class Meta:
+        model = TransitFullChart
+
+        fields = ['event_name', 'event_date',
+                  'event_city', 'event_country',
+                  'transit_name', 'transit_date',
+                  'transit_city', 'transit_country',
+                  ]
+
+        widgets = {'event_chart_date': DateTimePickerInput,
+                   'transit_chart_date':DateTimePickerInput}
+
+
+        labels = {'event_chart_date': 'Enter an event date',
+                  'event_chart_city': 'Enter city',
+                  'event_chart_country': 'Enter country',
+                  'transit_chart_date': 'Enter transit date',
+                  'transit_chart_city':  'Enter city',
+                  'transit_chart_country': 'Enter country',
+                  }
+
+        class Media:
+            css = {
+                'all': ['/static/styles/form_style.css']
+            }
 
 
 class ZodiacInColorForm(forms.ModelForm):
@@ -203,17 +208,7 @@ class ZodiacInColorForm(forms.ModelForm):
             ' all': ['/static/styles/form_style.css']}
         
                 
-                
-                
-# class PlanetDataForm(forms.ModelForm):
-#
-#     class Meta:
-#         model = PlanetData
-#         fields = '__all__'
-#
-#     class Media:
-#         css = {
-#             ' all': ['/static/styles/form_style.css']}
+
 
 
    

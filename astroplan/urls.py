@@ -13,6 +13,7 @@ urlpatterns = [
     path('designed_chart/', views.design_chart, name='designed chart'),
     path('wheel_year/', views.wheel_year),
     path('chart/<id>/', views.chart_detail),
+    path('tr_chart/<id>/', views.tr_chart_detail),
     # path('<id>/delete/', views.delete_chart, name='delete chart'),
     path('shop/', views.do_shopping, name='shop'),
     path('interpretations/', views.interpretations),
