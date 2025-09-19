@@ -507,16 +507,3 @@ class ZodiacInColors(models.Model):
                 f'{self.pluto_marker_c}, {self.pluto_symbol_c},{self.pluto_symbol_s}'
                 f'{self.degrees_ticks_color}, {self.degrees_track_ec}')
 
-
-
-# class PlanetData(models.Model):
-#
-#     planet_name = models.CharField(max_length=20)
-#     planet_deg = models.CharField(max_length=16)
-#     planet_sign = models.CharField(max_length=16)
-#
-#
-#     def __str__(self):
-#         return f'{self.planet_name}, {self.planet_deg}, {self.planet_sign}'
-
-

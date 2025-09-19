@@ -5,22 +5,28 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="astroplan/static/styles/layout.css">
      <link rel="stylesheet" href="{% static 'styles/layout.css' %}">
+     <link rel="stylesheet" href="{% static 'styles/text.css' %}">
     <link rel="stylesheet" href="{% static 'styles/form_style.css' %}" media="all">
     <link rel="stylesheet" href="{% static 'styles/custom_flatpickr_styles.css' %}">
     <title> {% block title %} Title {% endblock %}</title>
+
 </head>
 <body>
     <div class="main-container">
          <div> <img src="/static/images/hat.png" alt="hat" id="hat"> </div>
 
         <nav class="navigation"> {% block navigation %} {% endblock %}  </nav>
-        <div class="chart-data"> {% block chart-data %} {% endblock %} </div>
+        <div class="content-data">
+            {% block content-data %}
+            <div class="chart-data"> {% block chart-data %} {% endblock %} </div>
+         {% endblock %}
+        </div>
 
 
 
             <div class="sign-buttons">
+
                 <div class="sign-button"> <img src="/static/images/aries.svg"></div>
                 <div class="sign-button"> <img src="/static/images/taurus.svg"> </div>
                 <div class="sign-button " style="background-color: fuchsia">4</div>
@@ -33,12 +39,13 @@
                 <div class="sign-button">6</div>
                 <div class="sign-button">5</div>
                 <div class="sign-button">6</div>
+
             </div>
 
         <footer>
             <img src="">
         </footer>
-
     </div>
+
 </body>
 </html>

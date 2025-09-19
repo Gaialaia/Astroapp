@@ -4,22 +4,30 @@
 
 
 body {
-    background-image: url("/static/images/starry_sky.jpg"); /*wallpaperflare.com*/
-    background-repeat: no-repeat;
-    background-size: cover;
+     /*wallpaperflare.com*/
+
     font-family: "Delius", cursive;
     font-weight: 400;
     font-style: normal;
     font-size: 17px;
+    background-image: url("/static/images/starry_sky.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-origin: border-box;
 
+
+}
 
 .main-container {
     max-width: 90%;
     margin: auto;
+
 }
 
 a {
     text-decoration: none;
+    color: aliceblue;
 
 }
 
@@ -60,14 +68,14 @@ a {
 .tooltip {
   position: relative;
   display: inline-block;
-  /*border-collapse: collapse;
-  border: none;*/
+
+
 
 
 }
 .tooltip .tooltiptext {
   visibility: hidden;
-  max-width: auto;
+
   background-color:  rgb(159,0,255);
   color: gold;
   text-align: center;
@@ -190,13 +198,46 @@ td {
     /* grid-auto-rows: minmax(100px, auto); */
     grid-template-rows: 2;
     align-content: center;
-    background-color: rgba(159,0,255, 0.4);
+
     color: rgb(216,218,220);
     font-size: x-large;
-    background-image: linear-gradient(rgba(159,0,255, 0.0), rgba(159,0,255, 0.3) );
+
+}
+
+.interpretation-data {
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: minmax(100px, auto)
+    font-size: x-large;
+    row-gap: 7px;
+    column-gap: 7px;
+
+}
+
+
+
+
+.content-data {
+
+    align-content: center;
+    background-color: rgba(159,0,255, 0.3);
+    color: rgb(216,218,220);
+    font-size: x-large;
     padding: 106px;
     padding-bottom: 56px;
+
 }
+
+
+.user-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+
+}
+
+
 
 #cfl-layout {
     display: grid;
@@ -255,11 +296,13 @@ h1 {
 
 
 .table-data {
-    margin-right: auto;
-    margin-left: auto;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin-right: 7px;
+    margin-left: 7px;
+    margin-top: 7px;
+    margin-bottom: 7px;
     padding: 17px;
+    display: block;
+
 
 }
 
@@ -283,11 +326,15 @@ h1 {
     text-align: center;
     padding: 17px;
 
+
+
+
 }
 
 .chart-form {
     padding: 17px;
     align-items: center;
+    margin-bottom: 10px;
 
 }
 
@@ -354,3 +401,38 @@ h1 {
     margin-right: auto;
 }
 
+.table-cont {
+
+}
+
+.user-data {
+
+
+
+}
+
+.user-info {
+    line-height: 1.2;
+    /*background-image: url("/static/images/tr_zr_1.png");*/
+
+
+    text-align: center;
+}
+
+.avatar {
+    padding: 17px;
+    margin: 10px;
+}
+
+.form-popup {
+    display: none;
+
+}
+
+.chart-list {
+    text-align: center;
+}
+
+.user-forms {
+    text-align: center;
+}

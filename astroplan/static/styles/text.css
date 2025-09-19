@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Delius&display=swap');
+
+ * {
+  box-sizing: border-box;
+}
+
+
+.planet-symbols {
+
+    font-size: 70px;
+
+
+}
+
+.luminary {
+
+    padding: 17px;
+    border: 1px solid;
+
+
+
+}
+
+.sign-symbols {
+
+    font-size: 70px;
+    padding: 0px;
+
+}
+
+.fire-signs {
+
+    padding: 17px;
+    border: 1px solid;
+
+
+}
+
+.air-signs {
+
+    padding: 17px;
+    border: 1px solid;
+
+
+}
+
+.water-signs {
+
+    padding: 17px;
+    border: 1px solid;
+
+
+}
+
+.earth-signs {
+
+    padding: 17px;
+    border: 1px solid;
+
+
+}
+
+
+.houses {
+
+    padding: 17px;
+    border: 1px solid;
+
+
+
+}
+
+.house-number {
+    font-size: 70px;
+}
+
+.description {
+
+    line-height: 1.2;
+    text-indent: 17% each-line;
+    hyphens: auto;
+    padding: 0px;
+}

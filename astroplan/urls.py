@@ -16,7 +16,7 @@ urlpatterns = [
     path('tr_chart/<id>/', views.tr_chart_detail),
     # path('<id>/delete/', views.delete_chart, name='delete chart'),
     path('shop/', views.do_shopping, name='shop'),
-    path('interpretations/', views.interpretations),
+    path('interpretations/', views.interpretations, name='interpretations'),
 
 
 

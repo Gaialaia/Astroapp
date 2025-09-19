@@ -4,3 +4,37 @@
 {% block title %} Shop {% endblock %}
 
 
+{% block navigation %}
+<div class="menu-choice"> <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/"> Today chart </a>
+            </div>
+             <div class="menu-choice" > <a  class="menu-link" href="http://127.0.0.1:8000/transit_form" target = '_blank'>Transits</a></div>
+            <div class="menu-choice" >  <a href="http://127.0.0.1:8000/wheel_year" target = '_blank'>Wheel Year</a></div>
+            <div class="menu-choice">  <a href="http://127.0.0.1:8000/interpretations" target = '_blank'>Interpretations</a></div>
+            <div class="menu-choice">
+                <div class="menu-choice-dd">
+                       Creative Astrology
+                       <div class="menu-choice-dd-content">
+                        <a href="http://127.0.0.1:8000/design_your_chart"> colorful chart </a>
+                           <a href="#"> imaginery chart </a>
+                         </div>
+                </div>
+            </div>
+
+            <div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));"><a href="http://127.0.0.1:8000/shop" target = '_blank'>Shop</a></div>
+
+            <div class="menu-choice">
+                {% if user.is_authenticated %}
+             <div class="menu-choice-dd"> <a href= "{% url 'my chart' user.username %}" target = '_blank'>
+                 My chart {{ user.username }}</a>
+                       <div class="menu-choice-dd-content">
+                        <a href="{% url 'logout' %}">  Log out </a>
+                    {% else %}
+                            <div class="menu-choice-dd"> OPTION
+                                <div class="menu-choice-dd-content">
+                           <a href="{% url 'login' %}" target = '_blank'> Log In </a> <br>
+                           <a href="{% url 'register' %}" target = '_blank'> Sign Up </a>
+                         </div>
+                   </div>
+                 {% endif %}
+             </div>
+{% endblock %}
