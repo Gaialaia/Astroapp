@@ -25,7 +25,7 @@ from geopy.geocoders import Nominatim
 from pytz import timezone
 
 from .models import Chart, TransitChart, ZodiacInColors, FullChart, TransitFullChart
-from .forms import ChartForm, TransitFullChartForm, ZodiacInColorForm, TestForm, TransitForm
+from .forms import ChartForm, ZodiacInColorForm, TestForm, TransitForm, ColorfulZodiacForm
 from .utils import build_plot
 from timezonefinder import TimezoneFinder
 
@@ -975,50 +975,85 @@ def chart_form(request):
 
 def design_chart(request):
 
-    zodiac_form = ZodiacInColorForm(request.POST or None, request.FILES or None)
+    zodiac_form = ColorfulZodiacForm(request.POST or None, request.FILES or None)
 
     if zodiac_form.is_valid():
-        zodiac_form.save()
-        zf = ZodiacInColors.objects.last()
-        get_loc = loc.geocode(f'{zf.chart_city, zf.chart_country}', timeout=7000)
+
+        zf_city = zodiac_form.cleaned_data['cz_chart_city']
+        zf_country = zodiac_form.cleaned_data['cz_chart_country']
+        zf_date = zodiac_form.cleaned_data['cz_chart_date']
+
+
+        # zodiac_form.save()
+        # zf = ZodiacInColors.objects.last()
+        get_loc = loc.geocode(f'{zf_city, zf_country}', timeout=7000)
         tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
-        d = zf.chart_date
+        d = zf_date
         jd = jl.to_jd(d,fmt='jd')
 
         sector_aries = circos.get_sector("♈︎")
         track_aries = sector_aries.add_track((95, 80))
-        track_aries.axis(fc=f'{zf.track_aries_axis_fc}', ec=zf.track_aries_axis_ec, lw=2)
-        track_aries.text(f'{"♈︎"}', size=27, color=zf.track_aries_axis_tc)
+
+        zf_ta_axis_fc = zodiac_form.cleaned_data['track_aries_axis_fc']
+        zf_ta_axis_ec = zodiac_form.cleaned_data['track_aries_axis_ec']
+        zf_ta_axis_tc = zodiac_form.cleaned_data['track_aries_axis_tc']
+        track_aries.axis(fc=f'{zf_ta_axis_fc}', ec=zf_ta_axis_ec, lw=2)
+        track_aries.text(f'{"♈︎"}', size=27, color=zf_ta_axis_tc)
 
         sector_leo = circos.get_sector("♌︎")
         track_leo = sector_leo.add_track((95, 80))
-        track_leo.axis(fc=zf.track_leo_axis_fc, ec=zf.track_leo_axis_ec, lw=2)
-        track_leo.text(f'{"♌︎"}', size=27, color=zf.track_leo_axis_tc)
+
+        zf_tl_axis_fc = zodiac_form.cleaned_data['track_leo_axis_fc']
+        zf_tl_axis_ec = zodiac_form.cleaned_data['track_leo_axis_ec']
+        zf_tl_axis_tc = zodiac_form.cleaned_data['track_leo_axis_tc']
+        track_leo.axis(fc=zf_tl_axis_fc, ec=zf_tl_axis_ec, lw=2)
+        track_leo.text(f'{"♌︎"}', size=27, color=zf_tl_axis_tc)
 
         sector_sag = circos.get_sector("♐︎")
         track_sag = sector_sag.add_track((95, 80))
-        track_sag.axis(fc=zf.track_sag_axis_fc, ec=zf.track_sag_axis_ec, lw=2)
-        track_sag.text(f'{"♐︎"}', size=27, color=zf.track_leo_axis_tc)
+
+        zf_tsag_axis_fc = zodiac_form.cleaned_data['track_sag_axis_fc']
+        zf_tsag_axis_ec = zodiac_form.cleaned_data['track_sag_axis_ec']
+        zf_tsag_axis_tc = zodiac_form.cleaned_data['track_sag_axis_tc']
+        track_sag.axis(fc=zf_tsag_axis_fc, ec=zf_tsag_axis_ec, lw=2)
+        track_sag.text(f'{"♐︎"}', size=27, color=zf_tsag_axis_tc)
 
         sector_aqua = circos.get_sector("♒︎")
         track_aqua = sector_aqua.add_track((95, 80))
-        track_aqua.axis(fc=zf.track_aqua_axis_fc, ec=zf.track_aqua_axis_ec, lw=2)
-        track_aqua.text(f'{"♒︎"}', size=27, color=zf.track_aqua_axis_tc)
+
+        zf_taq_axis_fc = zodiac_form.cleaned_data['track_aqua_axis_fc']
+        zf_taq_axis_ec = zodiac_form.cleaned_data['track_aqua_axis_ec']
+        zf_taq_axis_tc = zodiac_form.cleaned_data['track_aqua_axis_tc']
+        track_aqua.axis(fc=zf_taq_axis_fc, ec=zf_taq_axis_ec, lw=2)
+        track_aqua.text(f'{"♒︎"}', size=27, color=zf_taq_axis_tc)
 
         sector_gemini = circos.get_sector("♊︎")
         track_gemini = sector_gemini.add_track((95, 80))
-        track_gemini.axis(fc=zf.track_gemini_axis_fc, ec=zf.track_gemini_axis_ec, lw=2)
-        track_gemini.text(f'{"♊︎"}', size=27, color=zf.track_gemini_axis_tc)
+
+        zf_tgem_axis_fc = zodiac_form.cleaned_data['track_gemini_axis_fc']
+        zf_tgem_axis_ec = zodiac_form.cleaned_data['track_gemini_axis_ec']
+        zf_tgem_axis_tc = zodiac_form.cleaned_data['track_gemini_axis_tc']
+        track_gemini.axis(fc=zf_tgem_axis_fc, ec=zf_tgem_axis_ec, lw=2)
+        track_gemini.text(f'{"♊︎"}', size=27, color=zf_tgem_axis_tc)
 
         sector_libra = circos.get_sector("♎︎")
         track_libra = sector_libra.add_track((95, 80))
-        track_libra.axis(fc=zf.track_libra_axis_fc, ec=zf.track_libra_axis_ec, lw=2)
-        track_libra.text(f'{"♎︎"}', size=27, color=zf.track_libra_axis_tc)
+
+
+        zf_tlib_axis_fc = zodiac_form.cleaned_data['track_libra_axis_fc']
+        zf_tlib_axis_ec = zodiac_form.cleaned_data['track_libra_axis_ec']
+        zf_tlib_axis_tc = zodiac_form.cleaned_data['track_libra_axis_tc']
+        track_libra.axis(fc=zf_tlib_axis_fc, ec=zf_tlib_axis_ec, lw=2)
+        track_libra.text(f'{"♎︎"}', size=27, color=zf_tlib_axis_tc)
 
         sector_taurus = circos.get_sector("♉︎")
         track_taurus = sector_taurus.add_track((95, 80))
-        track_taurus.axis(fc=zf.track_taurus_axis_fc, ec=zf.track_taurus_axis_ec, lw=2)
-        track_taurus.text(f'{"♉︎"}', size=27, color=zf.track_taurus_axis_tc, )
+
+        zf_tau_axis_fc = zodiac_form.cleaned_data['track_taurus_axis_fc']
+        zf_tau_axis_ec = zodiac_form.cleaned_data['track_taurus_axis_ec']
+        zf_tau_axis_tc = zodiac_form.cleaned_data['track_taurus_axis_tc']
+        track_taurus.axis(fc=zf_tau_axis_fc, ec=zf_tau_axis_ec, lw=2)
+        track_taurus.text(f'{"♉︎"}', size=27, color=zf_tau_axis_tc, )
 
         sector_virgo = circos.get_sector("♍︎")
         track_virgo = sector_virgo.add_track((95, 80))

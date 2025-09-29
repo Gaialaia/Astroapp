@@ -7,41 +7,54 @@
 
 .planet-symbols {
 
-    font-size: 70px;
+    font-size: 100px;
+    padding: 0px;
+    margin: 17px;
+
 
 
 }
 
-.luminary {
 
-    padding: 17px;
+
+.interpretation-sec {
+
+    display: flex;
+    flex-direction: row;
+    justify-items: end;
+    padding: 0px ;
     border: 1px solid;
-
-
+    margin-bottom: 10px;
 
 }
 
 .sign-symbols {
 
-    font-size: 70px;
     padding: 0px;
+    font-size: 100px;
+    margin: 17px;
 
+}
+
+.luminary {
+    padding: 17px;
+    border: 1px solid;
 }
 
 .fire-signs {
 
     padding: 17px;
-    border: 1px solid;
 
+}
 
+.fire-sign {
+    color: red;
 }
 
 .air-signs {
 
     padding: 17px;
     border: 1px solid;
-
-
 }
 
 .water-signs {
@@ -71,13 +84,28 @@
 }
 
 .house-number {
+
     font-size: 70px;
+    padding: 0px;
+    margin: 17px;
 }
 
 .description {
 
     line-height: 1.2;
-    text-indent: 17% each-line;
+    text-indent: 10% each-line;
     hyphens: auto;
-    padding: 0px;
+    padding-block: 0px;
+    margin-block: 0px;
+
+}
+
+#hidden-descr {
+    display: none;
+
+}
+
+.hidden-descr {
+    display: none;
+
 }

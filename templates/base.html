@@ -9,6 +9,7 @@
      <link rel="stylesheet" href="{% static 'styles/text.css' %}">
     <link rel="stylesheet" href="{% static 'styles/form_style.css' %}" media="all">
     <link rel="stylesheet" href="{% static 'styles/custom_flatpickr_styles.css' %}">
+
     <title> {% block title %} Title {% endblock %}</title>
 
 </head>
@@ -17,12 +18,12 @@
          <div> <img src="/static/images/hat.png" alt="hat" id="hat"> </div>
 
         <nav class="navigation"> {% block navigation %} {% endblock %}  </nav>
+
         <div class="content-data">
             {% block content-data %}
-            <div class="chart-data"> {% block chart-data %} {% endblock %} </div>
-         {% endblock %}
+            <div class="chart-data"> {% block chart-data %} {% endblock %}</div>
+            {% endblock %}
         </div>
-
 
 
             <div class="sign-buttons">
@@ -42,8 +43,14 @@
 
             </div>
 
+
+
+
         <footer>
-            <img src="">
+            {% block footer-data %}
+                 <img src="">
+            {% endblock %}
+
         </footer>
     </div>
 

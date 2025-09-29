@@ -34,6 +34,7 @@ a {
 #hat {
     width: 100px;
     height: 130px;
+    zoom: 15%;
 }
 
 
@@ -121,18 +122,27 @@ td {
 }
 
 .menu-choice {
-     background-image: linear-gradient(gold, rgba(159,0,255, 0.0));
+    background-image: linear-gradient(170deg, gold, rgba(159,0,255, 0.2));
+       /*background-image: radial-gradient(rgba(159,0,255, 0.2), gold);*/
+
      text-align: center;
-     font-size: 150%;
+     font-size: 200%;
      font-stretch: 100%;
      font-weight: 600;
      align-content: center;
      box-shadow: 10px 10 5px lightblue;
      border-top-right-radius: 20%;
+     border-top-right-radius: 10%;
      color: lightblue;
      font-variant-caps: all-petite-caps;
-     border-left: solid 3px lightblue;
+     border-left: solid 7px rgba(120,0,255, 0.7);
+
 }
+
+#today-chart {
+    border-left: none;
+
+ }
 
 
 .menu-choice:hover {
@@ -198,30 +208,27 @@ td {
     /* grid-auto-rows: minmax(100px, auto); */
     grid-template-rows: 2;
     align-content: center;
-
     color: rgb(216,218,220);
     font-size: x-large;
-
 }
 
 .interpretation-data {
 
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: minmax(100px, auto)
     font-size: x-large;
-    row-gap: 7px;
-    column-gap: 7px;
+    gap: 10px;
+
+
 
 }
-
-
 
 
 .content-data {
 
     align-content: center;
-    background-color: rgba(159,0,255, 0.3);
+    /*background-color: rgba(159,0,255, 0.3);*/
+    background-image: linear-gradient(180deg, rgba(159,0,255, 0.4), rgba(159,0,255, 0.0));
     color: rgb(216,218,220);
     font-size: x-large;
     padding: 106px;
@@ -249,26 +256,6 @@ td {
     background-color: rgba(237,40,89,0.3);
     border-radius: 30%;
 }
-
-
-
-.transit-data {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    /* grid-auto-rows: minmax(100px, auto); */
-    height: fit-content;
-    width: fit-content;
-    grid-template-rows: 3;
-    align-content: center;
-    background-color: rgba(159,0,255, 0.4);
-    color: rgb(216,218,220);
-    font-size: x-large;
-    gap: 2px;
-    padding: 106px;
-    padding-bottom: 56px;
-
-
-
 /*#chart-fig:hover {
     scale: 1.5;*/
 }
@@ -429,10 +416,23 @@ h1 {
 
 }
 
+.form-container {
+    position: fixed;
+    z-index: 9;
+    width: fit-content;
+    height: fit-content;
+}
+
 .chart-list {
     text-align: center;
 }
 
 .user-forms {
     text-align: center;
+}
+
+.auth {
+    justify-content: center;
+
+
 }

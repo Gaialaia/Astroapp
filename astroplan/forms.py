@@ -209,6 +209,107 @@ class ZodiacInColorForm(forms.ModelForm):
         
                 
 
+class ColorfulZodiacForm(forms.Form):
+
+    cz_chart_date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter chart date')
+    cz_chart_city = forms.CharField(label='Enter city')
+    cz_chart_country = forms.CharField(label='Enter country')
+
+    track_aries_axis_fc = forms.CharField(max_length=20, label='Enter aries axis color ')
+    track_aries_axis_ec = forms.CharField(max_length=20)
+    track_aries_axis_tc = forms.CharField(max_length=20)
+
+    track_leo_axis_fc = forms.CharField(max_length=20)
+    track_leo_axis_ec = forms.CharField(max_length=20)
+    track_leo_axis_tc = forms.CharField(max_length=20)
+
+    track_sag_axis_fc = forms.CharField(max_length=20)
+    track_sag_axis_ec = forms.CharField(max_length=20)
+    track_sag_axis_tc = forms.CharField(max_length=20)
+
+    track_aqua_axis_fc = forms.CharField(max_length=20)
+    track_aqua_axis_ec = forms.CharField(max_length=20)
+    track_aqua_axis_tc = forms.CharField(max_length=20)
+
+    track_gemini_axis_fc = forms.CharField(max_length=20)
+    track_gemini_axis_ec = forms.CharField(max_length=20)
+    track_gemini_axis_tc = forms.CharField(max_length=20)
+
+    track_libra_axis_fc = forms.CharField(max_length=20)
+    track_libra_axis_ec = forms.CharField(max_length=20)
+    track_libra_axis_tc = forms.CharField(max_length=20)
+
+    track_scorpio_axis_fc = forms.CharField(max_length=20)
+    track_scorpio_axis_ec = forms.CharField(max_length=20)
+    track_scorpio_axis_tc = forms.CharField(max_length=20)
+
+    track_cancer_axis_fc = forms.CharField(max_length=20)
+    track_cancer_axis_ec = forms.CharField(max_length=20)
+    track_cancer_axis_tc = forms.CharField(max_length=20)
+
+    track_pisces_axis_fc = forms.CharField(max_length=20)
+    track_pisces_axis_ec = forms.CharField(max_length=20)
+    track_pisces_axis_tc = forms.CharField(max_length=20)
+
+    track_taurus_axis_fc = forms.CharField(max_length=20)
+    track_taurus_axis_ec = forms.CharField(max_length=20)
+    track_taurus_axis_tc = forms.CharField(max_length=20)
+
+    track_virgo_axis_fc = forms.CharField(max_length=20)
+    track_virgo_axis_ec = forms.CharField(max_length=20)
+    track_virgo_axis_tc = forms.CharField(max_length=20)
+
+    track_capricorn_axis_fc = forms.CharField(max_length=20)
+    track_capricorn_axis_ec = forms.CharField(max_length=20)
+    track_capricorn_axis_tc = forms.CharField(max_length=20)
+
+    degrees_track_ec = forms.CharField(max_length=20)
+    degrees_ticks_color = forms.CharField(max_length=20)
+
+    sun_symbol_c = forms.CharField(max_length=20)
+    sun_symbol_s = forms.IntegerField()
+    sun_marker_c = forms.CharField(max_length=20)
+
+    moon_symbol_c = forms.CharField(max_length=20)
+    moon_symbol_s = forms.IntegerField()
+    moon_marker_c = forms.CharField(max_length=20)
+
+    mercury_symbol_c = forms.CharField(max_length=20)
+    mercury_symbol_s = forms.IntegerField()
+    mercury_marker_c = forms.CharField(max_length=20)
+
+    venus_symbol_c = forms.CharField(max_length=20)
+    venus_symbol_s = forms.IntegerField()
+    venus_marker_c = forms.CharField(max_length=20)
+
+    mars_symbol_c = forms.CharField(max_length=20)
+    mars_symbol_s = forms.IntegerField()
+    mars_marker_c = forms.CharField(max_length=20)
+
+    jupiter_symbol_c = forms.CharField(max_length=20)
+    jup_symbol_s = forms.IntegerField()
+    jup_marker_c = forms.CharField(max_length=20)
+
+    saturn_symbol_c = forms.CharField(max_length=20)
+    saturn_symbol_s = forms.IntegerField()
+    saturn_marker_c = forms.CharField(max_length=20)
+
+    uranus_symbol_c = forms.CharField(max_length=20)
+    uranus_symbol_s = forms.IntegerField()
+    uranus_marker_c = forms.CharField(max_length=20)
+
+    neptune_symbol_c = forms.CharField(max_length=20)
+    neptune_symbol_s = forms.IntegerField()
+    neptune_marker_c = forms.CharField(max_length=20)
+
+    pluto_symbol_c = forms.CharField(max_length=20)
+    pluto_symbol_s = forms.IntegerField()
+    pluto_marker_c = forms.CharField(max_length=20)
+
+    class Media:
+        css = {
+            'all': ['/static/styles/form_style.css']
+        }
 
 
    
