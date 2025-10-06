@@ -25,7 +25,7 @@ from geopy.geocoders import Nominatim
 from pytz import timezone
 
 from .models import Chart, TransitChart, ZodiacInColors, FullChart, TransitFullChart
-from .forms import ChartForm, ZodiacInColorForm, TestForm, TransitForm, ColorfulZodiacForm
+from .forms import ChartForm, ZodiacInColorForm, TestForm, TransitForm, ColorfulZodiacForm, ColorForm
 from .utils import build_plot
 from timezonefinder import TimezoneFinder
 
@@ -975,14 +975,108 @@ def chart_form(request):
 
 def design_chart(request):
 
-    zodiac_form = ColorfulZodiacForm(request.POST or None, request.FILES or None)
+    zodiac_form = ColorfulZodiacForm(request.POST or None, request.FILES or None, initial={
+        'cz_chart_date': now,
+        'cz_chart_city': 'Ufa',
+        'cz_chart_country': 'Russia',
+
+        'track_aries_axis_fc': '#F30808',
+        'track_aries_axis_ec': '#F6F3EC',
+        'track_aries_axis_tc': '#006992',
+
+        'track_leo_axis_fc': '#E74417',
+        'track_leo_axis_ec': '#F3C442',
+        'track_leo_axis_tc': '#1F98C7',
+
+        'track_sag_axis_fc': '#8b0000',
+        'track_sag_axis_ec': '#008040',
+        'track_sag_axis_tc': '#008080',
+
+        'track_aqua_axis_fc': '#7FFF00',
+        'track_aqua_axis_ec': '#00ff01',
+        'track_aqua_axis_tc': '#ff007f',
+
+        'track_gemini_axis_fc': '#666666',
+        'track_gemini_axis_ec': '#8D6E83',
+        'track_gemini_axis_tc': '#ffd700',
+
+        'track_libra_axis_fc': '#5441F8',
+        'track_libra_axis_ec': '#f85441',
+        'track_libra_axis_tc': '#e5f841',
+
+        'track_scorpio_axis_fc': '#808000',
+        'track_scorpio_axis_ec': '#804000',
+        'track_scorpio_axis_tc': '#800080',
+
+        'track_cancer_axis_fc': '#145314',
+        'track_cancer_axis_ec': '#531453',
+        'track_cancer_axis_tc': '#ffa500',
+
+        'track_pisces_axis_fc': '#4B0082',
+        'track_pisces_axis_ec': '#1E0034',
+        'track_pisces_axis_tc': '#E2DBEA',
+
+        'track_taurus_axis_fc': '#FF69B4',
+        'track_taurus_axis_ec': '#993F6C',
+        'track_taurus_axis_tc': '#90CC54',
+
+        'track_virgo_axis_fc': '#CE954B',
+        'track_virgo_axis_ec': '#a16e2c',
+        'track_virgo_axis_tc': '#4B84CE',
+
+        'track_capricorn_axis_fc': '#291F25',
+        'track_capricorn_axis_ec': '#1F2529',
+        'track_capricorn_axis_tc': '#c4bcc1',
+
+        'degrees_track_ec': '#EDEBF4',
+        'degrees_ticks_color': '#EDEBF4',
+
+        'sun_symbol_c': '#ffe900',
+        'sun_marker_c': '#f7f70e',
+        'sun_symbol_s': 20,
+
+        'mars_symbol_c': '#ff0000',
+        'mars_marker_c': '#CC0000',
+        'mars_symbol_s': 17,
+
+        'jupiter_symbol_c': '#1C248E',
+        'jup_marker_c': '#1C5D8E',
+        'jup_symbol_s': 25,
+
+        'mercury_symbol_c': '#3F3F3F',
+        'mercury_marker_c': '#ffd700',
+        'mercury_symbol_s': 15,
+
+        'uranus_symbol_c': '#7FFF00',
+        'uranus_marker_c': '#d921d9',
+        'uranus_symbol_s': 17,
+
+        'saturn_symbol_c': '#444444',
+        'saturn_marker_c': '#aa3b3b',
+        'saturn_symbol_s': 20,
+
+        'moon_symbol_c': '#e94b63',
+        'moon_marker_c': '#606060',
+        'moon_symbol_s': 20,
+
+        'neptune_symbol_c': '#4b0082',
+        'neptune_marker_c': '#f98812',
+        'neptune_symbol_s': 20,
+
+        'pluto_symbol_c': '#3b1a1a',
+        'pluto_marker_c': '#b10707',
+        'pluto_symbol_s': 20,
+
+        'venus_symbol_c': '#ed0c7d',
+        'venus_marker_c': '#f780bb',
+        'venus_symbol_s': 18,
+    })
 
     if zodiac_form.is_valid():
 
         zf_city = zodiac_form.cleaned_data['cz_chart_city']
         zf_country = zodiac_form.cleaned_data['cz_chart_country']
         zf_date = zodiac_form.cleaned_data['cz_chart_date']
-
 
         # zodiac_form.save()
         # zf = ZodiacInColors.objects.last()
@@ -1039,7 +1133,6 @@ def design_chart(request):
         sector_libra = circos.get_sector("♎︎")
         track_libra = sector_libra.add_track((95, 80))
 
-
         zf_tlib_axis_fc = zodiac_form.cleaned_data['track_libra_axis_fc']
         zf_tlib_axis_ec = zodiac_form.cleaned_data['track_libra_axis_ec']
         zf_tlib_axis_tc = zodiac_form.cleaned_data['track_libra_axis_tc']
@@ -1057,34 +1150,99 @@ def design_chart(request):
 
         sector_virgo = circos.get_sector("♍︎")
         track_virgo = sector_virgo.add_track((95, 80))
-        track_virgo.axis(fc=zf.track_virgo_axis_fc, ec=zf.track_virgo_axis_ec, lw=2)
-        track_virgo.text(f'{"♍︎"}', size=27, color=zf.track_virgo_axis_tc)
+
+        zf_tvirg_axis_fc = zodiac_form.cleaned_data['track_virgo_axis_fc']
+        zf_tvirg_axis_ec = zodiac_form.cleaned_data['track_virgo_axis_ec']
+        zf_tvirg_axis_tc = zodiac_form.cleaned_data['track_virgo_axis_tc']
+      
+        track_virgo.axis(fc=zf_tvirg_axis_fc, ec=zf_tvirg_axis_ec, lw=2)
+        track_virgo.text(f'{"♍︎"}', size=27, color=zf_tvirg_axis_tc)
 
         sector_capricon = circos.get_sector("♑︎")
         track_capricon = sector_capricon.add_track((95, 80))
-        track_capricon.axis(fc=zf.track_capricorn_axis_fc, ec=zf.track_capricorn_axis_ec, lw=2)
-        track_capricon.text(f'{"♑︎"}', size=27, color=zf.track_capricorn_axis_tc)
+
+        zf_tcapr_axis_fc = zodiac_form.cleaned_data['track_capricorn_axis_fc']
+        zf_tcapr_axis_ec = zodiac_form.cleaned_data['track_capricorn_axis_ec']
+        zf_tcapr_axis_tc = zodiac_form.cleaned_data['track_capricorn_axis_tc']
+        
+        track_capricon.axis(fc=zf_tcapr_axis_fc, ec=zf_tcapr_axis_ec, lw=2)
+        track_capricon.text(f'{"♑︎"}', size=27, color=zf_tcapr_axis_tc)
 
         sector_cancer = circos.get_sector("♋︎")
         track_cancer = sector_cancer.add_track((95, 80))
-        track_cancer.axis(fc=zf.track_cancer_axis_fc, ec=zf.track_capricorn_axis_ec, lw=2)
-        track_cancer.text(f'{"♋︎"}', size=27, color=zf.track_cancer_axis_tc)
+
+        zf_tcan_axis_fc = zodiac_form.cleaned_data['track_cancer_axis_fc']
+        zf_tcan_axis_ec = zodiac_form.cleaned_data['track_cancer_axis_ec']
+        zf_tcan_axis_tc = zodiac_form.cleaned_data['track_cancer_axis_tc']
+        track_cancer.axis(fc=zf_tcan_axis_fc, ec=zf_tcan_axis_ec, lw=2)
+        track_cancer.text(f'{"♋︎"}', size=27, color=zf_tcan_axis_tc)
 
         sector_scorpio = circos.get_sector("♏︎")
         track_scorpio = sector_scorpio.add_track((95, 80))
-        track_scorpio.axis(fc=zf.track_scorpio_axis_fc, ec=zf.track_scorpio_axis_ec, lw=2)
-        track_scorpio.text(f'{"♏︎"}', size=27, color=zf.track_pisces_axis_tc)
+
+        zf_tsco_axis_fc = zodiac_form.cleaned_data['track_scorpio_axis_fc']
+        zf_tsco_axis_ec = zodiac_form.cleaned_data['track_scorpio_axis_ec']
+        zf_tsco_axis_tc = zodiac_form.cleaned_data['track_scorpio_axis_tc']
+        track_scorpio.axis(fc=zf_tsco_axis_fc, ec=zf_tsco_axis_ec, lw=2)
+        track_scorpio.text(f'{"♏︎"}', size=27, color=zf_tsco_axis_tc)
 
         sector_pisces = circos.get_sector("♓︎")
         track_pisces = sector_pisces.add_track((95, 80))
-        track_pisces.axis(fc=zf.track_pisces_axis_fc, ec=zf.track_pisces_axis_ec, lw=2)
-        track_pisces.text(f'{"♓︎"}', size=27, color=zf.track_sag_axis_tc)
+        
+        zf_tpis_axis_fc = zodiac_form.cleaned_data['track_pisces_axis_fc']
+        zf_tpis_axis_ec = zodiac_form.cleaned_data['track_pisces_axis_ec']
+        zf_tpis_axis_tc = zodiac_form.cleaned_data['track_pisces_axis_tc']
+        track_pisces.axis(fc=zf_tpis_axis_fc, ec=zf_tpis_axis_ec, lw=2)
+        track_pisces.text(f'{"♏︎"}', size=27, color=zf_tpis_axis_tc)
+
+        zf_deg_track_ec = zodiac_form.cleaned_data['degrees_track_ec']
+        zf_dtick_clr = zodiac_form.cleaned_data['degrees_ticks_color']
 
         for sector in circos.sectors:
             # sector.axis(lw=1, ec="thistle")  # turn off sector line (axis)
             track_deg = sector.add_track((95, 100))
-            track_deg.axis(ec=zf.degrees_track_ec)
-            track_deg.grid(y_grid_num=None, x_grid_interval=1, color=zf.degrees_ticks_color)
+            track_deg.axis(ec=zf_deg_track_ec)
+            track_deg.grid(y_grid_num=None, x_grid_interval=1, color=zf_dtick_clr)
+
+        zf_sun_symbol_c = zodiac_form.cleaned_data['sun_symbol_c']
+        zf_sun_symbol_s = zodiac_form.cleaned_data['sun_symbol_s']
+        zf_sun_marker_c = zodiac_form.cleaned_data['sun_marker_c' ]
+
+        zf_moon_symbol_c = zodiac_form.cleaned_data['moon_symbol_c']
+        zf_moon_symbol_s = zodiac_form.cleaned_data['moon_symbol_s']
+        zf_moon_marker_c = zodiac_form.cleaned_data['moon_marker_c']
+
+        zf_mercury_symbol_c = zodiac_form.cleaned_data['mercury_symbol_c']
+        zf_mercury_symbol_s = zodiac_form.cleaned_data['mercury_symbol_s']
+        zf_mercury_marker_c = zodiac_form.cleaned_data['mercury_marker_c']
+
+        zf_venus_symbol_c = zodiac_form.cleaned_data['venus_symbol_c']
+        zf_venus_symbol_s = zodiac_form.cleaned_data['venus_symbol_s']
+        zf_venus_marker_c = zodiac_form.cleaned_data['venus_marker_c']
+
+        zf_mars_symbol_c = zodiac_form.cleaned_data['mars_symbol_c']
+        zf_mars_symbol_s = zodiac_form.cleaned_data['mars_symbol_s']
+        zf_mars_marker_c = zodiac_form.cleaned_data['mars_marker_c']
+
+        zf_jupiter_symbol_c = zodiac_form.cleaned_data['jupiter_symbol_c']
+        zf_jup_symbol_s = zodiac_form.cleaned_data['jup_symbol_s']
+        zf_jup_marker_c = zodiac_form.cleaned_data['jup_marker_c']
+
+        zf_saturn_symbol_c = zodiac_form.cleaned_data['saturn_symbol_c']
+        zf_saturn_symbol_s = zodiac_form.cleaned_data['saturn_symbol_s']
+        zf_saturn_marker_c = zodiac_form.cleaned_data['saturn_symbol_c']
+
+        zf_uranus_symbol_c = zodiac_form.cleaned_data['uranus_symbol_c']
+        zf_uranus_symbol_s = zodiac_form.cleaned_data['uranus_symbol_s']
+        zf_uranus_marker_c = zodiac_form.cleaned_data['uranus_marker_c']
+
+        zf_neptune_symbol_c = zodiac_form.cleaned_data['neptune_symbol_c']
+        zf_neptune_symbol_s = zodiac_form.cleaned_data['neptune_symbol_s']
+        zf_neptune_marker_c = zodiac_form.cleaned_data['neptune_marker_c']
+
+        zf_pluto_symbol_c = zodiac_form.cleaned_data['pluto_symbol_c']
+        zf_pluto_symbol_s = zodiac_form.cleaned_data['pluto_symbol_s']
+        zf_pluto_marker_c = zodiac_form.cleaned_data['pluto_marker_c']
 
         fig = circos.plotfig()
         fig.patch.set_alpha(0.0)
@@ -1114,25 +1272,25 @@ def design_chart(request):
         planet_ax.set_axis_off()
         planet_ax.set_thetagrids(range(0, 360, 30))
 
-        pd = {swe.get_planet_name(0): ['☼', zf.sun_marker_c, zf.sun_symbol_s, 17, zf.sun_symbol_c, swe.calc_ut(jd, 0, flags)[0][0],
+        pd = {swe.get_planet_name(0): ['☼', zf_sun_marker_c, zf_sun_symbol_s, 17, zf_sun_symbol_c, swe.calc_ut(jd, 0, flags)[0][0],
                                        swe.calc_ut(jd, 0, flags)[0][1]],
-              swe.get_planet_name(1): ['☾', zf.moon_marker_c, zf.moon_symbol_s, 17,zf.moon_symbol_c,swe.calc_ut(jd, 1, flags)[0][0],
+              swe.get_planet_name(1): ['☾', zf_moon_marker_c, zf_moon_symbol_s, 17,zf_moon_symbol_c,swe.calc_ut(jd, 1, flags)[0][0],
                                        swe.calc_ut(jd, 1, flags)[0][1]],
-              swe.get_planet_name(2): ['☿', zf.mercury_marker_c, zf.mercury_symbol_s, 17, zf.mercury_symbol_c, swe.calc_ut(jd, 2, flags)[0][0],
+              swe.get_planet_name(2): ['☿', zf_mercury_marker_c, zf_mercury_symbol_s, 17, zf_mercury_symbol_c, swe.calc_ut(jd, 2, flags)[0][0],
                                        swe.calc_ut(jd, 2, flags)[0][1]],
-              swe.get_planet_name(3): ['♀', zf.venus_marker_c, zf.venus_symbol_s, 17, zf.venus_symbol_c, swe.calc_ut(jd, 3, flags)[0][0],
+              swe.get_planet_name(3): ['♀', zf_venus_marker_c, zf_venus_symbol_s, 17, zf_venus_symbol_c, swe.calc_ut(jd, 3, flags)[0][0],
                                        swe.calc_ut(jd, 3, flags)[0][1]],
-              swe.get_planet_name(4): ['♂', zf.mars_marker_c, zf.mars_symbol_s, 17, zf.mars_symbol_c, swe.calc_ut(jd, 4, flags)[0][0],
+              swe.get_planet_name(4): ['♂', zf_mars_marker_c, zf_mars_symbol_s, 17, zf_mars_symbol_c, swe.calc_ut(jd, 4, flags)[0][0],
                                        swe.calc_ut(jd, 4, flags)[0][1]],
-              swe.get_planet_name(5): ['♃', zf.jup_marker_c, zf.jup_symbol_s, 17, zf.jupiter_symbol_c, swe.calc_ut(jd, 5, flags)[0][0],
+              swe.get_planet_name(5): ['♃', zf_jup_marker_c, zf_jup_symbol_s, 17, zf_jupiter_symbol_c, swe.calc_ut(jd, 5, flags)[0][0],
                                        swe.calc_ut(jd, 5, flags)[0][1]],
-              swe.get_planet_name(6): ['♄', zf.saturn_marker_c, zf.saturn_symbol_s, 17, zf.saturn_symbol_c,swe.calc_ut(jd, 6, flags)[0][0],
+              swe.get_planet_name(6): ['♄', zf_saturn_marker_c, zf_saturn_symbol_s, 17, zf_saturn_symbol_c,swe.calc_ut(jd, 6, flags)[0][0],
                                        swe.calc_ut(jd, 6, flags)[0][1]],
-              swe.get_planet_name(7): ['♅', zf.uranus_marker_c, zf.uranus_symbol_s, 17, zf.uranus_symbol_c, swe.calc_ut(jd, 7, flags)[0][0],
+              swe.get_planet_name(7): ['♅', zf_uranus_marker_c, zf_uranus_symbol_s, 17, zf_uranus_symbol_c, swe.calc_ut(jd, 7, flags)[0][0],
                                        swe.calc_ut(jd, 7, flags)[0][1]],
-              swe.get_planet_name(8): ['♆', zf.neptune_marker_c, zf.neptune_symbol_s, 17, zf.neptune_symbol_c, swe.calc_ut(jd, 8, flags)[0][0],
+              swe.get_planet_name(8): ['♆', zf_neptune_marker_c, zf_neptune_symbol_s, 17, zf_neptune_symbol_c, swe.calc_ut(jd, 8, flags)[0][0],
                                        swe.calc_ut(jd, 8, flags)[0][1]],
-              swe.get_planet_name(9): ['♇', zf.pluto_marker_c, zf.pluto_symbol_s, 17, zf.pluto_symbol_c, swe.calc_ut(jd, 9, flags)[0][0],
+              swe.get_planet_name(9): ['♇', zf_pluto_marker_c, zf_pluto_symbol_s, 17, zf_pluto_symbol_c, swe.calc_ut(jd, 9, flags)[0][0],
                                        swe.calc_ut(jd, 9, flags)[0][1]]
               }
         coords_value = list(pd.values())
@@ -1266,7 +1424,7 @@ def design_chart(request):
                             'date': now.strftime('%B, %d, %H:%M'),
                             'planet_names': planet_names})
 
-    return render (request, 'design_your_chart.html', context={'zodiac_form': zodiac_form})
+    return render (request, 'color_chart.html', context={'zodiac_form': zodiac_form})
 
 
 
@@ -1314,7 +1472,9 @@ def tr_chart_detail(request,id):
     return render(request, 'transit_chart_db_detail.html', {'tr_chart': TransitFullChart.objects.get(id=id)})
 
 
-
+def color_form(request):
+    form = ColorForm()
+    return render(request, 'color_chart.html', {'form': form})
 
 
 # def show_chart_houses(request):

@@ -1,14 +1,22 @@
 from email.policy import default
 
+from Bio.PDB import Select
 from django.forms import DateInput, ModelForm
+from django.forms.widgets import NumberInput, TextInput
 from django_flatpickr.widgets import DatePickerInput, DateTimePickerInput
 from django.utils import timezone
 from .models import Chart, TransitChart, ZodiacInColors, FullChart, TransitFullChart
 import datetime
+from colorfield.widgets import ColorWidget
+from colorfield.forms import ColorField
 
 
 from django import forms
 
+
+
+class ColorForm(forms.Form):
+    color = ColorField(initial="#FF0000")
 
 class TestForm(forms.Form):
     date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter date')
@@ -211,105 +219,330 @@ class ZodiacInColorForm(forms.ModelForm):
 
 class ColorfulZodiacForm(forms.Form):
 
-    cz_chart_date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter chart date')
-    cz_chart_city = forms.CharField(label='Enter city')
-    cz_chart_country = forms.CharField(label='Enter country')
+    COLORS_CHOICES = (
+        ("DarkRed", "DarkRed"),
+        ("Red", "Red"),
+        ("Salmon", "Salmon"),
+        ("MediumVioletRed","MediumVioletRed"),
+        ("HotPink", "HotPink"),
+        ("DeepPink", "DeepPink"),
+        ("OrangeRed", "OrangeRed"),
+        ("Gold","Gold"),
+        ("Yellow", "Yellow"),
+        ("Indigo", "Indigo"),
+        ("DarkOrchid", "DarkOrchid"),
+        ("SlateBlue","SlateBlue"),
+       ("Teal","Teal"),
+       ("Olive","Olive"),
+       ("YellowGreen","YellowGreen"),
+       ("Chartreuse","Chartreuse"),
+       ("ForestGreen","ForestGreen"),
+       ("MidnightBlue","MidnightBlue"),
+       ("DodgerBlue","DodgerBlue"),
+       ("DarkTurquoise","DarkTurquoise"),
+       ("SaddleBrown","SaddleBrown"),
+       ("SaddleBrown","SandyBrown"),
+       ("Wheat","Wheat"),
+       ("WhiteSmoke","WhiteSmoke"),
+       ("AliceBlue","AliceBlue"),
+       ("LavenderBlush","LavenderBlush"),
+       ("Gray","Gray"),
+       ("DarkSlateGray","DarkSlateGray"),
+       ("DimGray","DimGray"),
+       ("BurlyWood","BurlyWood"),
+       ("",""),
+       ("",""),
+       ("",""),
+       ("",""),
+    )
 
-    track_aries_axis_fc = forms.CharField(max_length=20, label='Enter aries axis color ')
-    track_aries_axis_ec = forms.CharField(max_length=20)
-    track_aries_axis_tc = forms.CharField(max_length=20)
 
-    track_leo_axis_fc = forms.CharField(max_length=20)
-    track_leo_axis_ec = forms.CharField(max_length=20)
-    track_leo_axis_tc = forms.CharField(max_length=20)
 
-    track_sag_axis_fc = forms.CharField(max_length=20)
-    track_sag_axis_ec = forms.CharField(max_length=20)
-    track_sag_axis_tc = forms.CharField(max_length=20)
+    cz_chart_date = (forms.DateTimeField
+                     (widget=DateTimePickerInput(attrs={'class':'form-control',
+                    'id':'chart-date'}), label='Enter chart date'))
+    cz_chart_city = forms.CharField(label='Enter city', widget=TextInput(attrs={'class':'form-control','placeholder':'city',
+                                                                                'id':'chart-city'}))
+    cz_chart_country = forms.CharField(label='Enter country',  widget=TextInput(attrs={'class':'form-control',
+                                                                                       'id':'chart-country'}))
 
-    track_aqua_axis_fc = forms.CharField(max_length=20)
-    track_aqua_axis_ec = forms.CharField(max_length=20)
-    track_aqua_axis_tc = forms.CharField(max_length=20)
 
-    track_gemini_axis_fc = forms.CharField(max_length=20)
-    track_gemini_axis_ec = forms.CharField(max_length=20)
-    track_gemini_axis_tc = forms.CharField(max_length=20)
+    # track_aries_axis_fc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                         widget=forms.Select(attrs={'class':'form-control',
+    #                                                                    'id':'aries-fc', 'type':'color'}))
+    #
+    #
+    # track_aries_axis_ec = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                         widget=forms.Select(attrs={'class':'form-control',
+    #                                                                    'id':'aries-ec'}))
+    # track_aries_axis_tc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                         widget=forms.Select(attrs={'class': 'form-control',
+    #                                                                    'id': 'aries-tc'}))
 
-    track_libra_axis_fc = forms.CharField(max_length=20)
-    track_libra_axis_ec = forms.CharField(max_length=20)
-    track_libra_axis_tc = forms.CharField(max_length=20)
 
-    track_scorpio_axis_fc = forms.CharField(max_length=20)
-    track_scorpio_axis_ec = forms.CharField(max_length=20)
-    track_scorpio_axis_tc = forms.CharField(max_length=20)
 
-    track_cancer_axis_fc = forms.CharField(max_length=20)
-    track_cancer_axis_ec = forms.CharField(max_length=20)
-    track_cancer_axis_tc = forms.CharField(max_length=20)
+    # track_aries_axis_fc = forms.TextInput(attrs={'type': 'color', 'class': 'form-control', 'id': 'aries-fc'})
+    track_aries_axis_fc = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'aries-fc'}), label='fc')
+    track_aries_axis_ec = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'aries-ec'}), label='ec')
+    track_aries_axis_tc = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'aries-tc'}), label='tc')
+    #
+    # track_aries_axis_fc = forms.TextInput(attrs={'type': 'color'})
 
-    track_pisces_axis_fc = forms.CharField(max_length=20)
-    track_pisces_axis_ec = forms.CharField(max_length=20)
-    track_pisces_axis_tc = forms.CharField(max_length=20)
+    #
+    # track_leo_axis_fc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                       widget=forms.Select(attrs={'class': 'form-control',
+    #                                                                  'id': 'leo-tc'}))
+    # track_leo_axis_ec = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                       widget=forms.Select(attrs={'class': 'form-control',
+    #                                                                  'id': 'leo-tc'}))
+    # track_leo_axis_tc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                       widget=forms.Select(attrs={'class': 'form-control',
+    #                                                                  'id': 'leo-tc'}))
 
-    track_taurus_axis_fc = forms.CharField(max_length=20)
-    track_taurus_axis_ec = forms.CharField(max_length=20)
-    track_taurus_axis_tc = forms.CharField(max_length=20)
+    track_leo_axis_fc = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'leo-fc'}))
+    track_leo_axis_ec = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'leo-ec'}))
+    track_leo_axis_tc = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'leo-tc'}))
 
-    track_virgo_axis_fc = forms.CharField(max_length=20)
-    track_virgo_axis_ec = forms.CharField(max_length=20)
-    track_virgo_axis_tc = forms.CharField(max_length=20)
+    # track_sag_axis_fc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                       widget=forms.Select(attrs={'class':'form-control', 'id':'sag-fc'}))
+    # track_sag_axis_ec = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                       widget=forms.Select(attrs={'class': 'form-control', 'id': 'sag-ec'}))
+    # track_sag_axis_tc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                       widget=forms.Select(attrs={'class': 'form-control', 'id': 'sag-tc'}))
 
-    track_capricorn_axis_fc = forms.CharField(max_length=20)
-    track_capricorn_axis_ec = forms.CharField(max_length=20)
-    track_capricorn_axis_tc = forms.CharField(max_length=20)
+    track_sag_axis_fc = ColorField(initial='#F87230',
+                                   widget=ColorWidget(attrs={'class': 'form-control', 'id': 'sag-fc'}))
+    track_sag_axis_ec = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'sag-ec'}))
+    track_sag_axis_tc = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'sag-tc'}))
 
-    degrees_track_ec = forms.CharField(max_length=20)
-    degrees_ticks_color = forms.CharField(max_length=20)
+    # track_aqua_axis_fc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                        widget=forms.Select(attrs={'class': 'form-control', 'id': 'aqua-fc'}))
+    # track_aqua_axis_ec = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                        widget=forms.Select(attrs={'class': 'form-control', 'id': 'aqua-ec'}))
+    # track_aqua_axis_tc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                        widget=forms.Select(attrs={'class': 'form-control', 'id': 'aqua-tc'}))
 
-    sun_symbol_c = forms.CharField(max_length=20)
+    track_aqua_axis_fc = ColorField(initial='#F87230',
+                                   widget=ColorWidget(attrs={'class': 'form-control', 'id': 'aqua-fc'}))
+    track_aqua_axis_ec = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'aqua-ec'}))
+    track_aqua_axis_tc = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'aqua-tc'}))
+
+
+
+    # track_gemini_axis_fc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                          widget=forms.Select(attrs={'class': 'form-control', 'id': 'gemini-fc'}))
+    # track_gemini_axis_ec = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                          widget=forms.Select(attrs={'class': 'form-control', 'id': 'gemini-ec'}))
+    # track_gemini_axis_tc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                          widget=forms.Select(attrs={'class': 'form-control', 'id': 'gemini-tc'}))
+
+    track_gemini_axis_fc = ColorField(initial='#F87230',
+                                   widget=ColorWidget(attrs={'class': 'form-control', 'id': 'gemini-fc'}))
+    track_gemini_axis_ec = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'gemini-ec'}))
+    track_gemini_axis_tc = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'gemini-tc'}))
+
+    # track_libra_axis_fc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                         widget=forms.Select(attrs={'class': 'form-control', 'id': 'libra-fc'}))
+    # track_libra_axis_ec = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                         widget=forms.Select(attrs={'class': 'form-control', 'id': 'libra-ec'}))
+    # track_libra_axis_tc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                         widget=forms.Select(attrs={'class': 'form-control', 'id': 'libra-tc'}))
+
+    track_libra_axis_fc = ColorField(initial='#F87230',
+                                   widget=ColorWidget(attrs={'class': 'form-control', 'id': 'libra-fc'}))
+    track_libra_axis_ec = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'libra-ec'}))
+    track_libra_axis_tc = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'libra-tc'}))
+
+    # track_scorpio_axis_fc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                           widget=forms.Select(attrs={'class': 'form-control', 'id': 'scorpio-fc'}))
+    # track_scorpio_axis_ec = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                           widget=forms.Select(attrs={'class': 'form-control', 'id': 'scorpio-ec'}))
+    # track_scorpio_axis_tc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                           widget=forms.Select(attrs={'class': 'form-control', 'id': 'scorpio-tc'}))
+    track_scorpio_axis_fc = ColorField(initial='#F87230',
+                                     widget=ColorWidget(attrs={'class': 'form-control', 'id': 'scorpio-fc'}))
+    track_scorpio_axis_ec = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'scorpio-ec'}))
+    track_scorpio_axis_tc = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'scorpio-tc'}))
+
+
+    # track_cancer_axis_fc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                          widget=forms.Select(attrs={'class': 'form-control', 'id': 'cancer-fc'}))
+    # track_cancer_axis_ec = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                          widget=forms.Select(attrs={'class': 'form-control', 'id': 'cancer-ec'}))
+    # track_cancer_axis_tc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                          widget=forms.Select(attrs={'class': 'form-control', 'id': 'cancer-tc'}))
+
+    track_cancer_axis_fc = ColorField(initial='#F87230',
+                                     widget=ColorWidget(attrs={'class': 'form-control', 'id': 'cancer-fc'}))
+    track_cancer_axis_ec = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'cancer-ec'}))
+    track_cancer_axis_tc = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'cancer-tc'}))
+
+    # track_pisces_axis_fc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                          widget=forms.Select(attrs={'class': 'form-control', 'id': 'pisces-fc'}))
+    # track_pisces_axis_ec = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                          widget=forms.Select(attrs={'class': 'form-control', 'id': 'pisces-ec'}))
+    # track_pisces_axis_tc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                          widget=forms.Select(attrs={'class': 'form-control', 'id': 'pisces-tc'}))
+
+    track_pisces_axis_fc = ColorField(initial='#F87230',
+                                     widget=ColorWidget(attrs={'class': 'form-control', 'id': 'pisces-fc'}))
+    track_pisces_axis_ec = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'pisces-ec'}))
+    track_pisces_axis_tc = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'pisces-tc'}))
+
+    # track_taurus_axis_fc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                          widget=forms.Select(attrs={'class': 'form-control', 'id': 'taurus-fc'}))
+    # track_taurus_axis_ec = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                          widget=forms.Select(attrs={'class': 'form-control', 'id': 'taurus-ec'}))
+    # track_taurus_axis_tc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                          widget=forms.Select(attrs={'class': 'form-control', 'id': 'taurus-tc'}))
+
+    track_taurus_axis_fc = ColorField(initial='#F87230',
+                                     widget=ColorWidget(attrs={'class': 'form-control', 'id': 'taurus-fc'}))
+    track_taurus_axis_ec = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'taurus-ec'}))
+    track_taurus_axis_tc = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'taurus-tc'}))
+
+    # track_virgo_axis_fc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                         widget=forms.Select(attrs={'class': 'form-control', 'id': 'virgo-fc'}))
+    # track_virgo_axis_ec = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                         widget=forms.Select(attrs={'class': 'form-control', 'id': 'virgo-ec'}))
+    # track_virgo_axis_tc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                         widget=forms.Select(attrs={'class': 'form-control', 'id': 'virgo-tc'}))
+
+    track_capricorn_axis_fc = ColorField(initial='#F87230',
+                                     widget=ColorWidget(attrs={'class': 'form-control', 'id': 'capricorn-fc'}))
+    track_capricorn_axis_ec = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'capricorn-ec'}))
+    track_capricorn_axis_tc = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'capricorn-tc'}))
+
+    # track_capricorn_axis_fc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                             widget=forms.Select(attrs={'class': 'form-control', 'id': 'capricorn-fc'}))
+    # track_capricorn_axis_ec = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                             widget=forms.Select(attrs={'class': 'form-control', 'id': 'capricorn-ec'}))
+    # track_capricorn_axis_tc = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                             widget=forms.Select(attrs={'class': 'form-control', 'id': 'capricorn-tc'}))
+
+    track_virgo_axis_fc = ColorField(initial='#F87230',
+                                     widget=ColorWidget(attrs={'class': 'form-control', 'id': 'virgo-fc'}))
+    track_virgo_axis_ec = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'virgo-ec'}))
+    track_virgo_axis_tc = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'virgo-tc'}))
+
+    # degrees_track_ec = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                      widget=forms.Select(attrs={'class': 'form-control', 'id': 'deg-ec'}))
+    # degrees_ticks_color = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                         widget=forms.Select(attrs={'class': 'form-control', 'id': 'tick-cl'}))
+
+
+    degrees_track_ec = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'deg-ec'}), label='degrees track color')
+
+    degrees_ticks_color = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'tick-cl'}), label='degrees ticks color')
+
+
+    # sun_symbol_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                  widget=forms.Select(attrs={'class': 'form-control', 'id':'sun-sm'}))
+    # sun_symbol_s = forms.IntegerField()
+    # sun_marker_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                  widget=forms.Select(attrs={'class': 'form-control', 'id':'sun-mk'}))
+
+    sun_symbol_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'sun-sm'}))
+    sun_marker_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'sun-mk'}))
     sun_symbol_s = forms.IntegerField()
-    sun_marker_c = forms.CharField(max_length=20)
 
-    moon_symbol_c = forms.CharField(max_length=20)
+    # moon_symbol_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                   widget=forms.Select(attrs={'class': 'form-control', 'id': 'moon-sm'}))
+    # moon_symbol_s = forms.IntegerField()
+    # moon_marker_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                   widget=forms.Select(attrs={'class': 'form-control', 'id': 'moon-mk'}))
+
+    moon_symbol_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'moon-sm'}))
+    moon_marker_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'moon-mk'}))
     moon_symbol_s = forms.IntegerField()
-    moon_marker_c = forms.CharField(max_length=20)
 
-    mercury_symbol_c = forms.CharField(max_length=20)
+    # mercury_symbol_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                      widget=forms.Select(attrs={'class': 'form-control', 'id': 'mercury-sm'}))
+    # mercury_symbol_s = forms.IntegerField()
+    # mercury_marker_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                      widget=forms.Select(attrs={'class': 'form-control', 'id': 'mercury-mk'}))
+
+    mercury_symbol_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'mercury-sm'}))
+    mercury_marker_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'mercury-mk'}))
     mercury_symbol_s = forms.IntegerField()
-    mercury_marker_c = forms.CharField(max_length=20)
 
-    venus_symbol_c = forms.CharField(max_length=20)
+
+    # venus_symbol_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                    widget=forms.Select(attrs={'class': 'form-control', 'id': 'venus-sm'}))
+    # venus_symbol_s = forms.IntegerField()
+    # venus_marker_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                    widget=forms.Select(attrs={'class': 'form-control', 'id': 'venus-mk'}))
+
+    venus_symbol_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'venus-sm'}))
+    venus_marker_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'venus-mk'}))
     venus_symbol_s = forms.IntegerField()
-    venus_marker_c = forms.CharField(max_length=20)
 
-    mars_symbol_c = forms.CharField(max_length=20)
+    # mars_symbol_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                   widget=forms.Select(attrs={'class': 'form-control', 'id': 'mars-mk'}))
+    # mars_symbol_s = forms.IntegerField(widget=NumberInput)
+    # mars_marker_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                   widget=forms.Select(attrs={'class': 'form-control', 'id': 'mars-mk'}))
+
+    mars_symbol_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'mars-sm'}), label='msc')
+    mars_marker_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'mars-mk'}))
     mars_symbol_s = forms.IntegerField()
-    mars_marker_c = forms.CharField(max_length=20)
 
-    jupiter_symbol_c = forms.CharField(max_length=20)
+    # jupiter_symbol_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                      widget=forms.Select(attrs={'class': 'form-control', 'id': 'jupiter-sm'}))
+    # jup_symbol_s = forms.IntegerField()
+    # jup_marker_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                  widget=forms.Select(attrs={'class': 'form-control', 'id':'jup-mk'}))
+
+    jupiter_symbol_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'jup-sm'}))
+    jup_marker_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'jup-mk'}))
     jup_symbol_s = forms.IntegerField()
-    jup_marker_c = forms.CharField(max_length=20)
 
-    saturn_symbol_c = forms.CharField(max_length=20)
+    # saturn_symbol_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                     widget=forms.Select(attrs={'class': 'form-control', 'id': 'saturn-sm'}))
+    # saturn_symbol_s = forms.IntegerField()
+    # saturn_marker_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                     widget=forms.Select(attrs={'class': 'form-control', 'id': 'saturn-mk'}))
+
+    saturn_symbol_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'saturn-sm'}))
+    saturn_marker_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'saturn-mk'}))
     saturn_symbol_s = forms.IntegerField()
-    saturn_marker_c = forms.CharField(max_length=20)
 
-    uranus_symbol_c = forms.CharField(max_length=20)
+    # uranus_symbol_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                     widget=forms.Select(attrs={'class': 'form-control', 'id':'uranus-sm'}))
+    # uranus_symbol_s = forms.IntegerField()
+    # uranus_marker_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                     widget=forms.Select(attrs={'class': 'form-control', 'id': 'uranus-mk'}))
+
+    uranus_symbol_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'uranus-sm'}))
+    uranus_marker_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'uranus-mk'}))
     uranus_symbol_s = forms.IntegerField()
-    uranus_marker_c = forms.CharField(max_length=20)
 
-    neptune_symbol_c = forms.CharField(max_length=20)
+    # neptune_symbol_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                      widget=forms.Select(attrs={'class': 'form-control', 'id': 'neptune-sm'}))
+    # neptune_symbol_s = forms.IntegerField()
+    # neptune_marker_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                      widget=forms.Select(attrs={'class': 'form-control', 'id': 'neptune-mk'}))
+
+    neptune_symbol_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'neptune-sm'}))
+    neptune_marker_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'neptune-mk'}))
     neptune_symbol_s = forms.IntegerField()
-    neptune_marker_c = forms.CharField(max_length=20)
 
-    pluto_symbol_c = forms.CharField(max_length=20)
+    # pluto_symbol_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                    widget=forms.Select(attrs={'class': 'form-control', 'id': 'pluto-sm'}))
+    # pluto_symbol_s = forms.IntegerField()
+    # pluto_marker_c = forms.ChoiceField(choices=COLORS_CHOICES,
+    #                                    widget=forms.Select(attrs={'class': 'form-control', 'id': 'pluto-mk'}))
+
+    pluto_symbol_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'pluto-sm'}))
+    pluto_marker_c = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'pluto-mk'}))
     pluto_symbol_s = forms.IntegerField()
-    pluto_marker_c = forms.CharField(max_length=20)
 
-    class Media:
-        css = {
-            'all': ['/static/styles/form_style.css']
-        }
+
+
+    # class Media:
+    #     css = {
+    #         'all': ['/static/styles/form_style.css']
+    #     }
 
 
    
