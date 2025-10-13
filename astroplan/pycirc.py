@@ -188,10 +188,10 @@ circos = Circos(sectors)
 edge_color_list = []
 text_color_list =[]
 
-def draw_zodiac_one_color(face_color, edge_color, text_color, font_size, line_width):
+def draw_zodiac_one_color(face_color, edge_color, text_color, font_size, line_width, tick_clr, deg_clr):
     for s in sectors.keys():
         zodiac_sector = circos.get_sector(s)
-        zodiac_track = zodiac_sector.add_track((80,100))
+        zodiac_track = zodiac_sector.add_track((70,95))
         zodiac_track.axis(fc=face_color, ec=edge_color, lw=line_width)
         zodiac_track.text(f'{s}',size=font_size,color=text_color)
 
@@ -199,16 +199,16 @@ def draw_zodiac_one_color(face_color, edge_color, text_color, font_size, line_wi
             # sector.axis(lw=1, ec="thistle")  # turn off sector line (axis)
 
             track_deg = sector.add_track((95, 100))
-            track_deg.axis(ec='#660033')
-            track_deg.grid(y_grid_num=None, x_grid_interval=1, color='blue')
+            track_deg.axis(ec=tick_clr)
+            track_deg.grid(y_grid_num=None, x_grid_interval=1, color=deg_clr)
 
 
     fig = circos.plotfig()
     fig.patch.set_alpha(0.0)
-    fig.savefig('tr_one_cc.png', pad_inches=0.3)
+    fig.savefig('tr_one_c1.png')
 
-#
-draw_zodiac_one_color('#A800D8','aliceblue','#2BC200', 30,3)
+
+# draw_zodiac_one_color('#A800D8','aliceblue','#2BC200', 30,3)
 
 
 import random, string
@@ -239,9 +239,10 @@ def draw_zodiac_df_color(list_name):
 
     fig = circos.plotfig(figsize=(8.3,8.3))
     fig.patch.set_alpha(0.0)
-    fig.savefig('tr_for8.png', pad_inches=0.0)
+    fig.savefig('tr_for8.png', pad_inches=0.0, figsize=(6,6))
 
 # draw_zodiac_df_color(sign_colors)
 
 
 
+draw_zodiac_one_color('#2d2b31','#e7e3f5','#e7e3f5',45,3, '#2d2b31','#2d2b31')

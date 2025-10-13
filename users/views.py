@@ -483,12 +483,12 @@ def my_chart(request, username):
 
         tr_user_chart = TransitFullChart.objects.last()
 
-        get_loc = loc.geocode(f'{tr_user_chart.event_city, tr_user_chart.event_country}', timeout=7000)
-        tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
-        d = tr_user_chart.event_date
+        ev_get_loc = loc.geocode(f'{tr_user_chart.event_city, tr_user_chart.event_country}', timeout=7000)
+        tz = tf.timezone_at(lng=ev_get_loc.longitude, lat=ev_get_loc.latitude)
+        ev_d = tr_user_chart.event_date
 
-        get_loc = loc.geocode(f'{tr_user_chart.transit_city, tr_user_chart.transit_country}', timeout=7000)
-        tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
+        tr_get_loc = loc.geocode(f'{tr_user_chart.transit_city, tr_user_chart.transit_country}', timeout=7000)
+        tz = tf.timezone_at(lng=tr_get_loc.longitude, lat=tr_get_loc.latitude)
         tr_d = tr_user_chart.transit_date
         tr_user_chart.drawer = get_object_or_404(get_user_model(), username=username)
 
@@ -531,8 +531,8 @@ def my_chart(request, username):
         tr_cr_aspects_ax.set_rticks([])
         tr_cr_aspects_ax.set_axis_off()
 
-        jd_ev = jl.to_jd(d, fmt='jd')
-        jd_tr = jl.to_jd(d, fmt='jd')
+        jd_ev = jl.to_jd(ev_d, fmt='jd')
+        jd_tr = jl.to_jd(tr_d, fmt='jd')
 
         pd_cr = {swe.get_planet_name(0): ['☼', 'yellow', 5, 17, swe.calc_ut(jd_ev, 0, flags)[0][0],
                                           swe.calc_ut(jd_ev, 0, flags)[0][1], 10],
@@ -592,8 +592,8 @@ def my_chart(request, username):
             sign_table = zip(name_list, deg_form, signs)
             return list(sign_table)
 
-        houses = swe.houses_ex(jd_ev, get_loc.latitude, get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
-        tr_houses = swe.houses_ex(jd_tr, get_loc.latitude, get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
+        houses = swe.houses_ex(jd_ev, ev_get_loc.latitude, ev_get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
+        tr_houses = swe.houses_ex(jd_tr, tr_get_loc.latitude, tr_get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
 
         house_ax.set_thetagrids(houses[0],
                                 ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
@@ -607,8 +607,6 @@ def my_chart(request, username):
         tr_house_ax.tick_params(labelsize=20, grid_color='chartreuse', grid_linewidth=0.5,
                                 labelfontfamily='monospace', pad=23.0, labelcolor='chartreuse')
         tr_house_ax.set_theta_offset(np.pi)
-
-        jd_tr = jl.to_jd(tr_d, fmt='jd')
 
         pd = {swe.get_planet_name(0): ['☼ᵀᴿ', 'yellow', 5, 17, swe.calc_ut(jd_tr, 0, flags)[0][0],
                                        swe.calc_ut(jd_tr, 0, flags)[0][1], 10],
@@ -900,11 +898,11 @@ def my_chart(request, username):
         plt.savefig('astroplan/static/plots/tr_user_chart.png')
 
         img_path = 'astroplan/media/astroplan/images/'
-        fn_path = os.path.join(img_path, f'{d}.png')
+        fn_path = os.path.join(img_path, f'{ev_d}.png')
         plt.savefig(fn_path)
 
         with open(fn_path, 'rb') as f:
-            tr_user_chart.tr_chart_image.save(f'{d}.png', f)
+            tr_user_chart.tr_chart_image.save(f'{tr_d}.png', f)
             tr_user_chart.save()
         swe.close()
 
@@ -914,11 +912,10 @@ def my_chart(request, username):
                                'ats': aspect_table_s, 'ato': aspect_table_ops,
                                'att': aspect_table_t, 'atc': aspect_table_c,
                                'tr_planet_data': set_signs(tr_planet_names, [p[4] for p in tr_form_coords_value]),
-                               'tr_house_data': set_signs(house_names, list(tr_houses[0])), 'event_date': d,
+                               'tr_house_data': set_signs(house_names, list(tr_houses[0])), 'event_date': ev_d,
                                'event_city': tr_user_chart.event_city, 'event_country': tr_user_chart.event_country,
                                'tr_date': tr_d, 'tr_city': tr_user_chart.transit_city,
-                               'tr_country': tr_user_chart.transit_country,
-                               'lat': get_loc.latitude, 'lng': get_loc.longitude})
+                               'tr_country': tr_user_chart.transit_country})
 
 
 

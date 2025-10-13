@@ -38,40 +38,46 @@
              </div>
 {% endblock %}
 
- {% block chart-data %}
-                 <div class="table-data">
-                        {% if messages %}
-                        {% include 'includes/messages.html' %}
-                        {% endif %}
-                        {% include 'includes/planet_list.html' %}
-                      {% include 'includes/house_cusps.html' %}
-                `   </div>
+                 {% block chart-data %}
 
-                    <div class="table-data">
-                      {% include 'includes/transit_planets_position.html' %}
-                      {% include 'includes/transit_house_cusps.html' %}
-                     </div>
+<div class="table-data">
+      {% include 'includes/transit_aspects.html' %}
+</div>
 
-
-                 <div class="chart-fig" style="background-color: none;">
-                    <div class="form-info" style="display:flex" >
-                        <div class="event-info">
-                           <p> Event date: {{ event_date }} </p>
-                           <p> Event city: {{ event_city }}, {{ lng }} {{ lat }} </p>
-                           <p> Event country: {{ event_country }} </p>
-                        </div>
-                        <div class="transit-info" style="color: chartreuse">
-                            <p> Transit date: {{ tr_date }} </p>
-                            <p> Transit city: {{ tr_city }} </p>
-                            <p> Transit country: {{ tr_country }} </p>
-                        </div>
+<div class="chart-fig" style="background-color: none">
+      <div class="form-info" style="display:flex" >
+          <div class="event-info">
+                       <p> Event date: {{ event_date }} </p>
+                       <p> Event city: {{ event_city }} </p>
+                       <p> Event country: {{ event_country }} </p>
+          </div>
+                    <div class="transit-info" style="color: chartreuse">
+                        <p> Transit date: {{ tr_date }} </p>
+                       <p> Transit city: {{ tr_city }} </p>
+                       <p> Transit country: {{ tr_country }} </p>
                     </div>
-                        <img src="{% static 'plots/transit_user_chart.png' %}" alt="plot" id="chart-plot">
-                       <a href="{% url 'my chart' user.username %}" style="color:aliceblue"> Back to my charts  </a>
-                 </div>
+      </div>
+                <img src="{% static 'plots/tr_user_chart.png' %}" alt="plot" id="chart-plot">
+                   <a href="{% url 'my chart' user.username %}" style="color:aliceblue"> Back to my charts  </a>
+  </div>
 
+<div class="table-cont">
+<div class="table-data">
+    {% include 'includes/planet_list.html' %}
+    </div>
 
-                     <div class="table-data">
-                      {% include 'includes/transit_aspects.html' %}
-                        </div>
+<div class="table-data">
+    {% include 'includes/house_cusps.html' %}
+</div>
+</div>
+
+<div class="table-cont">
+<div class="table-data">
+     {% include 'includes/transit_planets_position.html' %}
+</div>
+    <div class="table-data">
+     {% include 'includes/transit_house_cusps.html' %}
+</div>
+</div>
+
 {% endblock %}

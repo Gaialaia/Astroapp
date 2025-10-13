@@ -6,7 +6,7 @@
 
 
 {% block navigation %}
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));"> <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/"> Today chart </a>
+<div class="menu-choice"> <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/"> Today chart </a>
             </div>
             <div class="menu-choice" > <a  class="menu-link" href="http://127.0.0.1:8000/transit_form" target = '_blank'>Transits</a></div>
             <div class="menu-choice" >  <a href="http://127.0.0.1:8000/wheel_year" target = '_blank'>Wheel Year</a></div>
@@ -23,7 +23,7 @@
 
             <div class="menu-choice"><a href="http://127.0.0.1:8000/shop" target = '_blank'>Shop</a></div>
 
-            <div class="menu-choice">
+            <div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
                 {% if user.is_authenticated %}
              <div class="menu-choice-dd"> <a href= "{% url 'my chart' user.username %}" target = '_blank'>
                  My chart {{ user.username }}</a>
@@ -41,8 +41,7 @@
 {% endblock %}
 
 
-
-        {% block chart-data %}
+                 {% block chart-data %}
          <div class="table-data">
          <table>
              <caption> Planet data </caption>
@@ -119,11 +118,6 @@
                     </tr>
 
          </table>
-
-
-
-
-
                <table>
                    <caption> House cusps data   </caption>
                    <thead>
@@ -211,7 +205,6 @@
                              <td> {{ tr_chart.benefits_sign }}</td>
                         </tr>
                          </tbody>
-
                </table>
              </div>
 
@@ -233,9 +226,6 @@
 
 
                             </p>
-
-
-
 
                         <img src="/media/{{ tr_chart.tr_chart_image }}/" alt="{{ tr_chart.tr_chart_image }}">
 

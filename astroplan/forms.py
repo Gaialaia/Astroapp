@@ -19,9 +19,9 @@ class ColorForm(forms.Form):
     color = ColorField(initial="#FF0000")
 
 class TestForm(forms.Form):
-    date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter date')
-    city = forms.CharField(label='Enter city')
-    country = forms.CharField(label='Enter country')
+    date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter date', initial=timezone.now())
+    city = forms.CharField(label='Enter city', initial='Ufa')
+    country = forms.CharField(label='Enter country', initial='Russia')
 
     class Media:
         css = {
@@ -65,13 +65,13 @@ class ChartForm(forms.ModelForm):
 
 class TransitForm(forms.Form):
 
-    event_date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter event date')
-    event_city = forms.CharField(label='Enter event city')
-    event_country = forms.CharField(label='Enter event country')
+    event_date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter event date', initial=timezone.now())
+    event_city = forms.CharField(label='Enter event city', initial='Ufa')
+    event_country = forms.CharField(label='Enter event country', initial='Russia')
 
     transit_date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter transit date')
-    transit_city = forms.CharField(label='Enter transit city')
-    transit_country = forms.CharField(label='Enter transit country')
+    transit_city = forms.CharField(label='Enter transit city', initial='Ufa')
+    transit_country = forms.CharField(label='Enter transit country', initial='Russia')
 
     class Media:
         css = {
@@ -89,16 +89,16 @@ class TransitFullChartForm(forms.ModelForm):
                   'transit_city', 'transit_country',
                   ]
 
-        widgets = {'event_chart_date': DateTimePickerInput,
-                   'transit_chart_date':DateTimePickerInput}
+        widgets = {'event_date': DateTimePickerInput(),
+                   'transit_date':DateTimePickerInput()}
 
 
-        labels = {'event_chart_date': 'Enter an event date',
-                  'event_chart_city': 'Enter city',
-                  'event_chart_country': 'Enter country',
-                  'transit_chart_date': 'Enter transit date',
-                  'transit_chart_city':  'Enter city',
-                  'transit_chart_country': 'Enter country',
+        labels = {'event_date': 'Enter an event date',
+                  'event_city': 'Enter city',
+                  'event_country': 'Enter country',
+                  'transit_date': 'Enter transit date',
+                  'transit_city':  'Enter city',
+                  'transit_country': 'Enter country',
                   }
 
         class Media:

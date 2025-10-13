@@ -135,24 +135,25 @@ def show_td_chart(request):
     house_ax.set_theta_offset(np.pi)
 
     pd = {swe.get_planet_name(0): ['☼', 'yellow', 5, 25, swe.calc_ut(jd, 0, flags)[0][0],
-                                   swe.calc_ut(jd, 0, flags)[0][1], 10],
+                                   swe.calc_ut(jd, 0, flags)[0][1]],
           swe.get_planet_name(1): ['☾', 'blue', 5, 20, swe.calc_ut(jd, 1, flags)[0][0],
-                                   swe.calc_ut(jd, 1, flags)[0][1], -25],
+                                   swe.calc_ut(jd, 1, flags)[0][1]],
           swe.get_planet_name(2): ['☿', 'grey', 5, 23, swe.calc_ut(jd, 2, flags)[0][0],
-                                   swe.calc_ut(jd, 2, flags)[0][1], -25],
+                                   swe.calc_ut(jd, 2, flags)[0][1]],
           swe.get_planet_name(3): ['♀', 'sienna', 5, 22, swe.calc_ut(jd, 3, flags)[0][0],
-                                   swe.calc_ut(jd, 3, flags)[0][1],25],
-          swe.get_planet_name(4): ['♂', 'red', 5, 20, swe.calc_ut(jd, 4, flags)[0][0], swe.calc_ut(jd, 4, flags)[0][1],-10],
+                                   swe.calc_ut(jd, 3, flags)[0][1]],
+          swe.get_planet_name(4): ['♂', 'red', 5, 20, swe.calc_ut(jd, 4, flags)[0][0], swe.calc_ut(jd, 4,
+                                                                                                   flags)[0][1],-10],
           swe.get_planet_name(5): ['♃', 'teal', 5, 26, swe.calc_ut(jd, 5, flags)[0][0],
                                    swe.calc_ut(jd, 5, flags)[0][1],0],
           swe.get_planet_name(6): ['♄', 'slategrey', 5, 25, swe.calc_ut(jd, 6, flags)[0][0],
-                                   swe.calc_ut(jd, 6, flags)[0][1],-25],
+                                   swe.calc_ut(jd, 6, flags)[0][1]],
           swe.get_planet_name(7): ['♅', 'chartreuse', 5, 22, swe.calc_ut(jd, 7, flags)[0][0],
-                                   swe.calc_ut(jd, 7, flags)[0][1],0],
+                                   swe.calc_ut(jd, 7, flags)[0][1]],
           swe.get_planet_name(8): ['♆', 'indigo', 5, 22, swe.calc_ut(jd, 8, flags)[0][0],
-                                   swe.calc_ut(jd, 8, flags)[0][1],0],
+                                   swe.calc_ut(jd, 8, flags)[0][1]],
           swe.get_planet_name(9): ['♇', 'darkmagenta', 5, 22, swe.calc_ut(jd, 9, flags)[0][0],
-                                   swe.calc_ut(jd, 9, flags)[0][1],0]
+                                   swe.calc_ut(jd, 9, flags)[0][1]]
           }
     coords_value = list(pd.values())
 
@@ -218,7 +219,14 @@ def show_td_chart(request):
             if aspect in trine and coords_value[pl][4] != coords_value[value + 1][4]:
                 pl_one = np.array([np.deg2rad(coords_value[pl][4]), np.deg2rad(coords_value[value + 1][4])])
                 pl_two = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
-                planet_ax.plot(pl_one, pl_two, color='#3fff00', lw=0.8)
+                if 119 < aspect < 121:
+                    planet_ax.plot(pl_one, pl_two, color='#01ff00', lw=1.5)
+                elif 122 < aspect < 123:
+                    planet_ax.plot(pl_one, pl_two, color='#01ff00', lw=1.0)
+                elif 123 < aspect < 125:
+                    planet_ax.plot(pl_one, pl_two, color='#01ff00', lw=0.8)
+                else:
+                    planet_ax.plot(pl_one, pl_two, color='#01ff00', lw=0.6)
 
                 aspected_planet_t.append(coords_value[pl][0])
 
@@ -229,14 +237,14 @@ def show_td_chart(request):
             if aspect in opposition and coords_value[pl][4] != coords_value[value + 1][4]:
                 pl_one = np.array([np.deg2rad(coords_value[pl][4]), np.deg2rad(coords_value[value + 1][4])])
                 pl_two = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
-                if aspect == range(179,181):
-                    planet_ax.plot(pl_one, pl_two, color='#0400ff', lw=1.5)
-                elif aspect == range(181,184):
-                    planet_ax.plot(pl_one, pl_two, color='#0400ff', lw=1.0)
-                elif aspect == range(183,186):
-                    planet_ax.plot(pl_one, pl_two, color='#0400ff', lw=1.0)
-
-                planet_ax.plot(pl_one, pl_two, color='#0400ff', lw=0.8)
+                if 179 < aspect < 181:
+                    planet_ax.plot(pl_one, pl_two, color='#0900FF', lw=1.5)
+                elif 181 < aspect < 183:
+                    planet_ax.plot(pl_one, pl_two, color='#0900FF', lw=1.0)
+                elif 183 < aspect < 185:
+                    planet_ax.plot(pl_one, pl_two, color='#0900FF', lw=0.8)
+                else:
+                    planet_ax.plot(pl_one, pl_two, color='#0900FF', lw=0.6)
 
                 aspected_planet_op.append(coords_value[pl][0])
                 op_angle.append(f'{aspect}°')
@@ -247,7 +255,15 @@ def show_td_chart(request):
             if aspect in square and coords_value[pl][4] != coords_value[value + 1][4]:
                 pl_one = np.array([np.deg2rad(coords_value[pl][4]), np.deg2rad(coords_value[value + 1][4])])
                 pl_two = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
-                planet_ax.plot(pl_one, pl_two, color='#fd0048', lw=0.8)
+                if 89 < aspect < 91:
+                    planet_ax.plot(pl_one, pl_two, color='#e20000', lw=1.5)
+                elif 91 < aspect < 93:
+                    planet_ax.plot(pl_one, pl_two, color='#e20000', lw=1.0)
+                elif 93 < aspect < 95:
+                    planet_ax.plot(pl_one, pl_two, color='#e20000', lw=0.8)
+                else:
+                    planet_ax.plot(pl_one, pl_two, color='#e20000', lw=0.6)
+
 
                 aspected_planet_s.append(coords_value[pl][0])
                 sq_angle.append(f'{aspect}°')
@@ -258,7 +274,7 @@ def show_td_chart(request):
             if aspect in conjunction and coords_value[pl][4] != coords_value[value + 1][4]:
                 pl_one = np.array([np.deg2rad(coords_value[pl][4]), np.deg2rad(coords_value[value + 1][4])])
                 pl_two = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
-                planet_ax.plot(pl_one, pl_two, color='#8aed07', lw=0.8)
+                planet_ax.plot(pl_one, pl_two, color='#8aed07', lw=0.5)
 
                 aspected_planet_c.append(coords_value[pl][0])
                 c_angle.append(f'{aspect}°')
@@ -268,14 +284,79 @@ def show_td_chart(request):
             planet_ax.plot(np.deg2rad(coords_value[pl][4]), coords_value[pl][5], 'o',
                            mfc=pd[swe.get_planet_name(pl)][1],
                            ms=pd[swe.get_planet_name(pl)][2])
-            planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
-                               xytext=(pd[swe.get_planet_name(pl)][6], 3),
-                               xycoords='data',
-                               xy=(np.deg2rad(coords_value[pl][4]), coords_value[pl][5]),
-                               fontsize=pd[swe.get_planet_name(pl)][3],
-                               color='aliceblue',
-                               arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
+            if coords_value[pl][4] == 0 or coords_value[pl] [4] < 45:
+                planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                   xytext=(-20,-8),
+                                   xycoords='data',
+                                   xy=(np.deg2rad(coords_value[pl][4]), coords_value[pl][5]),
+                                   fontsize=pd[swe.get_planet_name(pl)][3],
+                                   color='aliceblue',
+                                   arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+
+            elif 45 < coords_value[pl][4] < 135:
+                planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                   xytext=(-15, -25),
+                                   xycoords='data',
+                                   xy=(np.deg2rad(coords_value[pl][4]), coords_value[pl][5]),
+                                   fontsize=pd[swe.get_planet_name(pl)][3],
+                                   color='aliceblue',
+                                   arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+            elif 135 < coords_value[pl][4] < 180:
+                planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                   xytext=(3, 13),
+                                   xycoords='data',
+                                   xy=(np.deg2rad(coords_value[pl][4]), coords_value[pl][5]),
+                                   fontsize=pd[swe.get_planet_name(pl)][3],
+                                   color='aliceblue',
+                                   arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='red'))
+
+            elif 180 < coords_value[pl][4] < 225:
+                planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                   xytext=(0, 25),
+                                   xycoords='data',
+                                   xy=(np.deg2rad(coords_value[pl][4]), coords_value[pl][5]),
+                                   fontsize=pd[swe.get_planet_name(pl)][3],
+                                   color='aliceblue',
+                                   arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+
+            elif 225 < coords_value[pl][4] < 270:
+                planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                   xytext=(-25, -5),
+                                   xycoords='data',
+                                   xy=(np.deg2rad(coords_value[pl][4]), coords_value[pl][5]),
+                                   fontsize=pd[swe.get_planet_name(pl)][3],
+                                   color='aliceblue',
+                                   arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+
+            elif 270 < coords_value[pl][4] < 315:
+                planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                   xytext=(-25, -5),
+                                   xycoords='data',
+                                   xy=(np.deg2rad(coords_value[pl][4]), coords_value[pl][5]),
+                                   fontsize=pd[swe.get_planet_name(pl)][3],
+                                   color='aliceblue',
+                                   arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+
+            elif 315 < coords_value[pl][4] < 360:
+                if coords_value[pl][0]== '♆':
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                   xytext=(3, -10),
+                                   xycoords='data',
+                                   xy=(np.deg2rad(coords_value[pl][4]), coords_value[pl][5]),
+                                   fontsize=pd[swe.get_planet_name(pl)][3],
+                                   color='aliceblue',
+                                   arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+                else:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                        xytext=(-25, -5),
+                                        xycoords='data',
+                                        xy=(np.deg2rad(coords_value[pl][4]), coords_value[pl][5]),
+                                        fontsize=pd[swe.get_planet_name(pl)][3],
+                                        color='aliceblue',
+                                        arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
     plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/now_chart.png')
 
@@ -705,7 +786,16 @@ def build_transit_chart(request):
                         [np.deg2rad(both_chart_apd[pl][4]), np.deg2rad(both_chart_apd[value + 1][4])])
                     pl_two = np.array(
                         [np.deg2rad(both_chart_apd[pl][5]), np.deg2rad(both_chart_apd[value + 1][5])])
-                    tr_cr_aspects_ax.plot(pl_one, pl_two, color='#34b806', lw=0.8)
+
+                    if 119 < aspect < 121:
+                         tr_cr_aspects_ax.plot(pl_one, pl_two, color='#01ff00', lw=1.5)
+                    elif 122 < aspect < 123:
+                         tr_cr_aspects_ax.plot(pl_one, pl_two, color='#01ff00', lw=1.0)
+                    elif 123 < aspect < 125:
+                         tr_cr_aspects_ax.plot(pl_one, pl_two, color='#01ff00', lw=0.8)
+                    else:
+                         tr_cr_aspects_ax.plot(pl_one, pl_two, color='#01ff00', lw=0.6)
+
 
                     aspected_planet_t.append(both_chart_apd[pl][0])
                     t_angle.append(f'{aspect}°')
@@ -715,7 +805,15 @@ def build_transit_chart(request):
                 if aspect in opposition and both_chart_apd[pl][4] != both_chart_apd[value + 1][4]:
                     pl_one = np.array([np.deg2rad(both_chart_apd[pl][4]), np.deg2rad(both_chart_apd[value + 1][4])])
                     pl_two = np.array([np.deg2rad(both_chart_apd[pl][5]), np.deg2rad(both_chart_apd[value + 1][5])])
-                    tr_cr_aspects_ax.plot(pl_one, pl_two, color='#fffe03', lw=0.8)
+
+                    if 179 < aspect < 181:
+                        tr_cr_aspects_ax.plot(pl_one, pl_two, color='#0900FF', lw=1.5)
+                    elif 181 < aspect < 183:
+                        tr_cr_aspects_ax.plot(pl_one, pl_two, color='#0900FF', lw=1.0)
+                    elif 183 < aspect < 185:
+                        tr_cr_aspects_ax.plot(pl_one, pl_two, color='#0900FF', lw=0.8)
+                    else:
+                        tr_cr_aspects_ax.plot(pl_one, pl_two, color='#0900FF', lw=0.6)
 
                     aspected_planet_op.append(both_chart_apd[pl][0])
                     op_angle.append(f'{aspect}°')
@@ -727,7 +825,15 @@ def build_transit_chart(request):
                         [np.deg2rad(both_chart_apd[pl][4]), np.deg2rad(both_chart_apd[value + 1][4])])
                     pl_two = np.array(
                         [np.deg2rad(both_chart_apd[pl][5]), np.deg2rad(both_chart_apd[value + 1][5])])
-                    tr_cr_aspects_ax.plot(pl_one, pl_two, color='#ff1a00', lw=0.8)
+
+                    if 89 < aspect < 91:
+                         tr_cr_aspects_ax.plot(pl_one, pl_two, color='#e20000', lw=1.5)
+                    elif 91 < aspect < 93:
+                         tr_cr_aspects_ax.plot(pl_one, pl_two, color='#e20000', lw=1.0)
+                    elif 93 < aspect < 95:
+                         tr_cr_aspects_ax.plot(pl_one, pl_two, color='#e20000', lw=0.8)
+                    else:
+                         tr_cr_aspects_ax.plot(pl_one, pl_two, color='#e20000', lw=0.6)
 
                     aspected_planet_s.append(both_chart_apd[pl][0])
                     sq_angle.append(f'{aspect}°')
@@ -749,24 +855,158 @@ def build_transit_chart(request):
                 planet_ax.plot(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5], 'o',
                                        mfc=pd_cr[swe.get_planet_name(pl)][1],
                                        ms=pd_cr[swe.get_planet_name(pl)][2])
-                planet_ax.annotate(f'{pd_cr[swe.get_planet_name(pl)][0]}', textcoords='offset points',
-                                           xytext=(pd_cr[swe.get_planet_name(pl)][6],3),
+                if form_coords_value[pl][4] == 0 or form_coords_value[pl][4] < 45:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(-20, -8),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+
+                elif 45 < form_coords_value[pl][4] < 135:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(-15, -25),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+                elif 135 < form_coords_value[pl][4] < 180:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(3, 13),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='red'))
+
+                elif 180 < form_coords_value[pl][4] < 225:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(0, 25),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+
+                elif 225 < form_coords_value[pl][4] < 270:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(-25, -5),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+
+                elif 270 < form_coords_value[pl][4] < 315:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(-25, -5),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+
+                elif 315 < form_coords_value[pl][4] < 360:
+                    if form_coords_value[pl][0] == '♆':
+                        planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                           xytext=(3, -10),
                                            xycoords='data',
                                            xy=(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5]),
-                                           fontsize=pd_cr[swe.get_planet_name(pl)][3],
+                                           fontsize=pd[swe.get_planet_name(pl)][3],
                                            color='aliceblue',
-                                           arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+                                           arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+                    else:
+                        planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                           xytext=(-25, -5),
+                                           xycoords='data',
+                                           xy=(np.deg2rad(form_coords_value[pl][4]), form_coords_value[pl][5]),
+                                           fontsize=pd[swe.get_planet_name(pl)][3],
+                                           color='aliceblue',
+                                           arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+
+
 
                 transit_ax.plot(np.deg2rad(tr_form_coords_value[pl][4]), tr_form_coords_value[pl][5], 'o',
                                mfc=pd[swe.get_planet_name(pl)][1],
                                ms=pd[swe.get_planet_name(pl)][2])
-                transit_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
-                                    xytext=(pd[swe.get_planet_name(pl)][6],3),
-                                   xycoords='data',
-                                   xy=(np.deg2rad(tr_form_coords_value[pl][4]), tr_form_coords_value[pl][5]),
-                                   fontsize=pd[swe.get_planet_name(pl)][3],
-                                   color='chartreuse',
-                                   arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+                if tr_form_coords_value[pl][4] == 0 or tr_form_coords_value[pl][4] < 45:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(-20, -8),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(tr_form_coords_value[pl][4]), tr_form_coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+
+                elif 45 < tr_form_coords_value[pl][4] < 135:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(-15, -25),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(tr_form_coords_value[pl][4]), tr_form_coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+                elif 135 < tr_form_coords_value[pl][4] < 180:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(3, 13),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(tr_form_coords_value[pl][4]), tr_form_coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='red'))
+
+                elif 180 < tr_form_coords_value[pl][4] < 225:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(0, 25),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(tr_form_coords_value[pl][4]), tr_form_coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+
+                elif 225 < tr_form_coords_value[pl][4] < 270:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(-25, -5),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(tr_form_coords_value[pl][4]), tr_form_coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+
+                elif 270 < tr_form_coords_value[pl][4] < 315:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(-25, -5),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(tr_form_coords_value[pl][4]), tr_form_coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+
+                elif 315 < tr_form_coords_value[pl][4] < 360:
+                    if tr_form_coords_value[pl][0] == '♆':
+                        planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                           xytext=(3, -10),
+                                           xycoords='data',
+                                           xy=(np.deg2rad(tr_form_coords_value[pl][4]), tr_form_coords_value[pl][5]),
+                                           fontsize=pd[swe.get_planet_name(pl)][3],
+                                           color='aliceblue',
+                                           arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+                    else:
+                        planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                           xytext=(-25, -5),
+                                           xycoords='data',
+                                           xy=(np.deg2rad(tr_form_coords_value[pl][4]), tr_form_coords_value[pl][5]),
+                                           fontsize=pd[swe.get_planet_name(pl)][3],
+                                           color='aliceblue',
+                                           arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+
 
         plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/transit_chart.png')
 
@@ -1086,114 +1326,126 @@ def design_chart(request):
         jd = jl.to_jd(d,fmt='jd')
 
         sector_aries = circos.get_sector("♈︎")
-        track_aries = sector_aries.add_track((95, 80))
+        # track_aries = sector_aries.add_track((95, 80))
+        track_aries = sector_aries.add_track((70, 95))
 
         zf_ta_axis_fc = zodiac_form.cleaned_data['track_aries_axis_fc']
         zf_ta_axis_ec = zodiac_form.cleaned_data['track_aries_axis_ec']
         zf_ta_axis_tc = zodiac_form.cleaned_data['track_aries_axis_tc']
         track_aries.axis(fc=f'{zf_ta_axis_fc}', ec=zf_ta_axis_ec, lw=2)
-        track_aries.text(f'{"♈︎"}', size=27, color=zf_ta_axis_tc)
+        track_aries.text(f'{"♈︎"}', size=45, color=zf_ta_axis_tc)
 
         sector_leo = circos.get_sector("♌︎")
-        track_leo = sector_leo.add_track((95, 80))
+        # track_leo = sector_leo.add_track((95, 80))
+        track_leo = sector_leo.add_track((70, 95))
 
         zf_tl_axis_fc = zodiac_form.cleaned_data['track_leo_axis_fc']
         zf_tl_axis_ec = zodiac_form.cleaned_data['track_leo_axis_ec']
         zf_tl_axis_tc = zodiac_form.cleaned_data['track_leo_axis_tc']
         track_leo.axis(fc=zf_tl_axis_fc, ec=zf_tl_axis_ec, lw=2)
-        track_leo.text(f'{"♌︎"}', size=27, color=zf_tl_axis_tc)
+        track_leo.text(f'{"♌︎"}', size=45, color=zf_tl_axis_tc)
 
         sector_sag = circos.get_sector("♐︎")
-        track_sag = sector_sag.add_track((95, 80))
+        # track_sag = sector_sag.add_track((95, 80))
+        track_sag = sector_sag.add_track((70, 95))
 
         zf_tsag_axis_fc = zodiac_form.cleaned_data['track_sag_axis_fc']
         zf_tsag_axis_ec = zodiac_form.cleaned_data['track_sag_axis_ec']
         zf_tsag_axis_tc = zodiac_form.cleaned_data['track_sag_axis_tc']
         track_sag.axis(fc=zf_tsag_axis_fc, ec=zf_tsag_axis_ec, lw=2)
-        track_sag.text(f'{"♐︎"}', size=27, color=zf_tsag_axis_tc)
+        track_sag.text(f'{"♐︎"}', size=45, color=zf_tsag_axis_tc)
 
         sector_aqua = circos.get_sector("♒︎")
-        track_aqua = sector_aqua.add_track((95, 80))
+        # track_aqua = sector_aqua.add_track((95, 80))
+        track_aqua = sector_aqua.add_track((70, 95))
 
         zf_taq_axis_fc = zodiac_form.cleaned_data['track_aqua_axis_fc']
         zf_taq_axis_ec = zodiac_form.cleaned_data['track_aqua_axis_ec']
         zf_taq_axis_tc = zodiac_form.cleaned_data['track_aqua_axis_tc']
         track_aqua.axis(fc=zf_taq_axis_fc, ec=zf_taq_axis_ec, lw=2)
-        track_aqua.text(f'{"♒︎"}', size=27, color=zf_taq_axis_tc)
+        track_aqua.text(f'{"♒︎"}', size=45, color=zf_taq_axis_tc)
 
         sector_gemini = circos.get_sector("♊︎")
-        track_gemini = sector_gemini.add_track((95, 80))
+        # track_gemini = sector_gemini.add_track((70, 95))
+        track_gemini = sector_gemini.add_track((70, 95))
 
         zf_tgem_axis_fc = zodiac_form.cleaned_data['track_gemini_axis_fc']
         zf_tgem_axis_ec = zodiac_form.cleaned_data['track_gemini_axis_ec']
         zf_tgem_axis_tc = zodiac_form.cleaned_data['track_gemini_axis_tc']
         track_gemini.axis(fc=zf_tgem_axis_fc, ec=zf_tgem_axis_ec, lw=2)
-        track_gemini.text(f'{"♊︎"}', size=27, color=zf_tgem_axis_tc)
+        track_gemini.text(f'{"♊︎"}', size=45, color=zf_tgem_axis_tc)
 
         sector_libra = circos.get_sector("♎︎")
-        track_libra = sector_libra.add_track((95, 80))
+        # track_libra = sector_libra.add_track((95, 80))
+        track_libra = sector_libra.add_track((70, 95))
 
         zf_tlib_axis_fc = zodiac_form.cleaned_data['track_libra_axis_fc']
         zf_tlib_axis_ec = zodiac_form.cleaned_data['track_libra_axis_ec']
         zf_tlib_axis_tc = zodiac_form.cleaned_data['track_libra_axis_tc']
         track_libra.axis(fc=zf_tlib_axis_fc, ec=zf_tlib_axis_ec, lw=2)
-        track_libra.text(f'{"♎︎"}', size=27, color=zf_tlib_axis_tc)
+        track_libra.text(f'{"♎︎"}', size=45, color=zf_tlib_axis_tc)
 
         sector_taurus = circos.get_sector("♉︎")
-        track_taurus = sector_taurus.add_track((95, 80))
+        # track_taurus = sector_taurus.add_track((95, 80))
+        track_taurus = sector_taurus.add_track((70, 95))
 
         zf_tau_axis_fc = zodiac_form.cleaned_data['track_taurus_axis_fc']
         zf_tau_axis_ec = zodiac_form.cleaned_data['track_taurus_axis_ec']
         zf_tau_axis_tc = zodiac_form.cleaned_data['track_taurus_axis_tc']
         track_taurus.axis(fc=zf_tau_axis_fc, ec=zf_tau_axis_ec, lw=2)
-        track_taurus.text(f'{"♉︎"}', size=27, color=zf_tau_axis_tc, )
+        track_taurus.text(f'{"♉︎"}', size=45, color=zf_tau_axis_tc, )
 
         sector_virgo = circos.get_sector("♍︎")
-        track_virgo = sector_virgo.add_track((95, 80))
+        # track_virgo = sector_virgo.add_track((95, 80))
+        track_virgo = sector_virgo.add_track((70, 95))
 
         zf_tvirg_axis_fc = zodiac_form.cleaned_data['track_virgo_axis_fc']
         zf_tvirg_axis_ec = zodiac_form.cleaned_data['track_virgo_axis_ec']
         zf_tvirg_axis_tc = zodiac_form.cleaned_data['track_virgo_axis_tc']
       
         track_virgo.axis(fc=zf_tvirg_axis_fc, ec=zf_tvirg_axis_ec, lw=2)
-        track_virgo.text(f'{"♍︎"}', size=27, color=zf_tvirg_axis_tc)
+        track_virgo.text(f'{"♍︎"}', size=45, color=zf_tvirg_axis_tc)
 
         sector_capricon = circos.get_sector("♑︎")
-        track_capricon = sector_capricon.add_track((95, 80))
+        # track_capricon = sector_capricon.add_track((95, 80))
+        track_capricon = sector_capricon.add_track((70, 95))
 
         zf_tcapr_axis_fc = zodiac_form.cleaned_data['track_capricorn_axis_fc']
         zf_tcapr_axis_ec = zodiac_form.cleaned_data['track_capricorn_axis_ec']
         zf_tcapr_axis_tc = zodiac_form.cleaned_data['track_capricorn_axis_tc']
         
         track_capricon.axis(fc=zf_tcapr_axis_fc, ec=zf_tcapr_axis_ec, lw=2)
-        track_capricon.text(f'{"♑︎"}', size=27, color=zf_tcapr_axis_tc)
+        track_capricon.text(f'{"♑︎"}', size=45, color=zf_tcapr_axis_tc)
 
         sector_cancer = circos.get_sector("♋︎")
-        track_cancer = sector_cancer.add_track((95, 80))
+        # track_cancer = sector_cancer.add_track((95, 80))
+        track_cancer = sector_cancer.add_track((70, 95))
 
         zf_tcan_axis_fc = zodiac_form.cleaned_data['track_cancer_axis_fc']
         zf_tcan_axis_ec = zodiac_form.cleaned_data['track_cancer_axis_ec']
         zf_tcan_axis_tc = zodiac_form.cleaned_data['track_cancer_axis_tc']
         track_cancer.axis(fc=zf_tcan_axis_fc, ec=zf_tcan_axis_ec, lw=2)
-        track_cancer.text(f'{"♋︎"}', size=27, color=zf_tcan_axis_tc)
+        track_cancer.text(f'{"♋︎"}', size=45, color=zf_tcan_axis_tc)
 
         sector_scorpio = circos.get_sector("♏︎")
-        track_scorpio = sector_scorpio.add_track((95, 80))
+        # track_scorpio = sector_scorpio.add_track((95, 80))
+        track_scorpio = sector_scorpio.add_track((70, 95))
 
         zf_tsco_axis_fc = zodiac_form.cleaned_data['track_scorpio_axis_fc']
         zf_tsco_axis_ec = zodiac_form.cleaned_data['track_scorpio_axis_ec']
         zf_tsco_axis_tc = zodiac_form.cleaned_data['track_scorpio_axis_tc']
         track_scorpio.axis(fc=zf_tsco_axis_fc, ec=zf_tsco_axis_ec, lw=2)
-        track_scorpio.text(f'{"♏︎"}', size=27, color=zf_tsco_axis_tc)
+        track_scorpio.text(f'{"♏︎"}', size=45, color=zf_tsco_axis_tc)
 
         sector_pisces = circos.get_sector("♓︎")
-        track_pisces = sector_pisces.add_track((95, 80))
+        # track_pisces = sector_pisces.add_track((95, 80))
+        track_pisces = sector_pisces.add_track((70, 95))
         
         zf_tpis_axis_fc = zodiac_form.cleaned_data['track_pisces_axis_fc']
         zf_tpis_axis_ec = zodiac_form.cleaned_data['track_pisces_axis_ec']
         zf_tpis_axis_tc = zodiac_form.cleaned_data['track_pisces_axis_tc']
         track_pisces.axis(fc=zf_tpis_axis_fc, ec=zf_tpis_axis_ec, lw=2)
-        track_pisces.text(f'{"♏︎"}', size=27, color=zf_tpis_axis_tc)
+        track_pisces.text(f'{"♏︎"}', size=45, color=zf_tpis_axis_tc)
 
         zf_deg_track_ec = zodiac_form.cleaned_data['degrees_track_ec']
         zf_dtick_clr = zodiac_form.cleaned_data['degrees_ticks_color']
@@ -1272,26 +1524,26 @@ def design_chart(request):
         planet_ax.set_axis_off()
         planet_ax.set_thetagrids(range(0, 360, 30))
 
-        pd = {swe.get_planet_name(0): ['☼', zf_sun_marker_c, zf_sun_symbol_s, 17, zf_sun_symbol_c, swe.calc_ut(jd, 0, flags)[0][0],
-                                       swe.calc_ut(jd, 0, flags)[0][1]],
-              swe.get_planet_name(1): ['☾', zf_moon_marker_c, zf_moon_symbol_s, 17,zf_moon_symbol_c,swe.calc_ut(jd, 1, flags)[0][0],
-                                       swe.calc_ut(jd, 1, flags)[0][1]],
-              swe.get_planet_name(2): ['☿', zf_mercury_marker_c, zf_mercury_symbol_s, 17, zf_mercury_symbol_c, swe.calc_ut(jd, 2, flags)[0][0],
-                                       swe.calc_ut(jd, 2, flags)[0][1]],
-              swe.get_planet_name(3): ['♀', zf_venus_marker_c, zf_venus_symbol_s, 17, zf_venus_symbol_c, swe.calc_ut(jd, 3, flags)[0][0],
-                                       swe.calc_ut(jd, 3, flags)[0][1]],
-              swe.get_planet_name(4): ['♂', zf_mars_marker_c, zf_mars_symbol_s, 17, zf_mars_symbol_c, swe.calc_ut(jd, 4, flags)[0][0],
-                                       swe.calc_ut(jd, 4, flags)[0][1]],
-              swe.get_planet_name(5): ['♃', zf_jup_marker_c, zf_jup_symbol_s, 17, zf_jupiter_symbol_c, swe.calc_ut(jd, 5, flags)[0][0],
-                                       swe.calc_ut(jd, 5, flags)[0][1]],
-              swe.get_planet_name(6): ['♄', zf_saturn_marker_c, zf_saturn_symbol_s, 17, zf_saturn_symbol_c,swe.calc_ut(jd, 6, flags)[0][0],
-                                       swe.calc_ut(jd, 6, flags)[0][1]],
-              swe.get_planet_name(7): ['♅', zf_uranus_marker_c, zf_uranus_symbol_s, 17, zf_uranus_symbol_c, swe.calc_ut(jd, 7, flags)[0][0],
-                                       swe.calc_ut(jd, 7, flags)[0][1]],
-              swe.get_planet_name(8): ['♆', zf_neptune_marker_c, zf_neptune_symbol_s, 17, zf_neptune_symbol_c, swe.calc_ut(jd, 8, flags)[0][0],
-                                       swe.calc_ut(jd, 8, flags)[0][1]],
-              swe.get_planet_name(9): ['♇', zf_pluto_marker_c, zf_pluto_symbol_s, 17, zf_pluto_symbol_c, swe.calc_ut(jd, 9, flags)[0][0],
-                                       swe.calc_ut(jd, 9, flags)[0][1]]
+        pd = {swe.get_planet_name(0): ['☼', zf_sun_marker_c, zf_sun_symbol_s, 45, zf_sun_symbol_c, swe.calc_ut(jd, 0, flags)[0][0],
+                                       swe.calc_ut(jd, 0, flags)[0][1],10],
+              swe.get_planet_name(1): ['☾', zf_moon_marker_c, zf_moon_symbol_s, 45,zf_moon_symbol_c,swe.calc_ut(jd, 1, flags)[0][0],
+                                       swe.calc_ut(jd, 1, flags)[0][1], -25],
+              swe.get_planet_name(2): ['☿', zf_mercury_marker_c, zf_mercury_symbol_s, 45, zf_mercury_symbol_c, swe.calc_ut(jd, 2, flags)[0][0],
+                                       swe.calc_ut(jd, 2, flags)[0][1],-25],
+              swe.get_planet_name(3): ['♀', zf_venus_marker_c, zf_venus_symbol_s, 45, zf_venus_symbol_c, swe.calc_ut(jd, 3, flags)[0][0],
+                                       swe.calc_ut(jd, 3, flags)[0][1],-10],
+              swe.get_planet_name(4): ['♂', zf_mars_marker_c, zf_mars_symbol_s, 45, zf_mars_symbol_c, swe.calc_ut(jd, 4, flags)[0][0],
+                                       swe.calc_ut(jd, 4, flags)[0][1],-10],
+              swe.get_planet_name(5): ['♃', zf_jup_marker_c, zf_jup_symbol_s, 45, zf_jupiter_symbol_c, swe.calc_ut(jd, 5, flags)[0][0],
+                                       swe.calc_ut(jd, 5, flags)[0][1],0],
+              swe.get_planet_name(6): ['♄', zf_saturn_marker_c, zf_saturn_symbol_s, 45, zf_saturn_symbol_c,swe.calc_ut(jd, 6, flags)[0][0],
+                                       swe.calc_ut(jd, 6, flags)[0][1],-25],
+              swe.get_planet_name(7): ['♅', zf_uranus_marker_c, zf_uranus_symbol_s, 45, zf_uranus_symbol_c, swe.calc_ut(jd, 7, flags)[0][0],
+                                       swe.calc_ut(jd, 7, flags)[0][1],-20],
+              swe.get_planet_name(8): ['♆', zf_neptune_marker_c, zf_neptune_symbol_s, 45, zf_neptune_symbol_c, swe.calc_ut(jd, 8, flags)[0][0],
+                                       swe.calc_ut(jd, 8, flags)[0][1],0],
+              swe.get_planet_name(9): ['♇', zf_pluto_marker_c, zf_pluto_symbol_s, 45, zf_pluto_symbol_c, swe.calc_ut(jd, 9, flags)[0][0],
+                                       swe.calc_ut(jd, 9, flags)[0][1],0]
               }
         coords_value = list(pd.values())
 
@@ -1300,8 +1552,8 @@ def design_chart(request):
         house_ax.set_rticks([])
         house_ax.set_thetagrids(houses[0],
                                 ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
-        house_ax.tick_params(labelsize=20, grid_color='aliceblue', grid_linewidth=1, labelfontfamily='monospace',
-                             labelcolor='aliceblue')
+        house_ax.tick_params(labelsize=20, grid_color='#e7e3f5', grid_linewidth=1, labelfontfamily='monospace',
+                             labelcolor='#e7e3f5')
 
         def set_signs(name_list, deg_list):
             if signs:
@@ -1365,7 +1617,16 @@ def design_chart(request):
                 if aspect in trine and coords_value[pl][5] != coords_value[value + 1][5]:
                     pl_one = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
                     pl_two = np.array([np.deg2rad(coords_value[pl][6]), np.deg2rad(coords_value[value + 1][6])])
-                    planet_ax.plot(pl_one, pl_two, color='green', lw=0.5)
+
+                    if 119 < aspect < 121:
+                        planet_ax.plot(pl_one, pl_two, color='#01ff00', lw=1.5)
+                    elif 122 < aspect < 123:
+                        planet_ax.plot(pl_one, pl_two, color='#01ff00', lw=1.0)
+                    elif 123 < aspect < 125:
+                        planet_ax.plot(pl_one, pl_two, color='#01ff00', lw=0.8)
+                    else:
+                        planet_ax.plot(pl_one, pl_two, color='#01ff00', lw=0.6)
+
 
                     aspected_planet_t.append(coords_value[pl][0])
                     t_angle.append(f'{aspect}°')
@@ -1375,7 +1636,14 @@ def design_chart(request):
                 if aspect in opposition and coords_value[pl][5] != coords_value[value + 1][5]:
                     pl_one = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
                     pl_two = np.array([np.deg2rad(coords_value[pl][6]), np.deg2rad(coords_value[value + 1][6])])
-                    planet_ax.plot(pl_one, pl_two, color='pink', lw=0.5)
+                    if 179 < aspect < 181:
+                        planet_ax.plot(pl_one, pl_two, color='#0900FF', lw=1.5)
+                    elif 181 < aspect < 183:
+                        planet_ax.plot(pl_one, pl_two, color='#0900FF', lw=1.0)
+                    elif 183 < aspect < 185:
+                        planet_ax.plot(pl_one, pl_two, color='#0900FF', lw=0.8)
+                    else:
+                        planet_ax.plot(pl_one, pl_two, color='#0900FF', lw=0.6)
 
 
                     aspected_planet_op.append(coords_value[pl][0])
@@ -1386,8 +1654,14 @@ def design_chart(request):
                 if aspect in square and coords_value[pl][5] != coords_value[value + 1][5]:
                     pl_one = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
                     pl_two = np.array([np.deg2rad(coords_value[pl][6]), np.deg2rad(coords_value[value + 1][6])])
-                    planet_ax.plot(pl_one, pl_two, color='firebrick', lw=0.5)
-
+                    if 89 < aspect < 91:
+                        planet_ax.plot(pl_one, pl_two, color='#e20000', lw=1.5)
+                    elif 91 < aspect < 93:
+                        planet_ax.plot(pl_one, pl_two, color='#e20000', lw=1.0)
+                    elif 93 < aspect < 95:
+                        planet_ax.plot(pl_one, pl_two, color='#e20000', lw=0.8)
+                    else:
+                        planet_ax.plot(pl_one, pl_two, color='#e20000', lw=0.6)
 
                     aspected_planet_s.append(coords_value[pl][0])
                     sq_angle.append(f'{aspect}°')
@@ -1397,7 +1671,7 @@ def design_chart(request):
                 if aspect in conjunction and coords_value[pl][5] != coords_value[value + 1][5]:
                     pl_one = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
                     pl_two = np.array([np.deg2rad(coords_value[pl][6]), np.deg2rad(coords_value[value + 1][6])])
-                    planet_ax.plot(pl_one, pl_two, color='green', lw=0.5)
+                    planet_ax.plot(pl_one, pl_two, color='green', lw=0.3)
 
                     aspected_planet_c.append(coords_value[pl][0])
                     c_angle.append(f'{aspect}°')
@@ -1407,12 +1681,79 @@ def design_chart(request):
                 planet_ax.plot(np.deg2rad(coords_value[pl][5]), coords_value[pl][6], 'o',
                                mfc=pd[swe.get_planet_name(pl)][1],
                                ms=pd[swe.get_planet_name(pl)][2])
-                planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points', xytext=(20, 3),
-                                   xycoords='data',
-                                   xy=(np.deg2rad(coords_value[pl][5]), coords_value[pl][6]),
-                                   fontsize=pd[swe.get_planet_name(pl)][3],
-                                   color=pd[swe.get_planet_name(pl)][4],
-                                   arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+                if coords_value[pl][5] == 0 or coords_value[pl][5] < 45:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(-20, -8),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(coords_value[pl][5]), coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+
+                elif 45 < coords_value[pl][5] < 135:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(-15, -25),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(coords_value[pl][5]), coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
+
+                elif 135 < coords_value[pl][5] < 180:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(3, 13),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(coords_value[pl][5]), coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='red'))
+
+                elif 180 < coords_value[pl][5] < 225:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(0, 25),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(coords_value[pl][5]), coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+
+                elif 225 < coords_value[pl][5] < 270:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(-25, -5),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(coords_value[pl][5]), coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+
+                elif 270 < coords_value[pl][5] < 315:
+                    planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                       xytext=(-25, -5),
+                                       xycoords='data',
+                                       xy=(np.deg2rad(coords_value[pl][5]), coords_value[pl][5]),
+                                       fontsize=pd[swe.get_planet_name(pl)][3],
+                                       color='aliceblue',
+                                       arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+
+                elif 315 < coords_value[pl][5] < 360:
+                    if coords_value[pl][0] == '♆':
+                        planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                           xytext=(3, -10),
+                                           xycoords='data',
+                                           xy=(np.deg2rad(coords_value[pl][5]), coords_value[pl][5]),
+                                           fontsize=pd[swe.get_planet_name(pl)][3],
+                                           color='aliceblue',
+                                           arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
+                    else:
+                        planet_ax.annotate(f'{pd[swe.get_planet_name(pl)][0]}', textcoords='offset points',
+                                           xytext=(-25, -5),
+                                           xycoords='data',
+                                           xy=(np.deg2rad(coords_value[pl][5]), coords_value[pl][5]),
+                                           fontsize=pd[swe.get_planet_name(pl)][3],
+                                           color='aliceblue',
+                                           arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
         plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/designed_chart.png')
 
@@ -1454,7 +1795,7 @@ def chart_detail(request,id):
         messages.success(request, 'Chart deleted')
         return redirect('my chart', username=username)
 
-    return render(request, 'chart_db_detail.html', {'chart': FullChart.objects.get(id=id)})
+    return render(request, 'user_chart_db_detail.html', {'chart': FullChart.objects.get(id=id)})
 
 
 def tr_chart_detail(request,id):
