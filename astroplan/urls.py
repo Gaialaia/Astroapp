@@ -17,7 +17,9 @@ urlpatterns = [
     # path('<id>/delete/', views.delete_chart, name='delete chart'),
     path('shop/', views.do_shopping, name='shop'),
     path('interpretations/', views.interpretations, name='interpretations'),
-    path('ch/', views.color_form)
+    path('ch/', views.color_form),
+    path('one_clr_chart/', views.one_color_chart),
+    # path('design_one_clr_ch/', views.one_color_chart)
 
 
 

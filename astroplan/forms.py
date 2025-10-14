@@ -546,12 +546,42 @@ class ColorfulZodiacForm(forms.Form):
 
 
    
-   
-    
-   
-  
+class OneColorZodiacRing(forms.Form):
+    oc_chart_date = (forms.DateTimeField
+                     (widget=DateTimePickerInput(attrs={'class': 'form-control',
+                                                        'id': 'chart-date'}), label='Enter chart date'))
+    oc_chart_city = forms.CharField(label='Enter city',
+                                    widget=TextInput(attrs={'class': 'form-control', 'placeholder': 'city',
+                                                            'id': 'chart-city'}))
+    oc_chart_country = forms.CharField(label='Enter country', widget=TextInput(attrs={'class': 'form-control',
+                                                                                      'id': 'chart-country'}))
 
+    face_color = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'face-color'}),
+                            label='Enter face color')
+    edge_color = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'edge-color'}),
+                            label='Enter edge color')
+    text_color = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'text-color'}),
+                            label='Enter zodiac symbol font size ')
+    tick_color = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'tick-color'}),
+                            label = 'Enter tick color')
+    deg_color =  ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'deg-color'}),
+                            label='Enter degree tick color')
+    marker_color = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'marker-color'}),
+                              label='Enter planet symbol marker color')
+    symbol_color = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'symbol-color'}),
+                              label='Enter planet symbol color')
 
+    house_ax_color = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'ha-color'}),
+                              label='Enter house ax color')
+    house_number_color = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'hnum-color'}),
+                              label='Enter house ax color')
+
+    marker_size = forms.IntegerField(label='Enter marker size')
+    symbol_size = forms.IntegerField(label='Enter symbol size')
+    font_size = forms.IntegerField(label='Enter font size')
+    line_width = forms.IntegerField(label='Enter axes line width', max_value=7)
+    house_ax_lw = forms.IntegerField(label='Enter house ax lw')
+    house_num_fs = forms.IntegerField(label='Enter humber font size')
 
 
 
