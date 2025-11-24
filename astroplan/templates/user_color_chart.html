@@ -2,7 +2,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block title %} Chart for date {% endblock %}
+{% block title %} Colored Chart {% endblock %}
 
 {% block navigation %}
 
@@ -51,24 +51,27 @@
 {% endblock %}
 
 
-{% block chart-data %}
+ {% block chart-data %}
+    <div class="table-data">
+        {% include 'includes/planet_list.html' %}
+    </div>
 
-                 <div class="table-data">
-                        {% include 'includes/planet_list.html' %}
-                 </div>
+    <div class="table-data">
+        {% include 'includes/aspects.html' %}
+    </div>
 
-                 <div class="chart-fig">
-                     <h1 class="chart-title"> Planet chart for {{ date }} </h1>
+    <div class="chart-fig" style="background-color: none;">
+        <h1> Planet chart for {{ date }}</h1>
+        <img src="{% static 'plots/color_user_chart.png' %}" alt="plot" id="chart-plot" style="background-color: none"  >
+        <div>
+            <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
+            <a href="{% url 'ul chart forms' %}" style="color:aliceblue" class="ul-plot-links"> To forms  </a>
+            <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
+        </div>
+    </div>
 
-                    <img src="{% static 'plots/chart_for_date.png' %}" alt="plot" id="chart-plot">
-                 </div>
+    <div class="table-data">
+        {% include 'includes/house_cusps.html' %}
+    </div>
 
-                <div class="table-data">
-                     {% include 'includes/house_cusps.html' %}
-                </div>
-
-
-                <div class="table-data">
-                       {% include 'includes/aspects.html' %}
-                  </div>
- {% endblock %}
+    {% endblock %}

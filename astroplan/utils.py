@@ -39,6 +39,14 @@ circos = Circos(sectors)
 #     return graph
 
 
+
+
+
+
+
+
+
+
 def build_plot(timestamp:dt, filename):
     jd = jl.to_jd(timestamp, fmt='jd')
 
@@ -60,9 +68,9 @@ def build_plot(timestamp:dt, filename):
     px = 1 / plt.rcParams['figure.dpi']
     plt.switch_backend('AGG')
 
-    img = mpi.imread('astroplan/static/images/tr_zr_1.png')
+    img = mpi.imread('astroplan/static/images/tr_zr.png')
     fig = plt.figure(figsize=(870 * px, 870 * px))
-    # fig.suptitle("Today chart", size=17, color='aliceblue')
+    # fig.suptitle("Today planet positions", size=17, color='aliceblue')
     fig.patch.set_alpha(0.0)
     # graph = get_graph()
 
@@ -213,42 +221,42 @@ def build_plot(timestamp:dt, filename):
 
     ax1.plot(np.deg2rad(venus[0][0]), venus[0][1], marker='o', label='venus', ms=5, mfc='deeppink')
     ax1.annotate('♀', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(venus[0][0]), venus[0][1]), fontsize=20, color='blueviolet',
+                 xy=(np.deg2rad(venus[0][0]), venus[0][1]), fontsize=20, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(3)
 
     ax1.plot(np.deg2rad(moon[0][0]), moon[0][1], marker='o', label='moon', mfc='forestgreen', ms=5)
     ax1.annotate('☾', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(moon[0][0]), moon[0][1]), fontsize=20, color='slateblue',
+                 xy=(np.deg2rad(moon[0][0]), moon[0][1]), fontsize=20, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(1)
 
     ax1.plot(np.deg2rad(sun[0][0]), sun[0][1], marker='o', label='sun', ms=8, mfc='gold')
     ax1.annotate('☼', textcoords='offset points', xytext=(20, 5), xycoords='data',
-                 xy=(np.deg2rad(sun[0][0]), sun[0][1]), fontsize=25, color='midnightblue',
+                 xy=(np.deg2rad(sun[0][0]), sun[0][1]), fontsize=25, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(0)
 
     ax1.plot(np.deg2rad(mercury[0][0]), mercury[0][1], 'o:b', label='merc', ms=5)
     ax1.annotate('☿', textcoords='offset points', xytext=(20, 5), xycoords='data',
-                 xy=(np.deg2rad(mercury[0][0]), mercury[0][1]), fontsize=20, color='orange',
+                 xy=(np.deg2rad(mercury[0][0]), mercury[0][1]), fontsize=20, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(2)
 
     ax1.plot(np.deg2rad(mars[0][0]), mars[0][1], marker='o', label='mars', ms=5, mfc='red')
     ax1.annotate('♂', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(mars[0][0]), mars[0][1]), fontsize=20, color='slateblue',
+                 xy=(np.deg2rad(mars[0][0]), mars[0][1]), fontsize=20, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(4)
 
     ax1.plot(np.deg2rad(jupiter[0][0]), jupiter[0][1], 'o', label='jupiter', ms=7, mfc='steelblue')
     ax1.annotate('♃', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=20, color='slateblue',
+                 xy=(np.deg2rad(jupiter[0][0]), jupiter[0][1]), fontsize=20, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(5)
@@ -266,21 +274,21 @@ def build_plot(timestamp:dt, filename):
 
     ax1.plot(np.deg2rad(uranus[0][0]), uranus[0][1], marker='o', mfc='chartreuse', label='uranus', ms=6)
     ax1.annotate('♅', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(uranus[0][0]), uranus[0][1]), fontsize=20, color='rebeccapurple',
+                 xy=(np.deg2rad(uranus[0][0]), uranus[0][1]), fontsize=20, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(7)
 
     ax1.plot(np.deg2rad(neptune[0][0]), neptune[0][1], marker='o', label='neptune', ms=5, mfc='deepskyblue')
     ax1.annotate('♆', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(neptune[0][0]), neptune[0][1]), fontsize=20, color='indigo',
+                 xy=(np.deg2rad(neptune[0][0]), neptune[0][1]), fontsize=20, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(8)
 
     ax1.plot(np.deg2rad(pluto[0][0]), pluto[0][1], 'o:k', mfc='red', label='pluto', ms=5)
     ax1.annotate('♇', textcoords='offset points', xytext=(20, 3), xycoords='data',
-                 xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=20, color='darkgoldenrod',
+                 xy=(np.deg2rad(pluto[0][0]), pluto[0][1]), fontsize=20, color='aliceblue',
                  arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
     aspect(9)
@@ -310,12 +318,12 @@ def draw_zodiac_df_color(list_name):
 def draw_zodiac_one_color(face_color, edge_color, text_color, tick_clr, deg_clr, font_size, line_width):
     for s in sectors.keys():
         zodiac_sector = circos.get_sector(s)
-        zodiac_track = zodiac_sector.add_track((70,95))
+        zodiac_track = zodiac_sector.add_track((70,94))
         zodiac_track.axis(fc=face_color, ec=edge_color, lw=line_width)
         zodiac_track.text(f'{s}',size=font_size,color=text_color)
 
         for sector in circos.sectors:
-            track_deg = sector.add_track((95, 100))
+            track_deg = sector.add_track((94, 100))
             track_deg.axis(ec=tick_clr)
             track_deg.grid(y_grid_num=None, x_grid_interval=1, color=deg_clr)
 

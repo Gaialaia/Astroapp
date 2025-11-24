@@ -2,9 +2,10 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block title %} Login {% endblock %}
 
-{% block navigation %}
+{% block title %} Your charts {% endblock %}
+
+ {% block navigation %}
 
 <div class="menu-choice" id="today-chart" >
     <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
@@ -28,7 +29,7 @@
 </div>
 
 
-<div class="menu-choice"  style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
      {% if user.is_authenticated %}
     <div class="menu-choice-dd">
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
@@ -52,24 +53,47 @@
 
 
 {% block content-data %}
-             <div class="chart-form" id="auth-form">
-                      <h3 class="auth-form-login"> Log In </h3>
-                    <form class="chart-forms" id="login-form" target="_blank"  method="post">
-                        {{ auth_form.media }}
+
+{% if user.is_authenticated %}
+Welcome,  {{ user.username }}
+{% else %}
+You have not logged in
+<a href="http://127.0.0.1:8000/login/"> Log in </a>
+{% endif %}
+
+
+<div>
+    <a href="{% url 'ul chart forms' %}"> Get and save chart</a>
+</div>
+     <a href="{% url 'user chart lists' %}"> Your saved charts </a>
+
+<div>
+
+
+</div>
+
+
+<div class="user-info">
+
+         <img src="{{ user.make_avatar }}" class="avatar">
+        <p>{{ form.instance.first_name }} {{ form.instance.last_name }}
+               </br> {{ form.instance.birthdate }}
+            `    </br>  {{ form.instance.email }}
+                 </br> {{ form.instance.description }}</p>
+         <button class="form-button" onclick="openForm()"> Edit Info </button>
+        <div class="chart-form form-popup" id="edit-descr">
+            <form class="chart-forms" method="post">
+                        {{ form.media }}
                         {% csrf_token %}
-                        {{ auth_form | crispy }}
-                        <button class="show-chart" type="submit" > Log In </button>
-                    </form>
-
-                   <a href="{% url 'register' %}" target = '_blank'> <h3 class="auth-form-login"> Sign Up </h3></a>
-
-
-            <div>
-<!--                <a href="#"> Forgot Passoword? </a>-->
-            </div>
-
-             </div>
+                        {{ form | crispy }}
+                <button class="show-chart" type="submit"> Update </button>
+                <button class="show-chart" type="button" onclick="closeForm()"> Close </button>
+            </form>
+        </div>
+</div>
 
 
 
+
+<script src="/static/scripts/ed_form_pp.js" async> </script>
 {% endblock %}

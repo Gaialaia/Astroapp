@@ -2,11 +2,11 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block title %} Chart for date {% endblock %}
+{% block title %} Chart for any date {% endblock %}
 
 {% block navigation %}
 
-<div class="menu-choice" id="today-chart" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice" id="today-chart">
     <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
@@ -17,7 +17,6 @@
 <div class="menu-choice">
     <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
 </div>
-
 
 <div class="menu-choice">
     <div class="menu-choice-dd"> C <img id='clr-chart-icon' src="{% static 'images/z_in_clr.png' %}"> LOR
@@ -50,25 +49,11 @@
 </div>
 {% endblock %}
 
-
 {% block chart-data %}
 
-                 <div class="table-data">
-                        {% include 'includes/planet_list.html' %}
-                 </div>
-
-                 <div class="chart-fig">
-                     <h1 class="chart-title"> Planet chart for {{ date }} </h1>
-
-                    <img src="{% static 'plots/chart_for_date.png' %}" alt="plot" id="chart-plot">
-                 </div>
-
-                <div class="table-data">
-                     {% include 'includes/house_cusps.html' %}
-                </div>
-
-
-                <div class="table-data">
-                       {% include 'includes/aspects.html' %}
-                  </div>
- {% endblock %}
+ <div class="chart-form">
+     {% include 'includes/messages.html' %}
+     <h3> Chart for any date </h3>
+     {% include 'includes/form.html' %}
+ </div>
+    {% endblock %}

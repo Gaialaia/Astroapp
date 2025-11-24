@@ -4,64 +4,64 @@
 
 {% block title %} SIGN UP {% endblock %}
 
-{% block navigation %}
+ {% block navigation %}
 
 <div class="menu-choice" id="today-chart">
-    <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/"> Today chart </a>
+    <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
 <div class="menu-choice">
-    <a  class="menu-link" href="http://127.0.0.1:8000/transit_form" target = '_blank'>Transits</a>
+    <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
 </div>
 
 <div class="menu-choice">
-    <a href="http://127.0.0.1:8000/wheel_year" target = '_blank'>Wheel Year</a>
+    <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
 </div>
 
-<div class="menu-choice">
-    <a href="http://127.0.0.1:8000/interpretations" target = '_blank'>Interpretations</a>
-</div>
 
-<div class="menu-choice">
-    <div class="menu-choice-dd"> Creative Astrology
+<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+    <div class="menu-choice-dd"> C <img id='clr-chart-icon' src="{% static 'images/z_in_clr.png' %}"> LOR
         <div class="menu-choice-dd-content">
-            <a href="http://127.0.0.1:8000/design_your_chart"> colorful chart </a>
-             <a href="#"> imaginery chart </a>
+            <a href="{% url 'color your chart' %}"> color chart </a>
         </div>
     </div>
 </div>
 
-<div class="menu-choice">
-    <a href="http://127.0.0.1:8000/shop" target = '_blank'>Shop</a>
-</div>
 
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4))">
+<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
      {% if user.is_authenticated %}
     <div class="menu-choice-dd">
-        <a href= "{% url 'my chart' user.username %}" target = '_blank'> My chart {{ user.username }} </a>
+        <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
         <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
     </div>
         {% else %}
-        <div class="menu-choice-dd"> LOG IN / SIGN UP
+        <div class="menu-choice-dd"> ENTER
             <div class="menu-choice-dd-content">
-                <a href="{% url 'login' %}"> LOG IN </a>
-                <a href="{% url 'register' %}"> SIGN UP </a>
+                <div>
+                     <a href="{% url 'login' %}"> LOG IN </a>
+                </div>
+                <div>
+                    <a href="{% url 'register' %}"> SIGN UP </a>
+                </div>
+
             </div>
         </div>
          {% endif %}
 </div>
+
+
 {% endblock %}
 
 
 
 {% block content-data %}
-             <div class="chart-form auth">
-                      <h3> Register here  </h3>
+             <div class="chart-form auth" id="auth-form">
+                      <h3 class="auth-form-login"> GET AN ACCOUNT  </h3>
                     <form class="chart-forms" action="" target="_blank"  method="post">
                         {{ reg_form.media }}
                         {% csrf_token %}
                         {{ reg_form | crispy }}
-                        <button class="show-chart" type="submit" > Sign up </button>
+                        <button class="show-chart" type="submit" > <h3 class="auth-form-login"> Sign up </h3> </button>
                     </form>
              </div>
 

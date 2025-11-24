@@ -3,30 +3,50 @@
 
 {% block title %} Transit Chart! {% endblock %}
 
-
 {% block navigation %}
-            <div class="menu-choice"> <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/" target = '_blank'> Today chart </a>
-                <div class="dropdown-content">
-                     <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+
+<div class="menu-choice" id="today-chart" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+    <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
+</div>
+
+<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+    <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
+</div>
+
+<div class="menu-choice">
+    <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
+</div>
+
+
+<div class="menu-choice">
+    <div class="menu-choice-dd"> C <img id='clr-chart-icon' src="{% static 'images/z_in_clr.png' %}"> LOR
+        <div class="menu-choice-dd-content">
+            <a href="{% url 'color your chart' %}"> color chart </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="menu-choice">
+     {% if user.is_authenticated %}
+    <div class="menu-choice-dd">
+        <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
+        <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
+    </div>
+        {% else %}
+        <div class="menu-choice-dd"> ENTER
+            <div class="menu-choice-dd-content">
+                <div>
+                     <a href="{% url 'login' %}"> LOG IN </a>
                 </div>
-            </div>
-            <div class="menu-choice"  style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));" > <a  class="menu-link" href="http://127.0.0.1:8000/transit_form" target = '_blank'>Transits</a></div>
-            <div class="menu-choice" >  <a class="menu-link" href="#" target = '_blank'>Wheel Year</a></div>
-            <div class="menu-choice">  <a class="menu-link" href="#" target = '_blank'>Interpretations</a></div>
-            <div class="menu-choice">
-                <div class="menu-choice-dd">
-                       Creative Astrology
-                       <div class="menu-choice-dd-content">
-                        <a href="#"> colorful chart </a>
-                           <a href="#"> imaginery chart </a>
-                         </div>
+                <div>
+                    <a href="{% url 'register' %}"> SIGN UP </a>
                 </div>
+
             </div>
-            <div class="menu-choice"><a href="http://127.0.0.1:8000/chart_form" target = '_blank'>My chart</a> </div>
-            <div class="menu-choice"><a href="#" target = '_blank'>Shop</a></div>
-        </nav>
+        </div>
+         {% endif %}
+</div>
 {% endblock %}
 
 
@@ -37,20 +57,20 @@
       {% include 'includes/transit_aspects.html' %}
 </div>
 
-<div class="chart-fig" style="background-color: none">
-      <div class="form-info" style="display:flex" >
+<div class="chart-fig" id="tr-chart-fig">
+      <div class="form-info">
           <div class="event-info">
-                       <p> Event date: {{ event_date }} </p>
-                       <p> Event city: {{ event_city }}, {{ lng }} {{ lat }} </p>
-                       <p> Event country: {{ event_country }} </p>
+              <p class="form-info-data-title">Event date: {{ event_date }} </p>
+                       <p class="form-info-data-title"> Event city: {{ event_city }}, {{ lng }} {{ lat }} </p>
+                       <p class="form-info-data-title"> Event country: {{ event_country }} </p>
           </div>
-                    <div class="transit-info" style="color: chartreuse">
-                        <p> Transit date: {{ tr_date }} </p>
-                       <p> Transit city: {{ tr_city }} </p>
-                       <p> Transit country: {{ tr_country }} </p>
+                    <div class="transit-info">
+                        <p class="form-info-data-title"> Transit date: {{ tr_date }} </p>
+                       <p class="form-info-data-title"> Transit city: {{ tr_city }} </p>
+                       <p class="form-info-data-title"> Transit country: {{ tr_country }} </p>
                     </div>
       </div>
-                <img src="{% static 'plots/transit_chart.png' %}" alt="plot" id="chart-plot">
+                <img src="{% static 'plots/transit_chart.png' %}" alt="plot" id="tr-chart-plot">
   </div>
 
 <div class="table-cont">

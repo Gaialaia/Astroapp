@@ -4,108 +4,25 @@
   box-sizing: border-box;
 }
 
-
-.planet-symbols {
-
-    font-size: 100px;
-    padding: 0px;
-    margin: 17px;
-
-
+.my-chart-tr-form-title {
+    text-align: center;
+    font-variant: small-caps;
+    color: aliceblue;
+    font-size: 17px;
 
 }
 
+.tr-form-title {
+    text-align: center;
+}
 
-
-.interpretation-sec {
-
-    display: flex;
-    flex-direction: row;
-    justify-items: end;
-    padding: 0px ;
-    border: 1px solid;
-    margin-bottom: 10px;
+.auth-form-login {
+     text-align: center;
+    font-variant-caps: all-petite-caps;
 
 }
 
-.sign-symbols {
-
-    padding: 0px;
-    font-size: 100px;
-    margin: 17px;
-
+.chart-title {
+    text-align: center;
 }
 
-.luminary {
-    padding: 17px;
-    border: 1px solid;
-}
-
-.fire-signs {
-
-    padding: 17px;
-
-}
-
-.fire-sign {
-    color: red;
-}
-
-.air-signs {
-
-    padding: 17px;
-    border: 1px solid;
-}
-
-.water-signs {
-
-    padding: 17px;
-    border: 1px solid;
-
-
-}
-
-.earth-signs {
-
-    padding: 17px;
-    border: 1px solid;
-
-
-}
-
-
-.houses {
-
-    padding: 17px;
-    border: 1px solid;
-
-
-
-}
-
-.house-number {
-
-    font-size: 70px;
-    padding: 0px;
-    margin: 17px;
-}
-
-.description {
-
-    line-height: 1.2;
-    text-indent: 10% each-line;
-    hyphens: auto;
-    padding-block: 0px;
-    margin-block: 0px;
-
-}
-
-#hidden-descr {
-    display: none;
-
-}
-
-.hidden-descr {
-    display: none;
-
-}

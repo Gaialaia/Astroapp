@@ -2,10 +2,10 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block title %} Chart for date {% endblock %}
+
+{% block title %} Saved charts {% endblock %}
 
 {% block navigation %}
-
 <div class="menu-choice" id="today-chart" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
     <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
@@ -51,24 +51,31 @@
 {% endblock %}
 
 
-{% block chart-data %}
 
-                 <div class="table-data">
-                        {% include 'includes/planet_list.html' %}
-                 </div>
+{% block content-data %}
+<a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
+<a href="{% url 'ul chart forms' %}" style="color:aliceblue" class="ul-plot-links"> To forms  </a>
+<div class="chart-list">
+        <h3> My charts </h3>
+        {% for chart in my_charts %}
+        <p> <a href="/chart/{{ chart.id }}/"  class="chart_link tooltip" style="color: aliceblue" >  {{ chart.chart_name }}
+            <span class="tooltiptext"> {{ chart.chart_date }} </span></a> </p>
+        {% endfor %}
+</div>
 
-                 <div class="chart-fig">
-                     <h1 class="chart-title"> Planet chart for {{ date }} </h1>
+<div class="chart-list">
+        <h3> My transit charts </h3>
+        {% for tr_user_chart in my_tr_charts %}
+         <p> <a href="/tr_chart/{{ tr_user_chart.id }}/"  class="chart_link tooltip" style="color: aliceblue" >  {{ tr_user_chart.transit_name }} /
+            {{ tr_user_chart.event_name }} </a> </p>
+        {% endfor %}
+</div>
 
-                    <img src="{% static 'plots/chart_for_date.png' %}" alt="plot" id="chart-plot">
-                 </div>
+<div class="chart-list">
+        <h3> My colored charts </h3>
+        {% for clr_user_chart in my_clr_charts %}
+         <p> <a href="/clr_chart/{{ clr_user_chart.id }}/"  class="chart_link tooltip" style="color: aliceblue" >  {{ clr_user_chart.chart_name }}</a> </p>
+        {% endfor %}
+</div>
 
-                <div class="table-data">
-                     {% include 'includes/house_cusps.html' %}
-                </div>
-
-
-                <div class="table-data">
-                       {% include 'includes/aspects.html' %}
-                  </div>
- {% endblock %}
+{% endblock %}

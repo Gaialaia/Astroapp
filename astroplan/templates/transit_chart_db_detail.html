@@ -2,42 +2,53 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block title %} Transit chart db detail  {% endblock %}
+{% block title %} {{ tr_chart.event_name }} / {{ tr_chart.transit_name }} {% endblock %}
 
 
 {% block navigation %}
-<div class="menu-choice"> <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/"> Today chart </a>
-            </div>
-            <div class="menu-choice" > <a  class="menu-link" href="http://127.0.0.1:8000/transit_form" target = '_blank'>Transits</a></div>
-            <div class="menu-choice" >  <a href="http://127.0.0.1:8000/wheel_year" target = '_blank'>Wheel Year</a></div>
-            <div class="menu-choice">  <a href="http://127.0.0.1:8000/interpretations" target = '_blank'>Interpretations</a></div>
-            <div class="menu-choice">
-                <div class="menu-choice-dd">
-                       Creative Astrology
-                       <div class="menu-choice-dd-content">
-                        <a href="http://127.0.0.1:8000/design_your_chart"> colorful chart </a>
-                           <a href="#"> imaginery chart </a>
-                         </div>
+
+<div class="menu-choice" id="today-chart">
+    <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
+</div>
+
+<div class="menu-choice">
+    <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
+</div>
+
+<div class="menu-choice">
+    <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
+</div>
+
+
+<div class="menu-choice">
+    <div class="menu-choice-dd"> C <img id='clr-chart-icon' src="{% static 'images/z_in_clr.png' %}"> LOR
+        <div class="menu-choice-dd-content">
+            <a href="{% url 'color your chart' %}"> color chart </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+     {% if user.is_authenticated %}
+    <div class="menu-choice-dd">
+        <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
+        <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
+    </div>
+        {% else %}
+        <div class="menu-choice-dd"> ENTER
+            <div class="menu-choice-dd-content">
+                <div>
+                     <a href="{% url 'login' %}"> LOG IN </a>
                 </div>
+                <div>
+                    <a href="{% url 'register' %}"> SIGN UP </a>
+                </div>
+
             </div>
-
-            <div class="menu-choice"><a href="http://127.0.0.1:8000/shop" target = '_blank'>Shop</a></div>
-
-            <div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
-                {% if user.is_authenticated %}
-             <div class="menu-choice-dd"> <a href= "{% url 'my chart' user.username %}" target = '_blank'>
-                 My chart {{ user.username }}</a>
-                       <div class="menu-choice-dd-content">
-                        <a href="{% url 'logout' %}">  Log out </a>
-                    {% else %}
-                            <div class="menu-choice-dd"> OPTION
-                                <div class="menu-choice-dd-content">
-                           <a href="{% url 'login' %}" target = '_blank'> Log In </a> <br>
-                           <a href="{% url 'register' %}" target = '_blank'> Sign Up </a>
-                         </div>
-                   </div>
-                 {% endif %}
-             </div>
+        </div>
+         {% endif %}
+</div>
 {% endblock %}
 
 
@@ -219,7 +230,7 @@
 
 
                             <p>
-                                    Transit name : {{ tr_chart.transit_name }}
+                                Transit name : {{ tr_chart.transit_name }}
                             Transit date: {{ tr_chart.transit_date }}
                             Transit city : {{ tr_chart.transit_city }}
                             Transit country : {{ tr_chart.transit_country }}
@@ -228,6 +239,9 @@
                             </p>
 
                         <img src="/media/{{ tr_chart.tr_chart_image }}/" alt="{{ tr_chart.tr_chart_image }}">
+                             <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
+                   <a href="{% url 'ul chart forms' %}" style="color:aliceblue" class="ul-plot-links"> To forms  </a>
+                   <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
 
 
 
@@ -240,7 +254,7 @@
 
                             </div>
 
-                        <a href="{% url 'my chart' user.username %}" style="color: white" > Back to my charts </a>
+
                  <div class="table-data">
 
          <table>
@@ -319,7 +333,7 @@
 
          </table>
 
-               <table>
+               <table id="tr-hc-data">
                    <caption> House cusps data   </caption>
                    <thead>
                    <tr>
@@ -410,4 +424,16 @@
                </table>
 
            </div>
+
+<script>
+      window.onload = function() {
+        const table = document.getElementById('tr-hc-data');
+        if (table) {
+            const tbodyRows = table.querySelectorAll('tbody tr');
+            if (tbodyRows.length === 0) {
+                table.style.display = 'none';
+            }
+        }
+    };
+</script>
              {% endblock %}

@@ -1,38 +1,60 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-
-from django.forms import DateTimeInput
-
 from django.utils import timezone
-from datetime import datetime as dt
 
+from datetime import datetime as dt
+import swisseph as swe
 
 now = dt.now()
+
+MODE_CHOICES = {
+    swe.FLG_SIDEREAL: 'Sidereal',
+    swe.FLG_TROPICAL: 'Tropical',
+    swe.FLG_HELCTR: 'Heliocentric',
+}
+
+PlACIDUS = 'P'
+REGIONMONTANUS = 'R'
+EQUAL = 'E'
+
+
+HOUSE_SYSTEM_CHOICES = \
+    {
+        PlACIDUS: 'Placidus',
+        REGIONMONTANUS: 'Regiomontanus',
+        EQUAL: 'Equal',
+        'Without houses': 'Without houses',
+    }
 
 
 class Chart(models.Model):
 
     objects = None
+
     chart_date = models.DateTimeField(default=timezone.now)
     city = models.CharField(default='Ufa')
     country = models.CharField(default='Russia')
 
+    chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
+    house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
+
     def __str__(self):
-        return f'{self.chart_date}, {self.city}, {self.country}'
+        return f'{self.chart_date}, {self.city}, {self.country}, {self.chart_mode}, {self.house_system}'
 
 
-
-
-
-class FullChart(models.Model):
+class FullChart(models.Model):  # model for ul chart model
 
     objects = None
 
-    chart_name = models.CharField(default='My birthdate')
+    chart_name = models.CharField(default='Today')
     chart_date = models.DateTimeField(default=timezone.now)
 
     city = models.CharField(default='Ufa')
     country = models.CharField(default='Russia')
+
+    chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
+    house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
+
     drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1)
 
     Sun_deg = models.CharField(default='5°05')
@@ -137,12 +159,13 @@ class FullChart(models.Model):
                 f'{self.nineth_house}, {self.esoteric_deg}, {self.esoteric_sign},'
                 f'{self.tenth_house}, {self.status_sign}, {self.status_deg},'
                 f'{self.eleventh_house}, {self.interests_deg}, {self.interests_sign},'
-                f'{self.twelfth_house}, {self.benefits_deg}, {self.benefits_sign}'
+                f'{self.twelfth_house}, {self.benefits_deg}, {self.benefits_sign},'
+                f'{self.chart_mode}, {self.house_system},'
                 )
 
 
 
-class TransitFullChart(models.Model):
+class TransitFullChart(models.Model):  # model for ul transit chart model
 
     objects = None
 
@@ -151,11 +174,17 @@ class TransitFullChart(models.Model):
     event_city = models.CharField(default='Ufa')
     event_country = models.CharField(default='Russia')
 
-    transit_name = models.CharField(default='Graduation')
+    ev_chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
+    ev_house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
+
+
+    transit_name = models.CharField(default='My enlightenment day')
     transit_date = models.DateTimeField(default=timezone.now)
     transit_city = models.CharField(default='Los-Angeles')
     transit_country = models.CharField(default='USA')
 
+    tr_chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
+    tr_house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
 
     Sun_deg = models.CharField(default='5°05')
     Sun_sign = models.CharField(default='Aquarius')
@@ -361,6 +390,8 @@ class TransitFullChart(models.Model):
                 f'{self.tr_tenth_house}, {self.tr_status_sign}, {self.tr_status_deg},'
                 f'{self.tr_eleventh_house}, {self.tr_interests_deg}, {self.tr_interests_sign},'
                 f'{self.tr_twelfth_house}, {self.tr_benefits_deg}, {self.tr_benefits_sign},'
+                f'{self.ev_chart_mode}, {self.ev_house_system},'
+                f'{self.tr_chart_mode}, {self.tr_house_system},'
                 )
 
 
@@ -382,6 +413,150 @@ class TransitChart(models.Model):
         return (f'{self.event_date}, {self.event_city}, {self.event_country}'
                 f'{self.transit_date},{self.transit_city},  {self.transit_country}')
 
+
+
+class OneColorZodiacRingMF(models.Model):
+    objects = None
+
+    chart_name = models.CharField(default='Got the Olympic Prize')
+    chart_date = models.DateTimeField(default=timezone.now)
+    chart_city = models.CharField(default='Ufa')
+    chart_country = models.CharField(default='Russia')
+
+    chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
+    chart_house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
+
+    face_color = models.CharField(default='#300c63')
+    edge_color = models.CharField(default='#3dffc8')
+    text_color = models.CharField(default='#3dffc8')
+    tick_color = models.CharField(default='#63ffd3')
+    deg_color = models.CharField(default='#63ffd3')
+    marker_color = models.CharField(default='#ffc83d')
+    symbol_color = models.CharField(default='#ff3d74')
+
+    house_ax_color = models.CharField(default='#ffc83d')
+    house_number_color = models.CharField(default='#ffc83d')
+    house_track_color = models.CharField(default='#ffc83d')
+
+    marker_size = models.IntegerField(default=25)
+    symbol_size = models.IntegerField(default=15)
+    font_size = models.IntegerField(default=50)
+
+    line_width = models.IntegerField(default=3)
+    house_ax_lw= models.IntegerField(default=3)
+    house_num_fs = models.IntegerField(default=27)
+    house_track_lw = models.IntegerField(default=3)
+
+    drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1)
+
+    Sun_deg = models.CharField(default='5°05')
+    Sun_sign = models.CharField(default='Aquarius')
+
+    Moon_deg = models.CharField(default='14°44')
+    Moon_sign = models.CharField(default='Taurus')
+
+    Mercury_deg = models.CharField(default='18°04')
+    Mercury_sign = models.CharField(default='Aquarius')
+
+    Venus_deg = models.CharField(default='12°05')
+    Venus_sign = models.CharField(default='Aquarius')
+
+    Mars_deg = models.CharField(default='15°21')
+    Mars_sign = models.CharField(default='Scorpio')
+
+    Jupiter_deg = models.CharField(default='5°37')
+    Jupiter_sign = models.CharField(default='Aquarius')
+
+    Saturn_deg = models.CharField(default='15°18')
+    Saturn_sign = models.CharField(default='Scorpio')
+
+    Uranus_deg = models.CharField(default='28°05')
+    Uranus_sign = models.CharField(default='Scorpio')
+
+    Neptune_deg = models.CharField(default='11°60')
+    Neptune_sign = models.CharField(default='Sagittarius')
+
+    Pluto_deg = models.CharField(default='13°40')
+    Pluto_sign = models.CharField(default='Libra')
+
+    first_house = models.CharField(default='Ascendant')
+    asc_deg = models.CharField(default='0°')
+    asc_sign = models.CharField(default='Aries')
+
+    second_house = models.CharField(default='What you have with & in you')
+    resource_deg = models.CharField(default='30°')
+    resource_sign = models.CharField(default='Taurus')
+
+    third_house = models.CharField(default='Mentality')
+    mental_deg = models.CharField(default='60°')
+    mental_sign = models.CharField(default='Gemini')
+
+    forth_house = models.CharField(default='Home')
+    home_deg = models.CharField(default='90°')
+    home_sign = models.CharField(default='Crab')
+
+    fifth_house = models.CharField(default='Games')
+    game_deg = models.CharField(default='120°')
+    game_sign = models.CharField(default='Crab')
+
+    sixth_house = models.CharField(default='Work')
+    work_deg = models.CharField(default='150°')
+    work_sign = models.CharField(default='Virgo')
+
+    seventh_house = models.CharField(default='Relationship')
+    rel_deg = models.CharField(default='180°')
+    rel_sign = models.CharField(default='Libra')
+
+    eighth_house = models.CharField(default='Magic')
+    magic_deg = models.CharField(default='210°')
+    magic_sign = models.CharField(default='Scorpio')
+
+    nineth_house = models.CharField(default='Esoteric knowledge')
+    esoteric_deg = models.CharField(default='230°')
+    esoteric_sign = models.CharField(default='Sagittarius')
+
+    tenth_house = models.CharField(default='Status')
+    status_deg = models.CharField(default='260°')
+    status_sign = models.CharField(default='Capricorn')
+
+    eleventh_house = models.CharField(default='Interests')
+    interests_deg = models.CharField(default='290°')
+    interests_sign = models.CharField(default='Aquarius')
+
+    twelfth_house = models.CharField(default='Benefits')
+    benefits_deg = models.CharField(default='330°')
+    benefits_sign = models.CharField(default='Pisces')
+
+    chart_image = models.ImageField(upload_to='chart_plots/', default='static/images/tr_one_clr.png')
+
+    def __str__(self):
+        return (f'{self.chart_date}, {self.chart_city}, {self.chart_country}'
+                f'{self.chart_mode}, {self.chart_house_system}'
+                f'{self.face_color}, {self.edge_color}, {self.text_color}'
+                f'{self.deg_color}, {self.tick_color}, {self.marker_color}'
+                f'{self.symbol_color}, {self.house_ax_color}, {self.house_number_color}'
+                f'{self.house_track_color}, {self.marker_size}, {self.symbol_size}'
+                f'{self.font_size}, {self.line_width}, {self.house_ax_lw}, {self.house_num_fs}'
+                f'{self.house_track_lw},{self.Sun_deg},{self.Sun_sign}, {self.Moon_deg},{self.Moon_sign}'
+                f' {self.Mercury_deg},{self.Mercury_sign}, {self.Venus_deg}'
+                f'{self.Venus_sign}, {self.Mars_deg}, {self.Mars_sign}'
+                f'{self.Jupiter_deg},{self.Jupiter_sign}'
+                f'{self.Saturn_deg}, {self.Saturn_sign},'
+                f'{self.Uranus_deg}, {self.Uranus_sign}'
+                f'{self.Neptune_deg}, {self.Neptune_sign},'
+                f'{self.Pluto_deg}, {self.Pluto_sign},'
+                f'{self.first_house}, {self.asc_deg}, {self.asc_sign},'
+                f'{self.second_house}, {self.resource_deg}, {self.resource_sign},'
+                f'{self.third_house}, {self.mental_deg}, {self.mental_sign},'
+                f'{self.forth_house}, {self.home_deg}, {self.home_sign},'
+                f'{self.fifth_house}, {self.game_deg}, {self.game_sign},'
+                f'{self.sixth_house}, {self.work_deg}, {self.work_sign},'
+                f'{self.seventh_house}, {self.rel_deg}, {self.rel_sign},'
+                f'{self.eighth_house}, {self.magic_deg}, {self.magic_sign},'
+                f'{self.nineth_house}, {self.esoteric_deg}, {self.esoteric_sign},'
+                f'{self.tenth_house}, {self.status_sign}, {self.status_deg},'
+                f'{self.eleventh_house}, {self.interests_deg}, {self.interests_sign},'
+                f'{self.twelfth_house}, {self.benefits_deg}, {self.benefits_sign},' )
 
 class ZodiacInColors(models.Model):
 
