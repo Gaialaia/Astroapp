@@ -9,8 +9,8 @@ from .decorators import user_not_auth
 
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 
 from .tokens import account_activation_token
@@ -103,9 +103,38 @@ matplotlib.rcParams['axes.edgecolor'] = 'aliceblue'
 swe.set_ephe_path('/home/gaia/Документы/eph files')
 
 
+def activate(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except:
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+
+        messages.success(request, "Thank you for your email confirmation. Now you can login your account.")
+        return redirect('login')
+    else:
+        messages.error(request, "Activation link is invalid!")
+
 def activate_email(request, user, to_email):
-    messages.success(request, f'Dear <b>{user}</b>, please go to you email <b>{to_email}</b> inbox and click on \
-        received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.')
+    mail_subject = 'Activate your user account.'
+    message = render_to_string('activate_account.html', {
+        'user': user.username,
+        'domain': get_current_site(request).domain,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': account_activation_token.make_token(user),
+        'protocol': 'https' if request.is_secure() else 'http'
+    })
+    email = EmailMessage(mail_subject, message, to=[to_email])
+    if email.send():
+        messages.success(request, f'Dear <b>{user}</b>, please go to you email <b>{to_email}</b> inbox and click on \
+            received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.')
+    else:
+        messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
 
 @user_not_auth
 def register(request):
@@ -113,10 +142,10 @@ def register(request):
         reg_form = UserRegistrationForm(request.POST)
         if reg_form.is_valid():
             user = reg_form.save(commit=False)
-            # user.is_active = False
+            user.is_active = False
             user.save()
-            login(request, user)
-            # activate_email(request, user, reg_form.cleaned_data.get('email'))
+            # login(request, user)
+            activate_email(request, user, reg_form.cleaned_data.get('email'))
             messages.success(request, f"New account created: {user.username}")
             return redirect('showed chart')
         else:
@@ -159,25 +188,11 @@ def custom_login(request):
     return render(request,'login.html', {'auth_form': auth_form})
 
 
-def activateEmail(request, user, to_email):
-    mail_subject = 'Activate your user account.'
-    message = render_to_string('activate_account.html', {
-        'user': user.username,
-        'domain': get_current_site(request).domain,
-        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        'token': account_activation_token.make_token(user),
-        'protocol': 'https' if request.is_secure() else 'http'
-    })
-    email = EmailMessage(mail_subject, message, to=[to_email])
-    if email.send():
-        messages.success(request, f'Dear <b>{user}</b>, please go to you email <b>{to_email}</b> inbox and click on \
-            received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.')
-    else:
-        messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
 
 
-def activate(request, uidb64, token):
-    return redirect('showed chart')
+
+# def activate(request, uidb64, token):
+#     return redirect('showed chart')
 
 
 
@@ -1365,51 +1380,66 @@ def user_forms(request):
                                           swe.calc_ut(jd_ev, 1, int(tr_user_chart.ev_chart_mode))[0][1], -25],
                  swe.get_planet_name(2): ['☿', 'grey', 5, 17,
                                           swe.calc_ut(jd_ev, 2, int(tr_user_chart.ev_chart_mode))[0][0],
-                                          swe.calc_ut(jd_ev, 1, int(tr_user_chart.ev_chart_mode))[0][1], -25],
+                                          swe.calc_ut(jd_ev, 2, int(tr_user_chart.ev_chart_mode))[0][1], -25],
                  swe.get_planet_name(3): ['♀', 'sienna', 5, 17,
                                           swe.calc_ut(jd_ev, 3, int(tr_user_chart.ev_chart_mode))[0][0],
-                                          swe.calc_ut(jd_ev, 1, int(tr_user_chart.ev_chart_mode))[0][1], 25],
+                                          swe.calc_ut(jd_ev, 3, int(tr_user_chart.ev_chart_mode))[0][1], 25],
                  swe.get_planet_name(4): ['♂', 'red', 5, 17,
                                           swe.calc_ut(jd_ev, 4, int(tr_user_chart.ev_chart_mode))[0][0],
-                                          swe.calc_ut(jd_ev, 1, int(tr_user_chart.ev_chart_mode))[0][1], -10],
+                                          swe.calc_ut(jd_ev, 4, int(tr_user_chart.ev_chart_mode))[0][1], -10],
                  swe.get_planet_name(5): ['♃', 'teal', 5, 17,
                                           swe.calc_ut(jd_ev, 5, int(tr_user_chart.ev_chart_mode))[0][0],
-                                          swe.calc_ut(jd_ev, 1, int(tr_user_chart.ev_chart_mode))[0][1], 0],
+                                          swe.calc_ut(jd_ev, 5, int(tr_user_chart.ev_chart_mode))[0][1], 0],
                  swe.get_planet_name(6): ['♄', 'slategrey', 5, 17,
                                           swe.calc_ut(jd_ev, 6, int(tr_user_chart.ev_chart_mode))[0][0],
-                                          swe.calc_ut(jd_ev, 1, int(tr_user_chart.ev_chart_mode))[0][1], -25],
+                                          swe.calc_ut(jd_ev, 6, int(tr_user_chart.ev_chart_mode))[0][1], -25],
                  swe.get_planet_name(7): ['♅', 'chartreuse', 5, 17,
                                           swe.calc_ut(jd_ev, 7, int(tr_user_chart.ev_chart_mode))[0][0],
-                                          swe.calc_ut(jd_ev, 1, int(tr_user_chart.ev_chart_mode))[0][1], 0],
+                                          swe.calc_ut(jd_ev, 7, int(tr_user_chart.ev_chart_mode))[0][1], 0],
                  swe.get_planet_name(8): ['♆', 'indigo', 5, 17,
                                           swe.calc_ut(jd_ev, 8, int(tr_user_chart.ev_chart_mode))[0][0],
-                                          swe.calc_ut(jd_ev, 1, int(tr_user_chart.ev_chart_mode))[0][1], 0],
+                                          swe.calc_ut(jd_ev, 8, int(tr_user_chart.ev_chart_mode))[0][1], 0],
                  swe.get_planet_name(9): ['♇', 'darkmagenta', 5, 17,
                                           swe.calc_ut(jd_ev, 9, int(tr_user_chart.ev_chart_mode))[0][0],
-                                          swe.calc_ut(jd_ev, 1, int(tr_user_chart.ev_chart_mode))[0][1], 0]}
+                                          swe.calc_ut(jd_ev, 9, int(tr_user_chart.ev_chart_mode))[0][1], 0]}
 
         cr_form_coords_value = list(pd_cr.values())
 
-        pd = {swe.get_planet_name(0): ['☼ᵀᴿ', 'yellow', 5, 17, swe.calc_ut(jd_tr, 0, flags)[0][0],
-                                       swe.calc_ut(jd_tr, 0, flags)[0][1], 10],
-              swe.get_planet_name(1): ['☾ᵀᴿ', 'blue', 5, 17, swe.calc_ut(jd_tr, 1, flags)[0][0],
-                                       swe.calc_ut(jd_tr, 1, flags)[0][1], -25],
-              swe.get_planet_name(2): ['☿ᵀᴿ', 'grey', 5, 17, swe.calc_ut(jd_tr, 2, flags)[0][0],
-                                       swe.calc_ut(jd_tr, 1, flags)[0][1], -25],
-              swe.get_planet_name(3): ['♀ᵀᴿ', 'sienna', 5, 17, swe.calc_ut(jd_tr, 3, flags)[0][0],
-                                       swe.calc_ut(jd_tr, 1, flags)[0][1], 25],
-              swe.get_planet_name(4): ['♂ᵀᴿ', 'red', 5, 17, swe.calc_ut(jd_tr, 4, flags)[0][0],
-                                       swe.calc_ut(jd_tr, 1, flags)[0][1], -10],
-              swe.get_planet_name(5): ['♃ᵀᴿ', 'teal', 5, 17, swe.calc_ut(jd_tr, 5, flags)[0][0],
-                                       swe.calc_ut(jd_tr, 1, flags)[0][1], 0],
-              swe.get_planet_name(6): ['♄ᵀᴿ', 'slategrey', 5, 17, swe.calc_ut(jd_tr, 6, flags)[0][0],
-                                       swe.calc_ut(jd_tr, 1, flags)[0][1], -25],
-              swe.get_planet_name(7): ['♅ᵀᴿ', 'chartreuse', 5, 17, swe.calc_ut(jd_tr, 7, flags)[0][0],
-                                       swe.calc_ut(jd_tr, 1, flags)[0][1], 0],
-              swe.get_planet_name(8): ['♆ᵀᴿ', 'indigo', 5, 17, swe.calc_ut(jd_tr, 8, flags)[0][0],
-                                       swe.calc_ut(jd_tr, 1, flags)[0][1], 0],
-              swe.get_planet_name(9): ['♇ᵀᴿ', 'darkmagenta', 5, 17, swe.calc_ut(jd_tr, 9, flags)[0][0],
-                                       swe.calc_ut(jd_tr, 1, flags)[0][1], 0]}
+        pd = {swe.get_planet_name(0): ['☼ᵀᴿ', 'yellow', 5, 17, swe.calc_ut(jd_tr, 0,
+                                       int(tr_user_chart.tr_chart_mode))[0][0], swe.calc_ut(jd_tr, 0,
+                                       int(tr_user_chart.tr_chart_mode))[0][1], 10],
+
+              swe.get_planet_name(1): ['☾ᵀᴿ', 'blue', 5, 17, swe.calc_ut(jd_tr, 1,
+                                       int(tr_user_chart.tr_chart_mode))[0][0], swe.calc_ut(jd_tr, 1,
+                                       int(tr_user_chart.tr_chart_mode))[0][1], -25],
+
+              swe.get_planet_name(2): ['☿ᵀᴿ', 'grey', 5, 17,
+                                       swe.calc_ut(jd_tr, 2,int(tr_user_chart.tr_chart_mode))[0][0],
+                                       swe.calc_ut(jd_tr, 2,int(tr_user_chart.tr_chart_mode))[0][1], -25],
+
+              swe.get_planet_name(3): ['♀ᵀᴿ', 'sienna', 5, 17,
+                                       swe.calc_ut(jd_tr, 3,int(tr_user_chart.tr_chart_mode))[0][0],
+                                       swe.calc_ut(jd_tr, 3,int(tr_user_chart.tr_chart_mode))[0][1], 25],
+              swe.get_planet_name(4): ['♂ᵀᴿ', 'red', 5, 17,
+                                       swe.calc_ut(jd_tr, 4,int(tr_user_chart.tr_chart_mode))[0][0],
+                                       swe.calc_ut(jd_tr, 4,int(tr_user_chart.tr_chart_mode))[0][1], -10],
+              swe.get_planet_name(5): ['♃ᵀᴿ', 'teal', 5, 17,
+                                       swe.calc_ut(jd_tr, 5,int(tr_user_chart.tr_chart_mode))[0][0],
+                                       swe.calc_ut(jd_tr, 5,int(tr_user_chart.tr_chart_mode))[0][1], 0],
+              swe.get_planet_name(6): ['♄ᵀᴿ', 'slategrey', 5, 17,
+                                       swe.calc_ut(jd_tr, 6,int(tr_user_chart.tr_chart_mode))[0][0],
+                                       swe.calc_ut(jd_tr, 6,int(tr_user_chart.tr_chart_mode))[0][1], -25],
+
+              swe.get_planet_name(7): ['♅ᵀᴿ', 'chartreuse', 5, 17,
+                                       swe.calc_ut(jd_tr, 7,int(tr_user_chart.tr_chart_mode))[0][0],
+                                       swe.calc_ut(jd_tr, 7,int(tr_user_chart.tr_chart_mode))[0][1], 0],
+
+              swe.get_planet_name(8): ['♆ᵀᴿ', 'indigo', 5, 17,
+                                       swe.calc_ut(jd_tr, 8,int(tr_user_chart.tr_chart_mode))[0][0],
+                                       swe.calc_ut(jd_tr, 8,int(tr_user_chart.tr_chart_mode))[0][1], 0],
+              swe.get_planet_name(9): ['♇ᵀᴿ', 'darkmagenta', 5, 17,
+                                       swe.calc_ut(jd_tr, 9,int(tr_user_chart.tr_chart_mode))[0][0],
+                                       swe.calc_ut(jd_tr, 9,int(tr_user_chart.tr_chart_mode))[0][1], 0]}
 
         tr_form_coords_value = list(pd.values())
 

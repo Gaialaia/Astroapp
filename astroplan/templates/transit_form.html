@@ -62,10 +62,104 @@
     </div>
     <div class="tr-chart-form">
 
-        {% include 'includes/transit_form.html' %}
+        <form class="chart-forms" target="_blank" method="post">
+            {% csrf_token %}
+            {{ tr_form.media }}
+        <div>
+            <label for="id_event_date">Enter event date:</label>
+            <div class="django-flatpickr">
+            <input type="text" name="event_date" value="2025-11-27 07:15:27"
+                   required id="id_event_date" data-fpconfig="{&quot;picker_type&quot;: &quot;DATETIME&quot;, &quot;options&quot;: {&quot;altInput&quot;: true, &quot;dateFormat&quot;: &quot;Y-m-d H:i:S&quot;, &quot;enableTime&quot;: true, &quot;wrap&quot;: true}}" data-debug="">
+        </div>
+        </div>
+
+
+        <div>
+            <label for="id_event_city">Enter event city:</label>
+            <input type="text" name="event_city" value="Ufa" required id="id_event_city">
+
+        </div>
+
+        <div>
+             <label for="id_event_country">Enter event country:</label>
+            <input type="text" name="event_country" value="Russia" required id="id_event_country">
+        </div>
+
+        <div>
+            <label for="id_ev_mode">Chose event chart mode:</label>
+            <select name="ev_mode" id="id_ev_mode">
+                  <option value="65536">Sidereal</option>
+                  <option value="0">Tropical</option>
+                  <option value="8">Heliocentric</option>
+            </select>
+        </div>
+
+
+        <div>
+            <label for="id_ev_house_system">Chose event house system:</label>
+            <select name="ev_house_system" id="id_ev_house_system">
+                <option value="P">Placidus</option>
+                <option value="R">Regiomontanus</option>
+                <option value="E">Equal</option>
+                <option value="Without houses">Without houses</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="id_transit_date">Enter transit date:</label>
+                <div class="django-flatpickr">
+                  <input type="text" name="transit_date" required id="id_transit_date"
+                         data-fpconfig="{&quot;picker_type&quot;: &quot;DATETIME&quot;, &quot;options&quot;: {&quot;altInput&quot;: true, &quot;dateFormat&quot;: &quot;Y-m-d H:i:S&quot;, &quot;enableTime&quot;: true, &quot;wrap&quot;: true}}" data-debug="">
+                </div>
+        </div>
+
+        <div>
+            <label for="id_transit_city">Enter transit city:</label>
+            <input type="text" name="transit_city" value="Ufa" required id="id_transit_city">
+
+        </div>
+
+        <div>
+            <label for="id_transit_country">Enter transit country:</label>
+            <input type="text" name="transit_country" value="Russia" required id="id_transit_country">
+        </div>
+
+        <div>
+            <label for="id_tr_mode">Chose transit chart mode:</label>
+            <select name="tr_mode" id="id_tr_mode">
+                <option value="65536">Sidereal</option>
+                <option value="0">Tropical</option>
+                <option value="8">Heliocentric</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="id_tr_house_system">Chose transit house system:</label>
+                <select name="tr_house_system" id="id_tr_house_system">
+                  <option value="P">Placidus</option>
+                  <option value="R">Regiomontanus</option>
+                  <option value="E">Equal</option>
+                  <option value="Without houses">Without houses</option>
+                </select>
+        </div>
+             <button class="show-chart" type="submit"> Show transits </button>
+        </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--        {% include 'includes/transit_form.html' %}-->
     </div>
-
-
 </div>
 
 

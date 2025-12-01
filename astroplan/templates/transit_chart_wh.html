@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %} Transit Chart! {% endblock %}
+{% block title %} Transit chart {% endblock %}
 
 {% block navigation %}
 
@@ -63,37 +63,29 @@
               <p class="form-info-data-title">Event date: {{ event_date }} </p>
                        <p class="form-info-data-title"> Event city: {{ event_city }}, {{ lng }} {{ lat }} </p>
                        <p class="form-info-data-title"> Event country: {{ event_country }} </p>
-                       <p class="form-info-data-title"> HS: {{ ev_hs_name }} </p>
-
           </div>
                     <div class="transit-info">
                         <p class="form-info-data-title"> Transit date: {{ tr_date }} </p>
                        <p class="form-info-data-title"> Transit city: {{ tr_city }} </p>
                        <p class="form-info-data-title"> Transit country: {{ tr_country }} </p>
-                        <p class="form-info-data-title"> HS: {{ tr_hs_name }} </p>
                     </div>
       </div>
                 <img src="{% static 'plots/transit_chart.png' %}" alt="plot" id="tr-chart-plot">
   </div>
 
 <div class="table-cont">
-<div class="table-data">
-    {% include 'includes/planet_list.html' %}
+    <div class="table-data">
+        {% include 'includes/planet_list.html' %}
     </div>
-
-<div class="table-data">
-    {% include 'includes/house_cusps.html' %}
-</div>
 </div>
 
 <div class="table-cont">
-<div class="table-data">
-     {% include 'includes/transit_planets_position.html' %}
-</div>
     <div class="table-data">
-     {% include 'includes/transit_house_cusps.html' %}
+         {% include 'includes/transit_planets_position.html' %}
+    </div>
 </div>
-</div>
+
+
+
+
 {% endblock %}
-
-

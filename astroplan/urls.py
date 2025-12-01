@@ -3,9 +3,9 @@ from . import views
 
 
 urlpatterns = [
+
     path('show_td_chart/', views.show_td_chart, name='showed chart'),
     path('show_td_chart/show_by_date/', views.show_td_chart, name='show by date'),
-    path('chart_form/', views.chart_form, name='form on td chart'),
     path('transit_form/', views.build_transit_chart, name='transit form chart'),
     path('chart/<id>/', views.chart_detail),
     path('tr_chart/<id>/', views.tr_chart_detail),

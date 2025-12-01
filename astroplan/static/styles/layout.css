@@ -273,6 +273,10 @@ h1 {
     display: none;
  }
 
+table:empty {
+  display: none;
+}
+
 .table-data {
     margin-right: 7px;
     margin-left: 7px;
@@ -281,6 +285,10 @@ h1 {
     padding: 17px;
     display: block;
 
+}
+
+.db-dtl {
+    padding: 2px;
 }
 
 .sign-buttons {

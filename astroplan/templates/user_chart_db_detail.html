@@ -135,11 +135,19 @@
 </div>
 
 <div class="chart-fig">
-    <h3> {{ chart.chart_name }}</h3>
-      Event name : {{ chart.chart_name }}
-        Event date: {{ chart.chart_date }}
-        Event city : {{ chart.city }}
-        Event country : {{ chart.country }}
+
+    <div class="form-info">
+
+        <div class="event-info">
+
+                <p> Event name : {{ chart.chart_name }} </p>
+                 <p>Event date: {{ chart.chart_date }} </p>
+                 <p>Event city : {{ chart.city }} </p>
+                 <p>Event country : {{ chart.country }}</p>
+        </div>
+
+    </div>
+
     <img src="/media/{{ chart.chart_image }}/" alt="{{ chart.chart_image }}">
 
     <form method = "POST">

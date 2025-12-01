@@ -11,8 +11,6 @@ from colorfield.forms import ColorField
 
 import swisseph as swe
 
-
-
 SIDEREAL = swe.FLG_SIDEREAL
 TROPICAL = swe.FLG_TROPICAL
 HELIOCENTRIC = swe.FLG_HELCTR
@@ -79,16 +77,18 @@ class TransitForm(forms.Form):
     event_country = forms.CharField(label='Enter event country', initial='Russia')
 
     ev_mode = forms.ChoiceField(label='Chose event chart mode', choices=MODE_CHOICES, initial='Sidereal', widget=forms.Select)
-    ev_house_system = forms.ChoiceField(label='Chose event house system', choices=HOUSE_SYSTEM_CHOICES, initial='Regiomontanus')
+    ev_house_system = forms.ChoiceField(label='Chose event house system',
+                                        choices=HOUSE_SYSTEM_CHOICES, initial='Regiomontanus',
+                                        widget=forms.Select)
 
     transit_date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter transit date')
     transit_city = forms.CharField(label='Enter transit city', initial='Ufa')
     transit_country = forms.CharField(label='Enter transit country', initial='Russia')
 
-    tr_mode = forms.ChoiceField(label='Chose event chart mode', choices=MODE_CHOICES, initial='Sidereal',
+    tr_mode = forms.ChoiceField(label='Chose transit chart mode', choices=MODE_CHOICES, initial='Sidereal',
                                 widget=forms.Select)
-    tr_house_system = forms.ChoiceField(label='Chose event house system', choices=HOUSE_SYSTEM_CHOICES,
-                                        initial='Regiomontanus')
+    tr_house_system = forms.ChoiceField(label='Chose transit house system', choices=HOUSE_SYSTEM_CHOICES,
+                                        initial='Regiomontanus', widget=forms.Select)
 
     class Media:
         css = {

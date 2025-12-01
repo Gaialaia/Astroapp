@@ -11,8 +11,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
-from django.conf.global_settings import AUTH_USER_MODEL, DEFAULT_FROM_EMAIL
+from django.conf.global_settings import AUTH_USER_MODEL, DEFAULT_FROM_EMAIL, SESSION_COOKIE_SECURE, CSRF_COOKIE_SECURE, \
+    STATIC_ROOT
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zuk@##88d9ih(hv1pu%+-+shc^%&r4*i-9^7+pbdk93d4g7vh1'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['GaiaAlaya.pythonanywhere.com']
 
 
 # Application definition
@@ -46,8 +48,6 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'six',
     'colorfield',
-
-
 ]
 
 MIDDLEWARE = [
@@ -85,8 +85,13 @@ WSGI_APPLICATION = 'astroknow.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'GaiaAlaya$astro_db',
+        'USER': 'GaiaAlaya',
+        'PASSWORD': os.getenv(''),
+        'HOST': 'GaiaAlaya.mysql.pythonanywhere-services.com',
+        'OPTIONS': {'init_command': "SET NAMES'utf8mb4; SET sql_mode = 'STRICT_TRANS_TABLES'",
+                    'charset': 'utf8mb4'}
     }
 }
 
@@ -109,12 +114,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# DJANGO_FLATPICKR = {
-#
-#     "theme_name": "dark",
-# }
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
@@ -133,6 +132,9 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_DIR = '/astroplan/static/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -142,12 +144,18 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
 
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_FROM = 'ezheni86@yandex.ru'
 EMAIL_HOST_USER = 'ezheni86@yandex.ru'
-EMAIL_HOST_PASSWORD = 'rxdzwgbkzgnchdez'
+EMAIL_HOST_PASSWORD = 'rlcqubkoorkxmuee'
 EMAIL_PORT = 465
-EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL =
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
 PASSWORD_RESET_TIMEOUT = 14400

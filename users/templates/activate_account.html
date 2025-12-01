@@ -1,32 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Activate account</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
 
- <div class="main-container">
-
-     <div class="chart-data">
-
-         {% autoescape off %}
-            Hi {{ user.username }},
-
-            Please click on the link below to confirm your registration:
-
-            http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
-         {% endautoescape %}
-
-     </div>
+{% block title %} Activate account {% endblock %}
 
 
+{% block content-data %}
 
+    {% autoescape off %}
+    Hi {{ user.username }},
+    Please click on the link below to confirm your registration:
+    http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+    {% endautoescape %}
 
- </div>
-
-
-
-
-</body>
-</html>
+{% endblock %}

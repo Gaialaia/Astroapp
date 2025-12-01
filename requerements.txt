@@ -31,3 +31,5 @@ six==1.17.0
 sqlparse==0.5.3
 swisseph==0.0.0.dev1
 tzdata==2025.2
+mysqlclient
+python-dotenv

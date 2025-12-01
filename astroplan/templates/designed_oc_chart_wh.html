@@ -2,15 +2,15 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block title %} Chart for date {% endblock %}
+{% block title %} Designed one color chart {% endblock %}
 
 {% block navigation %}
 
-<div class="menu-choice" id="today-chart" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice" id="today-chart" >
     <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice">
     <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
 </div>
 
@@ -19,7 +19,7 @@
 </div>
 
 
-<div class="menu-choice">
+<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
     <div class="menu-choice-dd"> C <img id='clr-chart-icon' src="{% static 'images/z_in_clr.png' %}"> LOR
         <div class="menu-choice-dd-content">
             <a href="{% url 'color your chart' %}"> color chart </a>
@@ -51,26 +51,25 @@
 {% endblock %}
 
 
+
+
 {% block chart-data %}
-
-                 <div class="table-data">
-                        {% include 'includes/planet_list.html' %}
-                 </div>
-
-                 <div class="chart-fig">
-                     <h1 class="chart-title"> Planet chart for {{ date }} </h1>
-                       <p> {{ city }} </p>
-                         <p> {{ country }} </p>
-                         <p> {{ hs_name }}</p>
-                    <img src="{% static 'plots/chart_for_date.png' %}" alt="plot" id="chart-plot">
-                 </div>
-
-                <div class="table-data">
-                     {% include 'includes/house_cusps.html' %}
-                </div>
+ <div class="table-cont">
+     <div class="table-data">
+         {% include 'includes/planet_list.html' %}
+     </div>
+ </div>
 
 
-                <div class="table-data">
-                       {% include 'includes/aspects.html' %}
-                  </div>
- {% endblock %}
+ <div class ="chart-fig">
+     <h1> Planet chart for {{ date }}</h1>
+     <img src="{% static 'plots/one_clr_chart.png' %}" alt="plot" id="chart-plot">
+ </div>
+
+  <div class="table-data">
+      {% include 'includes/aspects.html' %}
+  </div>
+
+{% endblock %}
+
+

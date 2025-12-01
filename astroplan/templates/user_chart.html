@@ -58,7 +58,16 @@
             </div>
 
                  <div class="chart-fig" style="background-color: none;">
-                <h1> Planet chart for {{ date }}</h1>
+                           <h1> Planet chart for {{ date }}</h1>
+
+
+                     <div class="form-info">
+                         <p> City : {{ city }} </p>
+                         <p> Country: {{ country }} </p>
+                         <p> House system: {{ hs_name }}</p>
+                     </div>
+
+
                   <img src="{% static 'plots/user_chart.png' %}" alt="plot" id="chart-plot" style="background-color: none"  >
                         <div>
                             <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
