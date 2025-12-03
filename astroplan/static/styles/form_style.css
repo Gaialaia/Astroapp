@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Delius&display=swap');
+
+
+ * {
+  box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+
+}
+
+
+.chart-forms {
+    height: fit-content;
+    width: fit-content;
+    padding: 3px;
+    color: gold;
+    font-family: "Delius", cursive;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 17px;
+  }
+
+
+  #cfl-chart {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    overflow-x: scroll;
+    border: 1px solid aliceblue;
+
+
+
+  }
+
+  input {
+      width: fit-content;
+      padding: 12px 20px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 23px;
+      display: inline;
+
+  }
+
+.dp-input  {
+    width: fit-content;
+
+}
+
+.dp-input-size {
+    width: 17%;
+    justify-self: end;
+    maxlength: 2;
+
+
+}
+
+.one-clr-form-label-input-fl {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.one-clr-form-label-input {
+    margin: 20px;
+}
+
+.color-input {
+    width: fit-content;
+}
+
+.form-control {
+    display: inline-block !important;
+}
+
+.colorfield_field {
+     width: fit-content !important;
+}
+
+
+  label {
+      margin-bottom: 5px;
+      font-weight: bold;
+      font-size: 23px;
+      display: inline;
+  }
+
+ .show-chart {
+      display: block;
+      appearance: none;
+      background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
+      border: 0;
+      border-radius: 6px;
+      box-shadow: rgba(45, 35, 66, .4) 0 2px 4px,rgba(45, 35, 66, .3) 0 7px 13px -3px,rgba(58, 65, 111, .5) 0 -3px 0 inset;
+      color: aliceblue;
+
+      height: 40px;
+      line-height: 1;
+      list-style: none;
+      overflow: hidden;
+      padding-left: 15px;
+      padding-right: 15px;
+      position: relative;
+      text-align: left;
+      font-variant-caps: all-petite-caps;
+      transition: box-shadow .15s,transform .15s;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      white-space: nowrap;
+      will-change: box-shadow,transform;
+      margin: 0 auto;
+
+}
+
+.show-chart:focus {
+  box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+}
+
+.show-chart:hover {
+  box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.show-chart:active {
+  box-shadow: #3c4fe0 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
+.form-button {
+      align-items: center;
+      border: 0;
+      border-radius: 6px;
+      color: aliceblue;
+      height: 40px;
+      justify-content: center;
+      line-height: 1;
+      overflow: hidden;
+      padding-left: 15px;
+      padding-right: 15px;
+      position: relative;
+      text-align: left;
+      font-variant-caps: all-petite-caps;
+      touch-action: manipulation;
+      align-self: center;
+      margin: 17px;
+      background-color: purple;
+      box-shadow: rgba(45, 35, 66, .4) 0 2px 4px,rgba(45, 35, 66, .3) 0 7px 13px -3px,rgba(58, 65, 111, .5) 0 -3px 0 inset;
+
+}
+
+
+.form-button:focus {
+  box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+}
+
+.form-button:hover {
+  box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.form-button:active {
+  box-shadow: #3c4fe0 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
+select {
+    width: fit-content%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: aliceblue;
+    font-size: 23px;
+    display: inline-block;
+}
+
+

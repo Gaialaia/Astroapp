@@ -1,0 +1,53 @@
+ <table id="planet-list" >
+                <caption> Planet position data </caption>
+                <thead>
+                  <tr>
+                        <th> Planet </th>
+                        <th> Degrees </th>
+                        <th> Sign </th>
+                  </tr>
+                </thead>
+                <tbody>
+                         {% for name, deg, sign in planet_data %}
+                    <tr> {% if name == 'Sun' %}
+
+                         <td class="tooltip">
+                             ☼  <span class="tooltiptext"> {{ name }} </span>
+                           </td>
+
+                        {% elif name == 'Moon' %}
+                             <td class="tooltip">
+                           ☾ <span class="tooltiptext"> {{ name }}  </span></td>
+                         {% elif name == 'Mercury' %}
+                             <td class="tooltip"> ☿
+                            <span class="tooltiptext">  {{ name }}  </span> </td>
+                         {% elif name == 'Venus' %}
+                             <td class="tooltip">  ♀
+                                 <span class="tooltiptext"> {{ name }}</span>  </td>
+                         {% elif name == 'Mars' %}
+                             <td class="tooltip"> ♂
+                                 <span class="tooltiptext"> {{ name }}  </span> </td>
+                         {% elif name == 'Jupiter' %}
+                             <td class="tooltip">
+                                ♃  <span class="tooltiptext"> {{ name }} </span> </td>
+                         {% elif name == 'Saturn' %}
+                             <td class="tooltip">
+                                 ♄  <span class="tooltiptext">  {{ name }}  </span>  </td>
+                         {% elif name == 'Uranus' %}
+                             <td class="tooltip">
+                                  ♅  <span class="tooltiptext">  {{ name }}  </span> </td>
+                         {% elif name == 'Neptune' %}
+                             <td class="tooltip">
+                                   ♆ <span class="tooltiptext"> {{ name }}</span></td>
+                         {% elif name == 'Pluto' %}
+                             <td class="tooltip">
+                                  ♇  <span class="tooltiptext">{{ name }}</span></td>
+
+
+                        {% endif %}
+                            <td> {{ deg }}</td>
+                            <td style="font-size: xx-large"> {{ sign }}</td>
+                          {% endfor %}
+                    </tr>
+                </tbody>
+                            </table>

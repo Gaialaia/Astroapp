@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %} Today Chart {% endblock %}
+
+{% block navigation %}
+
+<div class="menu-choice" id="today-chart" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+    <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
+</div>
+
+<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+    <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
+</div>
+
+<div class="menu-choice">
+    <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
+</div>
+
+
+<div class="menu-choice">
+    <div class="menu-choice-dd"> C <img id='clr-chart-icon' src="{% static 'images/z_in_clr.png' %}"> LOR
+        <div class="menu-choice-dd-content">
+            <a href="{% url 'color your chart' %}"> color chart </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="menu-choice">
+     {% if user.is_authenticated %}
+    <div class="menu-choice-dd">
+        <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
+        <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
+    </div>
+        {% else %}
+        <div class="menu-choice-dd"> ENTER
+            <div class="menu-choice-dd-content">
+                <div>
+                     <a href="{% url 'login' %}"> LOG IN </a>
+                </div>
+                <div>
+                    <a href="{% url 'register' %}"> SIGN UP </a>
+                </div>
+
+            </div>
+        </div>
+         {% endif %}
+</div>
+
+
+{% endblock %}
+
+ <div>
+     {% include 'includes/messages.html' %}
+ </div>
+ {% block chart-data %}
+
+                 <div class="table-cont">
+
+                 <div class="table-data">
+                        {% include 'includes/planet_list.html' %}
+                        </div>
+                 </div>
+
+                <div class="table-data">
+                     {% include 'includes/house_cusps.html' %}
+                </div>
+
+                 <div class="chart-fig">
+                    <h1 class="chart-title"> Planet chart for {{ date }} </h1>
+                     <p> mode: sidereal </p>
+                     <p> ayanamsa: Lahiri </p>
+                     <p> house system: Regiomontanus </p>
+                    <img src="{% static 'plots/now_chart.png' %}" alt="plot" id="chart-plot" style="background-color: none"  >
+
+                 </div>
+
+                  <div class="table-data">
+                       {% include 'includes/aspects.html' %}
+                  </div>
+
+
+ {% endblock %}

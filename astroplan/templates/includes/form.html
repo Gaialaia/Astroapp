@@ -1,0 +1,8 @@
+{% load crispy_forms_tags %}
+
+<form class="chart-forms" target="_blank" method="post">
+    {{ chart_form.media }}
+    {% csrf_token %}
+    {{ chart_form | crispy }}
+    <button class="show-chart" type="submit" > Show chart </button>
+</form>
