@@ -62,7 +62,9 @@
                        <p> {{ city }} </p>
                          <p> {{ country }} </p>
                          <p> {{ hs_name }}</p>
-                    <img src="{% static 'plots/chart_for_date.png' %}" alt="plot" id="chart-plot">
+<!--                    <img src="{% static 'plots/chart_for_date.png' %}" alt="plot" id="chart-plot">-->
+                     <img src="data:image/png;base64,{{ graph }}" alt="chart_plot" id="chart-plot">
+
                  </div>
 
                 <div class="table-data">

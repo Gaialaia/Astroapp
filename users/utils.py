@@ -38,4 +38,4 @@ def remove_all_files_in_directory(directory_path):
             os.remove(file_path)
             print(f"Removed file: {file_path}")
 
-remove_all_files_in_directory('/home/gaia/PythonProject/astroapp/astroknow/media/chart_plots')
+# remove_all_files_in_directory('/home/gaia/PythonProject/astroapp/astroknow/media/chart_plots')

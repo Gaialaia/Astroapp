@@ -1,11 +1,15 @@
+import os, io, base64
+
 from django.contrib import messages
 
 from django.shortcuts import render, redirect
 
 from pycirclize import Circos
 import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.image as mpi
+
 
 import numpy as np
 
@@ -344,8 +348,13 @@ def show_td_chart(request):
                                        color='aliceblue',
                                        arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
+    chart_path = '/astro_app/astroknow/astroplan/static/plots/now_chart.png'
 
-    plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/now_chart.png')
+    directory = os.path.dirname(chart_path)
+    if not os.path.exists(directory):
+        os.makedirs(directory, exist_ok=True)
+
+    plt.savefig(chart_path)
 
 
     return render(request, 'main_astro.html',
@@ -640,7 +649,21 @@ def chart_for_any_date(request):
                                                 color='aliceblue',
                                                 arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-             plt.savefig('astroplan/static/plots/chart_for_date.png')
+             # chart_path = '/astro_app/astroknow/astroplan/static/plots/chart_for_date'
+             # directory = os.path.dirname(chart_path)
+             # if not os.path.exists(directory):
+             #     os.makedirs(directory, exist_ok=True)
+             # plt.savefig(chart_path)
+
+             buffer = io.BytesIO()
+             plt.savefig(buffer, format='png')
+             plt.close()
+             buffer.seek(0)
+             chart_png = buffer.getvalue()
+             graph = base64.b64encode(chart_png)
+             graph = graph.decode('utf-8')
+             buffer.close()
+
              swe.close()
 
              return render(request, 'show_by_date.html',
@@ -652,7 +675,8 @@ def chart_for_any_date(request):
                             'country': country,
                             'latitude': get_loc.latitude,
                             'longitude': get_loc.longitude,
-                            'mode_name': mode_name, 'hs_name': hs_name})
+                            'mode_name': mode_name, 'hs_name': hs_name,
+                            'graph': graph })
 
          elif house_system == 'Without houses':
 
@@ -823,8 +847,22 @@ def chart_for_any_date(request):
                                                 color='aliceblue',
                                                 arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-             plt.savefig('astroplan/static/plots/chart_for_date.png')
-             swe.close()
+             # chart_path = '/astro_app/astroknow/astroplan/static/plots/chart_for_date'
+             #
+             # directory = os.path.dirname(chart_path)
+             # if not os.path.exists(directory):
+             #     os.makedirs(directory, exist_ok=True)
+             # plt.savefig(chart_path)
+             # swe.close()
+
+             buffer = io.BytesIO()
+             plt.savefig(buffer, format='png')
+             plt.close()
+             buffer.seek(0)
+             chart_png = buffer.getvalue()
+             graph = base64.b64encode(chart_png)
+             graph = graph.decode('utf-8')
+             buffer.close()
 
              return render(request, 'show_by_date.html',
                            {'planet_data': set_signs(planet_names,
@@ -835,7 +873,8 @@ def chart_for_any_date(request):
                                                           'date': chart_dt, 'city': city,
                                                           'country': country, 'latitude': get_loc.latitude,
                                                           'longitude': get_loc.longitude,
-                            'mode_name': mode_name, 'hs_name': hs_name})
+                            'mode_name': mode_name, 'hs_name': hs_name,
+                            'graph': graph})
 
     return render(request, 'chart_for_any_date.html', {'chart_form':chart_form})
 
@@ -1256,7 +1295,13 @@ def build_transit_chart(request):
                                                 color='chartreuse',
                                                 arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-            plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/transit_chart.png')
+            tr_chart_path = '/astro_app/astroknow/astroplan/static/plots/transit_chart.png'
+            directory = os.path.dirname(tr_chart_path)
+
+            if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+
+            plt.savefig(tr_chart_path)
 
             return render(request, 'transit_chart_wh.html',
                           context={'planet_data': set_signs(planet_names, [p[4] for p in form_coords_value]),
@@ -1554,7 +1599,13 @@ def build_transit_chart(request):
                                                color='chartreuse',
                                                arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-            plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/transit_chart.png')
+            tr_chart_path = '/astro_app/astroknow/astroplan/static/plots/transit_chart.png'
+
+            directory = os.path.dirname(tr_chart_path)
+            if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+
+            plt.savefig(tr_chart_path)
 
             return render(request, 'transit_chart.html',
                           context={'planet_data': set_signs(planet_names, [p[4] for p in form_coords_value]),
@@ -1840,7 +1891,13 @@ def build_transit_chart(request):
                                                color='chartreuse',
                                                arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-            plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/transit_chart.png')
+            tr_chart_path = '/astro_app/astroknow/astroplan/static/plots/transit_chart.png'
+
+            directory = os.path.dirname(tr_chart_path)
+            if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+
+            plt.savefig(tr_chart_path)
 
             return render(request, 'transit_chart_tr_hs.html',
                           context={'planet_data': set_signs(planet_names, [p[4] for p in form_coords_value]),
@@ -2128,7 +2185,13 @@ def build_transit_chart(request):
                                                 color='chartreuse',
                                                 arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-            plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/transit_chart.png')
+            tr_chart_path = '/astro_app/astroknow/astroplan/static/plots/transit_chart.png'
+
+            directory = os.path.dirname(tr_chart_path)
+            if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+
+            plt.savefig(tr_chart_path)
 
             return render(request, 'transit_chart_ev_hs.html',
                           context={'planet_data': set_signs(planet_names, [p[4] for p in form_coords_value]),
@@ -2463,7 +2526,13 @@ def one_color_chart(request):
                                                color=zf_symbol_color,
                                                arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-            plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/one_clr_chart.png')
+            color_chart_path = '/astro_app/astroknow/astroplan/static/plots/one_clr_chart.png'
+
+            directory = os.path.dirname(color_chart_path)
+            if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+
+            plt.savefig(color_chart_path)
 
             return render(request, 'designed_oc_chart.html',  context={'planet_data': set_signs(planet_names, [p[5] for p in coords_value]),
                                    'house_data': set_signs(house_names, list(houses[0])),
@@ -2644,7 +2713,14 @@ def one_color_chart(request):
                                                color=zf_symbol_color,
                                                arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-            plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/one_clr_chart.png')
+            color_chart_path = '/astro_app/astroknow/astroplan/static/plots/one_clr_chart.png'
+
+            directory = os.path.dirname(color_chart_path)
+
+            if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+
+            plt.savefig(color_chart_path)
 
             return render(request, 'designed_oc_chart_wh.html',
                           context={'planet_data': set_signs(planet_names, [p[5] for p in coords_value]),

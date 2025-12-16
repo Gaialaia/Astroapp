@@ -1,3 +1,5 @@
+import os
+
 import matplotlib.pyplot as plt
 import matplotlib.image as mpi
 from pycirclize import Circos
@@ -296,7 +298,13 @@ def build_plot(timestamp:dt, filename):
     swe.close()
     plt.grid()
 
-    plt.savefig(f'/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/{filename}.png')
+    chart_path = f'/astro_app/astroknow/astroplan/static/plots/{filename}.png'
+    directory = os.path.dirname(chart_path)
+
+    if not os.path.exists(directory):
+        os.makedirs(directory, exist_ok=True)
+
+    plt.savefig(chart_path)
 
 
 
@@ -330,6 +338,13 @@ def draw_zodiac_one_color(face_color, edge_color, text_color, tick_clr, deg_clr,
 
     fig = circos.plotfig()
     fig.patch.set_alpha(0.0)
+    chart_path = '/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/images/zr_one_clr.png'
+    directory = os.path.dirname(chart_path)
+
+    if not os.path.exists(directory):
+        os.makedirs(directory, exist_ok=True)
+
+    plt.savefig(chart_path)
     fig.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/images/zr_one_clr.png',
                     pad_inches=0.0)
 

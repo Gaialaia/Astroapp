@@ -10,8 +10,6 @@ class CustomUser(AbstractUser):
     description = models.TextField(max_length=600, default='', blank=True)
     birthdate = models.DateTimeField(default=timezone.now)
 
-
-
     def __str__(self):
         return f'{self.username}'
 

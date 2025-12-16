@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+import sys
 
 from django.conf.global_settings import AUTH_USER_MODEL, DEFAULT_FROM_EMAIL, SESSION_COOKIE_SECURE, CSRF_COOKIE_SECURE, \
     STATIC_ROOT
@@ -19,21 +20,23 @@ from django.conf.global_settings import AUTH_USER_MODEL, DEFAULT_FROM_EMAIL, SES
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+# SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'django-insecure-zuk@##88d9ih(hv1pu%+-+shc^%&r4*i-9^7+pbdk93d4g7vh1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['GaiaAlaya.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', 'localhost']
 
-
-# Application definition
-
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8080',
+    # If you have other origins (e.g., in a production environment), add them here too:
+    # 'https://your-production-domain.com',
+]
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -79,22 +82,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'astroknow.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'GaiaAlaya$astro_db',
-        'USER': 'GaiaAlaya',
-        'PASSWORD': os.getenv('02Febeightsix'),
-        'HOST': 'GaiaAlaya.mysql.pythonanywhere-services.com',
-        'OPTIONS': {'init_command': "SET NAMES'utf8mb4; SET sql_mode = 'STRICT_TRANS_TABLES'",
-                    'charset': 'utf8mb4'}
+ 'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME', 'chart_db'),
+        'USER': os.environ.get('DB_USER', 'Gaia'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'giant'
+                                   ),
+        'HOST': os.environ.get('DB_HOST', 'db'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -114,6 +115,25 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout,  # Explicitly force to standard output
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
@@ -128,12 +148,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-STATIC_ROOT = BASE_DIR / 'static'
-STATICFILES_DIR = '/astroplan/static/'
+STATIC_ROOT = '/var/www/staticfiles'
+STATICFILES_DIRS = ['astroplan/static/']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -144,8 +164,9 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# Change this to False when running locally with HTTP !!! i.e on localhost
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'

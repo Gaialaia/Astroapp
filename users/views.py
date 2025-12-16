@@ -559,8 +559,14 @@ def user_forms(request):
                                                color='aliceblue',
                                                arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
+            user_chart_path = '/astro_app/astroknow/astroplan/static/plots/user_chart.png'
 
-            plt.savefig('astroplan/static/plots/user_chart.png')
+            directory = os.path.dirname(user_chart_path)
+
+            if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+
+            plt.savefig(user_chart_path)
 
             img_path = 'astroplan/media/astroplan/images/'
             fn_path = os.path.join(img_path, f'{d}.png')
@@ -746,8 +752,14 @@ def user_forms(request):
                                                color='aliceblue',
                                                arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
+            user_chart_path = '/astro_app/astroknow/astroplan/static/plots/user_chart.png'
+            directory = os.path.dirname(user_chart_path)
 
-            plt.savefig('astroplan/static/plots/user_chart.png')
+            if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+
+            plt.savefig(user_chart_path)
+
             img_path = 'astroplan/media/astroplan/images/'
             fn_path = os.path.join(img_path, f'{d}.png')
             plt.savefig(fn_path)
@@ -1149,7 +1161,13 @@ def user_forms(request):
                                                color='aliceblue',
                                                arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-            plt.savefig('astroplan/static/plots/color_user_chart.png')
+            color_user_chart_path = '/astro_app/astroknow/astroplan/static/plots/color_user_chart.png'
+            directory = os.path.dirname(color_user_chart_path)
+
+            if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+
+            plt.savefig(color_user_chart_path)
 
             img_path = 'astroplan/media/astroplan/images/'
             fn_path = os.path.join(img_path, f'{color_chart.drawer}_{d}.png')
@@ -1335,7 +1353,17 @@ def user_forms(request):
                                                color='aliceblue',
                                                arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-            plt.savefig('astroplan/static/plots/color_user_chart.png')
+
+
+
+
+            color_user_chart_path = '/astro_app/astroknow/astroplan/static/plots/color_user_chart.png'
+            directory = os.path.dirname(color_user_chart_path)
+
+            if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+
+            plt.savefig(color_user_chart_path)
 
             img_path = 'astroplan/media/astroplan/images/'
             fn_path = os.path.join(img_path, f'{color_chart.drawer}_{d}.png')
@@ -1668,7 +1696,14 @@ def user_forms(request):
                                         color='chartreuse',
                                         arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-            plt.savefig('astroplan/static/plots/tr_user_chart.png')
+
+            tr_user_chart_path = '/astro_app/astroknow/astroplan/static/plots/tr_user_chart.png'
+            directory = os.path.dirname(tr_user_chart_path)
+
+            if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+
+            plt.savefig(tr_user_chart_path)
 
             img_path = 'astroplan/media/astroplan/images/'
             fn_path = os.path.join(img_path, f'{ev_d}.png')
@@ -1923,7 +1958,13 @@ def user_forms(request):
                                         color='chartreuse',
                                         arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-            plt.savefig('astroplan/static/plots/tr_user_chart.png')
+            tr_user_chart_path = '/astro_app/astroknow/astroplan/static/plots/tr_user_chart.png'
+            directory = os.path.dirname(tr_user_chart_path)
+
+            if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+
+            plt.savefig(tr_user_chart_path)
 
             img_path = 'astroplan/media/astroplan/images/'
             fn_path = os.path.join(img_path, f'{ev_d}.png')
@@ -2110,6 +2151,12 @@ def user_forms(request):
                                         color='chartreuse',
                                         arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
+            tr_user_chart_path = '/astro_app/astroknow/astroplan/static/plots/tr_user_chart.png'
+            directory = os.path.dirname(tr_user_chart_path)
+
+            if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+
             plt.savefig('astroplan/static/plots/tr_user_chart.png')
 
             img_path = 'astroplan/media/astroplan/images/'
@@ -2294,7 +2341,13 @@ def user_forms(request):
                                         color='chartreuse',
                                         arrowprops=dict(facecolor='purple', arrowstyle='-', edgecolor='purple'))
 
-            plt.savefig('astroplan/static/plots/tr_user_chart.png')
+            tr_user_chart_path = '/astro_app/astroknow/astroplan/static/plots/tr_user_chart.png'
+            directory = os.path.dirname(tr_user_chart_path)
+
+            if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+
+            plt.savefig(tr_user_chart_path)
 
             img_path = 'astroplan/media/astroplan/images/'
             fn_path = os.path.join(img_path, f'{ev_d}.png')
