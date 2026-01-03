@@ -338,15 +338,15 @@ def draw_zodiac_one_color(face_color, edge_color, text_color, tick_clr, deg_clr,
 
     fig = circos.plotfig()
     fig.patch.set_alpha(0.0)
-    chart_path = '/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/images/zr_one_clr.png'
+
+    chart_path = '/astro_app/astroknow/astroplan/media/plots/color_chart'
     directory = os.path.dirname(chart_path)
 
     if not os.path.exists(directory):
         os.makedirs(directory, exist_ok=True)
 
     plt.savefig(chart_path)
-    fig.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/images/zr_one_clr.png',
-                    pad_inches=0.0)
+
 
 
 

@@ -20,80 +20,136 @@
 </div>
 
 
-<div class="menu-choice">
-    <div class="menu-choice-dd"> C <img id='clr-chart-icon' src="{% static 'images/z_in_clr.png' %}"> LOR
+<div class="menu-choice menu-choice-dd">
+    <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
         <div class="menu-choice-dd-content">
-            <a href="{% url 'color your chart' %}"> color chart </a>
+            <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
         </div>
-    </div>
 </div>
 
-
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice menu-choice-dd opened-tab">
      {% if user.is_authenticated %}
-    <div class="menu-choice-dd">
+    <div>
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
         <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
     </div>
         {% else %}
-        <div class="menu-choice-dd"> ENTER
+        <div> GET INSIDE </div>
             <div class="menu-choice-dd-content">
-                <div>
-                     <a href="{% url 'login' %}"> LOG IN </a>
-                </div>
-                <div>
-                    <a href="{% url 'register' %}"> SIGN UP </a>
-                </div>
+                <div class="menu-choice-dd-content-links auth-bt">
+                    <div>
+                        <a href="{% url 'login' %}"> LOG IN </a>
+                    </div>
+                     <div>
+                          <a href="{% url 'register' %}"> SIGN UP </a>
+                    </div>
 
+                </div>
             </div>
-        </div>
+
          {% endif %}
+
 </div>
 {% endblock %}
 
 
 {% block content-data %}
-
-{% if user.is_authenticated %}
-Welcome,  {{ user.username }}
-{% else %}
-You have not logged in
-<a href="http://127.0.0.1:8000/login/"> Log in </a>
-{% endif %}
-
-
-<div>
-    <a href="{% url 'ul chart forms' %}"> Get and save chart</a>
-</div>
-     <a href="{% url 'user chart lists' %}"> Your saved charts </a>
-
-<div>
-
-
-</div>
-
-
-<div class="user-info">
-
-         <img src="{{ user.make_avatar }}" class="avatar">
-        <p>{{ form.instance.first_name }} {{ form.instance.last_name }}
-               </br> {{ form.instance.birthdate }}
-            `    </br>  {{ form.instance.email }}
-                 </br> {{ form.instance.description }}</p>
-         <button class="form-button" onclick="openForm()"> Edit Info </button>
-        <div class="chart-form form-popup" id="edit-descr">
-            <form class="chart-forms" method="post">
-                        {{ form.media }}
-                        {% csrf_token %}
-                        {{ form | crispy }}
-                <button class="show-chart" type="submit"> Update </button>
-                <button class="show-chart" type="button" onclick="closeForm()"> Close </button>
-            </form>
+<div class="ul-container">
+    <div class="user-welcome-div">
+    {% if user.is_authenticated %}
+        <div class="welcome-text">
+        Welcome,  {{ user.username }}
         </div>
+
+        <div class="text-before-fl">
+            here you can get & save charts:
+        </div>
+
+        <div class="ul-link-div">
+                <div class="ul-links">
+                       <a href="{% url 'ad user chart' %}"> For any date </a>
+                </div>
+                <div class="ul-links">
+                      <a href="{% url 'user tc f' %}"> Transit chart</a>
+                </div>
+            <div class="ul-links">
+                 <a href="{% url 'user c ch f' %}"> Color chart</a>
+            </div>
+            <div class="ul-links">
+                 <a href="{% url 'user chart lists' %}"> Your saved charts </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="user-info">
+             <img src="{{ user.make_avatar }}" class="avatar">
+
+            <div class="under-avatar-section">
+            <p>{{ form.instance.first_name }} {{ form.instance.last_name }}
+                   </br> {{ form.instance.birthdate }}
+                `    </br>  {{ form.instance.email }}
+                     </br> {{ form.instance.description }}</p>
+            </div>
+             <button class="show-chart" onclick="openForm()"> Edit Info </button>
+            <div class="chart-form form-popup" id="edit-descr">
+                <form class="chart-forms" method="post">
+                            {{ form.media }}
+                            {% csrf_token %}
+<!--                            {{ form | crispy }}-->
+                    <div class="form-row">
+                        <label for="id_first_name">First name:</label>
+                        <input type="text" name="first_name" maxlength="150" id="id_first_name">
+                    </div>
+
+                    <div class="form-row">
+                         <label for="id_last_name">Last name:</label>
+                         <input type="text" name="last_name" maxlength="150" id="id_last_name">
+                    </div>
+
+                    <div class="form-row">
+                           <label for="id_email">Email:</label>
+                            <input type="email" name="email" maxlength="320" required id="id_email">
+                    </div>
+
+                    <div class="form-row">
+                          <label for="id_description">Description:</label>
+                        <textarea name="description" cols="40" rows="10" maxlength="600" id="id_description">
+                        </textarea>
+                    </div>
+
+                    <div class="form-row">
+                          <label for="id_birthdate">Birthdate:</label>
+                        <div class="django-flatpickr">
+
+                            <input type="text" name="birthdate" value="2025-12-24 14:53:49" required id="id_birthdate" data-fpconfig="{&quot;picker_type&quot;: &quot;DATETIME&quot;, &quot;options&quot;: {&quot;altInput&quot;: true, &quot;dateFormat&quot;: &quot;Y-m-d H:i:S&quot;, &quot;enableTime&quot;: true, &quot;wrap&quot;: true}}" data-debug="">
+                            <input type="hidden" name="initial-birthdate" value="2025-12-24 14:53:49" id="initial-id_birthdate">
+                        </div>
+                    </div>
+
+                    <div class="user-info-uf-bt">
+                        <button class="show-chart" type="submit"> Update </button>
+                        <button class="show-chart" type="button" onclick="closeForm()"> Close </button>
+                    </div>
+
+
+                </form>
+            </div>
+    </div>
+
+
+{% else %}
+    <div class="not-logged-in-wr">
+        <div class="welcome-login">
+            You have not logged in !
+        </div>
+
+        <div class="welcome-login login">
+            <a href="http://127.0.0.1:8000/login/"> Get logged in </a>
+        </div>
+    </div>
+    {% endif %}
+
 </div>
-
-
-
-
 <script src="/static/scripts/ed_form_pp.js" async> </script>
 {% endblock %}

@@ -21,12 +21,11 @@
 </div>
 
 
-<div class="menu-choice">
-    <div class="menu-choice-dd"> C <img id='clr-chart-icon' src="{% static 'images/z_in_clr.png' %}"> LOR
+<div class="menu-choice menu-choice-dd">
+    <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
         <div class="menu-choice-dd-content">
-            <a href="{% url 'color your chart' %}"> color chart </a>
+            <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
         </div>
-    </div>
 </div>
 
 
@@ -55,6 +54,8 @@
 
 
 {% block chart-data %}
+
+
 
 <div class="table-data">
     <table>
@@ -156,6 +157,9 @@
     </form>
     <a href="{% url 'user lounge' user.username %}" > To lounge </a>
     </br><a href="{% url 'user chart lists' %}" > To lists </a>
+     <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a>
+    <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
+    <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
 </div>
 
 <div class="table-data">

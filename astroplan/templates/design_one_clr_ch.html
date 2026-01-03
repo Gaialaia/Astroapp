@@ -19,33 +19,36 @@
 </div>
 
 
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
-    <div class="menu-choice-dd"> C <img id='clr-chart-icon' src="{% static 'images/z_in_clr.png' %}"> LOR
+<div class="menu-choice menu-choice-dd opened-tab">
+    <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
         <div class="menu-choice-dd-content">
-            <a href="{% url 'color your chart' %}"> color chart </a>
+            <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
         </div>
-    </div>
 </div>
 
 
-<div class="menu-choice">
+<div class="menu-choice menu-choice-dd">
      {% if user.is_authenticated %}
-    <div class="menu-choice-dd">
+    <div>
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
         <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
     </div>
         {% else %}
-        <div class="menu-choice-dd"> ENTER
+        <div> GET INSIDE </div>
             <div class="menu-choice-dd-content">
-                <div>
-                     <a href="{% url 'login' %}"> LOG IN </a>
-                </div>
-                <div>
-                    <a href="{% url 'register' %}"> SIGN UP </a>
+                <div class="menu-choice-dd-content-links auth-bt">
+                    <div>
+                        <a href="{% url 'login' %}"> LOG IN </a>
+                    </div>
+                     <div>
+                          <a href="{% url 'register' %}"> SIGN UP </a>
+                    </div>
+
                 </div>
 
+
             </div>
-        </div>
+
          {% endif %}
 </div>
 
@@ -54,31 +57,33 @@
 
 {% block content-data %}
 
-<div class="one-clr-div">
-    <form class="chart-forms" id="one-clr-cf" target="_blank" method="post">
+<div class="one-clr-div" >
+      <div class="instruction-text"> <h3>To get planet chart for a certain date, enter the following data:</h3></div>
+    <form class="chart-forms" id="" target="_blank" method="post" >
         {{ z_form.media }}
         {% csrf_token %}
+
         <div class="one-clr-cd">
             <h3 class="one-clr-form-title"> Date & place </h3>
-            <div class="one-clr-form-label-input" >
-                 <label for="chart-date" class="clr-form-labels">Enter chart date:</label>
+            <div class="form-row" >
+                 <label for="chart-date" class="clr-form-labels">chart date:</label>
                 <div class="django-flatpickr">
                             <input type="text" name="oc_chart_date" value="2025-10-17 12:31:50"
                              class="form-control dp-input" id="chart-date" required data-fpconfig="{&quot;picker_type&quot;: &quot;DATETIME&quot;, &quot;options&quot;: {&quot;altInput&quot;: true, &quot;dateFormat&quot;: &quot;Y-m-d H:i:S&quot;, &quot;enableTime&quot;: true, &quot;wrap&quot;: true}}" data-debug="">
                 </div>
             </div>
 
-            <div class="one-clr-form-label-input">
-                <label for="chart-city" class="clr-form-labels" >Enter city:</label>
+            <div class="form-row">
+                <label for="chart-city" class="clr-form-labels" > city:</label>
                 <input type="text" name="oc_chart_city" value="Ufa" class="form-control dp-input" placeholder="city" id="chart-city" required>
             </div>
-            <div class="one-clr-form-label-input">
-                <label for="chart-country" class="clr-form-labels">Enter country:</label>
+            <div class="form-row">
+                <label for="chart-country" class="clr-form-labels"> country:</label>
                 <input type="text" name="oc_chart_country" value="Russia" class="form-control dp-input" id="chart-country" required>
             </div>
 
-            <div>
-                <label for="id_one_clr_zr_chart_mode" class="clr-form-labels"> Enter chart mode</label>
+            <div class="form-row">
+                <label for="id_one_clr_zr_chart_mode" class="clr-form-labels">  chart mode</label>
                 <select name="one_clr_zr_chart_mode" id="id_one_clr_zr_chart_mode">
                       <option value="65536">Sidereal</option>
                       <option value="0">Tropical</option>
@@ -86,7 +91,7 @@
                 </select>
             </div>
 
-            <div>
+            <div class="form-row">
                 <label for="id_one_clr_zr_chart_hs" class="clr-form-labels"> Chose event house system: </label>
                 <select name="one_clr_zr_chart_hs" id="id_one_clr_zr_chart_hs">
                      <option value="P">Placidus</option>
@@ -96,10 +101,11 @@
                 </select>
             </div>
 
-            <div class="one-clr-chart-clrs">
+            <div class="one-clr-chart-clrs" >
                 <h3 class="one-clr-form-title"> Colors </h3>
-                <div class="one-clr-form-label-input">
-                    <label for="face-color" class="clr-form-labels">Enter face color:</label>
+                <div class="form-row">
+                    <label for="face-color" class="clr-form-labels tooltip"> face color:
+                    <img src="{% static 'images/instruction_images/face_color.png'%}" class="tooltiptext"></label>
                     <input type="text" id="face-color" class="colorfield_field coloris face-color form-control" name="face_color"
                      value="#300c63"
                      placeholder="#300c63"
@@ -111,8 +117,9 @@
                     </script>
                 </div>
 
-                <div class="one-clr-form-label-input">
-                    <label for="edge-color" class="clr-form-labels">Enter edge color:</label>
+                <div class="form-row">
+                    <label for="edge-color" class="clr-form-labels clr-form-labels tooltip"> edge color:
+                     <img src="{% static 'images/instruction_images/edge_color.png'%}" class="tooltiptext"></label>
                     <input type="text" id="edge-color" class="colorfield_field coloris edge-color form-control"
                          name="edge_color" value="#3dffc8" placeholder="#3dffc8" data-coloris=""
                          data-coloris-options-json-script-id="coloris-edge-color" required />
@@ -121,8 +128,8 @@
                     </script>
                 </div>
 
-                <div class="one-clr-form-label-input">
-                     <label for="text-color" class="clr-form-labels">Enter zodiac symbol color:</label>
+                <div class="form-row">
+                     <label for="text-color" class="clr-form-labels"> zodiac symbol color:</label>
                      <input type="text" id="text-color"  class="colorfield_field coloris text-color form-control"
                             name="text_color" value="#3dffc8" placeholder="#3dffc8" data-coloris="" data-coloris-options-json-script-id="coloris-text-color" required />
                      <script id="coloris-text-color" type="application/json">
@@ -131,8 +138,9 @@
                 </div>
 
 
-                <div class="one-clr-form-label-input">
-                    <label for="tick-color" class="clr-form-labels"> Enter tick color: </label>
+                <div class="form-row">
+                    <label for="tick-color" class="clr-form-labels tooltip">  degree track color:
+                        <img src="{% static 'images/instruction_images/deg_track_clr.png'%}" class="tooltiptext"></label>
                     <input type="text" id="tick-color" class="colorfield_field coloris tick-color form-control"
                            name="tick_color" value="#63ffd3" placeholder="#63ffd3" data-coloris="" data-coloris-options-json-script-id="coloris-tick-color" required/>
                     <script id="coloris-tick-color" type="application/json">
@@ -140,8 +148,8 @@
                     </script>
                 </div>
 
-                <div class="one-clr-form-label-input">
-                    <label for="deg-color" class="clr-form-labels"> Enter degree tick color </label>
+                <div class="form-row">
+                    <label for="deg-color" class="clr-form-labels ">  degree tick color </label>
                      <input type="text"
                          id="deg-color"
                          class="colorfield_field coloris deg-color form-control"
@@ -158,8 +166,8 @@
                     </script>
                 </div>
 
-                <div class="one-clr-form-label-input">
-                    <label class="marker-color clr-form-labels">Enter planet symbol marker color:</label>
+                <div class="form-row">
+                    <label class="marker-color clr-form-labels"> planet symbol marker color:</label>
                        <input type="text"
                          id="marker-color"
                          class="colorfield_field coloris marker-color form-control"
@@ -173,8 +181,8 @@
                     <script  id="coloris-marker-color" type="application/json">{"format": "hex", "required": true, "clearButton": false, "alpha": false, "forceAlpha": false, "swatches": [], "swatchesOnly": false}</script>
                 </div>
 
-                <div class="one-clr-form-label-input">
-                    <label for="symbol-color" class="clr-form-labels">Enter planet symbol color:</label>
+                <div class="form-row">
+                    <label for="symbol-color" class="clr-form-labels"> planet symbol color:</label>
                     <input type="text"
                          id="symbol-color"
                          class="colorfield_field coloris symbol-color form-control"
@@ -187,8 +195,9 @@
                     <script id="coloris-symbol-color" type="application/json">{"format": "hex", "required": true, "clearButton": false, "alpha": false, "forceAlpha": false, "swatches": [], "swatchesOnly": false}</script>
                 </div>
 
-                <div class="one-clr-form-label-input">
-                     <label for="ha-color" class="clr-form-labels">Enter house ax color:</label>
+                <div class="form-row">
+                     <label for="ha-color" class="clr-form-labels tooltip"> house axe color:
+                       <img src="{% static 'images/instruction_images/ha_color.png'%}" class="tooltiptext"></label>
                      <input type="text"
                      id="ha-color"
                      class="colorfield_field coloris ha-color form-control"
@@ -203,8 +212,8 @@
                 </div>
 
 
-                <div class="one-clr-form-label-input">
-                    <label for="hnum-color" class="clr-form-labels">Enter house number color:</label>
+                <div class="form-row">
+                    <label for="hnum-color" class="clr-form-labels"> house number color:</label>
                     <input type="text"
                          id="hnum-color"
                          class="colorfield_field coloris hnum-color form-control"
@@ -218,8 +227,9 @@
                     <script id="coloris-hnum-color" type="application/json">{"format": "hex", "required": true, "clearButton": false, "alpha": false, "forceAlpha": false, "swatches": [], "swatchesOnly": false}</script>
                 </div>
 
-                <div class="one-clr-form-label-input">
-                       <label for="htr-color" class="clr-form-labels">Enter house track color:</label>
+                <div class="form-row">
+                       <label for="htr-color" class="clr-form-labels tooltip"> house track color:
+                       <img src="{% static 'images/instruction_images/ht_clr.png'%}" class="tooltiptext"></label>
                         <input type="text"
                                  id="htr-color"
                                  class="colorfield_field coloris htr-color form-control"
@@ -235,47 +245,46 @@
             </div>
         </div>
 
-        <div class="one-clr-chart-fs">
+        <div class="one-clr-chart-fs" >
             <h3 class="one-clr-form-title"> Font and lines </h3>
 
-            <div class="one-clr-form-label-input-fl">
-                <label for="id_marker_size" class="clr-form-labels">Enter symbol size:</label>
+            <div class="form-row">
+                <label for="id_marker_size" class="clr-form-labels"> symbol size:</label>
                 <input type="number" name="marker_size" value="25" class="dp-input-size" required id="id_marker_size">
             </div>
 
-            <div class="one-clr-form-label-input-fl">
-                 <label for="id_symbol_size" class="clr-form-labels">Enter planet marker size:</label>
+            <div class="form-row">
+                 <label for="id_symbol_size" class="clr-form-labels"> planet marker size:</label>
                  <input type="number" name="symbol_size" value="15" class="dp-input-size" required id="id_symbol_size">
             </div>
 
-            <div class="one-clr-form-label-input-fl">
-                <label for="id_font_size" class="clr-form-labels">Enter zodiac symbol font size:</label>
+            <div class="form-row">
+                <label for="id_font_size" class="clr-form-labels"> zodiac symbol font size:</label>
                 <input type="number" name="font_size" value="50" class="dp-input-size" required id="id_font_size">
             </div>
 
-            <div class="one-clr-form-label-input-fl">
-                 <label for="id_line_width" class="clr-form-labels">Enter axes line width:</label>
+            <div class="form-row">
+                 <label for="id_line_width" class="clr-form-labels"> axes line width:</label>
                  <input type="number" name="line_width" value="3" max="7" class="dp-input-size" required id="id_line_width">
             </div>
 
-            <div class="one-clr-form-label-input-fl">
-                 <label for="id_house_ax_lw" class="clr-form-labels">Enter house ax lw:</label>
+            <div class="form-row">
+                 <label for="id_house_ax_lw" class="clr-form-labels"> house axe line width:</label>
                  <input type="number" name="house_ax_lw" value="3" class="dp-input-size" required id="id_house_ax_lw">
             </div>
 
-            <div class="one-clr-form-label-input-fl">
-                 <label for="id_house_num_fs" class="clr-form-labels">Enter house number font size:</label>
+            <div class="form-row">
+                 <label for="id_house_num_fs" class="clr-form-labels"> house number font size:</label>
                 <input type="number" name="house_num_fs" value="27" class="dp-input-size" required id="id_house_num_fs">
             </div>
 
-            <div class="one-clr-form-label-input-fl">
-                <label for="id_house_track_lw" class="clr-form-labels">Enter ht lw:</label>
+            <div class="form-row">
+                <label for="id_house_track_lw" class="clr-form-labels"> house track line width:</label>
                 <input type="number" name="house_track_lw" value="3" class="dp-input-size" required id="id_house_track_lw">
             </div>
-
-            <button class="show-chart" type="submit"> DRAW </button>
-
         </div>
+
+         <button class="show-chart" type="submit"> DRAW CHART </button>
 
     </form>
 

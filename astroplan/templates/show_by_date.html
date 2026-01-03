@@ -6,11 +6,11 @@
 
 {% block navigation %}
 
-<div class="menu-choice" id="today-chart" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice" id="today-chart">
     <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice opened-tab">
     <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
 </div>
 
@@ -19,33 +19,37 @@
 </div>
 
 
-<div class="menu-choice">
-    <div class="menu-choice-dd"> C <img id='clr-chart-icon' src="{% static 'images/z_in_clr.png' %}"> LOR
+<div class="menu-choice menu-choice-dd">
+    <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
         <div class="menu-choice-dd-content">
-            <a href="{% url 'color your chart' %}"> color chart </a>
+            <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
         </div>
-    </div>
 </div>
 
 
-<div class="menu-choice">
+
+<div class="menu-choice menu-choice-dd">
      {% if user.is_authenticated %}
-    <div class="menu-choice-dd">
+    <div>
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
         <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
     </div>
         {% else %}
-        <div class="menu-choice-dd"> ENTER
+        <div> GET INSIDE </div>
             <div class="menu-choice-dd-content">
-                <div>
-                     <a href="{% url 'login' %}"> LOG IN </a>
-                </div>
-                <div>
-                    <a href="{% url 'register' %}"> SIGN UP </a>
+                <div class="menu-choice-dd-content-links auth-bt">
+                    <div>
+                        <a href="{% url 'login' %}"> LOG IN </a>
+                    </div>
+                     <div>
+                          <a href="{% url 'register' %}"> SIGN UP </a>
+                    </div>
+
                 </div>
 
+
             </div>
-        </div>
+
          {% endif %}
 </div>
 {% endblock %}
@@ -62,9 +66,7 @@
                        <p> {{ city }} </p>
                          <p> {{ country }} </p>
                          <p> {{ hs_name }}</p>
-<!--                    <img src="{% static 'plots/chart_for_date.png' %}" alt="plot" id="chart-plot">-->
-                     <img src="data:image/png;base64,{{ graph }}" alt="chart_plot" id="chart-plot">
-
+                    <img src="{% static 'plots/chart_for_date.png' %}" alt="plot" id="chart-plot">
                  </div>
 
                 <div class="table-data">

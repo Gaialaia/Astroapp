@@ -348,13 +348,23 @@ def show_td_chart(request):
                                        color='aliceblue',
                                        arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-    chart_path = '/astro_app/astroknow/astroplan/static/plots/now_chart.png'
+    # chart_path = '/astro_app/astroknow/astroplan/static/plots/now_chart.png'
+    #
+    # directory = os.path.dirname(chart_path)
+    # if not os.path.exists(directory):
+    #     os.makedirs(directory, exist_ok=True)
+    #
+    # plt.savefig(chart_path)
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    plt.close()
+    buffer.seek(0)
+    chart_png = buffer.getvalue()
+    graph = base64.b64encode(chart_png)
+    graph = graph.decode('utf-8')
+    buffer.close()
 
-    directory = os.path.dirname(chart_path)
-    if not os.path.exists(directory):
-        os.makedirs(directory, exist_ok=True)
-
-    plt.savefig(chart_path)
+    swe.close()
 
 
     return render(request, 'main_astro.html',
@@ -362,7 +372,8 @@ def show_td_chart(request):
                            'house_data': set_signs(house_names, list(houses[0])),
                            'ats': aspect_table_s, 'ato': aspect_table_ops,
                            'att': aspect_table_t, 'atc': aspect_table_c,
-                           'date': dt.now(tz=timezone(loc_tz)).strftime('%B, %d, %H:%M'),'planet_names': planet_names})
+                           'date': dt.now(tz=timezone(loc_tz)).strftime('%B, %d, %H:%M'),'planet_names': planet_names,
+                            'graph': graph})
 
 
 def chart_for_any_date(request):

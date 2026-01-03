@@ -3,6 +3,15 @@
 <form class="chart-forms" target="_blank" method="post">
     {{ chart_form.media }}
     {% csrf_token %}
-    {{ chart_form | crispy }}
+    {% for field in chart_form %}
+    <div class="form-row">
+        {{ field.id_chart_date }}
+        {{ field.id_chart_date }}
+        {{ field.id_city }}
+        {{ field.id_chart_mode }}
+        {{ field.id_house_system }}
+        {{ field | as_crispy_field }}
+    </div>
+    {% endfor %}
     <button class="show-chart" type="submit" > Show chart </button>
 </form>

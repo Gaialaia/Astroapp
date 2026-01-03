@@ -1,4 +1,5 @@
- <table id="house-cusps-table">
+
+<table id="house-cusps-table">
                     <caption> House cusps data </caption>
                 <thead>
                   <tr>
@@ -10,13 +11,13 @@
                 <tbody>
                      {% for hn, deg, sign in house_data %}
                     <tr> {% if hn == 'ASC' %}
-                         <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Appereance </span>  </td>
+                         <td class="tooltip"> {{ hn }}   <span class="tooltiptext"> Appearance </span> </td>
                         {% elif hn == 'II' %}
                          <td class="tooltip">  {{ hn }} <span class="tooltiptext"> Resource </span> </td>
                          {% elif hn == 'III' %}
                         <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Mental abilities </span> </td>
                         {% elif hn == 'IC' %}
-                        <td class="tooltip"> >{{ hn }} <span class="tooltiptext"> Housing </span> </td>
+                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Housing </span> </td>
                         {% elif hn == 'V' %}
                         <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Fun, entertainment, art </span> </td>
                         {% elif hn == 'VI' %}

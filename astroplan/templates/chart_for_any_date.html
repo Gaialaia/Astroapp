@@ -10,7 +10,7 @@
     <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice opened-tab">
     <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
 </div>
 
@@ -18,42 +18,94 @@
     <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
 </div>
 
-<div class="menu-choice">
-    <div class="menu-choice-dd"> C <img id='clr-chart-icon' src="{% static 'images/z_in_clr.png' %}"> LOR
+<div class="menu-choice menu-choice-dd">
+    <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
         <div class="menu-choice-dd-content">
-            <a href="{% url 'color your chart' %}"> color chart </a>
+            <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
         </div>
-    </div>
 </div>
 
 
-<div class="menu-choice">
+<div class="menu-choice menu-choice-dd">
      {% if user.is_authenticated %}
-    <div class="menu-choice-dd">
+    <div>
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
         <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
     </div>
         {% else %}
-        <div class="menu-choice-dd"> ENTER
+        <div> GET INSIDE </div>
             <div class="menu-choice-dd-content">
-                <div>
-                     <a href="{% url 'login' %}"> LOG IN </a>
-                </div>
-                <div>
-                    <a href="{% url 'register' %}"> SIGN UP </a>
+                <div class="menu-choice-dd-content-links auth-bt">
+                    <div>
+                        <a href="{% url 'login' %}"> LOG IN </a>
+                    </div>
+                     <div>
+                          <a href="{% url 'register' %}"> SIGN UP </a>
+                    </div>
+
                 </div>
 
+
             </div>
-        </div>
+
          {% endif %}
 </div>
 {% endblock %}
 
-{% block chart-data %}
+{% block  content-data  %}
 
- <div class="chart-form">
-     {% include 'includes/messages.html' %}
-     <h3> Chart for any date </h3>
-     {% include 'includes/form.html' %}
+ <div class="chart-for-any-date">
+
+     <div>
+         <img src="{% static '/images/aqua.png' %}" id="constellation">
+     </div>
+
+     <div>
+     <div class="instruction-text"> <h3>To get planet chart for a certain date, enter the following data:</h3></div>
+     <form class="chart-forms" target="_blank" method="post" action=".">
+           {{ chart_form.media }}
+            {% csrf_token %}
+         <div class="form-row">
+             <label for="id_chart_date"> date:</label>
+                <div class="django-flatpickr">
+                  <input type="text" name="chart_date" value="2025-12-19 12:16:02" required id="id_chart_date" data-fpconfig="{&quot;picker_type&quot;: &quot;DATETIME&quot;, &quot;options&quot;: {&quot;altInput&quot;: true, &quot;dateFormat&quot;: &quot;Y-m-d H:i:S&quot;, &quot;enableTime&quot;: true, &quot;wrap&quot;: true}}" data-debug="">
+                </div>
+         </div>
+
+        <div class="form-row">
+            <label for="id_city">city:</label>
+            <input type="text" name="city" value="Ufa" required id="id_city">
+        </div>
+
+        <div class="form-row">
+            <label for="id_country">country:</label>
+            <input type="text" name="country" value="Russia" required id="id_country">
+        </div>
+
+        <div class="form-row">
+            <label for="id_mode"> chart mode: :</label>
+            <select name="mode" id="id_mode">
+              <option value="65536">Sidereal</option>
+              <option value="0">Tropical</option>
+              <option value="8">Heliocentric</option>
+            </select>
+        </div>
+
+       <div class="form-row">
+            <label for="id_house_system"> house system:</label>
+            <select name="house_system" id="id_house_system">
+                <option value="P">Placidus</option>
+                <option value="R">Regiomontanus</option>
+                <option value="E">Equal</option>
+                <option value="Without houses" selected>Without houses</option>
+            </select>
+      </div>
+            <button class="show-chart" type="submit" > SHOW CHART </button>
+     </form>
+    </div>
+      <div>
+         <img src="{% static '/images/aqua.png' %}" id="constellation">
+     </div>
  </div>
-    {% endblock %}
+{% endblock %}
+

@@ -4,6 +4,13 @@
   box-sizing: border-box;
 }
 
+.welcome-text,
+.welcome-login {
+    font-size: 180%;
+}
+
+
+
 .my-chart-tr-form-title {
     text-align: center;
     font-variant: small-caps;
@@ -26,3 +33,15 @@
     text-align: center;
 }
 
+.instruction-text {
+    margin-bottom: 50px;
+    text-align: center;
+    font-size: 130%;
+}
+
+.ul-list-names {
+    font-size: 170%;
+    font-variant-caps: all-petite-caps;
+    color: gold;
+
+}
