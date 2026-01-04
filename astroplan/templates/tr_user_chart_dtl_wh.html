@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %} Your transit chart no houses {% endblock %}
+
+{% block navigation %}
+<div class="menu-choice" id="today-chart">
+    <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
+</div>
+
+<div class="menu-choice">
+    <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
+</div>
+
+<div class="menu-choice">
+    <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
+</div>
+
+<div class="menu-choice menu-choice-dd">
+    <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
+        <div class="menu-choice-dd-content">
+            <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
+        </div>
+</div>
+
+
+<div class="menu-choice opened-tab">
+     {% if user.is_authenticated %}
+    <div class="menu-choice-dd">
+        <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
+        <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
+    </div>
+        {% else %}
+        <div class="menu-choice-dd"> ENTER
+            <div class="menu-choice-dd-content">
+                <div>
+                     <a href="{% url 'login' %}"> LOG IN </a>
+                </div>
+                <div>
+                    <a href="{% url 'register' %}"> SIGN UP </a>
+                </div>
+
+            </div>
+        </div>
+         {% endif %}
+</div>
+
+
+{% endblock %}
+
+
+
+
+                 {% block chart-data %}
+
+<div class="table-data">
+      {% include 'includes/transit_aspects.html' %}
+</div>
+
+<div class="chart-fig">
+      <div class="form-info">
+          <div class="event-info">
+                        <p> Event name: {{ tr_uc_tr_name }}</p>
+                       <p> Event date: {{ event_date }} </p>
+                       <p> Event city: {{ event_city }} </p>
+                       <p> Event country: {{ event_country }} </p>
+          </div>
+          <div class="transit-info">
+                         <p> Transit name: {{ tr_uc_ev_name }} </p>
+                        <p> Transit date: {{ tr_date }} </p>
+                       <p> Transit city: {{ tr_city }} </p>
+                       <p> Transit country: {{ tr_country }} </p>
+          </div>
+      </div>
+                <img src="{% static 'plots/tr_user_chart.png' %}" alt="plot" id="chart-plot">
+
+                    <div class="ul-link-div">
+                        <div class="ul-links">
+                              <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
+                        </div>
+
+                         <div class="ul-links">
+                               <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
+                        </div>
+
+                         <div class="ul-links">
+                                <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a>
+
+                        </div>
+
+                         <div class="ul-links">
+                               <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
+                        </div>
+
+
+                    </div>
+
+
+  </div>
+
+<div class="table-cont">
+<div class="table-data">
+    {% include 'includes/planet_list.html' %}
+    </div>
+
+</div>
+
+<div class="table-cont">
+<div class="table-data">
+     {% include 'includes/transit_planets_position.html' %}
+</div>
+</div>
+
+<script>
+       window.onload = function() {
+       const table = document.getElementById('tr-chr-ul-hc');
+            if (table) {
+                const tbodyRows = table.querySelectorAll('tbody tr');
+                if (tbodyRows.length === 0) {
+                    table.style.display = 'none';
+                }
+            }
+       };
+
+</script>
+
+{% endblock %}

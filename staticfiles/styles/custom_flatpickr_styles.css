@@ -1,0 +1,15 @@
+/* custom_flatpickr_styles.css */
+.flatpickr-calendar {
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: gold;
+}
+
+.flatpickr-day.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+.flatpickr-day.today {
+    border: 1px solid red;
+}

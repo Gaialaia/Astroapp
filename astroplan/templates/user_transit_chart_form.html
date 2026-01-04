@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %} Get and save transit chart {% endblock %}
+
+{% block navigation %}
+<div class="menu-choice" id="today-chart">
+    <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
+</div>
+
+<div class="menu-choice" >
+    <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
+</div>
+
+<div class="menu-choice">
+    <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
+</div>
+<div class="menu-choice menu-choice-dd">
+    <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
+        <div class="menu-choice-dd-content">
+            <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
+        </div>
+</div>
+
+
+<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+     {% if user.is_authenticated %}
+    <div class="menu-choice-dd">
+        <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
+        <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
+    </div>
+        {% else %}
+        <div class="menu-choice-dd"> ENTER
+            <div class="menu-choice-dd-content">
+                <div>
+                     <a href="{% url 'login' %}"> LOG IN </a>
+                </div>
+                <div>
+                    <a href="{% url 'register' %}"> SIGN UP </a>
+                </div>
+
+            </div>
+        </div>
+         {% endif %}
+</div>
+{% endblock %}
+
+
+{% block content-data %}
+<div>
+
+   <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
+    <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
+    <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
+    <a href="{% url 'ad user chart' %}"> Get and save chart for any date </a>
+</div>
+
+<div class="my-chart-tr-form">
+    <div class="instruction-text"> <h3>See and save transit chart </h3></div>
+    <form class="chart-forms" method="post" id="tr-form-my-chart">
+        {{ tr_form.media }}
+        {% csrf_token %}
+        <div id="my-chart-ei">
+            <h3 class="one-clr-form-title"> Event data </h3>
+            <div class="form-row">
+                <label for="id_event_name">Event name:</label>
+                <input type="text" name="event_name" value="My birthdate" required id="id_event_name">
+            </div>
+
+            <div class="form-row">
+                <label for="id_event_date">Enter an event date:</label>
+                <div class="django-flatpickr">
+                    <input type="text" name="event_date" value="2025-11-12 07:45:18" required id="id_event_date" data-fpconfig="{&quot;picker_type&quot;: &quot;DATETIME&quot;, &quot;options&quot;: {&quot;altInput&quot;: true, &quot;dateFormat&quot;: &quot;Y-m-d H:i:S&quot;, &quot;enableTime&quot;: true, &quot;wrap&quot;: true}}" data-debug="">
+                    <input type="hidden" name="initial-event_date" value="2025-11-12 07:45:18" id="initial-id_event_date">
+                </div>
+            </div>
+
+            <div class="form-row">
+                         <label for="id_event_city">Enter city:</label>
+                         <input type="text" name="event_city" value="Ufa" required id="id_event_city">
+                     </div>
+                <div class="form-row">
+                    <label for="id_event_country">Enter country:</label>
+                    <input type="text" name="event_country" value="Russia" required id="id_event_country">
+                </div>
+
+            <div class="form-row">
+                    <label for="id_ev_chart_mode">Enter event mode:</label>
+                    <select name="ev_chart_mode" id="id_ev_chart_mode">
+                          <option value="65536">Sidereal</option>
+                          <option value="0">Tropical</option>
+                          <option value="8">Heliocentric</option>
+                    </select>
+            </div>
+
+            <div class="form-row">
+                    <label for="id_ev_house_system">Enter house system:</label>
+                    <select name="ev_house_system" id="id_ev_house_system">
+                          <option value="P">Placidus</option>
+                          <option value="R">Regiomontanus</option>
+                          <option value="E">Equal</option>
+                          <option value="Without houses" selected>Without houses</option>
+                    </select>
+            </div>
+
+        </div>
+
+        <div id="my-chart-ti">
+                <h3 class="one-clr-form-title"> Transit data </h3>
+                <div class="form-row">
+                    <label for="id_transit_name">Transit name:</label>
+                    <input type="text" name="transit_name" value="Graduation" required id="id_transit_name">
+                </div>
+
+                <div class="form-row">
+                     <label for="id_transit_date">Enter transit date:</label>
+                     <div class="django-flatpickr">
+                         <input type="text" name="transit_date" value="2025-10-28 12:47:40" required id="id_transit_date" data-fpconfig="{&quot;picker_type&quot;: &quot;DATETIME&quot;, &quot;options&quot;: {&quot;altInput&quot;: true, &quot;dateFormat&quot;: &quot;Y-m-d H:i:S&quot;, &quot;enableTime&quot;: true, &quot;wrap&quot;: true}}" data-debug="">
+                         <input type="hidden" name="initial-transit_date" value="2025-10-28 12:47:40" id="initial-id_transit_date">
+                     </div>
+                </div>
+
+                <div class="form-row">
+                        <label for="id_transit_city">Enter transit city:</label>
+                        <input type="text" name="transit_city" value="Los-Angeles" required id="id_transit_city">
+                    </div>
+
+                    <div class="form-row">
+                         <label for="id_transit_country">Enter transit country:</label>
+                        <input type="text" name="transit_country" value="USA" required id="id_transit_country">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="id_tr_chart_mode">Enter transit event mode: </label>
+                        <select name="tr_chart_mode" id="id_tr_chart_mode">
+                              <option value="65536">Sidereal</option>
+                              <option value="0">Tropical</option>
+                              <option value="8">Heliocentric</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="id_tr_house_system"> Enter transit house system: </label>
+                        <select name="tr_house_system" id="id_tr_house_system">
+                             <option value="P">Placidus</option>
+                              <option value="R">Regiomontanus</option>
+                              <option value="E">Equal</option>
+                              <option value="Without houses" selected>Without houses</option>
+                        </select>
+                    </div>
+        </div>
+
+        <div id="my-chart-tf-bt"><
+               <button class="show-chart" type="submit"> Show transit chart </button>
+        </div>
+
+
+    </form>
+</div>
+{% endblock %}
