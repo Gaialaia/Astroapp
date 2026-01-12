@@ -24,26 +24,28 @@
 </div>
 
 
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice menu-choice-dd opened-tab">
      {% if user.is_authenticated %}
-    <div class="menu-choice-dd">
+    <div>
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
         <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
     </div>
         {% else %}
-        <div class="menu-choice-dd"> ENTER
+        <div> GET INSIDE </div>
             <div class="menu-choice-dd-content">
-                <div>
-                     <a href="{% url 'login' %}"> LOG IN </a>
-                </div>
-                <div>
-                    <a href="{% url 'register' %}"> SIGN UP </a>
-                </div>
+                <div class="menu-choice-dd-content-links auth-bt">
+                    <div>
+                        <a href="{% url 'login' %}"> LOG IN </a>
+                    </div>
+                     <div>
+                          <a href="{% url 'register' %}"> SIGN UP </a>
+                    </div>
 
+                </div>
             </div>
-        </div>
          {% endif %}
 </div>
+
 {% endblock %}
 
 

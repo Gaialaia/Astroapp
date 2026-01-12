@@ -29,33 +29,34 @@
 </div>
 
 
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice menu-choice-dd opened-tab">
      {% if user.is_authenticated %}
-    <div class="menu-choice-dd">
+    <div>
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
         <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
     </div>
         {% else %}
-        <div class="menu-choice-dd"> ENTER
+        <div> GET INSIDE </div>
             <div class="menu-choice-dd-content">
-                <div>
-                     <a href="{% url 'login' %}"> LOG IN </a>
-                </div>
-                <div>
-                    <a href="{% url 'register' %}"> SIGN UP </a>
-                </div>
+                <div class="menu-choice-dd-content-links auth-bt">
+                    <div>
+                        <a href="{% url 'login' %}"> LOG IN </a>
+                    </div>
+                     <div>
+                          <a href="{% url 'register' %}"> SIGN UP </a>
+                    </div>
 
+                </div>
             </div>
-        </div>
+
          {% endif %}
+
 </div>
 {% endblock %}
 
 
 
 {% block chart-data %}
-
-
 
 <div class="table-data">
     <table>
@@ -71,8 +72,8 @@
              <tbody>
                     <tr>
                         <td> Sun </td>
-                         <td> {{ chart.Sun_deg}} </td>
-                        <td> {{ chart.Moon_sign }} </td>
+                         <td> {{ chart.Sun_deg }} </td>
+                        <td> {{ chart.Sun_sign }} </td>
                     </tr>
 
                      <tr>
@@ -83,19 +84,19 @@
 
                      <tr>
                         <td> Mercury </td>
-                         <td> {{ chart.Mercury_deg}} </td>
+                         <td> {{ chart.Mercury_deg }} </td>
                         <td> {{ chart.Mercury_sign }} </td>
                     </tr>
 
                      <tr>
                         <td> Venus </td>
-                         <td> {{ chart.Sun_deg}} </td>
-                        <td> {{ chart.Moon_sign }} </td>
+                         <td> {{ chart.Venus_deg }} </td>
+                        <td> {{ chart.Venus_sign }} </td>
                     </tr>
 
                     <tr>
                         <td> Mars </td>
-                         <td> {{ chart.Mars_deg}} </td>
+                         <td> {{ chart.Mars_deg }} </td>
                         <td> {{ chart.Mars_sign }} </td>
                     </tr>
 

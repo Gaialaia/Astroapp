@@ -24,25 +24,26 @@
         </div>
 </div>
 
-
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice menu-choice-dd opened-tab">
      {% if user.is_authenticated %}
-    <div class="menu-choice-dd">
+    <div>
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
         <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
     </div>
         {% else %}
-        <div class="menu-choice-dd"> ENTER
+        <div> GET INSIDE </div>
             <div class="menu-choice-dd-content">
-                <div>
-                     <a href="{% url 'login' %}"> LOG IN </a>
-                </div>
-                <div>
-                    <a href="{% url 'register' %}"> SIGN UP </a>
-                </div>
+                <div class="menu-choice-dd-content-links auth-bt">
+                    <div>
+                        <a href="{% url 'login' %}"> LOG IN </a>
+                    </div>
+                     <div>
+                          <a href="{% url 'register' %}"> SIGN UP </a>
+                    </div>
 
+                </div>
             </div>
-        </div>
+
          {% endif %}
 </div>
 {% endblock %}
@@ -80,11 +81,8 @@
         <div>
         <div class="instruction-text"> <h3> Get and save chart </h3></div>
         <form class="chart-forms" method="post">
-
             {{ user_chart_form.media }}
             {% csrf_token %}
-<!--            {{ user_chart_form | crispy }}-->
-
             <div class="form-row">
                 <label for="id_chart_name">Enter event name:</label>
                  <input type="text" name="chart_name" value="Today" required id="id_chart_name">

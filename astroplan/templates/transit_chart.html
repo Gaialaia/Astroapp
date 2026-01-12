@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %} Transit Chart! {% endblock %}
+{% block title %} Transit Chart {% endblock %}
 
 {% block navigation %}
 
@@ -77,7 +77,7 @@
                         <p class="form-info-data-title"> HS: {{ tr_hs_name }} </p>
                     </div>
       </div>
-                <img src="{% static 'plots/transit_chart.png' %}" alt="plot" id="tr-chart-plot">
+                <img src="data:image/png;base64,{{ graph }}" alt="plot" id="tr-chart-plot">
   </div>
 
 <div class="table-cont">

@@ -5,6 +5,7 @@ WORKDIR /astro_app
 ENV PYTHONUNBUFFERED 1
 COPY ./requirements.txt .
 
+# WORKDIR /app/astroknow
 
 RUN apt-get update && apt-get install -y build-essential libpq-dev netcat-traditional
 RUN pip install --no-cache-dir -r requirements.txt

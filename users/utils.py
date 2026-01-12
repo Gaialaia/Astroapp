@@ -1,5 +1,7 @@
 from pycirclize import Circos
 
+from astroknow import settings
+
 sectors = {"♊︎": 30, "♉︎": 30, "♈︎": 30,
            "♓︎": 30, "♒︎": 30, "♑︎": 30,
            "♐︎": 30, "♏︎": 30, "♎︎": 30,
@@ -23,8 +25,18 @@ def draw_zodiac_one_color(face_color, edge_color, text_color, tick_clr, deg_clr,
 
     fig = circos.plotfig()
     fig.patch.set_alpha(0.0)
-    fig.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/images/zr_one_clr.png',
-                    pad_inches=0.0)
+
+    chart_path = (os.path.join(settings.MEDIA_ROOT, 'color_chart_zodiac_ring/zodiac_ring_background.png'))
+    directory = os.path.dirname(chart_path)
+
+    if not os.path.exists(directory):
+        os.makedirs(directory, exist_ok=True)
+
+    fig.savefig(chart_path, pad_inches=0.0)
+
+
+
+
 
 
 

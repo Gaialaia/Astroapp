@@ -25,26 +25,32 @@
         </div>
 </div>
 
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice menu-choice-dd opened-tab">
      {% if user.is_authenticated %}
-    <div class="menu-choice-dd">
+    <div>
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
         <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
     </div>
         {% else %}
-        <div class="menu-choice-dd"> ENTER
+        <div> GET INSIDE </div>
             <div class="menu-choice-dd-content">
-                <div>
-                     <a href="{% url 'login' %}"> LOG IN </a>
-                </div>
-                <div>
-                    <a href="{% url 'register' %}"> SIGN UP </a>
+                <div class="menu-choice-dd-content-links auth-bt">
+                    <div>
+                        <a href="{% url 'login' %}"> LOG IN </a>
+                    </div>
+                     <div>
+                          <a href="{% url 'register' %}"> SIGN UP </a>
+                    </div>
+
                 </div>
             </div>
-        </div>
+
          {% endif %}
+
 </div>
 {% endblock %}
+
+
     {% block content-data %}
 
 
@@ -72,10 +78,9 @@
         <div class="instruction-text">
             <h3> Color your chart  </h3>
         </div>
-        <form class="chart-forms" method="post" id="clr-form-my-chart">
+        <form class="chart-forms" method="post" id="clr-form-my-chart" enctype="multipart/form-data">
             {{ color_form.media }}
             {% csrf_token %}
-
             <div class="form-row">
                 <label for="id_chart_name"> Enter chart name </label>
                 <input type="text" name="chart_name" value="Got the Olympic Prize" required id="id_chart_name">

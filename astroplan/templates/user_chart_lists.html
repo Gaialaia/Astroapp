@@ -27,7 +27,7 @@
 </div>
 
 
-<div class="menu-choice menu-choice-dd">
+<div class="menu-choice menu-choice-dd opened-tab">
      {% if user.is_authenticated %}
     <div>
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
@@ -45,14 +45,11 @@
                     </div>
 
                 </div>
-
-
             </div>
 
          {% endif %}
 </div>
 {% endblock %}
-
 
 
 {% block content-data %}

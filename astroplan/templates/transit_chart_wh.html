@@ -42,9 +42,7 @@
                      <div>
                           <a href="{% url 'register' %}"> SIGN UP </a>
                     </div>
-
                 </div>
-
 
             </div>
 
@@ -73,10 +71,7 @@
                        <p class="form-info-data-title"> Transit country: {{ tr_country }} </p>
                     </div>
       </div>
-                <img src="{% static 'plots/transit_chart.png' %}" alt="plot" id="tr-chart-plot">
-     <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a>
-    <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
-    <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
+                <img src="data:image/png;base64,{{ graph }}" alt="plot" id="tr-chart-plot">
   </div>
 
 <div class="table-cont">

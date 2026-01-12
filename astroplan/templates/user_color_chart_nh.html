@@ -27,7 +27,7 @@
 </div>
 
 
-<div class="menu-choice menu-choice-dd">
+<div class="menu-choice menu-choice-dd opened-tab">
      {% if user.is_authenticated %}
     <div>
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
@@ -45,11 +45,10 @@
                     </div>
 
                 </div>
-
-
             </div>
 
          {% endif %}
+
 </div>
 {% endblock %}
 
@@ -65,13 +64,30 @@
 
     <div class="chart-fig" style="background-color: none;">
         <h1> Planet chart for {{ date }}</h1>
-        <img src="{% static 'plots/color_user_chart.png' %}" alt="plot" id="chart-plot" style="background-color: none"  >
-        <div>
-            <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
-            <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
-             <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a>
-            <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
-            <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
+        <img src="{{ color_chart.chart_image.url }}" alt="plot" id="chart-plot" style="background-color: none"  >
+
+        <div class="ul-link-div">
+
+            <div class="ul-links">
+                   <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
+            </div>
+
+             <div class="ul-links">
+                  <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
+
+            </div>
+
+             <div class="ul-links">
+                   <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a>
+            </div>
+
+             <div class="ul-links">
+                  <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
+            </div>
+
+             <div class="ul-links">
+                    <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
+            </div>
         </div>
     </div>
 

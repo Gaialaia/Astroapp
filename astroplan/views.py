@@ -6,6 +6,9 @@ from django.shortcuts import render, redirect
 
 from pycirclize import Circos
 import matplotlib
+
+from astroknow import settings
+
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.image as mpi
@@ -22,12 +25,13 @@ import julian as jl
 from geopy.geocoders import Nominatim
 from pytz import timezone
 
-from .models import Chart, FullChart, TransitFullChart, OneColorZodiacRingMF
-from .forms import (ChartForm, ShowChart, TransitForm, OneColorZodiacRing,
+from .models import FullChart, TransitFullChart, OneColorZodiacRingMF
+from .forms import (ShowChart, TransitForm, OneColorZodiacRing,
                     HOUSE_SYSTEM_CHOICES, MODE_CHOICES)
 from astroplan.utils import build_plot, draw_zodiac_one_color
 from timezonefinder import TimezoneFinder
 
+from PIL import Image
 
 swe.set_ephe_path('/home/gaia/Документы/eph files')
 
@@ -36,7 +40,7 @@ trine = np.arange(115.0, 125.0)
 square = np.arange(85.0, 95.0)
 conjunction = np.arange(0.00, 7.00)
 
-sqaures = []
+squares = []
 trines = []
 oppositions = []
 conjunctions = []
@@ -45,6 +49,7 @@ aspected_planet_s = []
 aspected_planet_op = []
 aspected_planet_t = []
 aspected_planet_c = []
+
 sq_angle = []
 op_angle = []
 t_angle = []
@@ -201,7 +206,7 @@ def show_td_chart(request):
     c_angle.clear()
 
     oppositions.clear()
-    sqaures.clear()
+    squares.clear()
     conjunctions.clear()
     trines.clear()
 
@@ -258,8 +263,8 @@ def show_td_chart(request):
 
                 aspected_planet_s.append(coords_value[pl][0])
                 sq_angle.append(f'{aspect}°')
-                sqaures.append(coords_value[value + 1][0])
-                aspect_table_s = zip(aspected_planet_s, sq_angle, sqaures)
+                squares.append(coords_value[value + 1][0])
+                aspect_table_s = zip(aspected_planet_s, sq_angle, squares)
 
             if aspect in conjunction and coords_value[pl][4] != coords_value[value + 1][4]:
                 pl_one = np.array([np.deg2rad(coords_value[pl][4]), np.deg2rad(coords_value[value + 1][4])])
@@ -348,6 +353,8 @@ def show_td_chart(request):
                                        color='aliceblue',
                                        arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
+    swe.close()
+
     # chart_path = '/astro_app/astroknow/astroplan/static/plots/now_chart.png'
     #
     # directory = os.path.dirname(chart_path)
@@ -355,17 +362,15 @@ def show_td_chart(request):
     #     os.makedirs(directory, exist_ok=True)
     #
     # plt.savefig(chart_path)
+
     buffer = io.BytesIO()
     plt.savefig(buffer, format='png')
-    plt.close()
+    plt.close(fig)
     buffer.seek(0)
     chart_png = buffer.getvalue()
     graph = base64.b64encode(chart_png)
     graph = graph.decode('utf-8')
     buffer.close()
-
-    swe.close()
-
 
     return render(request, 'main_astro.html',
                   context={ 'planet_data': set_signs(planet_names, [p[4] for p in coords_value]),
@@ -438,7 +443,7 @@ def chart_for_any_date(request):
          c_angle.clear()
 
          oppositions.clear()
-         sqaures.clear()
+         squares.clear()
          conjunctions.clear()
          trines.clear()
 
@@ -568,8 +573,8 @@ def chart_for_any_date(request):
 
                          aspected_planet_s.append(form_coords_value[pl][0])
                          sq_angle.append(f'{aspect}°')
-                         sqaures.append(form_coords_value[value + 1][0])
-                         aspect_table_s = zip(aspected_planet_s, sq_angle, sqaures)
+                         squares.append(form_coords_value[value + 1][0])
+                         aspect_table_s = zip(aspected_planet_s, sq_angle, squares)
 
                      if aspect in conjunction and form_coords_value[pl][4] != form_coords_value[value + 1][4]:
                          pl_one = np.array(
@@ -660,15 +665,9 @@ def chart_for_any_date(request):
                                                 color='aliceblue',
                                                 arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-             # chart_path = '/astro_app/astroknow/astroplan/static/plots/chart_for_date'
-             # directory = os.path.dirname(chart_path)
-             # if not os.path.exists(directory):
-             #     os.makedirs(directory, exist_ok=True)
-             # plt.savefig(chart_path)
-
              buffer = io.BytesIO()
              plt.savefig(buffer, format='png')
-             plt.close()
+             plt.close(fig_form)
              buffer.seek(0)
              chart_png = buffer.getvalue()
              graph = base64.b64encode(chart_png)
@@ -766,8 +765,8 @@ def chart_for_any_date(request):
 
                          aspected_planet_s.append(form_coords_value[pl][0])
                          sq_angle.append(f'{aspect}°')
-                         sqaures.append(form_coords_value[value + 1][0])
-                         aspect_table_s = zip(aspected_planet_s, sq_angle, sqaures)
+                         squares.append(form_coords_value[value + 1][0])
+                         aspect_table_s = zip(aspected_planet_s, sq_angle, squares)
 
                      if aspect in conjunction and form_coords_value[pl][4] != form_coords_value[value + 1][4]:
                          pl_one = np.array(
@@ -858,17 +857,11 @@ def chart_for_any_date(request):
                                                 color='aliceblue',
                                                 arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-             # chart_path = '/astro_app/astroknow/astroplan/static/plots/chart_for_date'
-             #
-             # directory = os.path.dirname(chart_path)
-             # if not os.path.exists(directory):
-             #     os.makedirs(directory, exist_ok=True)
-             # plt.savefig(chart_path)
-             # swe.close()
+             swe.close()
 
              buffer = io.BytesIO()
              plt.savefig(buffer, format='png')
-             plt.close()
+             plt.close(fig_form)
              buffer.seek(0)
              chart_png = buffer.getvalue()
              graph = base64.b64encode(chart_png)
@@ -877,8 +870,8 @@ def chart_for_any_date(request):
 
              return render(request, 'show_by_date.html',
                            {'planet_data': set_signs(planet_names,
-                                                                                   [p[4] for p in
-                                                                                    form_coords_value]),
+                            [p[4] for p in
+                            form_coords_value]),
                                                           'ats': aspect_table_s, 'ato': aspect_table_ops,
                                                           'att': aspect_table_t, 'atc': aspect_table_c,
                                                           'date': chart_dt, 'city': city,
@@ -891,6 +884,7 @@ def chart_for_any_date(request):
 
 
 def build_transit_chart(request):
+
     chart_date = dt.now()
     chart = build_plot(chart_date, 'tr_chart_now')
 
@@ -947,7 +941,7 @@ def build_transit_chart(request):
                  swe.get_planet_name(8): ['♆', 'indigo', 9, 30,
                                           swe.calc_ut(jd_ev, 8, int(ev_mode))[0][0],
                                           swe.calc_ut(jd_ev, 8, int(ev_mode))[0][1], 0],
-                 swe.get_planet_name(9): ['⯓', 'darkmagenta', 9, 30,
+                 swe.get_planet_name(9): ['♇', 'darkmagenta', 9, 30,
                                           swe.calc_ut(jd_ev, 9, int(ev_mode))[0][0],
                                           swe.calc_ut(jd_ev, 9, int(ev_mode))[0][1], 0]}
 
@@ -980,7 +974,7 @@ def build_transit_chart(request):
               swe.get_planet_name(8): ['♆', 'indigo', 9, 30,
                                        swe.calc_ut(jd_tr, 8, int(tr_mode))[0][0],
                                        swe.calc_ut(jd_tr, 8, int(tr_mode))[0][1], 0],
-              swe.get_planet_name(9): ['⯓', 'darkmagenta', 9, 30,
+              swe.get_planet_name(9): ['♇', 'darkmagenta', 9, 30,
                                        swe.calc_ut(jd_tr, 9, int(tr_mode))[0][0],
                                        swe.calc_ut(jd_tr, 9, int(tr_mode))[0][1], 0]}
 
@@ -1004,7 +998,7 @@ def build_transit_chart(request):
         c_angle.clear()
 
         oppositions.clear()
-        sqaures.clear()
+        squares.clear()
         conjunctions.clear()
         trines.clear()
 
@@ -1136,8 +1130,8 @@ def build_transit_chart(request):
 
                         aspected_planet_s.append(both_chart_apd[pl][0])
                         sq_angle.append(f'{aspect}°')
-                        sqaures.append(both_chart_apd[value + 1][0])
-                        aspect_table_s = zip(aspected_planet_s, sq_angle, sqaures)
+                        squares.append(both_chart_apd[value + 1][0])
+                        aspect_table_s = zip(aspected_planet_s, sq_angle, squares)
 
                     if aspect in conjunction and both_chart_apd[pl][4] != both_chart_apd[value + 1][4]:
                         pl_one = np.array(
@@ -1306,18 +1300,21 @@ def build_transit_chart(request):
                                                 color='chartreuse',
                                                 arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-            tr_chart_path = '/astro_app/astroknow/astroplan/static/plots/transit_chart.png'
-            directory = os.path.dirname(tr_chart_path)
+            swe.close()
 
-            if not os.path.exists(directory):
-                os.makedirs(directory, exist_ok=True)
-
-            plt.savefig(tr_chart_path)
+            buffer = io.BytesIO()
+            plt.savefig(buffer, format='png')
+            plt.close(fig)
+            buffer.seek(0)
+            chart_png = buffer.getvalue()
+            graph = base64.b64encode(chart_png)
+            graph = graph.decode('utf-8')
+            buffer.close()
 
             return render(request, 'transit_chart_wh.html',
                           context={'planet_data': set_signs(planet_names, [p[4] for p in form_coords_value]),
                                    'ats': aspect_table_s, 'ato': aspect_table_ops,
-                                   'att': aspect_table_t, 'atc': aspect_table_c,
+                                   'att': aspect_table_t, 'atc': aspect_table_c,'graph': graph,
                                    'tr_planet_data': set_signs(tr_planet_names, [p[4] for p in tr_form_coords_value]),
                                    'event_date': event_date, 'event_city': event_city, 'event_country': event_country,
                                    'tr_date': transit_date, 'tr_city': transit_city, 'tr_country': transit_country,
@@ -1382,7 +1379,6 @@ def build_transit_chart(request):
                                     labelfontfamily='monospace', pad=23.0, labelcolor='chartreuse')
             tr_house_ax.set_theta_offset(np.pi)
 
-
             for value in range(len(both_chart_apd) - 1):
                 for pl in range(0, 10):
                     aspect = abs(round(both_chart_apd[pl][4]) - round(both_chart_apd[value + 1][4]))
@@ -1442,8 +1438,8 @@ def build_transit_chart(request):
 
                         aspected_planet_s.append(both_chart_apd[pl][0])
                         sq_angle.append(f'{aspect}°')
-                        sqaures.append(both_chart_apd[value + 1][0])
-                        aspect_table_s = zip(aspected_planet_s, sq_angle, sqaures)
+                        squares.append(both_chart_apd[value + 1][0])
+                        aspect_table_s = zip(aspected_planet_s, sq_angle, squares)
 
                     if aspect in conjunction and both_chart_apd[pl][4] != both_chart_apd[value + 1][4]:
                         pl_one = np.array(
@@ -1610,13 +1606,16 @@ def build_transit_chart(request):
                                                color='chartreuse',
                                                arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-            tr_chart_path = '/astro_app/astroknow/astroplan/static/plots/transit_chart.png'
+            swe.close()
 
-            directory = os.path.dirname(tr_chart_path)
-            if not os.path.exists(directory):
-                os.makedirs(directory, exist_ok=True)
-
-            plt.savefig(tr_chart_path)
+            buffer = io.BytesIO()
+            plt.savefig(buffer, format='png')
+            plt.close(fig)
+            buffer.seek(0)
+            chart_png = buffer.getvalue()
+            graph = base64.b64encode(chart_png)
+            graph = graph.decode('utf-8')
+            buffer.close()
 
             return render(request, 'transit_chart.html',
                           context={'planet_data': set_signs(planet_names, [p[4] for p in form_coords_value]),
@@ -1625,7 +1624,7 @@ def build_transit_chart(request):
                                    'att': aspect_table_t, 'atc': aspect_table_c,
                                    'tr_planet_data': set_signs(tr_planet_names, [p[4] for p in tr_form_coords_value]),
                                    'tr_house_data': set_signs(house_names, list(tr_houses[0])), 'event_date': event_date,
-                                   'event_city': event_city, 'event_country': event_country,
+                                   'event_city': event_city, 'event_country': event_country,'graph': graph,
                                    'tr_date': transit_date, 'tr_city': transit_city, 'tr_country': transit_country,
                                    'lat': get_loc.latitude, 'lng': get_loc.longitude,
                                     'ev_hs_name': ev_hs_name,'tr_hs_name': tr_hs_name})
@@ -1734,8 +1733,8 @@ def build_transit_chart(request):
 
                         aspected_planet_s.append(both_chart_apd[pl][0])
                         sq_angle.append(f'{aspect}°')
-                        sqaures.append(both_chart_apd[value + 1][0])
-                        aspect_table_s = zip(aspected_planet_s, sq_angle, sqaures)
+                        squares.append(both_chart_apd[value + 1][0])
+                        aspect_table_s = zip(aspected_planet_s, sq_angle, squares)
 
                     if aspect in conjunction and both_chart_apd[pl][4] != both_chart_apd[value + 1][4]:
                         pl_one = np.array(
@@ -1902,13 +1901,16 @@ def build_transit_chart(request):
                                                color='chartreuse',
                                                arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-            tr_chart_path = '/astro_app/astroknow/astroplan/static/plots/transit_chart.png'
+            swe.close()
 
-            directory = os.path.dirname(tr_chart_path)
-            if not os.path.exists(directory):
-                os.makedirs(directory, exist_ok=True)
-
-            plt.savefig(tr_chart_path)
+            buffer = io.BytesIO()
+            plt.savefig(buffer, format='png')
+            plt.close(fig)
+            buffer.seek(0)
+            chart_png = buffer.getvalue()
+            graph = base64.b64encode(chart_png)
+            graph = graph.decode('utf-8')
+            buffer.close()
 
             return render(request, 'transit_chart_tr_hs.html',
                           context={'planet_data': set_signs(planet_names, [p[4] for p in form_coords_value]),
@@ -1916,7 +1918,7 @@ def build_transit_chart(request):
                                    'att': aspect_table_t, 'atc': aspect_table_c,
                                    'tr_planet_data': set_signs(tr_planet_names, [p[4] for p in tr_form_coords_value]),
                                    'tr_house_data': set_signs(house_names, list(tr_houses[0])),
-                                   'event_date': event_date,
+                                   'event_date': event_date, 'graph': graph,
                                    'event_city': event_city, 'event_country': event_country,
                                    'tr_date': transit_date, 'tr_city': transit_city, 'tr_country': transit_country,
                                    'lat': get_loc.latitude, 'lng': get_loc.longitude,
@@ -2026,8 +2028,8 @@ def build_transit_chart(request):
 
                         aspected_planet_s.append(both_chart_apd[pl][0])
                         sq_angle.append(f'{aspect}°')
-                        sqaures.append(both_chart_apd[value + 1][0])
-                        aspect_table_s = zip(aspected_planet_s, sq_angle, sqaures)
+                        squares.append(both_chart_apd[value + 1][0])
+                        aspect_table_s = zip(aspected_planet_s, sq_angle, squares)
 
                     if aspect in conjunction and both_chart_apd[pl][4] != both_chart_apd[value + 1][4]:
                         pl_one = np.array(
@@ -2196,13 +2198,15 @@ def build_transit_chart(request):
                                                 color='chartreuse',
                                                 arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-            tr_chart_path = '/astro_app/astroknow/astroplan/static/plots/transit_chart.png'
-
-            directory = os.path.dirname(tr_chart_path)
-            if not os.path.exists(directory):
-                os.makedirs(directory, exist_ok=True)
-
-            plt.savefig(tr_chart_path)
+            swe.close()
+            buffer = io.BytesIO()
+            plt.savefig(buffer, format='png')
+            plt.close(fig)
+            buffer.seek(0)
+            chart_png = buffer.getvalue()
+            graph = base64.b64encode(chart_png)
+            graph = graph.decode('utf-8')
+            buffer.close()
 
             return render(request, 'transit_chart_ev_hs.html',
                           context={'planet_data': set_signs(planet_names, [p[4] for p in form_coords_value]),
@@ -2214,7 +2218,8 @@ def build_transit_chart(request):
                                    'event_city': event_city, 'event_country': event_country,
                                    'tr_date': transit_date, 'tr_city': transit_city, 'tr_country': transit_country,
                                    'lat': get_loc.latitude, 'lng': get_loc.longitude,
-                                   'ev_hs_name': ev_hs_name, 'tr_hs_name': tr_hs_name})
+                                   'ev_hs_name': ev_hs_name, 'tr_hs_name': tr_hs_name,
+                                   'graph': graph})
 
     return render(request, 'transit_form.html',
                   context={'tr_form': tr_form, 'chart_date': chart_date})
@@ -2233,7 +2238,6 @@ def one_color_chart(request):
         zf_hs = zodiac_oc_form.cleaned_data['one_clr_zr_chart_hs']
         clr_ch_hs_name = HOUSE_SYSTEM_CHOICES.get(zf_hs)
         hs_en = zf_hs.encode('utf-8')
-
 
         get_loc = loc.geocode(f'{zf_city, zf_country}', timeout=7000)
         tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
@@ -2313,7 +2317,7 @@ def one_color_chart(request):
         c_angle.clear()
 
         oppositions.clear()
-        sqaures.clear()
+        squares.clear()
         conjunctions.clear()
         trines.clear()
 
@@ -2354,7 +2358,7 @@ def one_color_chart(request):
 
         if zf_hs != 'Without houses':
 
-            img = mpi.imread('astroplan/static/images/zr_one_clr.png')
+            img = np.array(Image.open(os.path.join(settings.MEDIA_ROOT, 'color_chart_zodiac_ring/color_chart.png')))
             fig = plt.figure(figsize=(870 * px, 870 * px))
             fig.patch.set_alpha(0.0)
 
@@ -2437,8 +2441,8 @@ def one_color_chart(request):
 
                         aspected_planet_s.append(coords_value[pl][0])
                         sq_angle.append(f'{aspect}°')
-                        sqaures.append(coords_value[value + 1][0])
-                        aspect_table_s = zip(aspected_planet_s, sq_angle, sqaures)
+                        squares.append(coords_value[value + 1][0])
+                        aspect_table_s = zip(aspected_planet_s, sq_angle, squares)
 
                     if aspect in conjunction and coords_value[pl][5] != coords_value[value + 1][5]:
                         pl_one = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
@@ -2537,21 +2541,34 @@ def one_color_chart(request):
                                                color=zf_symbol_color,
                                                arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
 
-            color_chart_path = '/astro_app/astroknow/astroplan/static/plots/one_clr_chart.png'
 
-            directory = os.path.dirname(color_chart_path)
-            if not os.path.exists(directory):
-                os.makedirs(directory, exist_ok=True)
+            swe.close()
+            # color_chart_path = '/astro_app/astroknow/astroplan/static/plots/one_clr_chart.png'
+            #
+            # directory = os.path.dirname(color_chart_path)
+            # if not os.path.exists(directory):
+            #     os.makedirs(directory, exist_ok=True)
+            #
+            # plt.savefig(color_chart_path)
+            # plt.close(fig)
 
-            plt.savefig(color_chart_path)
+            buffer = io.BytesIO()
+            plt.savefig(buffer, format='png')
+            plt.close(fig)
+            buffer.seek(0)
+            chart_png = buffer.getvalue()
+            graph = base64.b64encode(chart_png)
+            graph = graph.decode('utf-8')
+            buffer.close()
 
-            return render(request, 'designed_oc_chart.html',  context={'planet_data': set_signs(planet_names, [p[5] for p in coords_value]),
+            return render(request, 'designed_oc_chart.html',
+                          context=
+                          {'planet_data': set_signs(planet_names, [p[5] for p in coords_value]),
                                    'house_data': set_signs(house_names, list(houses[0])),
                                    'ats': aspect_table_s, 'ato': aspect_table_ops,
                                    'att': aspect_table_t, 'atc': aspect_table_c,
-                                   'date': zf_date,
-                                   'planet_names': planet_names,
-                                    'hs_name': clr_ch_hs_name})
+                                   'date': zf_date,'planet_names': planet_names,
+                                    'hs_name': clr_ch_hs_name, 'graph': graph})
 
         elif zf_hs == 'Without houses':
 
@@ -2624,8 +2641,8 @@ def one_color_chart(request):
 
                         aspected_planet_s.append(coords_value[pl][0])
                         sq_angle.append(f'{aspect}°')
-                        sqaures.append(coords_value[value + 1][0])
-                        aspect_table_s = zip(aspected_planet_s, sq_angle, sqaures)
+                        squares.append(coords_value[value + 1][0])
+                        aspect_table_s = zip(aspected_planet_s, sq_angle, squares)
 
                     if aspect in conjunction and coords_value[pl][5] != coords_value[value + 1][5]:
                         pl_one = np.array([np.deg2rad(coords_value[pl][5]), np.deg2rad(coords_value[value + 1][5])])
@@ -2723,7 +2740,7 @@ def one_color_chart(request):
                                                fontsize=pd[swe.get_planet_name(pl)][3],
                                                color=zf_symbol_color,
                                                arrowprops=dict(facecolor='red', arrowstyle='-', edgecolor='hotpink'))
-
+            swe.close()
             color_chart_path = '/astro_app/astroknow/astroplan/static/plots/one_clr_chart.png'
 
             directory = os.path.dirname(color_chart_path)
@@ -2732,6 +2749,8 @@ def one_color_chart(request):
                 os.makedirs(directory, exist_ok=True)
 
             plt.savefig(color_chart_path)
+
+            plt.close()
 
             return render(request, 'designed_oc_chart_wh.html',
                           context={'planet_data': set_signs(planet_names, [p[5] for p in coords_value]),

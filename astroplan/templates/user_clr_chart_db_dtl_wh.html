@@ -26,7 +26,7 @@
 </div>
 
 
-<div class="menu-choice menu-choice-dd">
+<div class="menu-choice menu-choice-dd opened-tab">
      {% if user.is_authenticated %}
     <div>
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
@@ -44,10 +44,7 @@
                     </div>
 
                 </div>
-
-
             </div>
-
          {% endif %}
 </div>
 {% endblock %}
@@ -70,12 +67,12 @@
                     <tr>
                         <td> Sun </td>
                          <td> {{ clr_chart.Sun_deg}} </td>
-                        <td> {{ clr_Moon_sign }} </td>
+                        <td> {{ clr_chart.Sun_sign }} </td>
                     </tr>
 
                      <tr>
                         <td> Moon  </td>
-                         <td> {{ clr_Moon_deg}} </td>
+                         <td> {{ clr_chart.Moon_deg }} </td>
                         <td> {{ clr_chart.Moon_sign }} </td>
                     </tr>
 
@@ -88,7 +85,7 @@
                      <tr>
                         <td> Venus </td>
                          <td> {{ clr_chart.Sun_deg}} </td>
-                        <td> {{ clr_chart.Moon_sign }} </td>
+                        <td> {{ clr_chart.Sun_sign }} </td>
                     </tr>
 
                     <tr>
