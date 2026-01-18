@@ -176,7 +176,8 @@
     </div>
 
 
-    <img src="/media/{{ chart.chart_image }}/" alt="{{ chart.chart_image }}">
+    <img src="{{ chart.chart_image }}" alt="plot">
+    <p> DEBUG: {{ chart.chart_image }}</p>
 
     <form method = "POST">
          {% csrf_token %}

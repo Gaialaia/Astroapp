@@ -529,9 +529,16 @@ class OneColorZodiacRingMF(models.Model):
     benefits_deg = models.CharField(default='330°')
     benefits_sign = models.CharField(default='Pisces')
 
-    chart_image = models.ImageField(upload_to='chart_plots/',
-                                    default='chart_plots/Gaia_2026-01-04_1138000000',
-                                    blank=True, null=True)
+    # chart_image = models.ImageField(upload_to='chart_plots/',
+    #                                 default='chart_plots/Gaia_2026-01-04_1138000000',
+    #                                 blank=True, null=True)
+
+    chart_image = models.URLField(max_length=500, blank=True, null=True)
+
+    # def get_image_url(self):
+    #     if str(self.chart_image).startswith('http'):
+    #         return self.chart_image
+    #     return self.chart_image.url
 
 
     def __str__(self):

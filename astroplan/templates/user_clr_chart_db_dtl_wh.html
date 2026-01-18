@@ -131,7 +131,7 @@
 </div>
 
 <div class="chart-fig">
-    <h3> {{ clr_chart.chart_name }}</h3>
+
 
     <div class="form-info">
         <div class="event-info">
@@ -142,7 +142,9 @@
         </div>
         </div>
 
-    <img src="/media/{{ clr_chart.chart_image }}/" alt="{{ clr_chart.chart_image }}">
+    <img src="{{ clr_chart.chart_image }}" alt="clr_chart.chart_name">
+    <p>DEBUG ID: {{ clr_chart.id }}</p>
+<p>DEBUG URL: {{ clr_chart.chart_image }}</p>
 
     <form method = "POST">
          {% csrf_token %}

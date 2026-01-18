@@ -133,12 +133,13 @@
 </div>
 
 <div class="chart-fig">
-    <h3> {{ chart.chart_name }}</h3>
-      Event name : {{ clr_chart.chart_name }}
-        Event date: {{ clr_chart.chart_date }}
-        Event city : {{ clr_chart.city }}
-        Event country : {{ clr_chart.country }}
-    <img src="/media/{{ clr_chart.chart_image }}/" alt="{{ clr_chart.chart_image }}">
+    <div class="event-info">
+      <p class="form-info-data-title"> Event name : {{ clr_chart.chart_name }} </p>
+        <p class="form-info-data-title">  Event date: {{ clr_chart.chart_date }}</p>
+           <p class="form-info-data-title">  Event city : {{ clr_chart.chart_city }}</p>
+           <p class="form-info-data-title">  Event country : {{ clr_chart.chart_country }}</p>
+    </div>
+    <img src="{{ clr_chart.chart_image }}" alt="colored chart">
 
     <form method = "POST">
          {% csrf_token %}

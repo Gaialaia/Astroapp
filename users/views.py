@@ -1873,6 +1873,7 @@ def user_color_chart_form(request):
         if color_form.is_valid():
 
             color_chart = color_form.save(commit=False)
+            color_chart.save()
 
             # color_chart = OneColorZodiacRingMF.objects.last()
             get_loc = loc.geocode(f'{color_chart.chart_city, color_chart.chart_country}', timeout=7000)
@@ -2285,7 +2286,7 @@ def user_color_chart_form(request):
                 fig_form.savefig(buffer, format='png')
                 buffer.seek(0)
 
-                plot_name = f'{color_chart.drawer}_{d}.png'
+                # plot_name = f'{color_chart.drawer}_{d}.png'
 
                 # color_chart.chart_image.save(plot_name, ContentFile(buffer.getvalue()), save=True)
                 # color_form.save()
@@ -2295,11 +2296,13 @@ def user_color_chart_form(request):
                 aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
                 region_name="ru-central1")
                 s3 = session.client("s3", endpoint_url="https://storage.yandexcloud.net")
-                plot_name = f'{color_chart.drawer}_{d}.png'
-                s3_key = f"graphs/{plot_name}"
+                plot_name = f'{color_chart.drawer}{color_chart.id}.png'
+                s3_key = f"chart_plots/colored_charts/{plot_name}"
                 bucket_name = os.getenv('BUCKET_NAME')
-                s3.put_object(Bucket = bucket_name, Key=plot_name, Body = buffer, ContentType = 'image/png')
-
+                s3.put_object(Bucket = bucket_name, Key=s3_key,
+                              Body = buffer, ContentType = 'image/png',
+                              ACL='public-read'
+                              )
                 plot_url = f"https://{bucket_name}.storage.yandexcloud.net/{s3_key}"
                 color_chart.chart_image = plot_url
                 color_chart.save()
@@ -2501,15 +2504,43 @@ def user_color_chart_form(request):
                 # plt.savefig(fn_path)
                 # plt.close(fig_form)
 
+                # buffer = io.BytesIO()
+                # fig_form.savefig(buffer, format='png')
+                #
+                # plot_name = f'{color_chart.drawer}_{d}.png'
+                # color_chart.chart_image.save(plot_name, ContentFile(buffer.getvalue()), save=True)
+                # color_form.save()
+                #
+                # buffer.close()
+                # plt.close(fig_form)
+
                 buffer = io.BytesIO()
                 fig_form.savefig(buffer, format='png')
+                buffer.seek(0)
 
-                plot_name = f'{color_chart.drawer}_{d}.png'
-                color_chart.chart_image.save(plot_name, ContentFile(buffer.getvalue()), save=True)
-                color_form.save()
+                # plot_name = f'{color_chart.drawer}_{d}.png'
+                # color_chart.chart_image.save(plot_name, ContentFile(buffer.getvalue()), save=True)
+                # color_form.save()
+
+                session = boto3.Session(
+                    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+                    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+                    region_name="ru-central1")
+                s3 = session.client("s3", endpoint_url="https://storage.yandexcloud.net")
+                plot_name = f'{color_chart.drawer}{color_chart.id}.png'
+                s3_key = f"chart_plots/colored_charts_nh/{plot_name}"
+                bucket_name = os.getenv('BUCKET_NAME')
+                s3.put_object(Bucket=bucket_name, Key=s3_key,
+                              Body=buffer, ContentType='image/png',
+                              ACL='public-read'
+                              )
+                plot_url = f"https://{bucket_name}.storage.yandexcloud.net/{s3_key}"
+                color_chart.chart_image = plot_url
+                color_chart.save()
 
                 buffer.close()
                 plt.close(fig_form)
+                plt.close('all')
 
                 return render(request, 'user_color_chart_nh.html',
                               {'planet_data': set_signs(planet_names, [p[5] for p in form_coords_value]),

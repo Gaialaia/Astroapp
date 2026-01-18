@@ -2,7 +2,7 @@ import os, io, base64
 
 from django.contrib import messages
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from pycirclize import Circos
 import matplotlib
@@ -2810,21 +2810,20 @@ def tr_chart_detail(request, id):
 
 
 def clr_chart_detail(request, id):
-    clr_chart_to_del = OneColorZodiacRingMF.objects.filter(id=id).first()
 
-    username = request.user.username
+    clr_chart_dtl = get_object_or_404(OneColorZodiacRingMF, id=id)
 
     if request.method == 'POST':
-        clr_chart_to_del.delete()
+        clr_chart_dtl.delete()
         messages.success(request, 'Chart deleted')
-        return redirect('user lounge', username=username)
+        return redirect('user lounge', username = request.user.username)
 
-    clr_chart_dtl = OneColorZodiacRingMF.objects.get(id=id)
+    context = {'clr_chart': clr_chart_dtl }
 
     if clr_chart_dtl.chart_house_system == 'Without houses':
-        return render(request, 'user_clr_chart_db_dtl_wh.html', {'clr_chart': OneColorZodiacRingMF.objects.get(id=id)})
+            return render(request, 'user_clr_chart_db_dtl_wh.html', context)
 
-    return render(request, 'clr_chart_db_dtl.html', {'clr_chart': OneColorZodiacRingMF.objects.get(id=id)})
+    return render(request, 'clr_chart_db_dtl.html', context)
 
 
 def user_chart_lists(request):
