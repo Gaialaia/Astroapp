@@ -1,9 +1,10 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.utils import timezone
 from hashlib import md5
 
 class CustomUser(AbstractUser):
+    objects = UserManager()
 
     email = models.EmailField(unique=True)
 

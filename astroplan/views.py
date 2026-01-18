@@ -28,7 +28,7 @@ from pytz import timezone
 from .models import FullChart, TransitFullChart, OneColorZodiacRingMF
 from .forms import (ShowChart, TransitForm, OneColorZodiacRing,
                     HOUSE_SYSTEM_CHOICES, MODE_CHOICES)
-from astroplan.utils import build_plot, draw_zodiac_one_color
+from .utils import build_plot, draw_zodiac_one_color
 from timezonefinder import TimezoneFinder
 
 from PIL import Image

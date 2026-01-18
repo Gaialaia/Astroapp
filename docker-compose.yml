@@ -18,6 +18,15 @@ services:
     depends_on:
       # Django app needs to wait for the database
       - db
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
 
   nginx:
     image: my-custom-nginx-image:latest

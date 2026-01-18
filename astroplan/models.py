@@ -55,7 +55,7 @@ class FullChart(models.Model):  # model for ul chart model
     chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
     house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
 
-    drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1)
+    drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, blank=True)
 
     Sun_deg = models.CharField(default='5°05')
     Sun_sign = models.CharField(default='Aquarius')
@@ -344,7 +344,8 @@ class TransitFullChart(models.Model):  # model for ul transit chart model
     tr_benefits_sign = models.CharField(default='Pisces')
 
     tr_chart_image = models.ImageField(upload_to='chart_plots/')
-    drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1)
+    drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,
+                               null=True, blank=True)
 
 
     def __str__(self):
@@ -447,7 +448,8 @@ class OneColorZodiacRingMF(models.Model):
     house_num_fs = models.IntegerField(default=27)
     house_track_lw = models.IntegerField(default=3)
 
-    drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1)
+    drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,
+                               null=True, blank=True)
 
     Sun_deg = models.CharField(default='5°05')
     Sun_sign = models.CharField(default='Aquarius')
@@ -527,7 +529,9 @@ class OneColorZodiacRingMF(models.Model):
     benefits_deg = models.CharField(default='330°')
     benefits_sign = models.CharField(default='Pisces')
 
-    chart_image = models.ImageField(upload_to='chart_plots/', default='chart_plots/Gaia_2026-01-04_1138000000', blank=True, null=True)
+    chart_image = models.ImageField(upload_to='chart_plots/',
+                                    default='chart_plots/Gaia_2026-01-04_1138000000',
+                                    blank=True, null=True)
 
 
     def __str__(self):

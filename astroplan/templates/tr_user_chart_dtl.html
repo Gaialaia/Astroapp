@@ -59,21 +59,25 @@
 </div>
 
 <div class="chart-fig">
-      <div class="form-info">
+       <div class="form-info">
           <div class="event-info">
+              <p class="form-info-data-title">Event date: {{ event_date }} </p> tr_uc_tr_name
+                    <p class="form-info-data-title"> Event name: {{ tr_uc_tr_name }} </p>
+                       <p class="form-info-data-title"> Event city: {{ transit_user_chart.event_city }} </p>
+                       <p class="form-info-data-title"> Event country: {{ transit_user_chart.event_country }} </p>
+                       <p class="form-info-data-title"> House system: {{ tr_ev_hs }} </p>
+                        <p class="form-info-data-title"> Event mode: {{ ev_mode }} </p>
 
-                        <p> Event name: {{ tr_uc_tr_name }}</p>
-                       <p> Event date: {{ event_date }} </p>
-                       <p> Event city: {{ event_city }} </p>
-                       <p> Event country: {{ event_country }} </p>
           </div>
-          <div class="transit-info">
-                         <p> Transit name: {{ tr_uc_ev_name }} </p>
-                        <p> Transit date: {{ tr_date }} </p>
-                       <p> Transit city: {{ tr_city }} </p>
-                       <p> Transit country: {{ tr_country }} </p>
-          </div>
-      </div>
+                    <div class="transit-info">
+                          <p class="form-info-data-title"> Transit name: {{ tr_uc_ev_name }} </p>
+                        <p class="form-info-data-title"> Transit date: {{ tr_date }} </p>
+                       <p class="form-info-data-title"> Transit city: {{ tr_city }} </p>
+                       <p class="form-info-data-title"> Transit country: {{ tr_country }} </p>
+                        <p class="form-info-data-title"> House system: {{ tr_hs }} </p>
+                        <p class="form-info-data-title"> Transit mode: {{ tr_mode }} </p>
+                    </div>
+       </div>
                 <img src="{% static 'plots/tr_user_chart.png' %}" alt="plot" id="chart-plot">
 
                     <div class="ul-link-div">

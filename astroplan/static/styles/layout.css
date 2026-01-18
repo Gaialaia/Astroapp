@@ -632,6 +632,10 @@ input[type="number"] {
 
 }
 
+.ul-link-tr-form {
+    display: flex;
+}
+
 .user-welcome-div {
     margin-bottom: 50px;
 

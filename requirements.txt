@@ -59,3 +59,6 @@ typing-inspection==0.4.1
 typing_extensions==4.14.0
 tzdata==2025.2
 urllib3==2.6.0
+boto==2.49.0
+ydb==3.23.2
+boto3==1.42.29
