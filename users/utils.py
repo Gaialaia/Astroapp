@@ -1,3 +1,4 @@
+import boto3
 from pycirclize import Circos
 
 from astroknow import settings
@@ -51,3 +52,26 @@ def remove_all_files_in_directory(directory_path):
             print(f"Removed file: {file_path}")
 
 # remove_all_files_in_directory('/home/gaia/PythonProject/astroapp/astroknow/media/chart_plots')
+
+
+
+
+def get_s3_client():
+    session = boto3.Session(
+        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+        region_name="ru-central1")
+    return session.client("s3", endpoint_url="https://storage.yandexcloud.net")
+
+def upload_to_storage(buffer, plot_name, path):
+        s3 = get_s3_client()
+        bucket_name = os.getenv('BUCKET_NAME')
+        s3_key = f"{path}{plot_name}"
+        s3.put_object(
+            Bucket=bucket_name,
+            Key=s3_key,
+            Body=buffer,
+            ContentType='image/png',
+            ACL='public-read'
+        )
+        return f"https://{bucket_name}.storage.yandexcloud.net/{s3_key}"

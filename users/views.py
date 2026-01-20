@@ -43,7 +43,7 @@ from astroplan.forms import (FullChartForm, TransitFullChartForm,
 
 from timezonefinder import TimezoneFinder
 
-from .utils import draw_zodiac_one_color
+from .utils import draw_zodiac_one_color, get_s3_client, upload_to_storage
 from PIL import Image
 from astroknow import settings
 
@@ -1883,6 +1883,7 @@ def user_color_chart_form(request):
             jd = jl.to_jd(d, fmt='jd')
             username = request.user.username
             color_chart.drawer = get_object_or_404(get_user_model(), username=username)
+            plot_name = f'{color_chart.drawer}{color_chart.id}.png'
 
             draw_zodiac_one_color(color_chart.face_color, color_chart.edge_color, color_chart.text_color,
                                   color_chart.tick_color, color_chart.deg_color, color_chart.font_size,
@@ -2287,24 +2288,12 @@ def user_color_chart_form(request):
                 buffer.seek(0)
 
                 # plot_name = f'{color_chart.drawer}_{d}.png'
-
                 # color_chart.chart_image.save(plot_name, ContentFile(buffer.getvalue()), save=True)
                 # color_form.save()
 
-                session = boto3.Session(
-                aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-                aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
-                region_name="ru-central1")
-                s3 = session.client("s3", endpoint_url="https://storage.yandexcloud.net")
-                plot_name = f'{color_chart.drawer}{color_chart.id}.png'
-                s3_key = f"chart_plots/colored_charts/{plot_name}"
-                bucket_name = os.getenv('BUCKET_NAME')
-                s3.put_object(Bucket = bucket_name, Key=s3_key,
-                              Body = buffer, ContentType = 'image/png',
-                              ACL='public-read'
-                              )
-                plot_url = f"https://{bucket_name}.storage.yandexcloud.net/{s3_key}"
-                color_chart.chart_image = plot_url
+                get_s3_client()
+
+                color_chart.chart_image = upload_to_storage(buffer, plot_name,'chart_plots/colored_charts/')
                 color_chart.save()
 
                 buffer.close()
@@ -2522,20 +2511,9 @@ def user_color_chart_form(request):
                 # color_chart.chart_image.save(plot_name, ContentFile(buffer.getvalue()), save=True)
                 # color_form.save()
 
-                session = boto3.Session(
-                    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-                    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
-                    region_name="ru-central1")
-                s3 = session.client("s3", endpoint_url="https://storage.yandexcloud.net")
-                plot_name = f'{color_chart.drawer}{color_chart.id}.png'
-                s3_key = f"chart_plots/colored_charts_nh/{plot_name}"
-                bucket_name = os.getenv('BUCKET_NAME')
-                s3.put_object(Bucket=bucket_name, Key=s3_key,
-                              Body=buffer, ContentType='image/png',
-                              ACL='public-read'
-                              )
-                plot_url = f"https://{bucket_name}.storage.yandexcloud.net/{s3_key}"
-                color_chart.chart_image = plot_url
+                get_s3_client()
+
+                color_chart.chart_image = upload_to_storage(buffer, plot_name, 'chart_plots/colored_charts_nh/')
                 color_chart.save()
 
                 buffer.close()

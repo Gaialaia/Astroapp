@@ -62,8 +62,8 @@
                  </div>
 
                  <div class="chart-fig">
-                        <div class="event-info">
-                            <p class="form-info-data-title">Date: {{ chart_dt }} </p>
+                     <div class="event-info">
+                            <p class="form-info-data-title">Date: {{  chart_dt }} </p>
                            <p class="form-info-data-title"> City: {{ city }}  </p>
                            <p class="form-info-data-title"> Country: {{ country }}</p>
                            <p class="form-info-data-title"> House system: {{ hs_name }} </p>
@@ -72,11 +72,6 @@
 
                     <img src="data:image/png;base64,{{ graph }}" alt="plot" id="chart-plot">
                  </div>
-
-                <div class="table-data">
-                     {% include 'includes/house_cusps.html' %}
-                </div>
-
 
                 <div class="table-data">
                        {% include 'includes/aspects.html' %}
