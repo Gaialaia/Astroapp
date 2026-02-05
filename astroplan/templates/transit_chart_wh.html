@@ -61,14 +61,16 @@
 <div class="chart-fig" id="tr-chart-fig">
       <div class="form-info">
           <div class="event-info">
-              <p class="form-info-data-title">Event date: {{ event_date }} </p>
-                       <p class="form-info-data-title"> Event city: {{ event_city }}, {{ lng }} {{ lat }} </p>
+              <p class="form-info-data-title">  Event date: {{ event_date }} </p>
+                       <p class="form-info-data-title"> Event city: {{ event_city }} </p>
                        <p class="form-info-data-title"> Event country: {{ event_country }} </p>
+                          <p class="form-info-data-title"> Mode: {{ ev_mode }} </p>
           </div>
                     <div class="transit-info">
                         <p class="form-info-data-title"> Transit date: {{ tr_date }} </p>
                        <p class="form-info-data-title"> Transit city: {{ tr_city }} </p>
                        <p class="form-info-data-title"> Transit country: {{ tr_country }} </p>
+                          <p class="form-info-data-title"> Mode: {{ tr_mode }} </p>
                     </div>
       </div>
                 <img src="data:image/png;base64,{{ graph }}" alt="plot" id="tr-chart-plot">

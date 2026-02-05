@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load tz %}
 
 {% block title %} Chart for any date {% endblock %}
 
@@ -68,7 +69,7 @@
          <div class="form-row">
              <label for="id_chart_date"> date:</label>
                 <div class="django-flatpickr">
-                  <input type="text" name="chart_date" value="2025-12-19 12:16:02" required id="id_chart_date" data-fpconfig="{&quot;picker_type&quot;: &quot;DATETIME&quot;, &quot;options&quot;: {&quot;altInput&quot;: true, &quot;dateFormat&quot;: &quot;Y-m-d H:i:S&quot;, &quot;enableTime&quot;: true, &quot;wrap&quot;: true}}" data-debug="">
+                  <input type="text" name="chart_date" value="{{ chart_date|localtime }}" required id="id_chart_date" data-fpconfig="{&quot;picker_type&quot;: &quot;DATETIME&quot;, &quot;options&quot;: {&quot;altInput&quot;: true, &quot;dateFormat&quot;: &quot;Y-m-d H:i:S&quot;, &quot;enableTime&quot;: true, &quot;wrap&quot;: true}}" data-debug="">
                 </div>
          </div>
 

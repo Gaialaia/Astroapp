@@ -66,8 +66,14 @@
 
 
  <div class ="chart-fig">
-     <h1> Planet chart for {{ date }}</h1>
-     <img src="{% static 'plots/one_clr_chart.png' %}" alt="plot" id="chart-plot">
+      <div class="event-info">
+                          <p class="form-info-data-title"> Date : {{ date }} </p>
+                         <p class="form-info-data-title"> City : {{  city }} </p>
+                         <p class="form-info-data-title"> Country: {{ country }} </p>
+                         <p class="form-info-data-title"> House system: {{ hs_name }}</p>
+                         <p class="form-info-data-title"> Chart mode: {{  mode }}</p>
+                     </div>
+     <img src="data:image/png;base64,{{ graph }}" alt="plot" id="chart-plot">
  </div>
 
   <div class="table-data">

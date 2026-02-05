@@ -62,3 +62,4 @@ urllib3==2.6.0
 boto==2.49.0
 ydb==3.23.2
 boto3==1.42.29
+adjustText

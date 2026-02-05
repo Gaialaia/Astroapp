@@ -1,3 +1,4 @@
+from zoneinfo import ZoneInfo
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -7,7 +8,8 @@ import numpy as np
 import csv
 
 from datetime import datetime as dt
-
+from timezonefinder import TimezoneFinder
+import datetime
 import swisseph as swe
 
 import julian as jl
@@ -21,8 +23,11 @@ from timezonefinder import TimezoneFinder
 now = dt.now(tz=timezone('UTC'))
 
 
-date = dt(1986, 2,17, 17,20)
-jd = jl.to_jd(now, fmt='jd')
+date = dt(1986, 2,17, 22,20)
+jd = jl.to_jd(date, fmt='jd')
+
+
+
 
 px = 1/plt.rcParams['figure.dpi']
 matplotlib.rcParams['axes.edgecolor'] = 'darkorchid'
@@ -110,17 +115,22 @@ planet_ax2.set_theta_direction('counterclockwise')
 planet_ax2.set_rticks([])
 planet_ax.set_facecolor('teal')
 
-
 # house_ax = fig.add_axes((0.05, 0.05, 0.9, 0.9), projection='polar')
 # house_ax.patch.set_alpha(0.0)
 # house_ax.set_facecolor('aliceblue')
 
 
-plot_date =  jl.to_jd(date, fmt='jd')
+
 getLoc = loc.geocode("Ufa, Russia", timeout=7000)
-houses = swe.houses_ex(plot_date, getLoc.latitude, getLoc.longitude, b'R', flags=swe.FLG_SIDEREAL)
 
 
+tf = TimezoneFinder()
+loc_tz = tf.timezone_at(lng=getLoc.longitude, lat=getLoc.latitude)
+local_dt = date.replace(tzinfo=ZoneInfo(loc_tz))
+utc_dt = local_dt.astimezone(datetime.timezone.utc)
+jd = jl.to_jd(utc_dt, fmt='jd')
+
+houses = swe.houses_ex(jd, getLoc.latitude, getLoc.longitude, b'R', flags=swe.FLG_SIDEREAL | swe.SIDM_LAHIRI)
 
 #
 # house_ax.set_rlim(-130, 100)
@@ -423,7 +433,15 @@ for value in range(len(coords_value) - 1):
 
 
 
-plt.show()
+# plt.show()
+lab = ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII']
+print(houses[0])
+
+print(loc_tz)
+print(f' utc_tx{utc_dt}')
+print(jd)
+
+
 
 # plt.savefig('/home/gaia/PythonProject/astroapp/astroknow/astroplan/static/plots/now_chart.png')
 
@@ -446,6 +464,9 @@ plt.show()
 u = [(set_signs(planet_names,  [p[4] for p in coords_value]))]
 
 h = [set_signs(house_names, list(houses[0]))]
+
+
+print(houses[0])
 # print(type(f'{u[0][1][1]}'), u[0][1][2])
 #
 # filename = f'{now}.png'

@@ -57,7 +57,7 @@ class ChartForm(forms.ModelForm):
 
 class ShowChart(forms.Form):
 
-    chart_date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter date', initial=timezone.now())
+    chart_date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter date', initial=timezone.now)
     city = forms.CharField(label='Enter city', initial='Ufa')
     country = forms.CharField(label='Enter country', initial='Russia')
 
@@ -72,7 +72,7 @@ class ShowChart(forms.Form):
 
 class TransitForm(forms.Form):
 
-    event_date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter event date', initial=timezone.now())
+    event_date = forms.DateTimeField(widget=DateTimePickerInput(), label='Enter event date', initial=timezone.now)
     event_city = forms.CharField(label='Enter event city', initial='Ufa')
     event_country = forms.CharField(label='Enter event country', initial='Russia')
 
@@ -166,7 +166,7 @@ class OneColorZodiacRing(forms.Form):
     oc_chart_date = (forms.DateTimeField
                      (widget=DateTimePickerInput(attrs={'class': 'form-control',
                                                         'id': 'chart-date'}), label='Enter chart date',
-                      initial=timezone.now()))
+                      initial=timezone.now))
     oc_chart_city = forms.CharField(label='Enter city', initial='Ufa',
                                     widget=TextInput(attrs={'class': 'form-control', 'placeholder': 'city',
                                                             'id': 'chart-city'}))
