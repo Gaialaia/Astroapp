@@ -422,15 +422,6 @@ def build_transit_chart(request):
                                                                event_two_ax=event_two_ax,
                                                                fig=tr_fig)
 
-            #
-            # event_one_ha.set_thetagrids(houses[0],
-            #                         ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
-            #
-            #
-            # event_two_ha.set_thetagrids(tr_houses[0],
-            #                            ['TR ASC', 'TR II', 'TR III', 'TR IC', 'TR V', 'TR VI', 'TR DSC',
-            #                             'TR VIII', 'TR IX', 'TR MC', 'TR XI', 'TR XII'])
-
             graph = get_graph(tr_fig)
             context = {'planet_data': set_signs([item[1] for item in event_one_pp
                                                  if isinstance(item, (list, tuple))],
@@ -451,31 +442,27 @@ def build_transit_chart(request):
 
             return render(request, 'transit_chart.html', context)
 
-        elif ev_hs == 'Without houses' and tr_hs != 'Without houses': #event_two_ha
-
-            fig, planet_ax, _, transit_ax, tr_house_ax, tr_cr_aspect_ax = \
-                draw_chart(fig_name='fig', planet_ax='planet_ax',
-                           transit_ax = 'transit_ax',
-                           tr_house_ax='tr_house_ax',
-                           aspect_ax='tr_cr_aspect_ax')
-
-            aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c,\
-            event_one_pp, event_two_pp = build_transit_aspects(
-                event_one_data=event_data, event_two_data=transit_data,
-                event_one_ax=planet_ax, event_two_ax=transit_ax,
-                aspect_ax=tr_cr_aspect_ax)
+        elif ev_hs == 'Without houses' and tr_hs != 'Without houses': #event_two_ha work
 
             tr_houses = swe.houses_ex(jd_tr, tr_get_loc.latitude, tr_get_loc.longitude, tr_hs_bytes, int(tr_mode))
-            tr_house_ax.set_thetagrids(tr_houses[0],
-                                       ['TR ASC', 'TR II', 'TR III', 'TR IC', 'TR V', 'TR VI', 'TR DSC',
-                                        'TR VIII', 'TR IX', 'TR MC', 'TR XI', 'TR XII'])
-            tr_house_ax.tick_params(labelsize=20, grid_color='chartreuse', grid_linewidth=1,
-                                    labelfontfamily='monospace', pad=23.0, labelcolor='chartreuse')
-            tr_house_ax.set_theta_offset(np.pi)
+
+            tr_fig, event_one_ax, event_two_ax,_,event_two_ha = (
+                draw_transit_chart(event_one_ax='event_one_ax',
+                                   event_two_ax='event_two_ax',
+                                   event_two_ha='event_two_ha',
+                                   event_two_houses=tr_houses[0]))
+
+            aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, \
+                event_one_pp, event_two_pp = build_transit_aspects(event_one_data=event_data,
+                                                                   event_two_data=transit_data,
+                                                                   event_one_ax=event_one_ax,
+                                                                   event_two_ax=event_two_ax,
+                                                                   fig=tr_fig)
+
 
             swe.close()
 
-            graph = get_graph(fig)
+            graph = get_graph(tr_fig)
 
             context = {'planet_data': set_signs([item[1] for item in event_one_pp
                                                  if isinstance(item, (list, tuple))],
@@ -494,26 +481,26 @@ def build_transit_chart(request):
 
             return render(request, 'transit_chart_tr_hs.html', context)
 
-        elif ev_hs != 'Without houses' and tr_hs == 'Without houses': #event_one_ha
+        elif ev_hs != 'Without houses' and tr_hs == 'Without houses': #event_one_ha dont work
 
-            fig, planet_ax, house_ax, transit_ax, _, tr_cr_aspect_ax = \
-                draw_chart(fig_name='fig',planet_ax='planet_ax',
-                           house_ax='house_ax', aspect_ax='tr_cr_aspect_ax')
+            houses = swe.houses_ex(jd_ev, ev_get_loc.latitude, ev_get_loc.longitude, ev_hs_bytes, int(ev_mode))
+
+            tr_fig, event_one_ax, event_two_ax, event_one_ha,_ = (
+                draw_transit_chart(event_one_ax='event_one_ax',
+                                   event_two_ax='event_two_ax',
+                                   event_one_ha='event_one_ha',
+                                   event_one_houses=houses[0],
+                                   ))
 
             aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, \
                 event_one_pp, event_two_pp = build_transit_aspects(event_one_data=event_data,
                                                                    event_two_data=transit_data,
-                                                                   event_one_ax=planet_ax, event_two_ax=transit_ax,
-                                                                   aspect_ax=tr_cr_aspect_ax)
-            houses = swe.houses_ex(jd_ev, ev_get_loc.latitude, ev_get_loc.longitude, ev_hs_bytes, int(ev_mode))
+                                                                   event_one_ax=event_one_ax,
+                                                                   event_two_ax=event_two_ax,
+                                                                   fig=tr_fig)
 
-            house_ax.set_thetagrids(houses[0],
-                                    ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
-            house_ax.tick_params(labelsize=20, grid_color='aliceblue', grid_linewidth=1,
-                                 labelfontfamily='monospace', labelcolor='aliceblue')
-            house_ax.set_theta_offset(np.pi)
 
-            graph = get_graph(fig)
+            graph = get_graph(tr_fig)
             swe.close()
             context = {'planet_data': set_signs([item[1] for item in event_one_pp
                                                  if isinstance(item, (list, tuple))],

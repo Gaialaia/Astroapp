@@ -183,7 +183,6 @@ def draw_transit_chart(event_one_ax, event_two_ax, event_one_houses=None, event_
 
     hl =  ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII']
 
-
     def set_zr_ax(ax_name):
         ax_name.set_theta_direction('counterclockwise')
         ax_name.set_rlim(-130, 100)
@@ -196,10 +195,6 @@ def draw_transit_chart(event_one_ax, event_two_ax, event_one_houses=None, event_
         ax_name_bg.axis('off')
         return ax_name
 
-    set_zr_ax(event_one_ax)
-    set_zr_ax(event_two_ax)
-
-
     def set_ha(position_ax, angles, labels):
         ha_pos = position_ax.get_position()
         ha = tr_fig.add_axes(ha_pos, zorder=1, polar=True)
@@ -208,54 +203,23 @@ def draw_transit_chart(event_one_ax, event_two_ax, event_one_houses=None, event_
         ha.set_theta_direction(1)
         ha.set_rticks([])
         ha.tick_params(labelsize=20, grid_color='aliceblue', grid_linewidth=1,
-                                                        labelfontfamily='monospace',
-                                                        labelcolor='aliceblue')
+                       labelfontfamily='monospace',
+                       labelcolor='aliceblue')
         ha.set_thetagrids(angles, labels)
 
         return ha, angles
 
-    if event_one_ha or event_two_ha is not None:
+    set_zr_ax(event_one_ax)
+    set_zr_ax(event_two_ax)
+
+    if event_one_ha is not None:
 
         set_zr_ax(event_one_ax)
-
         event_one_ha= set_ha(event_one_ax, angles=event_one_houses, labels=hl)
 
+    if event_two_ha is not None:
         set_zr_ax(event_two_ax)
-
         event_two_ha = set_ha(event_two_ax, angles=event_two_houses, labels=hl)
-
-
-
-    # for i, ax in enumerate([event_one_ax, event_two_ax]):
-    #     ax.set_theta_direction('counterclockwise')
-    #     ax.set_rlim(-130, 100)
-    #     ax.set_rticks([])
-    #     ax.set_axis_off()
-    #     ax.imshow(img)
-    #     ax.patch.set_alpha(0)
-    #     ax_bg = tr_fig.add_axes(ax.get_position(), zorder=-1)
-    #     ax_bg.imshow(img, aspect='auto', extent=(0, 1, 0, 1))
-    #     ax_bg.axis('off')
-    #
-    #
-    #     if event_one_ha and event_two_ha is not None:
-    #         has.append(event_one_ax)
-    #         has.append(event_two_ax)
-    #         pos = ax.get_position()
-    #         ha = tr_fig.add_axes(pos, zorder=1, label=f"layer_ha_{i}", polar=True)
-    #         ha.patch.set_alpha(0.0)
-    #         ha.set_rlim(-130, 100)
-    #         ha.set_theta_direction(1)
-    #         ha.set_rticks([])
-    #         ha.tick_params(labelsize=20, grid_color='aliceblue', grid_linewidth=1,
-    #                                  labelfontfamily='monospace',
-    #                                  labelcolor='aliceblue')
-    #
-    #         event_one_ha = has[0]
-    #         event_one_ha.set_thetagrids(event_one_houses,event_one_hl)
-    #
-    #         event_two_ha = has[1]
-    #         event_two_ha.set_thetagrids(event_two_houses,event_two_hl)
 
     return tr_fig, event_one_ax, event_two_ax, event_one_ha, event_two_ha
 
