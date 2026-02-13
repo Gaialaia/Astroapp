@@ -1,0 +1,121 @@
+ * {
+     box-sizing: border-box;
+    }
+
+@media (max-width: 1024px) {
+     .navigation {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1px;
+
+    }
+
+    .chart-data-main {
+        display: grid;
+        grid-template-columns: 1fr;
+     }
+
+    .chart-data {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        align-content: center;
+        font-size: 70%;
+    }
+    .chart-fig {
+        margin: auto;
+        max-width: 100%;
+        font-size: 40%;
+        height: auto;
+    }
+
+    #chart-plot  {
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+
+    }
+
+     .chart-forms label {
+        display: block;
+        font-size: 90%;
+
+    }
+
+    .chart-forms input,
+    .chart-forms select,
+    .chart-forms .django-flatpickr input {
+        font-size: 100% !important;
+        width: 100% !important;
+        box-sizing: border-box;
+        padding: 8px;
+    }
+
+    .instruction-text {
+        font-size: 75%;
+    }
+
+     .one-clr-div, .one-clr-cd, .one-clr-chart-clrs {
+        width: 100% !important;
+        padding: 10px !important;
+        box-sizing: border-box;
+    }
+
+    .form-row {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 15px;
+        width: 100%;
+        gap: 5px;
+    }
+
+     .instruction-text h3, .one-clr-form-title {
+        font-size: 110% !important;
+
+     }
+
+    .one-clr-div {
+        display: block;
+        width: 100% !important;
+        padding: 10px;
+
+    }
+
+    #color-instruction-pic,
+    #tr-chart-plot {
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+
+    }
+
+    .menu-choice-dd-content-links {
+        position: absolute;
+        margin-bottom: 10px;
+        width: 100%;
+        border-top-right-radius: 30%;
+        border-top-left-radius: 10%;
+        border-left: solid 10px chartreuse;
+        border-bottom: solid 5px chartreuse;
+        background-color: rgba(159,0,255, 0.8);
+    }
+
+    .content-data {
+        align-content: center;
+        background-image: linear-gradient(180deg, rgba(159,0,255, 0.4), rgba(159,0,255, 0.0));
+        color: rgb(216,218,220);
+        font-size: 120%;
+        padding: 106px;
+        padding-bottom: 56px;
+        max-width: 100%;
+        height: 100vh;
+        overflow: auto;
+        zoom: 0.8;
+    }
+
+}
+
+

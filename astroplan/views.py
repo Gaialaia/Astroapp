@@ -1,23 +1,8 @@
 import datetime
-import io, base64
-
 from django.contrib import messages
-
 from django.shortcuts import render, redirect, get_object_or_404
-
-from pycirclize import Circos
 import matplotlib
-
 from astroknow import settings
-
-
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import matplotlib.image as mpi
-
-
-import numpy as np
-
 from datetime import datetime as dt
 
 import swisseph as swe
@@ -32,94 +17,35 @@ from .forms import (ShowChart, TransitForm, OneColorZodiacRing,
                     HOUSE_SYSTEM_CHOICES, MODE_CHOICES)
 from .utils import (draw_zodiac_one_color, get_planet_data,
                     build_aspects, draw_chart, get_graph, build_transit_aspects,
-                    draw_transit_chart)
+                    draw_transit_chart, set_signs)
 from timezonefinder import TimezoneFinder
 from zoneinfo import ZoneInfo
 
 swe.set_ephe_path('/home/gaia/Документы/eph files')
 
-opposition = np.arange(175.0, 185.0)
-trine = np.arange(115.0, 125.0)
-square = np.arange(85.0, 95.0)
-conjunction = np.arange(0.00, 7.00)
-
-squares = []
-trines = []
-oppositions = []
-conjunctions = []
-
-aspected_planet_s = []
-aspected_planet_op = []
-aspected_planet_t = []
-aspected_planet_c = []
-
-sq_angle = []
-op_angle = []
-t_angle = []
-c_angle = []
-
-
-
 planet_names = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter',
                 'Saturn', 'Uranus', 'Neptune', 'Pluto']
-
-cur_tr_pn = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter',
-             'Saturn', 'Uranus', 'Neptune', 'Pluto', 'tr_Sun',
-             'tr_Moon', 'tr_Mercury', 'tr_Venus', 'tr_Mars', 'tr_Jupiter',
-             'tr_Saturn', 'tr_Uranus', 'tr_Neptune', 'tr_Pluto']
 
 tr_planet_names = ['tr_Sun', 'tr_Moon', 'tr_Mercury', 'tr_Venus', 'tr_Mars',
                    'tr_Jupiter', 'tr_Saturn', 'tr_Uranus', 'tr_Neptune', 'tr_Pluto']
 
-cur_tr_coords = []
-
-cur_tr_aspects = []
-aspects = []
-
-planet_symbols = ['☼', '☾', '☿', '♀', '♂', '♃', '♄', '♅', '♆', '♇',' ⯓']
-# house_names = ['8', '9', 'MC', '11', '12', 'ASC', '2', '3', 'IC', '5', '6', 'DSC']
-
 house_names = ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII']
 
-sign = ''
-signs = []
-
-pl_names_and_sym = {name: symbol for name, symbol in zip(planet_names, planet_symbols)}
 tf = TimezoneFinder()
-
 loc = Nominatim(user_agent="GetLoc")
-
-sectors = {"♊︎": 30, "♉︎": 30, "♈︎": 30,
-           "♓︎": 30, "♒︎": 30, "♑︎": 30,
-           "♐︎": 30, "♏︎": 30, "♎︎": 30,
-           "♍︎": 30, "♌︎": 30, "♋︎": 30,
-           }
-
-circos = Circos(sectors)
-
-px = 1 / plt.rcParams['figure.dpi']
 
 
 def show_td_chart(request):
 
-    get_loc = loc.geocode("Ufa, Russia", timeout=7000)
-    loc_tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
-    jd = jl.to_jd(dt.now(tz=timezone(loc_tz)), fmt='jd')
+    jd = jl.to_jd(dt.now(), fmt='jd')
 
     flags = swe.FLG_SIDEREAL | swe.SIDM_LAHIRI
 
     planet_data = get_planet_data(jd, flags)
     planet_data_values = list(planet_data.values())
 
-    fig_form, planet_ax, house_ax, _, _, _ = draw_chart(fig_name='fig_form', planet_ax='planet_ax',
-                                                        house_ax='house_ax')
 
-    houses = swe.houses_ex(jd, get_loc.latitude, get_loc.longitude, b'R', flags=swe.FLG_SIDEREAL)
-    house_ax.set_thetagrids(houses[0],
-                            ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
-    house_ax.tick_params(labelsize=20, grid_color='aliceblue', grid_linewidth=1,
-                         labelfontfamily='monospace',
-                         labelcolor='aliceblue')
+    fig_form, planet_ax, _, _, _, _,_,_,_ = draw_chart(fig_name='fig_form', planet_ax='planet_ax')
 
     aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, = \
         build_aspects(planet_data=planet_data,ax_name=planet_ax)
@@ -128,45 +54,7 @@ def show_td_chart(request):
 
     swe.close()
 
-    def set_signs(name_list, deg_list):
-        if signs:
-            signs.clear()
-        round_deg = [round(d) for d in deg_list]
-        for i in range(len(deg_list)):
-            if round_deg[i] in range(300, 331):
-                sign = '♒'
-            if round_deg[i] in range(330, 361):
-                sign = '♓'
-            if round_deg[i] in range(0, 31):
-                sign = '♈'
-            if round_deg[i] in range(30, 61):
-                sign = '♉'
-            if round_deg[i] in range(60, 91):
-                sign = '♊'
-            if round_deg[i] in range(90, 121):
-                sign = '♋'
-            if round_deg[i] in range(120, 151):
-                sign = '♌'
-            if round_deg[i] in range(150, 181):
-                sign = '♍'
-            if round_deg[i] in range(180, 211):
-                sign = '♎'
-            if round_deg[i] in range(210, 241):
-                sign = '♏'
-            if round_deg[i] in range(240, 271):
-                sign = '♐'
-            if round_deg[i] in range(270, 301):
-                sign = '♑'
-            signs.append(sign)
-        deg_list_thirty = [round(c % 30, 2) for c in deg_list]
-        deg_form = [str(n).replace('.', '°').replace(',', '′,') for n in deg_list_thirty]
-        sign_table = zip(name_list, deg_form, signs)
-        return list(sign_table)
-
-    swe.close()
-
     context = {'planet_data': set_signs(planet_names, [p[4] for p in planet_data_values]),
-               'house_data': set_signs(house_names, list(houses[0])),
                'ats': aspect_table_s, 'ato': aspect_table_ops,
                'att': aspect_table_t, 'atc': aspect_table_c,
                'date': dt.now().strftime('%B, %d, %H:%M'), 'planet_names': planet_names,
@@ -203,55 +91,15 @@ def chart_for_any_date(request):
          planet_data = get_planet_data(jd, mode)
          planet_data_values = list(planet_data.values())
 
-         def set_signs(name_list, deg_list):
-             if signs:
-                 signs.clear()
-             round_deg = [round(d) for d in deg_list]
-             for i in range(len(deg_list)):
-                 if round_deg[i] in range(300, 331):
-                     sign = '♒'
-                 if round_deg[i] in range(330, 361):
-                     sign = '♓'
-                 if round_deg[i] in range(0, 31):
-                     sign = '♈'
-                 if round_deg[i] in range(30, 61):
-                     sign = '♉'
-                 if round_deg[i] in range(60, 91):
-                     sign = '♊'
-                 if round_deg[i] in range(90, 121):
-                     sign = '♋'
-                 if round_deg[i] in range(120, 151):
-                     sign = '♌'
-                 if round_deg[i] in range(150, 181):
-                     sign = '♍'
-                 if round_deg[i] in range(180, 211):
-                     sign = '♎'
-                 if round_deg[i] in range(210, 241):
-                     sign = '♏'
-                 if round_deg[i] in range(240, 271):
-                     sign = '♐'
-                 if round_deg[i] in range(270, 301):
-                     sign = '♑'
-                 signs.append(sign)
-             deg_list_thirty = [round(c % 30, 2) for c in deg_list]
-             deg_form = [str(n).replace('.', '°').replace(',', '′,') for n in deg_list_thirty]
-             sign_table = zip(name_list, deg_form, signs)
-             return list(sign_table)
-
          if house_system != 'Without houses':
-
-             fig_form, planet_ax, house_ax, _, _, _ = draw_chart(fig_name='fig_form', planet_ax='planet_ax',
-                                                                 house_ax='house_ax')
-
              houses = swe.houses_ex(jd, get_loc.latitude, get_loc.longitude, hs_bytes, (int(mode)))
-             house_ax.set_thetagrids(houses[0],
-                                     ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
-             # house_ax.tick_params(labelsize=20, grid_color='aliceblue', grid_linewidth=1,
-             #                      labelfontfamily='monospace',
-             #                      labelcolor='aliceblue')
+
+             fig_form, planet_ax, house_ax, _, _, _, _,_,_ = draw_chart(fig_name='fig_form', planet_ax='planet_ax',
+                                                                 house_ax='house_ax', houses_data=houses[0])
+
 
              aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, = \
-                 build_aspects(planet_data=planet_data, ax_name=planet_ax)
+                 build_aspects(ax_name=planet_ax, planet_data=planet_data)
 
 
              graph = get_graph(fig_form)
@@ -272,7 +120,7 @@ def chart_for_any_date(request):
 
          elif house_system == 'Without houses':
 
-             fig_form, planet_ax, _, _, _,_ = draw_chart(fig_name='fig_form', planet_ax='planet_ax')
+             fig_form, planet_ax, _, _, _,_,_,_,_ = draw_chart(fig_name='fig_form', planet_ax='planet_ax')
 
              aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, = \
                  build_aspects(planet_data=planet_data, ax_name=planet_ax)
@@ -336,40 +184,40 @@ def build_transit_chart(request):
         event_data = get_planet_data(jd_ev,ev_mode)
         transit_data = get_planet_data(jd_tr, tr_mode)
 
-        def set_signs(deg_list,name_list):
-            if signs:
-                signs.clear()
-            round_deg = [round(d) for d in deg_list]
-            for i in range(len(deg_list)):
-                if round_deg[i] in range(300, 331):
-                    sign = '♒'
-                if round_deg[i] in range(330, 361):
-                    sign = '♓'
-                if round_deg[i] in range(0, 31):
-                    sign = '♈'
-                if round_deg[i] in range(30, 61):
-                    sign = '♉'
-                if round_deg[i] in range(60, 91):
-                    sign = '♊'
-                if round_deg[i] in range(90, 121):
-                    sign = '♋'
-                if round_deg[i] in range(120, 151):
-                    sign = '♌'
-                if round_deg[i] in range(150, 181):
-                    sign = '♍'
-                if round_deg[i] in range(180, 211):
-                    sign = '♎'
-                if round_deg[i] in range(210, 241):
-                    sign = '♏'
-                if round_deg[i] in range(240, 271):
-                    sign = '♐'
-                if round_deg[i] in range(270, 301):
-                    sign = '♑'
-                signs.append(sign)
-            deg_list_thirty = [round(c % 30, 2) for c in deg_list]
-            deg_form = [str(n).replace('.', '°').replace(',', '′,') for n in deg_list_thirty]
-            sign_table = zip(name_list, deg_form, signs)
-            return list(sign_table)
+        # def set_signs(deg_list,name_list):
+        #     if signs:
+        #         signs.clear()
+        #     round_deg = [round(d) for d in deg_list]
+        #     for i in range(len(deg_list)):
+        #         if round_deg[i] in range(300, 331):
+        #             sign = '♒'
+        #         if round_deg[i] in range(330, 361):
+        #             sign = '♓'
+        #         if round_deg[i] in range(0, 31):
+        #             sign = '♈'
+        #         if round_deg[i] in range(30, 61):
+        #             sign = '♉'
+        #         if round_deg[i] in range(60, 91):
+        #             sign = '♊'
+        #         if round_deg[i] in range(90, 121):
+        #             sign = '♋'
+        #         if round_deg[i] in range(120, 151):
+        #             sign = '♌'
+        #         if round_deg[i] in range(150, 181):
+        #             sign = '♍'
+        #         if round_deg[i] in range(180, 211):
+        #             sign = '♎'
+        #         if round_deg[i] in range(210, 241):
+        #             sign = '♏'
+        #         if round_deg[i] in range(240, 271):
+        #             sign = '♐'
+        #         if round_deg[i] in range(270, 301):
+        #             sign = '♑'
+        #         signs.append(sign)
+        #     deg_list_thirty = [round(c % 30, 2) for c in deg_list]
+        #     deg_form = [str(n).replace('.', '°').replace(',', '′,') for n in deg_list_thirty]
+        #     sign_table = zip(name_list, deg_form, signs)
+        #     return list(sign_table)
 
         if ev_hs == 'Without houses' and tr_hs == 'Without houses':
 
@@ -387,14 +235,14 @@ def build_transit_chart(request):
 
             graph = get_graph(tr_fig)
 
-            context = {'planet_data': set_signs([item[1] for item in event_one_pp
+            context = {'planet_data': set_signs([item[0] for item in event_one_pp
             if isinstance(item, (list, tuple))],
-            [item[0] for item in event_one_pp if isinstance(item, (list, tuple))]),
+            [item[1] for item in event_one_pp if isinstance(item, (list, tuple))]),
             'ats': aspect_table_s, 'ato': aspect_table_ops, 'att': aspect_table_t,
              'atc' : aspect_table_c,'graph': graph,
-            'tr_planet_data': set_signs([item[1] for item in event_two_pp
+            'tr_planet_data': set_signs([item[0] for item in event_two_pp
             if isinstance(item, (list, tuple))],
-            [item[0] for item in event_two_pp if isinstance(item, (list, tuple))]),
+            [item[1] for item in event_two_pp if isinstance(item, (list, tuple))]),
             'event_date': event_date, 'event_city': event_city, 'event_country': event_country,
             'tr_date': transit_date, 'tr_city': transit_city, 'tr_country': transit_country,
                        'ev_hs_name' : ev_hs_name,'tr_hs_name': tr_hs_name, 'ev_mode': ev_m,
@@ -423,19 +271,20 @@ def build_transit_chart(request):
                                                                fig=tr_fig)
 
             graph = get_graph(tr_fig)
-            context = {'planet_data': set_signs([item[1] for item in event_one_pp
+            context = {'planet_data': set_signs([item[0] for item in event_one_pp
                                                  if isinstance(item, (list, tuple))],
-                                                [item[0] for item in event_one_pp if isinstance(item, (list, tuple))]),
+                                                [item[1] for item in event_one_pp if isinstance(item, (list, tuple))]),
                        'ats': aspect_table_s, 'ato': aspect_table_ops, 'att': aspect_table_t,
                        'atc': aspect_table_c, 'graph': graph,
-                       'tr_planet_data': set_signs([item[1] for item in event_two_pp
+                       'tr_planet_data': set_signs([item[0] for item in event_two_pp
                                                     if isinstance(item, (list, tuple))],
-                                                   [item[0] for item in event_two_pp if
+                                                   [item[1] for item in event_two_pp if
                                                     isinstance(item, (list, tuple))]),
                        'event_date': event_date, 'event_city': event_city, 'event_country': event_country,
                        'tr_date': transit_date, 'tr_city': transit_city, 'tr_country': transit_country,
                        'ev_hs_name': ev_hs_name, 'tr_hs_name': tr_hs_name, 'ev_mode': ev_m,
-                       'tr_mode': tr_m
+                       'tr_mode': tr_m, 'house_data': set_signs(house_names,list(houses[0])),
+                       'tr_house_data': set_signs(house_names,list(tr_houses[0]))
                        }
 
             swe.close()
@@ -476,7 +325,8 @@ def build_transit_chart(request):
                        'event_date': event_date, 'event_city': event_city, 'event_country': event_country,
                        'tr_date': transit_date, 'tr_city': transit_city, 'tr_country': transit_country,
                        'ev_hs_name': ev_hs_name, 'tr_hs_name': tr_hs_name, 'ev_mode': ev_m,
-                       'tr_mode': tr_m
+                       'tr_mode': tr_m,
+                       'tr_house_data': set_signs(list(tr_houses[0]), house_names)
                        }
 
             return render(request, 'transit_chart_tr_hs.html', context)
@@ -514,7 +364,7 @@ def build_transit_chart(request):
                        'event_date': event_date, 'event_city': event_city, 'event_country': event_country,
                        'tr_date': transit_date, 'tr_city': transit_city, 'tr_country': transit_country,
                        'ev_hs_name': ev_hs_name, 'tr_hs_name': tr_hs_name, 'ev_mode': ev_m,
-                       'tr_mode': tr_m
+                       'tr_mode': tr_m,  'house_data': set_signs(list(houses[0]), house_names),
                        }
 
             return render(request, 'transit_chart_ev_hs.html', context)
@@ -539,30 +389,37 @@ def one_color_chart(request):
         hs_en = zf_hs.encode('utf-8')
 
         get_loc = loc.geocode(f'{zf_city, zf_country}', timeout=7000)
-        tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
 
-        jd = jl.to_jd(zf_date, fmt='jd')
+        loc_tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
+        local_dt = zf_date.replace(tzinfo=ZoneInfo(loc_tz))
+        utc_dt = local_dt.astimezone(datetime.timezone.utc)
+        jd = jl.to_jd(utc_dt, fmt='jd')
+
 
         zf_face_color = zodiac_oc_form.cleaned_data['face_color']
         zf_edge_color = zodiac_oc_form.cleaned_data['edge_color']
         zf_text_color = zodiac_oc_form.cleaned_data['text_color']
         zf_tick_color = zodiac_oc_form.cleaned_data['tick_color']
-        zf_marker_color = zodiac_oc_form.cleaned_data['marker_color']
-        zf_symbol_color = zodiac_oc_form.cleaned_data['symbol_color']
         zf_deg_color = zodiac_oc_form.cleaned_data['deg_color']
-        zf_house_ax_color = zodiac_oc_form.cleaned_data['house_ax_color']
-        zf_house_num_color = zodiac_oc_form.cleaned_data['house_number_color']
-        zf_house_track_color = zodiac_oc_form.cleaned_data['house_track_color']
         zf_font_size = zodiac_oc_form.cleaned_data['font_size']
         zf_line_width = zodiac_oc_form.cleaned_data['line_width']
+
+        zf_marker_color = zodiac_oc_form.cleaned_data['marker_color'] #build_aspects
+        zf_symbol_color = zodiac_oc_form.cleaned_data['symbol_color']
         zf_marker_size = zodiac_oc_form.cleaned_data['marker_size']
         zf_symbol_size = zodiac_oc_form.cleaned_data['symbol_size']
+
+
+        zf_house_ax_color = zodiac_oc_form.cleaned_data['house_ax_color'] #tick params draw_chart
+        zf_house_num_color = zodiac_oc_form.cleaned_data['house_number_color']#tick params
         zf_house_ax_lw = zodiac_oc_form.cleaned_data['house_ax_lw']
-        zf_house_num_fs= zodiac_oc_form.cleaned_data['house_num_fs']
+        zf_house_num_fs = zodiac_oc_form.cleaned_data['house_num_fs']
+
         zf_house_track_lw = zodiac_oc_form.cleaned_data['house_track_lw']
+        zf_house_track_color = zodiac_oc_form.cleaned_data['house_track_color']
 
 
-        draw_zodiac_one_color(zf_face_color, zf_edge_color, zf_text_color, zf_tick_color,
+        img = draw_zodiac_one_color(zf_face_color, zf_edge_color, zf_text_color, zf_tick_color,
                               zf_deg_color, zf_font_size, zf_line_width)
 
         matplotlib.rcParams['axes.edgecolor'] = zf_house_track_color
@@ -572,60 +429,23 @@ def one_color_chart(request):
         coords_value = list(planet_data.values())
 
 
-        def set_signs(name_list, deg_list):
-            if signs:
-                signs.clear()
-            round_deg = [round(d) for d in deg_list]
-            for i in range(len(deg_list)):
-                if round_deg[i] in range(300, 331):
-                    sign = '♒'
-                if round_deg[i] in range(330, 361):
-                    sign = '♓'
-                if round_deg[i] in range(0, 31):
-                    sign = '♈'
-                if round_deg[i] in range(30, 61):
-                    sign = '♉'
-                if round_deg[i] in range(60, 91):
-                    sign = '♊'
-                if round_deg[i] in range(90, 121):
-                    sign = '♋'
-                if round_deg[i] in range(120, 151):
-                    sign = '♌'
-                if round_deg[i] in range(150, 181):
-                    sign = '♍'
-                if round_deg[i] in range(180, 211):
-                    sign = '♎'
-                if round_deg[i] in range(210, 241):
-                    sign = '♏'
-                if round_deg[i] in range(240, 271):
-                    sign = '♐'
-                if round_deg[i] in range(270, 301):
-                    sign = '♑'
-                signs.append(sign)
-            deg_list_thirty = [round(c % 30, 2) for c in deg_list]
-            deg_form = [str(n).replace('.', '°').replace(',', '′,') for n in deg_list_thirty]
-            sign_table = zip(name_list, deg_form, signs)
-            return list(sign_table)
-
         if zf_hs != 'Without houses':
 
-            fig_form, planet_ax, house_ax, _, _, _ = draw_chart(fig_name='fig_form', planet_ax='planet_ax',
-                                                                house_ax='house_ax')
-
             houses = swe.houses_ex(jd, get_loc.latitude, get_loc.longitude, hs_en, int(zf_mode))
+            fig_form, planet_ax, house_ax,_,_,_,_,_,_  = draw_chart(fig_name='fig_form',
+                                                               planet_ax='planet_ax',
+                                                               house_ax='house_ax',
+                                                               ha_color=zf_house_ax_color,
+                                                               ha_lbl_size=zf_house_num_fs,
+                                                               ha_lw=zf_house_ax_lw,
+                                                               ha_lab_cl=zf_house_num_color,
+                                                               chart_path=img,
+                                                               houses_data=houses[0])
 
-            house_ax.set_rlim(-130, 100)
-            house_ax.set_theta_direction(1)
-            house_ax.set_rticks([])
-            house_ax.set_thetagrids(houses[0],
-                                    ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII'])
-            house_ax.tick_params(labelsize=zf_house_num_fs, grid_color=zf_house_ax_color,
-                                 grid_linewidth=zf_house_ax_lw, labelfontfamily='monospace',
-                                 labelcolor=zf_house_num_color, pad=13.0)
-
-            build_aspects(coords_value, planet_ax, planet_data)
-            aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c = \
-                build_aspects(coords_value, planet_ax, planet_data)
+            aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, = \
+                build_aspects(planet_data=planet_data, ax_name=planet_ax, marker_clr=zf_marker_color,
+                              pl_marker_size=zf_marker_size, symbol_size=zf_symbol_size,
+                              symbol_clr=zf_symbol_color)
 
             swe.close()
 
@@ -634,7 +454,7 @@ def one_color_chart(request):
             return render(request, 'designed_oc_chart.html',
                           context=
                           {'planet_data': set_signs(planet_names, [p[5] for p in coords_value]),
-                            'house_data': set_signs(house_names, list(houses[0])),
+                            'house_data': set_signs(house_names,list(houses[0])),
                             'ats': aspect_table_s, 'ato': aspect_table_ops,
                             'att': aspect_table_t, 'atc': aspect_table_c,
                             'date': zf_date.strftime("%B %d, %Y, %H:%M:%S, %A"),
@@ -644,11 +464,16 @@ def one_color_chart(request):
 
         elif zf_hs == 'Without houses':
 
-            fig_form, planet_ax, _, _, _, _ = draw_chart(fig_name='fig_form', planet_ax='planet_ax')
+            fig_form, planet_ax,_,_,_,_,_,_,_  = draw_chart(fig_name='fig_form',
+                                                            planet_ax='planet_ax',
+                                                            ha_color=zf_house_ax_color,
+                                                            ha_lbl_size=zf_house_num_fs,
+                                                            ha_lw=zf_house_ax_lw,
+                                                            ha_lab_cl=zf_house_num_color,
+                                                            chart_path=img)
 
-            build_aspects(coords_value, planet_ax, planet_data)
-            aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c = (
-                build_aspects(coords_value,planet_ax, planet_data))
+            aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, = \
+                build_aspects(planet_data=planet_data, ax_name=planet_ax)
 
             swe.close()
 
@@ -661,7 +486,7 @@ def one_color_chart(request):
                                    'date': zf_date.strftime("%B %d, %Y, %H:%M:%S, %A"),
                                    'planet_names': planet_names,
                                    'hs_name': clr_ch_hs_name, 'graph': graph,
-                                   'city': zf_city, 'country': zf_country, 'mode': zf_mode})
+                                   'city': zf_city, 'country': zf_country, 'mode': mode_choice})
 
     return render(request, 'design_one_clr_ch.html', {'z_form': zodiac_oc_form})
 
@@ -670,7 +495,6 @@ def chart_detail(request, id):
 
     chart_to_delete = FullChart.objects.filter(id=id).first()
     username = request.user.username
-
 
     if request.method == 'POST':
         chart_to_delete.delete()

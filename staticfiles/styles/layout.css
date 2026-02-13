@@ -39,18 +39,23 @@ a {
 .link-symbols:hover {
     color: gold;
     font-style: bold;
+
 }
 
 .link-symbols {
     color: blue;
-    font-size: xx-large;
 }
 
 .tooltip {
   position: relative;
   display: inline-block;
-  padding: 0;
-  border: none;
+}
+
+td.tooltip {
+    display: block;
+    height: 100%;
+    width: 100%;
+    position: relative;
 }
 
 .tooltip .tooltiptext {
@@ -73,11 +78,12 @@ a {
 table, th, td {
 
   text-align: center;
-  height: fit-content;
-  width: fit-content;
   padding: 1px;
+  font-size: 103%;
 
 }
+
+
 
 th {
     font-variant-caps: all-petite-caps;
@@ -389,7 +395,6 @@ table:empty {
 .my-chart-tr-form {
     display: grid;
     grid-template-columns: 1fr;
-    border: solid 1px;
     padding: 10px;
 
 }
@@ -397,7 +402,6 @@ table:empty {
 .auth {
     justify-content: center;
 }
-
 
 
 .sign-design {
@@ -501,7 +505,13 @@ input[type="number"] {
     font-stretch: expanded;
     font-size: 180%;
     color: aliceblue;
+
+
     /*text-shadow: 2px 2px 2px gold;*/
+}
+
+.tr-title {
+    text-align: start;
 }
 
 }
@@ -622,6 +632,19 @@ input[type="number"] {
      border: 1px solid rgb(159,0,255);
 }
 
+.tr-links {
+    font-size: 170%;
+     /*border-top-left-radius: 50%;
+     border-bottom-left-radius: 50%;*/
+     border-top-right-radius: 5%;
+     border-bottom-right-radius: 5%;
+     font-variant-caps: all-petite-caps;
+     padding: 7px;
+     gap: 20px;
+     background-color:  rgba(159,0,255, 0.4);
+     border: 1px solid rgb(159,0,255);
+}
+
 .ul-links :hover {
     color: gold;
 }
@@ -634,8 +657,9 @@ input[type="number"] {
 
 }
 
-.ul-link-tr-form {
+.ul-utf-link-div {
     display: flex;
+    justify-content: space-between;
 }
 
 .user-welcome-div {

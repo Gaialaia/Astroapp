@@ -19,22 +19,12 @@
 </div>
 
 
-<!--<div class="menu-choice">-->
-<!--    <div class="menu-choice-dd"> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR-->
-<!--        <div class="menu-choice-dd-content">-->
-<!--            <a href="{% url 'color your chart' %}"> color chart </a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
 <div class="menu-choice menu-choice-dd">
     <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
         <div class="menu-choice-dd-content">
             <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
         </div>
 </div>
-
-
 
 
 <div class="menu-choice menu-choice-dd">
@@ -53,12 +43,8 @@
                      <div>
                           <a href="{% url 'register' %}"> SIGN UP </a>
                     </div>
-
                 </div>
-
-
             </div>
-
          {% endif %}
 </div>
 {% endblock %}
@@ -68,30 +54,24 @@
  </div>
 
 
- {% block chart-data %}
-
+ {% block content-data %}
+                <div class="chart-data-main">
                  <div class="table-cont">
                     <div class="table-data">
                         {% include 'includes/planet_list.html' %}
                     </div>
                  </div>
 
-                    <div class="table-data">
-                         {% include 'includes/house_cusps.html' %}
-                    </div>
-
                  <div class="chart-fig">
                      <h1 class="chart-title"> Planet chart for {{ date }} </h1>
-
+                       <p class="form-info-data-title">  mode: sidereal </p>
+                        <p class="form-info-data-title"> ayanamsa: Lahiri </p>
                     <img src="data:image/png;base64,{{ graph }}" alt="plot" id="chart-plot">
-                       <p> mode: sidereal </p>
-                     <p> ayanamsa: Lahiri </p>
-                     <p> house system: Regiomontanus </p>
-                 </div>
 
+                 </div>
                   <div class="table-data">
                        {% include 'includes/aspects.html' %}
                   </div>
-
+    </div>
 
  {% endblock %}
