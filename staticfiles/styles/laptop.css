@@ -1,0 +1,52 @@
+@media only screen and (min-width: 1200px) {
+
+    .navigation {
+         display: grid;
+         grid-template-columns: repeat(5, 1fr);
+         grid-template-rows: minmax(100px, auto);
+         zoom: 0.8;
+         padding: 0px;
+     }
+
+    .content-data {
+        align-content: center;
+        background-image: linear-gradient(180deg, rgba(159,0,255, 0.4), rgba(159,0,255, 0.0));
+        color: rgb(216,218,220);
+        font-size: 120%;
+        padding: 106px;
+        padding-bottom: 56px;
+        max-width: 100%;
+        height: 100vh;
+        overflow: auto;
+        zoom: 0.8;
+    }
+
+    .chart-data-main {
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+        grid-template-rows: 2;
+        align-content: center;
+        color: rgb(216,218,220);
+        font-size: 100%;
+
+    }
+
+    .chart-data {
+        display: grid;
+        grid-template-columns: 1fr 1fr 3fr 1fr;
+        grid-auto-rows: minmax(100px, auto);
+
+        align-content: center;
+        color: rgb(216,218,220);
+        font-size: 100%;
+    }
+
+    .menu-choice-dd-content-links {
+        position: absolute;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+}
+
+
+

@@ -78,17 +78,17 @@ def get_graph(fig_name):
     return graph
 
 marker_size = 9
-font_size = 27
+font_size = 26
 color = ''
 
 PLANET_METADATA = {
 
     0: ['☼', 'yellow', marker_size, font_size],
-    1: ['☾', 'aliceblue', marker_size, font_size],
+    1: ['○', 'aliceblue', marker_size, font_size],
     2: ['☿', 'grey', marker_size, font_size],
     3: ['♀', 'sienna', marker_size, font_size],
     4: ['♂', 'red', marker_size, font_size],
-    5: ['♃', 'teal', marker_size, font_size],
+    5: ['♃', '#16CBBC', marker_size, font_size],
     6: ['♄', '#052443', marker_size, font_size],
     7: ['♅', 'chartreuse', marker_size, font_size],
     8: ['♆', 'indigo', marker_size, font_size],
@@ -283,12 +283,15 @@ def build_aspects(ax_name, planet_data, marker_clr=None, symbol_clr=None,
     for key, value in planet_data.items():
         event_data.append((key, value[4], value[5], value[0], value[1], value[2], value[3]))
     # event_data.insert(len(event_data), 0)
+    print(event_data)
+    print(planet_data)
+
 
     for value in range(len(event_data)):
 
         if symbol_size is None and symbol_clr is None:
             t_one = ax_name.text(np.deg2rad(event_data[value][1]), event_data[value][2],
-                                 event_data[value][3], color=event_data[value][4],
+                                 event_data[value][3], color='aliceblue',
                                  fontsize=event_data[value][6])
             event_one_td.append(t_one)
         if symbol_clr and symbol_size:

@@ -55,10 +55,9 @@
 
 {% block  content-data  %}
 
- <div class="chart-for-any-date">
-     <div>
+ <div class="chart-for-any-date" style="border: solid 1px red">
      <div class="instruction-text"> <h3>To get planet chart for a certain date, enter the following data:</h3></div>
-     <form class="chart-forms" target="_blank" method="post" action=".">
+     <form class="chart-forms chart-for-ad" target="_blank" method="post" action=".">
            {{ chart_form.media }}
             {% csrf_token %}
          <div class="form-row">
@@ -98,7 +97,7 @@
       </div>
             <button class="show-chart" type="submit" > SHOW CHART </button>
      </form>
-    </div>
+
  </div>
 {% endblock %}
 

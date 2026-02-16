@@ -8,13 +8,18 @@
      <link rel="stylesheet" href="{% static 'styles/layout.css' %}">
      <link rel="stylesheet" href="{% static 'styles/text.css' %}">
     <link rel="stylesheet" href="{% static 'styles/form_style.css' %}" media="all">
+    <link rel="stylesheet" href="{% static 'styles/flatpickr.min.css' %}">
+
     <link rel="stylesheet" href="{% static 'styles/custom_flatpickr_styles.css' %}">
+       <link rel="stylesheet" href="{% static 'styles/mobile_style.css' %}">
+     <link rel="stylesheet" href="{% static 'styles/laptop.css' %}">
 
     <title> {% block title %} Title {% endblock %}</title>
 
     <link rel="icon" type="image/ico" sizes="32x32" href="/static/images/now_chart.ico">
 
 </head>
+<script src="{% static 'scripts/flatpickr.min.js' %}"></script>
 <body>
     <div class="main-container">
         <nav class="navigation"> {% block navigation %} {% endblock %}  </nav>

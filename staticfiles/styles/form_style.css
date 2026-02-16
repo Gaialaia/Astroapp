@@ -214,7 +214,6 @@ a {
     justify-self: end;
 }
 
-.chart-for-any-date,
 .my-chart-clr-form,
 .my-chart-tr-form,
 .my-chart-cf,
@@ -226,8 +225,12 @@ a {
 
 .chart-for-any-date {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    justify-content: center;
+
+}
+
+.chart-for-ad {
+    border: solid 1px blue;
+    justify-self: center;
 }
 .my-chart-cf,
 .my-chart-clr-form {
