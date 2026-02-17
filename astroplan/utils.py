@@ -40,7 +40,6 @@ sectors = {"♊︎": 30, "♉︎": 30, "♈︎": 30,
 
 circos = Circos(sectors)
 
-
 squares = []
 trines = []
 oppositions = []
@@ -56,12 +55,9 @@ op_angle = []
 t_angle = []
 c_angle = []
 
-
 planet_symbols = ['☼', '☾', '☿', '♀', '♂', '♃', '♄', '♅', '♆', '♇',' ⯓']
 
 px = 1 / plt.rcParams['figure.dpi']
-
-
 
 def get_graph(fig_name):
 
@@ -95,6 +91,7 @@ PLANET_METADATA = {
 }
 signs = []
 sign = ''
+
 def get_planet_data(jd, ch_mode, chart=None):
 
     pd = {}
@@ -109,14 +106,6 @@ def get_planet_data(jd, ch_mode, chart=None):
 
         pd[planet_name] = [meta[0], meta[1], meta[2], meta[3],ecliptic_latitude, ecliptic_longitude]
     return pd
-
-
-def zip_ad(pl_one_pos, angle_data, pl_two_pos, aspect_angle, po_list, pt_list):
-    po_list.append(pl_one_pos)
-    angle_data.append(aspect_angle)
-    pt_list.append(pl_two_pos)
-    return zip(po_list, angle_data, pt_list)
-
 
 def set_signs(name_list, deg_list):
     if signs:
@@ -180,7 +169,6 @@ def draw_chart(fig_name, planet_ax = None, house_ax=None,
     planet_ax.set_axis_off()
     planet_ax.imshow(img)
     planet_ax.patch.set_alpha(0)
-
 
     if house_ax is not None:
 
