@@ -223,15 +223,6 @@ a {
     place-items: center;
 }
 
-.chart-for-any-date {
-    display: grid;
-
-}
-
-.chart-for-ad {
-    border: solid 1px blue;
-    justify-self: center;
-}
 .my-chart-cf,
 .my-chart-clr-form {
     display: grid;

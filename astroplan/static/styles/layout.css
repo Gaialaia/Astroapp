@@ -506,23 +506,9 @@ input[type="number"] {
 
 }
 
-.house-images {
-    transform: scale(0.8);
 
-}
-
-
- .hd-card {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    background-image: url("/static/images/ss_op.png");
-    margin-bottom: 10px;
-    border-radius:  50% 20% / 10% 40%;
-
- }
 
 #my-chart-tf-title {
-
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 1;
@@ -538,40 +524,10 @@ input[type="number"] {
 
 }
 
-
-
-
 #auth-form {
     display: grid;
     justify-items: center;
 
-
-}
-
-.denotions-container {
-
-    max-width: 60%;
-    margin: auto;
-    line-height: 1.2;
-    text-indent: 10% each-line;
-
-
-}
-
-.denotions-title {
-    text-align: center;
-}
-
-.sign-symbol {
-
-    float: left;
-    margin-right: 17px;
-    margin-bottom: 17px;
-}
-
-
-.sign-title-div {
-    background-color:  rgba(159,0,255, 0.2);
 
 }
 
@@ -603,9 +559,6 @@ input[type="number"] {
 
 }
 
-
-
-
 .ul-links {
      font-size: 170%;
      border-top-left-radius: 50%;
@@ -621,8 +574,6 @@ input[type="number"] {
 
 .tr-links {
     font-size: 170%;
-     /*border-top-left-radius: 50%;
-     border-bottom-left-radius: 50%;*/
      border-top-right-radius: 5%;
      border-bottom-right-radius: 5%;
      font-variant-caps: all-petite-caps;
@@ -663,25 +614,6 @@ input[type="number"] {
     place-items: center;
     gap: 30px;
 }
-
-
-@keyframes Constellation{
-    0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-#constellation {
-    animation-name: Constellation;
-    animation-duration: 60s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    opacity: 0.6;
-}
-
 .sign-up {
     display: grid;
     justify-self: end;
