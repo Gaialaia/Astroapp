@@ -111,14 +111,6 @@ def get_planet_data(jd, ch_mode, chart=None):
         pd[planet_name] = [meta[0], meta[1], meta[2], meta[3],ecliptic_latitude, ecliptic_longitude]
     return pd
 
-
-def zip_ad(pl_one_pos, angle_data, pl_two_pos, aspect_angle, po_list, pt_list):
-    po_list.append(pl_one_pos)
-    angle_data.append(aspect_angle)
-    pt_list.append(pl_two_pos)
-    return zip(po_list, angle_data, pt_list)
-
-
 def set_signs(name_list, deg_list):
     if signs:
         signs.clear()
