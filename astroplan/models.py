@@ -264,7 +264,6 @@ class TransitFullChart(models.Model):  # model for ul transit chart model
     benefits_deg = models.CharField(default='330°')
     benefits_sign = models.CharField(default='Pisces')
 
-
     tr_Sun_deg = models.CharField(default='5°05')
     tr_Sun_sign = models.CharField(default='Aquarius')
 

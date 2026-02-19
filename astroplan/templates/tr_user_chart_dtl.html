@@ -61,7 +61,7 @@
 <div class="chart-fig">
        <div class="form-info">
           <div class="event-info">
-              <p class="form-info-data-title">Event date: {{ event_date }} </p> tr_uc_tr_name
+              <p class="form-info-data-title">Event date: {{ event_date }} </p>
                     <p class="form-info-data-title"> Event name: {{ tr_uc_tr_name }} </p>
                        <p class="form-info-data-title"> Event city: {{ transit_user_chart.event_city }} </p>
                        <p class="form-info-data-title"> Event country: {{ transit_user_chart.event_country }} </p>
@@ -70,7 +70,7 @@
 
           </div>
                     <div class="transit-info">
-                          <p class="form-info-data-title"> Transit name: {{ tr_uc_ev_name }} </p>
+                        <p class="form-info-data-title"> Transit name: {{ tr_uc_ev_name }} </p>
                         <p class="form-info-data-title"> Transit date: {{ tr_date }} </p>
                        <p class="form-info-data-title"> Transit city: {{ tr_city }} </p>
                        <p class="form-info-data-title"> Transit country: {{ tr_country }} </p>
@@ -78,7 +78,7 @@
                         <p class="form-info-data-title"> Transit mode: {{ tr_mode }} </p>
                     </div>
        </div>
-                <img src="{% static 'plots/tr_user_chart.png' %}" alt="plot" id="chart-plot">
+                <img src="data:image/png;base64,{{ graph }}">
 
                     <div class="ul-link-div">
                         <div class="ul-links">

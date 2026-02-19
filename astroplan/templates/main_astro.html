@@ -67,7 +67,10 @@
                        <p class="form-info-data-title">  mode: sidereal </p>
                         <p class="form-info-data-title"> ayanamsa: Lahiri </p>
                     <img src="data:image/png;base64,{{ graph }}" alt="plot" id="chart-plot">
-
+                     <button class="print-button" onclick="window.print()">
+                          <span class="print-icon"></span>
+                          Печать страницы
+                        </button>
                  </div>
                   <div class="table-data">
                        {% include 'includes/aspects.html' %}

@@ -65,21 +65,48 @@ def get_graph(fig_name):
     fig_name.savefig(buffer, format='png')
     plt.close(fig_name)
     buffer.seek(0)
-    chart_png = buffer.getvalue()
-    graph = base64.b64encode(chart_png)
-    graph = graph.decode('utf-8')
-    buffer.close()
 
-    return graph
+    chart_png = buffer.getvalue()
+    graph = base64.b64encode(chart_png).decode('utf-8')
+
+    return graph, buffer
 
 marker_size = 9
 font_size = 26
 color = ''
 
-PLANET_METADATA = {
+swe.set_ephe_path('/home/gaia/Документы/eph files')
 
+def get_moon_symbol():
+
+    now = dt.now()
+    jd_ev = jl.to_jd(now, fmt='jd')
+    sun = swe.calc_ut(jd_ev, 0)
+    moon = swe.calc_ut(jd_ev, 1)
+    dif = (sun[0][0] - moon[0][0])
+    moon_phase = dif % 360
+
+    if moon_phase < 11.25 or moon_phase > 348.75:
+        return "●"  # New Moon (U+25CF)
+    elif 11.25 <= moon_phase < 78.75:
+        return "☽"  # Waxing Crescent (U+263D)
+    elif 78.75 <= moon_phase < 101.25:
+        return "◐"  # First Quarter (U+25D0)
+    elif 101.25 <= moon_phase < 168.75:
+        return "🌔︎" # Waxing Gibbous (Text style)
+    elif 168.75 <= moon_phase < 191.25:
+        return "○"  # Full Moon (U+25CB)
+    elif 191.25 <= moon_phase < 258.75:
+        return "🌖︎" # Waning Gibbous (Text style)
+    elif 258.75 <= moon_phase < 281.25:
+        return "◑"  # Last Quarter (U+25D1)
+    else:
+        return "☾"  # Waning Crescent (U+263E)
+
+stage = get_moon_symbol()
+PLANET_METADATA = {
     0: ['☼', 'yellow', marker_size, font_size],
-    1: ['○', 'aliceblue', marker_size, font_size],
+    1: [stage, 'aliceblue', marker_size, font_size],
     2: ['☿', 'grey', marker_size, font_size],
     3: ['♀', 'sienna', marker_size, font_size],
     4: ['♂', 'red', marker_size, font_size],
@@ -103,7 +130,6 @@ def get_planet_data(jd, ch_mode, chart=None):
 
         ecliptic_latitude = swe.calc_ut(jd, pl_number, chart_mode)[0][0]
         ecliptic_longitude = swe.calc_ut(jd, pl_number, chart_mode)[0][1]
-
         pd[planet_name] = [meta[0], meta[1], meta[2], meta[3],ecliptic_latitude, ecliptic_longitude]
     return pd
 
@@ -188,6 +214,8 @@ def draw_chart(fig_name, planet_ax = None, house_ax=None,
                                  grid_linewidth=ha_lw,
                                  labelfontfamily='monospace',
                                  labelcolor=ha_lab_cl)
+    plt.close(fig_name)
+    plt.close('all')
 
 
     return (fig_name, planet_ax, house_ax, ha_color, ha_lab_cl,

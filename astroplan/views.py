@@ -50,7 +50,7 @@ def show_td_chart(request):
     aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, = \
         build_aspects(planet_data=planet_data,ax_name=planet_ax)
 
-    graph = get_graph(fig_form)
+    graph,_ = get_graph(fig_form)
 
     swe.close()
 

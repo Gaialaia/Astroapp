@@ -69,8 +69,7 @@
                          <p class="form-info-data-title"> Chart mode: {{ mode }}</p>
                      </div>
 
-
-                  <img src="{{ chart.chart_image.url }}" alt="plot" id="chart-plot" style="background-color: none"  >
+                     <img src="data:image/png;base64,{{ graph }}">
                            <div class="ul-link-div">
                         <div class="ul-links">
                               <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
