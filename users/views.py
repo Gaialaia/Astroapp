@@ -54,8 +54,6 @@ planet_names = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter',
 tr_planet_names = ['tr_Sun','tr_Moon', 'tr_Mercury', 'tr_Venus', 'tr_Mars',
                    'tr_Jupiter', 'tr_Saturn', 'tr_Uranus', 'tr_Neptune', 'tr_Pluto']
 
-
-
 house_names = ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII']
 
 tf = TimezoneFinder()
@@ -138,7 +136,7 @@ def custom_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f' Welcome, {user.username}')
-                return redirect('showed chart')
+                return redirect('user lounge',user.username)
 
 
         else:
@@ -165,7 +163,6 @@ def user_chart_for_date_form(request):
         us_hs = chart.house_system.encode('utf-8')
         house_system = HOUSE_SYSTEM_CHOICES.get(us_hs)
         mode = MODE_CHOICES.get(chart.chart_mode)
-
 
         chart.drawer = get_object_or_404(get_user_model(),username=username)
         loc_tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
@@ -309,7 +306,6 @@ def user_chart_for_date_form(request):
                                                         'mode': mode, 'graph': graph})
 
     return render(request, 'user_chart_for_date_form.html', {'user_chart_form': user_chart_form })
-
 
 
 def user_lounge(request, username):
@@ -811,6 +807,7 @@ def user_transit_chart_form(request):
             return render(request, 'tr_user_chart_dtl_eh.html', context)
 
     return render(request, 'user_transit_chart_form.html', {'tr_form':tr_form})
+
 
 def user_color_chart_form(request):
 

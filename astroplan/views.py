@@ -2,6 +2,7 @@ import datetime
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 import matplotlib
+matplotlib.use('Agg')
 from astroknow import settings
 from datetime import datetime as dt
 

@@ -3,6 +3,7 @@ import os
 
 import boto3
 import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.image as mpi
 from adjustText import adjust_text

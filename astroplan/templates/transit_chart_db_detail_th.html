@@ -50,8 +50,24 @@
 </div>
 {% endblock %}
 
-
                  {% block chart-data %}
+     <div class="ul-link-div">
+        <div class="ul-links">
+            <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
+            </div>
+        <div class="ul-links">
+                <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
+        </div>
+         <div class="ul-links">
+              <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a>
+        </div>
+         <div class="ul-links">
+             <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
+        </div>
+         <div class="ul-links">
+                <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
+        </div>
+    </div>
          <div class="table-data">
          <table>
              <caption> Planet data </caption>
@@ -125,37 +141,26 @@
                          <td> {{ tr_chart.Pluto_deg }} </td>
                         <td> {{ tr_chart.Pluto_sign }} </td>
                     </tr>
-
          </table>
-
              </div>
                         <div class="chart-fig">
-                            <div class="form-info" >
-                                 <div  class="event-info db-dtl">
-                                     <p>Event name : {{ tr_chart.event_name }} </p>
-                                     <p>Event date: {{ tr_chart.event_date }} </p>
-                                    <p>Event city : {{ tr_chart.event_city }}</p>
-                                    <p>Event country : {{ tr_chart.event_country }}</p>
+                           <div class="form-info" >
+                                 <div  class="event-info">
+                                     <p class="form-info-data-title">Event name : {{ tr_chart.event_name }} </p>
+                                     <p class="form-info-data-title">Event date: {{ tr_chart.event_date }} </p>
+                                    <p class="form-info-data-title">Event city : {{ tr_chart.event_city }}</p>
+                                    <p class="form-info-data-title">Event country : {{ tr_chart.event_country }}</p>
 
                             </div>
-                                <div class="transit-info db-dtl">
-                                    <p>Transit name : {{ tr_chart.transit_name }}</p>
-                                    <p>Transit date: {{ tr_chart.transit_date }}</p>
-                                    <p>Transit city : {{ tr_chart.transit_city }}</p>
-                                    <p>Transit country : {{ tr_chart.transit_country }}</p>
+                                <div class="transit-info">
+                                    <p class="form-info-data-title">Transit name : {{ tr_chart.transit_name }}</p>
+                                    <p class="form-info-data-title">Transit date: {{ tr_chart.transit_date }}</p>
+                                    <p class="form-info-data-title">Transit city : {{ tr_chart.transit_city }}</p>
+                                    <p class="form-info-data-title">Transit country : {{ tr_chart.transit_country }}</p>
                                 </div>
                             </div>
 
-
-
                         <img src="/media/{{ tr_chart.tr_chart_image }}/" alt="{{ tr_chart.tr_chart_image }}">
-                             <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
-                   <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
-                             <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a>
-    <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
-    <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
-
-
 
                         <form method ="POST" action="">
                             {% csrf_token %}

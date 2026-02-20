@@ -135,16 +135,14 @@
 
     <div class="form-info">
         <div class="event-info">
-            <p> Event name : {{ clr_chart.chart_name }} </p>
-              <p> Event date: {{ clr_chart.chart_date }} </p>
-              <p> Event city : {{ clr_chart.chart_city }} </p>
-              <p> Event country : {{ clr_chart.chart_country }} </p>
+            <p class="form-info-data-title"> Event name : {{ clr_chart.chart_name }} </p>
+              <p class="form-info-data-title"> Event date: {{ clr_chart.chart_date }} </p>
+              <p class="form-info-data-title"> Event city : {{ clr_chart.chart_city }} </p>
+              <p class="form-info-data-title"> Event country : {{ clr_chart.chart_country }} </p>
         </div>
         </div>
 
     <img src="{{ clr_chart.chart_image }}" alt="clr_chart.chart_name">
-    <p>DEBUG ID: {{ clr_chart.id }}</p>
-<p>DEBUG URL: {{ clr_chart.chart_image }}</p>
 
     <form method = "POST">
          {% csrf_token %}

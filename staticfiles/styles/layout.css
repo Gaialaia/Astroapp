@@ -535,10 +535,7 @@ input[type="number"] {
     zoom: 25%;
 }
 
-.ul-plot-links {
-    display: block
 
-}
 
 #chart-instruction {
     place-self: center;
@@ -589,15 +586,40 @@ input[type="number"] {
 
 .ul-link-div {
     display: grid;
-    gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0px;
     width: fit-content;
     text-align: center;
+    margin-top: 20px;
 
 }
+
+.next-ones {
+     font-size: 170%;
+     border-top-left-radius: 20%;
+     border-bottom-left-radius: 20%;
+     border-top-right-radius: 5%;
+     border-bottom-right-radius: 5%;
+     font-variant-caps: all-petite-caps;
+     padding: 7px;
+     gap: 20px;
+     background-color:  rgba(159,0,255, 0.4);
+     border: 1px solid rgb(159,0,255);
+}
+
 
 .ul-utf-link-div {
     display: flex;
     justify-content: space-between;
+}
+
+.ul-plot-links-under-fig {
+    font-variant-caps: all-petite-caps;
+    font-size: 170%;
+    padding: 7px;
+    margin-left: 5px;
+    background-color:  rgba(159,0,255, 0.4);
+    border: 1px solid rgb(159,0,255);
 }
 
 .user-welcome-div {

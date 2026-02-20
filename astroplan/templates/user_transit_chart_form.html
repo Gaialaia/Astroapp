@@ -50,30 +50,6 @@
 
 
 {% block content-data %}
-<div class="ul-link-tr-form">
-    <div class="ul-links">
-           <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
-    </div>
-
-    <div class="ul-links">
-           <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
-    </div>
-
-    <div class="ul-links">
-           <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
-
-    </div>
-
-    <div class="ul-links">
-        <a href="{% url 'ad user chart' %}"> To chart form </a>
-
-    </div>
-
-
-
-
-</div>
-
 <div class="my-chart-tr-form">
     <div class="instruction-text"> <h3>See and save transit chart </h3></div>
     <form class="chart-forms" method="post" id="tr-form-my-chart">
@@ -172,8 +148,21 @@
         <div id="my-chart-tf-bt"><
                <button class="show-chart" type="submit"> Show transit chart </button>
         </div>
-
-
     </form>
 </div>
+<div class="ul-link-tr-form">
+    <div class="ul-links">
+           <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
+    </div>
+    <div class="ul-links">
+           <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
+    </div>
+    <div class="ul-links">
+           <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
+    </div>
+    <div class="ul-links">
+        <a href="{% url 'ad user chart' %}"> To chart form </a>
+    </div>
+</div>
+
 {% endblock %}
