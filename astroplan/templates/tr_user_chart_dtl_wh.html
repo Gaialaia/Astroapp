@@ -5,7 +5,7 @@
 {% block title %} Your transit chart no houses {% endblock %}
 
 {% block navigation %}
-<div class="menu-choice" id="today-chart">
+<div class="menu-choice">
     <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
@@ -45,72 +45,61 @@
         </div>
          {% endif %}
 </div>
-
-
 {% endblock %}
 
+    {% block chart-data %}
 
+<div class="ul-link-div">
+    <div class="ul-links">
+        <a href="{% url 'user lounge' user.username %}"> To my lounge  </a>
+    </div>
 
+    <div class="ul-links">
+        <a href="{% url 'user chart lists' %}"> To chart lists  </a>
+    </div>
 
-                 {% block chart-data %}
+    <div class="ul-links">
+        <a href="{% url 'user tc f'  %}"> To transit chart form  </a>
 
-<div class="table-data">
-      {% include 'includes/transit_aspects.html' %}
+    </div>
+    <div class="ul-links">
+        <a href="{% url 'user c ch f'  %}"> To color form  </a>
+    </div>
 </div>
 
-<div class="chart-fig">
+    <div class="table-data">
+        {% include 'includes/transit_planets_position.html' %}
+        {% include 'includes/planet_list.html' %}
+
+</div>
+    <div class="chart-fig">
       <div class="form-info">
           <div class="event-info">
-                        <p> Event name: {{ tr_uc_tr_name }}</p>
-                       <p> Event date: {{ event_date }} </p>
-                       <p> Event city: {{ event_city }} </p>
-                       <p> Event country: {{ event_country }} </p>
+                        <p class="form-info-data-title"> Event name: {{ tr_uc_tr_name }}</p>
+                       <p class="form-info-data-title"> Event date: {{ event_date }} </p>
+                       <p class="form-info-data-title"> Event city: {{ event_city }} </p>
+                       <p class="form-info-data-title"> Event country: {{ event_country }} </p>
+                         <p class="form-info-data-title"> Mode : {{ ev_mode }} </p>
+
+
           </div>
           <div class="transit-info">
-                         <p> Transit name: {{ tr_uc_ev_name }} </p>
-                        <p> Transit date: {{ tr_date }} </p>
-                       <p> Transit city: {{ tr_city }} </p>
-                       <p> Transit country: {{ tr_country }} </p>
+                         <p class="form-info-data-title"> Transit name: {{ tr_uc_ev_name }} </p>
+                        <p class="form-info-data-title"> Transit date: {{ tr_date }} </p>
+                       <p class="form-info-data-title"> Transit city: {{ tr_city }} </p>
+                       <p class="form-info-data-title"> Transit country: {{ tr_country }} </p>
+                         <p class="form-info-data-title"> Mode : {{ tr_mode }} </p>
           </div>
       </div>
                <img src="data:image/png;base64,{{ graph }}">
 
-                    <div class="ul-link-div">
-                        <div class="ul-links">
-                              <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links-under-fig"> To my lounge  </a>
-                        </div>
+</div>
 
-                         <div class="ul-links">
-                               <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links-under-fig"> To chart lists  </a>
-                        </div>
-
-                         <div class="ul-links">
-                                <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links-under-fig"> To transit chart form  </a>
-
-                        </div>
-
-                         <div class="ul-links">
-                               <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links-under-fig"> To color form  </a>
-                        </div>
-
-
-                    </div>
-
-
-  </div>
-
-<div class="table-cont">
 <div class="table-data">
-    {% include 'includes/planet_list.html' %}
-    </div>
+      {% include 'includes/transit_aspects.html' %}
 
 </div>
 
-<div class="table-cont">
-<div class="table-data">
-     {% include 'includes/transit_planets_position.html' %}
-</div>
-</div>
 
 <script>
        window.onload = function() {

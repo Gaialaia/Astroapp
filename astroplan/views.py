@@ -103,7 +103,7 @@ def chart_for_any_date(request):
                  build_aspects(ax_name=planet_ax, planet_data=planet_data)
 
 
-             graph = get_graph(fig_form)
+             graph,_ = get_graph(fig_form)
 
              swe.close()
 
@@ -125,7 +125,7 @@ def chart_for_any_date(request):
 
              aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, = \
                  build_aspects(planet_data=planet_data, ax_name=planet_ax)
-             graph = get_graph(fig_form)
+             graph,_ = get_graph(fig_form)
              swe.close()
 
              return render(request, 'show_by_date_wh.html',
@@ -185,41 +185,6 @@ def build_transit_chart(request):
         event_data = get_planet_data(jd_ev,ev_mode)
         transit_data = get_planet_data(jd_tr, tr_mode)
 
-        # def set_signs(deg_list,name_list):
-        #     if signs:
-        #         signs.clear()
-        #     round_deg = [round(d) for d in deg_list]
-        #     for i in range(len(deg_list)):
-        #         if round_deg[i] in range(300, 331):
-        #             sign = '♒'
-        #         if round_deg[i] in range(330, 361):
-        #             sign = '♓'
-        #         if round_deg[i] in range(0, 31):
-        #             sign = '♈'
-        #         if round_deg[i] in range(30, 61):
-        #             sign = '♉'
-        #         if round_deg[i] in range(60, 91):
-        #             sign = '♊'
-        #         if round_deg[i] in range(90, 121):
-        #             sign = '♋'
-        #         if round_deg[i] in range(120, 151):
-        #             sign = '♌'
-        #         if round_deg[i] in range(150, 181):
-        #             sign = '♍'
-        #         if round_deg[i] in range(180, 211):
-        #             sign = '♎'
-        #         if round_deg[i] in range(210, 241):
-        #             sign = '♏'
-        #         if round_deg[i] in range(240, 271):
-        #             sign = '♐'
-        #         if round_deg[i] in range(270, 301):
-        #             sign = '♑'
-        #         signs.append(sign)
-        #     deg_list_thirty = [round(c % 30, 2) for c in deg_list]
-        #     deg_form = [str(n).replace('.', '°').replace(',', '′,') for n in deg_list_thirty]
-        #     sign_table = zip(name_list, deg_form, signs)
-        #     return list(sign_table)
-
         if ev_hs == 'Without houses' and tr_hs == 'Without houses':
 
             tr_fig, event_one_ax, event_two_ax,_,_ = (
@@ -234,7 +199,7 @@ def build_transit_chart(request):
 
             swe.close()
 
-            graph = get_graph(tr_fig)
+            graph,_ = get_graph(tr_fig)
 
             context = {'planet_data': set_signs([item[0] for item in event_one_pp
             if isinstance(item, (list, tuple))],
@@ -271,7 +236,7 @@ def build_transit_chart(request):
                                                                event_two_ax=event_two_ax,
                                                                fig=tr_fig)
 
-            graph = get_graph(tr_fig)
+            graph,_ =  get_graph(tr_fig)
             context = {'planet_data': set_signs([item[0] for item in event_one_pp
                                                  if isinstance(item, (list, tuple))],
                                                 [item[1] for item in event_one_pp if isinstance(item, (list, tuple))]),
@@ -312,7 +277,7 @@ def build_transit_chart(request):
 
             swe.close()
 
-            graph = get_graph(tr_fig)
+            graph,_ =  get_graph(tr_fig)
 
             context = {'planet_data': set_signs([item[1] for item in event_one_pp
                                                  if isinstance(item, (list, tuple))],
@@ -351,7 +316,7 @@ def build_transit_chart(request):
                                                                    fig=tr_fig)
 
 
-            graph = get_graph(tr_fig)
+            graph,_ =  get_graph(tr_fig)
             swe.close()
             context = {'planet_data': set_signs([item[1] for item in event_one_pp
                                                  if isinstance(item, (list, tuple))],
@@ -396,7 +361,6 @@ def one_color_chart(request):
         utc_dt = local_dt.astimezone(datetime.timezone.utc)
         jd = jl.to_jd(utc_dt, fmt='jd')
 
-
         zf_face_color = zodiac_oc_form.cleaned_data['face_color']
         zf_edge_color = zodiac_oc_form.cleaned_data['edge_color']
         zf_text_color = zodiac_oc_form.cleaned_data['text_color']
@@ -410,7 +374,6 @@ def one_color_chart(request):
         zf_marker_size = zodiac_oc_form.cleaned_data['marker_size']
         zf_symbol_size = zodiac_oc_form.cleaned_data['symbol_size']
 
-
         zf_house_ax_color = zodiac_oc_form.cleaned_data['house_ax_color'] #tick params draw_chart
         zf_house_num_color = zodiac_oc_form.cleaned_data['house_number_color']#tick params
         zf_house_ax_lw = zodiac_oc_form.cleaned_data['house_ax_lw']
@@ -418,7 +381,6 @@ def one_color_chart(request):
 
         zf_house_track_lw = zodiac_oc_form.cleaned_data['house_track_lw']
         zf_house_track_color = zodiac_oc_form.cleaned_data['house_track_color']
-
 
         img = draw_zodiac_one_color(zf_face_color, zf_edge_color, zf_text_color, zf_tick_color,
                               zf_deg_color, zf_font_size, zf_line_width)
@@ -428,7 +390,6 @@ def one_color_chart(request):
 
         planet_data = get_planet_data(jd, zf_mode)
         coords_value = list(planet_data.values())
-
 
         if zf_hs != 'Without houses':
 
@@ -450,11 +411,11 @@ def one_color_chart(request):
 
             swe.close()
 
-            graph = get_graph(fig_form)
+            graph,_ =  get_graph(fig_form)
 
             return render(request, 'designed_oc_chart.html',
                           context=
-                          {'planet_data': set_signs(planet_names, [p[5] for p in coords_value]),
+                          {'planet_data': set_signs(planet_names, [p[4] for p in coords_value]),
                             'house_data': set_signs(house_names,list(houses[0])),
                             'ats': aspect_table_s, 'ato': aspect_table_ops,
                             'att': aspect_table_t, 'atc': aspect_table_c,
@@ -478,10 +439,10 @@ def one_color_chart(request):
 
             swe.close()
 
-            graph = get_graph(fig_form)
+            graph,_ =  get_graph(fig_form)
 
             return render(request, 'designed_oc_chart_wh.html',
-                          context={'planet_data': set_signs(planet_names, [p[5] for p in coords_value]),
+                          context={'planet_data': set_signs(planet_names, [p[4] for p in coords_value]),
                                    'ats': aspect_table_s, 'ato': aspect_table_ops,
                                    'att': aspect_table_t, 'atc': aspect_table_c,
                                    'date': zf_date.strftime("%B %d, %Y, %H:%M:%S, %A"),

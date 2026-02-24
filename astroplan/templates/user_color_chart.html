@@ -55,27 +55,13 @@
 
 
  {% block chart-data %}
-    <div class="table-data">
-        {% include 'includes/planet_list.html' %}
-    </div>
-
-    <div class="table-data">
-        {% include 'includes/aspects.html' %}
-    </div>
-
-    <div class="chart-fig" style="background-color: none;">
-        <h1> Planet chart for {{ date }}</h1>
-        <img src="{{ color_chart.chart_image }}" alt="plot" id="chart-plot">
-        <div>
-             <div class="ul-link-div">
-
+    <div class="ul-link-div">
             <div class="ul-links">
                    <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
             </div>
 
              <div class="ul-links">
                   <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
-
             </div>
 
              <div class="ul-links">
@@ -89,10 +75,19 @@
              <div class="ul-links">
                     <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
             </div>
-        </div>
-
-        </div>
     </div>
+
+    <div class="table-data">
+        {% include 'includes/planet_list.html' %}
+        {% include 'includes/aspects.html' %}
+    </div>
+
+
+    <div class="chart-fig">
+        <h1> Planet chart for {{ date }}</h1>
+        <img src="{{ color_chart.chart_image }}" alt="plot" id="chart-plot">
+    </div>
+
 
     <div class="table-data">
         {% include 'includes/house_cusps.html' %}

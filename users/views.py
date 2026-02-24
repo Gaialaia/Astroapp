@@ -345,12 +345,12 @@ def user_transit_chart_form(request):
 
         ev_d = tr_user_chart.event_date
         tr_uc_ev_hs = tr_user_chart.ev_house_system.encode('utf-8')
-        tr_house_system = HOUSE_SYSTEM_CHOICES.get(tr_uc_ev_hs)
+        eo_hs = HOUSE_SYSTEM_CHOICES.get(tr_uc_ev_hs)
         tr_mode = MODE_CHOICES.get(tr_user_chart.tr_chart_mode)
 
         tr_d = tr_user_chart.transit_date
         tr_uc_tr_hs = tr_user_chart.tr_house_system.encode('utf-8')
-        tr_ev_house_system = HOUSE_SYSTEM_CHOICES.get(tr_uc_tr_hs)
+        et_hs = HOUSE_SYSTEM_CHOICES.get(tr_uc_tr_hs)
         ev_mode = MODE_CHOICES.get(tr_user_chart.ev_chart_mode)
 
         ev_get_loc = loc.geocode(f'{tr_user_chart.event_city, tr_user_chart.event_country}', timeout=7000)
@@ -615,7 +615,7 @@ def user_transit_chart_form(request):
                        'tr_uc_tr_name': tr_user_chart.event_name,
                        'tr_uc_ev_name': tr_user_chart.transit_name,
                        'tr_mode': tr_mode, 'ev_mode': ev_mode,
-                       'graph': graph }
+                       'graph': graph, 'ev_one_hs':eo_hs, 'ev_two_hs': et_hs }
 
             return render(request, 'tr_user_chart_dtl.html', context)
 
@@ -706,7 +706,7 @@ def user_transit_chart_form(request):
                        'tr_uc_tr_name': tr_user_chart.event_name,
                        'tr_uc_ev_name': tr_user_chart.transit_name,
                        'tr_mode': tr_mode, 'ev_mode': ev_mode,
-                       'graph': graph }
+                       'graph': graph, 'ev_one_hs': eo_hs }
 
             return render(request, 'tr_user_chart_dtl_th.html', context)
 
@@ -802,7 +802,7 @@ def user_transit_chart_form(request):
                        'tr_uc_tr_name': tr_user_chart.event_name,
                        'tr_uc_ev_name': tr_user_chart.transit_name,
                        'tr_mode': tr_mode, 'ev_mode': ev_mode,
-                       'graph': graph}
+                       'graph': graph, 'ev_two_hs': et_hs }
 
             return render(request, 'tr_user_chart_dtl_eh.html', context)
 
@@ -901,7 +901,8 @@ def user_color_chart_form(request):
                 color_chart.save()
 
                 return render(request, 'user_color_chart.html',
-                              {'planet_data': set_signs(planet_names, [p[5] for p in pd_val]),
+                              {'planet_data': set_signs(planet_names, [p[4] for p in pd_val]),
+                               'house_data': set_signs(house_names,list(houses[0])),
                                'ats': aspect_table_s, 'ato': aspect_table_ops,
                                'att': aspect_table_t, 'atc': aspect_table_c, 'date': color_chart.chart_date,
                                'color_chart': color_chart, 'graph':graph})
@@ -920,18 +921,15 @@ def user_color_chart_form(request):
                 plot_name = f'{color_chart.drawer}{color_chart.id}.png'
                 color_chart.chart_image = upload_to_storage(buffer, plot_name, 'chart_plots/colored_charts_nh/')
 
-                # plt.close(fig_form)
-                # plt.close('all')
-
                 buffer.close()
 
                 color_chart.save()
 
                 return render(request, 'user_color_chart_nh.html',
-                              {'planet_data': set_signs(planet_names, [p[5] for p in pd_val]),
+                              {'planet_data': set_signs(planet_names, [p[4] for p in pd_val]),
                                'ats': aspect_table_s, 'ato': aspect_table_ops,
                                'att': aspect_table_t, 'atc': aspect_table_c, 'date': color_chart.chart_date,
-                               'color_chart': color_chart, 'graph': get_graph})
+                               'color_chart': color_chart, 'graph': graph})
 
     else:
         color_form = OneColorZodiacRingFM(request.POST, request.FILES)

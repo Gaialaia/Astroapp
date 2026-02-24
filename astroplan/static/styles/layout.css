@@ -394,7 +394,7 @@ table:empty {
 
 .my-chart-tr-form {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 2fr;
     padding: 10px;
 
 }
@@ -571,6 +571,9 @@ input[type="number"] {
      gap: 20px;
      background-color:  rgba(159,0,255, 0.4);
      border: 1px solid rgb(159,0,255);
+     width: max-content;
+     color: aliceblue;
+
 }
 
 .tr-links {
@@ -591,28 +594,18 @@ input[type="number"] {
 
 .ul-link-div {
     display: grid;
-    gap: 0px;
+    align-content: center;
     width: fit-content;
     text-align: center;
     margin-top: 20px;
+
 }
-
-
-
 
 .ul-utf-link-div {
     display: flex;
     justify-content: space-between;
 }
 
-.ul-plot-links-under-fig {
-    font-variant-caps: all-petite-caps;
-    font-size: 170%;
-    padding: 7px;
-    margin-left: 5px;
-    background-color:  rgba(159,0,255, 0.4);
-    border: 1px solid rgb(159,0,255);
-}
 
 .user-welcome-div {
     margin-bottom: 50px;

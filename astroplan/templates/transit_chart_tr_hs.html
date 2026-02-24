@@ -5,11 +5,11 @@
 
 {% block navigation %}
 
-<div class="menu-choice" id="today-chart" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice">
     <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice">
     <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
 </div>
 
@@ -42,10 +42,7 @@
                      <div>
                           <a href="{% url 'register' %}"> SIGN UP </a>
                     </div>
-
                 </div>
-
-
             </div>
 
          {% endif %}
@@ -73,7 +70,7 @@
                         <p class="form-info-data-title"> Transit date: {{ tr_date }} </p>
                        <p class="form-info-data-title"> Transit city: {{ tr_city }} </p>
                        <p class="form-info-data-title"> Transit country: {{ tr_country }} </p>
-                        <p class="form-info-data-title"> HS: {{ tr_hs_name }} </p>
+                        <p class="form-info-data-title"> HS: {{ ev_two_hs }} </p>
                           <p class="form-info-data-title"> Mode: {{ tr_mode }} </p>
                     </div>
       </div>

@@ -34,9 +34,9 @@
 }
 
 .instruction-text {
-    margin-bottom: 50px;
     text-align: center;
-    font-size: 130%;
+    font-size: 170%;
+    grid-column: 1 / span 2;
 }
 
 .ul-list-names {

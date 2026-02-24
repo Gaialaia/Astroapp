@@ -45,17 +45,20 @@
         </div>
          {% endif %}
 </div>
-
-
 {% endblock %}
 
 
 
-
-                 {% block chart-data %}
+    {% block chart-data %}
 
 <div class="table-data">
-      {% include 'includes/transit_aspects.html' %}
+     {% include 'includes/planet_list.html' %}
+     {% include 'includes/house_cusps.html' %}
+</div>
+
+<div class="table-data">
+     {% include 'includes/transit_planets_position.html' %}
+      {% include 'includes/transit_house_cusps.html' %}
 </div>
 
 <div class="chart-fig">
@@ -63,78 +66,46 @@
           <div class="event-info">
               <p class="form-info-data-title">Event date: {{ event_date }} </p>
                     <p class="form-info-data-title"> Event name: {{ tr_uc_tr_name }} </p>
-                       <p class="form-info-data-title"> Event city: {{ transit_user_chart.event_city }} </p>
-                       <p class="form-info-data-title"> Event country: {{ transit_user_chart.event_country }} </p>
-                       <p class="form-info-data-title"> House system: {{ tr_ev_hs }} </p>
+                       <p class="form-info-data-title"> Event city: {{ event_city }} </p>
+                       <p class="form-info-data-title"> Event country: {{ event_country }} </p>
+                       <p class="form-info-data-title"> House system: {{ ev_one_hs }} </p>
                         <p class="form-info-data-title"> Event mode: {{ ev_mode }} </p>
 
           </div>
-                    <div class="transit-info">
+           <div class="transit-info">
                         <p class="form-info-data-title"> Transit name: {{ tr_uc_ev_name }} </p>
                         <p class="form-info-data-title"> Transit date: {{ tr_date }} </p>
                        <p class="form-info-data-title"> Transit city: {{ tr_city }} </p>
                        <p class="form-info-data-title"> Transit country: {{ tr_country }} </p>
-                        <p class="form-info-data-title"> House system: {{ tr_hs }} </p>
+                        <p class="form-info-data-title"> House system: {{ ev_two_hs }} </p>
                         <p class="form-info-data-title"> Transit mode: {{ tr_mode }} </p>
-                    </div>
+           </div>
        </div>
                 <img src="data:image/png;base64,{{ graph }}">
 
                     <div class="ul-link-div">
                         <div class="ul-links">
-                              <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links-under-fig"> To my lounge  </a>
+                              <a href="{% url 'user lounge' user.username %}"> To my lounge  </a>
                         </div>
 
                          <div class="ul-links">
-                               <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links-under-fig"> To chart lists  </a>
+                               <a href="{% url 'user chart lists' %}"> To chart lists  </a>
                         </div>
 
                          <div class="ul-links">
-                                <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links-under-fig"> To transit chart form  </a>
+                                <a href="{% url 'user tc f'  %}"> To transit chart form  </a>
 
                         </div>
 
                          <div class="ul-links">
-                               <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links-under-fig"> To color form  </a>
+                               <a href="{% url 'user c ch f'  %}"> To color form  </a>
                         </div>
-
 
                     </div>
-
-
   </div>
 
-<div class="table-cont">
 <div class="table-data">
-    {% include 'includes/planet_list.html' %}
-    </div>
-
-<div class="table-data">
-    {% include 'includes/house_cusps.html' %}
+          {% include 'includes/transit_aspects.html' %}
 </div>
-</div>
-
-<div class="table-cont">
-<div class="table-data">
-     {% include 'includes/transit_planets_position.html' %}
-</div>
-    <div class="table-data" id="tr-chr-ul-hc">
-     {% include 'includes/transit_house_cusps.html' %}
-</div>
-</div>
-
-<script>
-       window.onload = function() {
-       const table = document.getElementById('tr-chr-ul-hc');
-
-            if (table) {
-                const tbodyRows = table.querySelectorAll('tbody tr');
-                if (tbodyRows.length === 0) {
-                    table.style.display = 'none';
-                }
-            }
-       };
-
-</script>
 
 {% endblock %}
