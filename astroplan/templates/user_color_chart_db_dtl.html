@@ -5,11 +5,11 @@
 {% block title %} {{ chart.chart_name }} {% endblock %}
 
 {% block navigation %}
-<div class="menu-choice" id="today-chart" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice">
     <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice">
     <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
 </div>
 
@@ -43,7 +43,6 @@
                           <a href="{% url 'register' %}"> SIGN UP </a>
                     </div>
                 </div>
-
             </div>
 
          {% endif %}
@@ -56,23 +55,18 @@
     <div class="ul-links">
         <a href="{% url 'user lounge' user.username %}" > To the lounge </a>
     </div>
-
     <div class="ul-links">
            <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a
     </div>
-
     <div class="ul-links">
             <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
     </div>
-
     <div class="ul-links">
           <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
     </div>
-
     <div class="ul-links">
          <a href="{% url 'user chart lists' %}" > To lists </a>
     </div>
-
 </div>
 
 <div class="table-data">
@@ -156,18 +150,17 @@
 <div class="chart-fig">
     <h3> {{ chart.chart_name }}</h3>
     <div class="form-info">
-        <div class="event-info">
-        <p class="form-info-data-title">Event name : {{ chart.chart_name }} <p>
-         <p class="form-info-data-title">Event date: {{ chart.chart_date }} <p>
-         <p class="form-info-data-title">Event city : {{ chart.chart_city }} <p>
-         <p class="form-info-data-title">Event country : {{ chart.chart_country }} <p>
-    </div>
-
+            <div class="event-info">
+            <p class="form-info-data-title">Event name : {{ chart.chart_name }} <p>
+             <p class="form-info-data-title">Event date: {{ chart.chart_date }} <p>
+             <p class="form-info-data-title">Event city : {{ chart.chart_city }} <p>
+             <p class="form-info-data-title">Event country : {{ chart.chart_country }} <p>
+                   <p class="form-info-data-title"> HS: {{ chart.house_system }} <p>
+        </div>
     </div>
 
 
     <img src="{{ chart.chart_image }}" alt="plot">
-    <p> DEBUG: {{ chart.chart_image }}</p>
 
     <form method = "POST">
          {% csrf_token %}

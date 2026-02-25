@@ -81,7 +81,12 @@
     </div>
 
     <div class="chart-fig">
-        <h1> Planet chart for {{ date }}</h1>
+        <h1> Planet chart for {{ cc_date }}</h1>
+          <div class="event-info">
+                         <p class="form-info-data-title"> City : {{ cc_city }} </p>
+                         <p class="form-info-data-title"> Country: {{ cc_country }} </p>
+                         <p class="form-info-data-title"> Chart mode: {{ cc_mode }}</p>
+          </div>
            <img src="{{ color_chart.chart_image }}" alt="plot" id="chart-plot">
     </div>
 

@@ -2,8 +2,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block title %} {{ tr_chart.event_name }} / {{ tr_chart.transit_name }} {% endblock %}
-
+{% block title %} {{ tr_chart.event_name }} / {{ tr_chart.transit_name }} EH {% endblock %}
 
 {% block navigation %}
 
@@ -19,14 +18,12 @@
     <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
 </div>
 
-
 <div class="menu-choice menu-choice-dd">
     <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
         <div class="menu-choice-dd-content">
             <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
         </div>
 </div>
-
 
 <div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
      {% if user.is_authenticated %}
@@ -50,31 +47,30 @@
 </div>
 {% endblock %}
 
-
-                 {% block chart-data %}
-     <div class="ul-link-div">
+{% block chart-data %}
+    <div class="ul-link-div">
         <div class="ul-links">
-            <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
-            </div>
+            <a href="{% url 'user lounge' user.username %}" > To my lounge  </a>
+        </div>
         <div class="ul-links">
-                <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
+                <a href="{% url 'user chart lists' %}" > To chart lists  </a>
         </div>
          <div class="ul-links">
-              <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a>
+              <a href="{% url 'user tc f'  %}" > To transit chart form  </a>
         </div>
          <div class="ul-links">
-             <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
+             <a href="{% url 'user c ch f'  %}" > To color form  </a>
         </div>
          <div class="ul-links">
-                <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
+                <a href="{% url 'ad user chart' %}" > To chart form  </a>
         </div>
     </div>
-         <div class="table-data">
+
+    <div class="table-data">
          <table>
              <caption> Planet data </caption>
              <thead>
              <tr>
-
                  <th> Planet </th>
                  <th> Degrees </th>
                  <th> Sign </th>
@@ -123,7 +119,6 @@
                          <td> {{ tr_chart.Saturn_deg }} </td>
                         <td> {{ tr_chart.Saturn_sign }} </td>
                     </tr>
-
 
                     <tr>
                         <td> Uranus </td>
@@ -233,51 +228,45 @@
                         </tr>
                          </tbody>
                </table>
-             </div>
-
-
-                        <div class="chart-fig">
-
-                            <div class="form-info" >
-                                 <div  class="event-info">
+    </div>
+    <div class="chart-fig">
+        <div class="form-info">
+            <div  class="event-info">
                                      <p class="form-info-data-title">Event name : {{ tr_chart.event_name }} </p>
                                      <p class="form-info-data-title">Event date: {{ tr_chart.event_date }} </p>
                                     <p class="form-info-data-title">Event city : {{ tr_chart.event_city }}</p>
                                     <p class="form-info-data-title">Event country : {{ tr_chart.event_country }}</p>
-
-                            </div>
-                                <div class="transit-info">
+                                      <p class="form-info-data-title"> HS : {{  tr_chart.ev_house_system  }}</p>
+            </div>
+            <div class="transit-info">
                                     <p class="form-info-data-title">Transit name : {{ tr_chart.transit_name }}</p>
                                     <p class="form-info-data-title">Transit date: {{ tr_chart.transit_date }}</p>
                                     <p class="form-info-data-title">Transit city : {{ tr_chart.transit_city }}</p>
                                     <p class="form-info-data-title">Transit country : {{ tr_chart.transit_country }}</p>
-                                </div>
-                            </div>
+            </div>
+        </div>
 
-                        <img src="/media/{{ tr_chart.tr_chart_image }}/" alt="{{ tr_chart.tr_chart_image }}">
-                        <form method ="POST" action="">
+        <img src="/media/{{ tr_chart.tr_chart_image }}/" alt="{{ tr_chart.tr_chart_image }}">
+    <form method ="POST" action="">
                             {% csrf_token %}
                             <button  class="show-chart"  type="submit">
                              Delete {{ tr_chart.event_name }} {{ tr_chart.transit_name }}
-                                </button>
-                        </form>
+                            </button>
+    </form>
 
-                            </div>
+    </div>
 
 
-                 <div class="table-data">
-
-         <table>
-             <caption> TP data </caption>
-             <thead>
-             <tr>
-
+<div class="table-data">
+    <table>
+        <caption> TP data </caption>
+            <thead>
+            <tr>
                  <th> Planet </th>
                  <th> Degrees </th>
                  <th> Sign </th>
              </tr>
              </thead>
-
              <tbody>
                     <tr>
                         <td> Sun </td>
@@ -321,7 +310,6 @@
                         <td> {{ tr_chart.tr_Saturn_sign }} </td>
                     </tr>
 
-
                     <tr>
                         <td> Uranus </td>
                          <td> {{ tr_chart.tr_Uranus_deg }} </td>
@@ -340,10 +328,7 @@
                          <td> {{ tr_chart.tr_Pluto_deg }} </td>
                         <td> {{ tr_chart.tr_Pluto_sign }} </td>
                     </tr>
+             </tbody>
 
-
-
-
-
-
+    </div>
 {% endblock %}

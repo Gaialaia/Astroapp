@@ -5,11 +5,11 @@
 {% block title %} {{ clr_chart.chart_name }} {% endblock %}
 
 {% block navigation %}
-<div class="menu-choice" id="today-chart" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice">
     <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice">
     <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
 </div>
 
@@ -51,6 +51,24 @@
 
 
 {% block chart-data %}
+
+<div class="ul-link-div">
+    <div class="ul-links">
+        <a href="{% url 'user lounge' user.username %}" > To the lounge </a>
+    </div>
+    <div class="ul-links">
+           <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a
+    </div>
+    <div class="ul-links">
+            <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
+    </div>
+    <div class="ul-links">
+          <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
+    </div>
+    <div class="ul-links">
+         <a href="{% url 'user chart lists' %}" > To lists </a>
+    </div>
+</div>
 
 <div class="table-data">
     <table>
@@ -132,7 +150,6 @@
 
 <div class="chart-fig">
 
-
     <div class="form-info">
         <div class="event-info">
             <p class="form-info-data-title"> Event name : {{ clr_chart.chart_name }} </p>
@@ -140,7 +157,7 @@
               <p class="form-info-data-title"> Event city : {{ clr_chart.chart_city }} </p>
               <p class="form-info-data-title"> Event country : {{ clr_chart.chart_country }} </p>
         </div>
-        </div>
+    </div>
 
     <img src="{{ clr_chart.chart_image }}" alt="clr_chart.chart_name">
 
@@ -148,11 +165,7 @@
          {% csrf_token %}
         <button class="show-chart"  type="submit"> Delete {{ clr_chart.chart_name }} </button>
     </form>
-    <a href="{% url 'user lounge' user.username %}" > To the lounge </a>
-    <a href="{% url 'user chart lists' %}" > To lists </a>
-     <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a>
-    <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
-    <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
+
 </div>
 
 {% endblock %}

@@ -512,7 +512,7 @@ def clr_chart_detail(request, id):
     if clr_chart_dtl.chart_house_system == 'Without houses':
             return render(request, 'user_clr_chart_db_dtl_wh.html', context)
 
-    return render(request, 'clr_chart_db_dtl.html', context)
+    return render(request, 'user_clr_chart_db_dtl.html', context)
 
 
 def user_chart_lists(request):
