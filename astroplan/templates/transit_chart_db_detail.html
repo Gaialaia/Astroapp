@@ -28,7 +28,7 @@
 </div>
 
 
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice opened-tab">
      {% if user.is_authenticated %}
     <div class="menu-choice-dd">
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
@@ -241,7 +241,7 @@
                                      <p class="form-info-data-title">Event date: {{ tr_chart.event_date }} </p>
                                     <p class="form-info-data-title">Event city : {{ tr_chart.event_city }}</p>
                                     <p class="form-info-data-title">Event country : {{ tr_chart.event_country }}</p>
-                                     <p class="form-info-data-title"> HS: {{ tr_chart.ev_house_system }}</p>
+                                     <p class="form-info-data-title"> HS: {{ eo_hs }}</p>
 
                             </div>
                                 <div class="transit-info">
@@ -249,7 +249,7 @@
                                     <p class="form-info-data-title">Transit date: {{ tr_chart.transit_date }}</p>
                                     <p class="form-info-data-title">Transit city : {{ tr_chart.transit_city }}</p>
                                     <p class="form-info-data-title">Transit country : {{ tr_chart.transit_country }}</p>
-                                         <p class="form-info-data-title"> HS: {{ tr_chart.tr_house_system }}</p>
+                                         <p class="form-info-data-title"> HS: {{ et_hs }}</p>
                                 </div>
                             </div>
                         <img src="/media/{{ tr_chart.tr_chart_image }}/" alt="{{ tr_chart.tr_chart_image }}">
@@ -261,7 +261,6 @@
                         </form>
 
                             </div>
-
 
                  <div class="table-data">
 

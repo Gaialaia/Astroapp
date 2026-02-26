@@ -7,7 +7,7 @@
 
 {% block navigation %}
 
-<div class="menu-choice" id="today-chart">
+<div class="menu-choice">
     <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
@@ -26,7 +26,7 @@
         </div>
 </div>
 
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice opened-tab" >
      {% if user.is_authenticated %}
     <div class="menu-choice-dd">
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
@@ -48,7 +48,7 @@
 </div>
 {% endblock %}
 
-                 {% block chart-data %}
+    {% block chart-data %}
 
     <div class="table-data">
          <table>
@@ -154,7 +154,7 @@
                                     <p class="form-info-data-title">Transit date: {{ tr_chart.transit_date }}</p>
                                     <p class="form-info-data-title">Transit city : {{ tr_chart.transit_city }}</p>
                                     <p class="form-info-data-title">Transit country : {{ tr_chart.transit_country }}</p>
-                                    <p class="form-info-data-title"> HS : {{ tr_chart.tr_house_system }}</p>
+                                    <p class="form-info-data-title"> HS : {{ et_hs }}</p>
                 </div>
             </div>
 

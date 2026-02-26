@@ -455,59 +455,62 @@ def one_color_chart(request):
 
 def chart_detail(request, id):
 
-    chart_to_delete = FullChart.objects.filter(id=id).first()
+    chart = get_object_or_404(FullChart,id=id)
     username = request.user.username
 
     if request.method == 'POST':
-        chart_to_delete.delete()
+        chart.delete()
         messages.success(request, 'Chart deleted')
         return redirect('user lounge', username=username)
 
+    context = {'chart': chart}
 
-    chart_dtl = FullChart.objects.get(id=id)
+    if chart.house_system == 'Without houses':
+        return render(request,'user_chart_db_dtl_wh.html', context)
 
-    if chart_dtl.house_system == 'Without houses':
-        return render(request,'user_chart_db_dtl_wh.html', {'chart': FullChart.objects.get(id=id)})
-
-    return render(request, 'user_chart_db_detail.html', {'chart': FullChart.objects.get(id=id)})
+    return render(request, 'user_chart_db_detail.html', context)
 
 
 def tr_chart_detail(request, id):
-    tr_chart_to_delete = TransitFullChart.objects.filter(id=id).first()
 
     tr_chart_db_dtl = TransitFullChart.objects.get(id=id)
 
+    eo_hs = HOUSE_SYSTEM_CHOICES.get(tr_chart_db_dtl.ev_house_system)
+    et_hs = HOUSE_SYSTEM_CHOICES.get(tr_chart_db_dtl.tr_house_system)
 
     username = request.user.username
 
     if request.method == 'POST':
-        tr_chart_to_delete.delete()
+        tr_chart_db_dtl.delete()
         messages.success(request, 'Chart deleted')
         return redirect('user lounge', username=username)
 
+    context = {'tr_chart': tr_chart_db_dtl,
+               'eo_hs':eo_hs, 'et_hs': et_hs}
 
     if tr_chart_db_dtl.ev_house_system == 'Without houses' and tr_chart_db_dtl.tr_house_system == 'Without houses':
-        return render(request, 'transit_chart_db_detail_nh.html', {'tr_chart': TransitFullChart.objects.get(id=id)})
+        return render(request, 'transit_chart_db_detail_nh.html', context)
     elif tr_chart_db_dtl.ev_house_system == 'Without houses' and tr_chart_db_dtl.tr_house_system != 'Without houses':
-        return render(request, 'transit_chart_db_detail_th.html', {'tr_chart': TransitFullChart.objects.get(id=id)})
+        return render(request, 'transit_chart_db_detail_th.html', context)
     elif tr_chart_db_dtl.ev_house_system != 'Without houses' and tr_chart_db_dtl.tr_house_system == 'Without houses':
-        return render(request, 'transit_chart_db_detail_eh.html', {'tr_chart': TransitFullChart.objects.get(id=id)})
+        return render(request, 'transit_chart_db_detail_eh.html', context)
 
     else:
-        return render(request, 'transit_chart_db_detail.html', {'tr_chart': TransitFullChart.objects.get(id=id)})
+        return render(request, 'transit_chart_db_detail.html', context)
 
 
 
 def clr_chart_detail(request, id):
 
     clr_chart_dtl = get_object_or_404(OneColorZodiacRingMF, id=id)
+    hs = HOUSE_SYSTEM_CHOICES.get(clr_chart_dtl.chart_house_system)
 
     if request.method == 'POST':
         clr_chart_dtl.delete()
         messages.success(request, 'Chart deleted')
         return redirect('user lounge', username = request.user.username)
 
-    context = {'clr_chart': clr_chart_dtl }
+    context = {'clr_chart': clr_chart_dtl, 'hs': hs}
 
     if clr_chart_dtl.chart_house_system == 'Without houses':
             return render(request, 'user_clr_chart_db_dtl_wh.html', context)

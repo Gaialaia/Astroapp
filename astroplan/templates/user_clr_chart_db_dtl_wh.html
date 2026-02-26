@@ -2,7 +2,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block title %} {{ clr_chart.chart_name }} {% endblock %}
+{% block title %} {{ clr_chart.chart_name }} WH {% endblock %}
 
 {% block navigation %}
 <div class="menu-choice">
@@ -51,19 +51,18 @@
 
 
 {% block chart-data %}
-
 <div class="ul-link-div">
     <div class="ul-links">
         <a href="{% url 'user lounge' user.username %}" > To the lounge </a>
     </div>
     <div class="ul-links">
-           <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a
+           <a href="{% url 'user tc f'  %}" > To transit chart form  </a>
     </div>
     <div class="ul-links">
-            <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
+            <a href="{% url 'user c ch f'  %}"> To color form  </a>
     </div>
     <div class="ul-links">
-          <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
+          <a href="{% url 'ad user chart' %}"> To chart form  </a>
     </div>
     <div class="ul-links">
          <a href="{% url 'user chart lists' %}" > To lists </a>
@@ -165,7 +164,6 @@
          {% csrf_token %}
         <button class="show-chart"  type="submit"> Delete {{ clr_chart.chart_name }} </button>
     </form>
-
 </div>
 
 {% endblock %}

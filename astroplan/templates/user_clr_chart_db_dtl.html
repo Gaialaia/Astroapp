@@ -2,12 +2,10 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block title %} {{ clr_chart.chart_name}} {% endblock %}
-
+{% block title %} {{ chart.chart_name }} {% endblock %}
 
 {% block navigation %}
-
-<div class="menu-choice" id="today-chart">
+<div class="menu-choice">
     <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
@@ -27,49 +25,46 @@
         </div>
 </div>
 
-
-
-<div class="menu-choice opened-tab">
+<div class="menu-choice menu-choice-dd">
      {% if user.is_authenticated %}
-    <div class="menu-choice-dd">
+    <div>
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
         <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
     </div>
         {% else %}
-        <div class="menu-choice-dd"> ENTER
+        <div> GET INSIDE </div>
             <div class="menu-choice-dd-content">
-                <div>
-                     <a href="{% url 'login' %}"> LOG IN </a>
+                <div class="menu-choice-dd-content-links auth-bt">
+                    <div>
+                        <a href="{% url 'login' %}"> LOG IN </a>
+                    </div>
+                     <div>
+                          <a href="{% url 'register' %}"> SIGN UP </a>
+                    </div>
                 </div>
-                <div>
-                    <a href="{% url 'register' %}"> SIGN UP </a>
-                </div>
-
             </div>
-        </div>
          {% endif %}
 </div>
 {% endblock %}
 
-
 {% block chart-data %}
 
-    <div class="ul-link-div">
-        <div class="ul-links">
-            <a href="{% url 'user lounge' user.username %}" > To the lounge </a>
-        </div>
-        <div class="ul-links">
-               <a href="{% url 'user tc f'  %}" > To transit chart form  </a
-        </div>
-        <div class="ul-links">
-                <a href="{% url 'user c ch f'  %}" > To color form  </a>
-        </div>
-        <div class="ul-links">
-              <a href="{% url 'ad user chart' %}" > To chart form  </a>
-        </div>
-        <div class="ul-links">
-             <a href="{% url 'user chart lists' %}" > To lists </a>
-        </div>
+<div class="ul-link-div">
+    <div class="ul-links">
+        <a href="{% url 'user lounge' user.username %}" > To the lounge </a>
+    </div>
+    <div class="ul-links">
+           <a href="{% url 'user tc f'  %}" > To transit chart form  </a>
+    </div>
+    <div class="ul-links">
+            <a href="{% url 'user c ch f'  %}" > To color form  </a>
+    </div>
+    <div class="ul-links">
+          <a href="{% url 'ad user chart' %}" > To chart form  </a>
+    </div>
+    <div class="ul-links">
+         <a href="{% url 'user chart lists' %}" > To lists </a>
+    </div>
 </div>
 
 <div class="table-data">
@@ -86,13 +81,13 @@
              <tbody>
                     <tr>
                         <td> Sun </td>
-                         <td> {{ clr_chart.Sun_deg}} </td>
-                        <td> {{ clr_chart.Moon_sign }} </td>
+                         <td> {{ clr_chart.Sun_deg }} </td>
+                        <td> {{ clr_chart.Sun_sign }} </td>
                     </tr>
 
                      <tr>
                         <td> Moon  </td>
-                         <td> {{ clr_chart.Moon_deg}} </td>
+                         <td> {{ clr_chart.Moon_deg }} </td>
                         <td> {{ clr_chart.Moon_sign }} </td>
                     </tr>
 
@@ -104,8 +99,8 @@
 
                      <tr>
                         <td> Venus </td>
-                         <td> {{ clr_chart.Sun_deg}} </td>
-                        <td> {{ clr_chart.Moon_sign }} </td>
+                         <td> {{ clr_chart.Venus_deg }} </td>
+                        <td> {{ clr_chart.Venus_sign }} </td>
                     </tr>
 
                     <tr>
@@ -145,29 +140,31 @@
                          <td> {{ clr_chart.Pluto_deg }} </td>
                         <td> {{ clr_chart.Pluto_sign }} </td>
                     </tr>
-
          </table>
 
 </div>
 
 <div class="chart-fig">
-    <div class="event-info">
-      <p class="form-info-data-title"> Event name : {{ clr_chart.chart_name }} </p>
-        <p class="form-info-data-title">  Event date: {{ clr_chart.chart_date }}</p>
-           <p class="form-info-data-title">  Event city : {{ clr_chart.chart_city }}</p>
-           <p class="form-info-data-title">  Event country : {{ clr_chart.chart_country }}</p>
+    <div class="form-info">
+            <div class="event-info">
+                <p class="form-info-data-title">Event name : {{ clr_chart.chart_name }} <p>
+                 <p class="form-info-data-title">Event date: {{ clr_chart.chart_date }} <p>
+                 <p class="form-info-data-title">Event city : {{ clr_chart.chart_city }} <p>
+                 <p class="form-info-data-title">Event country : {{ clr_chart.chart_country }} <p>
+                    <p class="form-info-data-title"> HS: {{ hs }} <p>
+            </div>
     </div>
-    <img src="{{ clr_chart.chart_image }}" alt="colored chart">
+
+    <img src="{{ clr_chart.chart_image }}" alt="plot">
 
     <form method = "POST">
          {% csrf_token %}
         <button class="show-chart"  type="submit"> Delete {{ clr_chart.chart_name }} </button>
     </form>
-
 </div>
 
 <div class="table-data">
-    <table id="clr_chart-hc-data">
+    <table id="chart-hc-data">
         <caption> HC data </caption>
          <thead>
          <tr>
@@ -257,15 +254,6 @@
 
     </table>
 </div>
-<script>
-      window.onload = function() {
-        const table = document.getElementById('clr_chart-hc-data');
-        if (table) {
-            const tbodyRows = table.querySelectorAll('tbody tr');
-            if (tbodyRows.length === 0) {
-                table.style.display = 'none';
-            }
-        }
-    };
-</script>
+
+
 {% endblock %}

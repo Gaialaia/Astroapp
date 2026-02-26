@@ -25,7 +25,7 @@
         </div>
 </div>
 
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
+<div class="menu-choice opened-tab">
      {% if user.is_authenticated %}
     <div class="menu-choice-dd">
         <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
@@ -236,8 +236,9 @@
                                      <p class="form-info-data-title">Event date: {{ tr_chart.event_date }} </p>
                                     <p class="form-info-data-title">Event city : {{ tr_chart.event_city }}</p>
                                     <p class="form-info-data-title">Event country : {{ tr_chart.event_country }}</p>
-                                      <p class="form-info-data-title"> HS : {{  tr_chart.ev_house_system  }}</p>
+                                      <p class="form-info-data-title"> HS : {{  eo_hs }}</p>
             </div>
+
             <div class="transit-info">
                                     <p class="form-info-data-title">Transit name : {{ tr_chart.transit_name }}</p>
                                     <p class="form-info-data-title">Transit date: {{ tr_chart.transit_date }}</p>
@@ -248,10 +249,10 @@
 
         <img src="/media/{{ tr_chart.tr_chart_image }}/" alt="{{ tr_chart.tr_chart_image }}">
     <form method ="POST" action="">
-                            {% csrf_token %}
-                            <button  class="show-chart"  type="submit">
-                             Delete {{ tr_chart.event_name }} {{ tr_chart.transit_name }}
-                            </button>
+        {% csrf_token %}
+        <button  class="show-chart"  type="submit">
+            Delete {{ tr_chart.event_name }} {{ tr_chart.transit_name }}
+        </button>
     </form>
 
     </div>
