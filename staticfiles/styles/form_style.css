@@ -214,6 +214,7 @@ a {
     justify-self: end;
 }
 
+.chart-for-any-date,
 .my-chart-clr-form,
 .my-chart-tr-form,
 .my-chart-cf,
@@ -222,6 +223,8 @@ a {
     display: grid;
     place-items: center;
 }
+
+
 
 .my-chart-cf,
 .my-chart-clr-form {

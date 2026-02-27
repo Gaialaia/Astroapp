@@ -534,11 +534,6 @@ class OneColorZodiacRingMF(models.Model):
 
     chart_image = models.URLField(max_length=500, blank=True, null=True)
 
-    # def get_image_url(self):
-    #     if str(self.chart_image).startswith('http'):
-    #         return self.chart_image
-    #     return self.chart_image.url
-
 
     def __str__(self):
         return (f'{self.chart_date}, {self.chart_city}, {self.chart_country}'

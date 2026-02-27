@@ -63,9 +63,12 @@
                  </div>
 
                  <div class="chart-fig">
-                     <h1 class="chart-title"> Planet chart for {{ date }} </h1>
+                     <h1 class="chart-title"> Planet chart for today </h1>
+                      <p class="form-info-data-title">  {{ date }} </p>
                        <p class="form-info-data-title">  mode: sidereal </p>
                         <p class="form-info-data-title"> ayanamsa: Lahiri </p>
+                       <p class="form-info-data-title"> time zone: UTC+00:00</p>
+
                     <img src="data:image/png;base64,{{ graph }}" alt="plot" id="chart-plot">
                      <button class="print-button" onclick="window.print()">
                           <span class="print-icon"></span>

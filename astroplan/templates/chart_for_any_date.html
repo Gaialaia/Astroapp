@@ -43,12 +43,8 @@
                      <div>
                           <a href="{% url 'register' %}"> SIGN UP </a>
                     </div>
-
                 </div>
-
-
             </div>
-
          {% endif %}
 </div>
 {% endblock %}
@@ -56,6 +52,7 @@
 {% block  content-data  %}
 
  <div class="chart-for-any-date">
+     <div>
      <div class="instruction-text"> <h3>To get planet chart for a certain date, enter the following data:</h3></div>
      <form class="chart-forms" target="_blank" method="post" action=".">
            {{ chart_form.media }}
@@ -63,17 +60,17 @@
          <div class="form-row">
              <label for="id_chart_date"> date:</label>
                 <div class="django-flatpickr">
-                  <input type="text" name="chart_date" value="{{ chart_date|localtime }}" required id="id_chart_date" data-fpconfig="{&quot;picker_type&quot;: &quot;DATETIME&quot;, &quot;options&quot;: {&quot;altInput&quot;: true, &quot;dateFormat&quot;: &quot;Y-m-d H:i:S&quot;, &quot;enableTime&quot;: true, &quot;wrap&quot;: true}}" data-debug="">
+                  <input type="text" name="chart_date" value="{% now 'Y-m-d H:i:s' %}" required id="id_chart_date" data-fpconfig="{&quot;picker_type&quot;: &quot;DATETIME&quot;, &quot;options&quot;: {&quot;altInput&quot;: true, &quot;dateFormat&quot;: &quot;Y-m-d H:i:S&quot;, &quot;enableTime&quot;: true, &quot;wrap&quot;: true}}" data-debug="">
                 </div>
          </div>
 
         <div class="form-row">
-            <label for="id_city">city:</label>
+            <label for="id_city">city: {{ chart_form.city.errors }} </label>
             <input type="text" name="city" value="Ufa" required id="id_city">
         </div>
 
         <div class="form-row">
-            <label for="id_country">country:</label>
+            <label for="id_country">country:  {{ chart_form.country.errors }} </label>
             <input type="text" name="country" value="Russia" required id="id_country">
         </div>
 
@@ -97,6 +94,7 @@
       </div>
             <button class="show-chart" type="submit" > SHOW CHART </button>
      </form>
+     </div>
 
  </div>
 {% endblock %}

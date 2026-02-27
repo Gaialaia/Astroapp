@@ -1,15 +1,15 @@
 from django import forms
 from django.forms.widgets import TextInput, Select
-from django_flatpickr.widgets import DatePickerInput, DateTimePickerInput
+from django_flatpickr.widgets import DateTimePickerInput
 from django.utils import timezone
 
-from .models import Chart, TransitChart, ZodiacInColors, FullChart, TransitFullChart,OneColorZodiacRingMF
+from .models import Chart, ZodiacInColors, FullChart, TransitFullChart,OneColorZodiacRingMF
 
 from colorfield.widgets import ColorWidget
 from colorfield.forms import ColorField
 
-
 import swisseph as swe
+import datetime
 
 SIDEREAL = swe.FLG_SIDEREAL
 TROPICAL = swe.FLG_TROPICAL
@@ -33,7 +33,6 @@ HOUSE_SYSTEM_CHOICES = \
         EQUAL :  'Equal',
         'Without houses': 'Without houses',
     }
-
 
 
 class ChartForm(forms.ModelForm):
@@ -61,8 +60,12 @@ class ShowChart(forms.Form):
     city = forms.CharField(label='Enter city', initial='Ufa')
     country = forms.CharField(label='Enter country', initial='Russia')
 
-    mode = forms.ChoiceField(label = 'Chose chart mode', choices=MODE_CHOICES, initial='Sidereal', widget=forms.Select)
-    house_system = forms.ChoiceField(label='Chose house system',choices=HOUSE_SYSTEM_CHOICES, initial='Regiomontanus')
+    mode = forms.ChoiceField(label = 'Chose chart mode', choices=MODE_CHOICES,
+                             initial='Sidereal', widget=forms.Select)
+    house_system = forms.ChoiceField(label='Chose house system',
+                                     choices=HOUSE_SYSTEM_CHOICES, initial='Regiomontanus')
+
+
 
     class Media:
         css = {
@@ -89,6 +92,8 @@ class TransitForm(forms.Form):
                                 widget=forms.Select)
     tr_house_system = forms.ChoiceField(label='Chose transit house system', choices=HOUSE_SYSTEM_CHOICES,
                                         initial='Regiomontanus', widget=forms.Select)
+
+
 
     class Media:
         css = {
@@ -119,17 +124,11 @@ class FullChartForm(forms.ModelForm):
                 'all': ['/static/styles/form_style.css']
             }
 
-
-
-
-
-
-
 class TransitFullChartForm(forms.ModelForm):
 
     class Meta:
-        model = TransitFullChart
 
+        model = TransitFullChart
         fields = ['event_name', 'event_date',
                   'event_city', 'event_country',
                   'ev_chart_mode', 'ev_house_system',
@@ -357,55 +356,14 @@ class ZodiacInColorForm(forms.ModelForm):
                   'pluto_symbol_c' : 'Pluto symbol color',
                   'pluto_symbol_s' : 'Pluto symbol size',
                   'pluto_marker_c': 'Pluto marker color',
-
                   }
 
     class Media:
             css = {
             ' all': ['/static/styles/form_style.css']}
         
-                
 
 class ColorfulZodiacForm(forms.Form):
-
-    COLORS_CHOICES = (
-        ("DarkRed", "DarkRed"),
-        ("Red", "Red"),
-        ("Salmon", "Salmon"),
-        ("MediumVioletRed","MediumVioletRed"),
-        ("HotPink", "HotPink"),
-        ("DeepPink", "DeepPink"),
-        ("OrangeRed", "OrangeRed"),
-        ("Gold","Gold"),
-        ("Yellow", "Yellow"),
-        ("Indigo", "Indigo"),
-        ("DarkOrchid", "DarkOrchid"),
-        ("SlateBlue","SlateBlue"),
-       ("Teal","Teal"),
-       ("Olive","Olive"),
-       ("YellowGreen","YellowGreen"),
-       ("Chartreuse","Chartreuse"),
-       ("ForestGreen","ForestGreen"),
-       ("MidnightBlue","MidnightBlue"),
-       ("DodgerBlue","DodgerBlue"),
-       ("DarkTurquoise","DarkTurquoise"),
-       ("SaddleBrown","SaddleBrown"),
-       ("SaddleBrown","SandyBrown"),
-       ("Wheat","Wheat"),
-       ("WhiteSmoke","WhiteSmoke"),
-       ("AliceBlue","AliceBlue"),
-       ("LavenderBlush","LavenderBlush"),
-       ("Gray","Gray"),
-       ("DarkSlateGray","DarkSlateGray"),
-       ("DimGray","DimGray"),
-       ("BurlyWood","BurlyWood"),
-       ("",""),
-       ("",""),
-       ("",""),
-       ("",""),
-    )
-
-
 
     cz_chart_date = (forms.DateTimeField
                      (widget=DateTimePickerInput(attrs={'class':'form-control',
@@ -427,8 +385,6 @@ class ColorfulZodiacForm(forms.Form):
     # track_aries_axis_tc = forms.ChoiceField(choices=COLORS_CHOICES,
     #                                         widget=forms.Select(attrs={'class': 'form-control',
     #                                                                    'id': 'aries-tc'}))
-
-
 
     # track_aries_axis_fc = forms.TextInput(attrs={'type': 'color', 'class': 'form-control', 'id': 'aries-fc'})
     track_aries_axis_fc = ColorField(widget=ColorWidget(attrs={'class': 'form-control', 'id': 'aries-fc'}), label='fc')

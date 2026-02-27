@@ -75,7 +75,6 @@ table, th, td {
   text-align: center;
   padding: 1px;
   font-size: 103%;
-
 }
 
 
@@ -150,7 +149,6 @@ td {
 
 .menu-choice-dd {
     position:relative;
-
 }
 
 .menu-choice-dd-content {
@@ -187,13 +185,12 @@ menu-choice-dd-content a {
 }
 
 
-
-
 #sd-title {
   display: flex;
   flex-direction: row;
   justify-self: stretch;
 }
+
 
 
 /*.content-data {
@@ -507,9 +504,6 @@ input[type="number"] {
 .tr-title {
     text-align: start;
 }
-
-}
-
 
 
 #my-chart-tf-title {

@@ -2,6 +2,8 @@ import datetime
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 import matplotlib
+from django.utils import timezone
+
 matplotlib.use('Agg')
 from astroknow import settings
 from datetime import datetime as dt
@@ -11,7 +13,6 @@ import swisseph as swe
 import julian as jl
 
 from geopy.geocoders import Nominatim
-from pytz import timezone
 
 from .models import FullChart, TransitFullChart, OneColorZodiacRingMF
 from .forms import (ShowChart, TransitForm, OneColorZodiacRing,
@@ -45,7 +46,6 @@ def show_td_chart(request):
     planet_data = get_planet_data(jd, flags)
     planet_data_values = list(planet_data.values())
 
-
     fig_form, planet_ax, _, _, _, _,_,_,_ = draw_chart(fig_name='fig_form', planet_ax='planet_ax')
 
     aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, = \
@@ -58,12 +58,10 @@ def show_td_chart(request):
     context = {'planet_data': set_signs(planet_names, [p[4] for p in planet_data_values]),
                'ats': aspect_table_s, 'ato': aspect_table_ops,
                'att': aspect_table_t, 'atc': aspect_table_c,
-               'date': dt.now().strftime('%B, %d, %H:%M'), 'planet_names': planet_names,
-               'graph': graph}
+               'date': dt.now().strftime('%B, %d, %A, %H:%M'), 'planet_names': planet_names,
+               'graph': graph }
 
     return render(request, 'main_astro.html', context)
-
-
 
 def chart_for_any_date(request):
 
@@ -72,7 +70,15 @@ def chart_for_any_date(request):
     if chart_form.is_valid():
 
          city = chart_form.cleaned_data['city']
+         if city.isdigit():
+             chart_form.add_error('city', 'Type "city" in letters')
+             return render(request, 'chart_for_any_date.html',{'chart_form':chart_form})
+
          country = chart_form.cleaned_data['country']
+         if country.isdigit():
+             chart_form.add_error('country', 'Type "country "in letters')
+             return render(request, 'chart_for_any_date.html', {'chart_form': chart_form})
+
          chart_dt = chart_form.cleaned_data['chart_date']
          mode = int(chart_form.cleaned_data['mode'])
          house_system = chart_form.cleaned_data['house_system']
@@ -80,6 +86,11 @@ def chart_for_any_date(request):
          mode_name = MODE_CHOICES.get(mode)
 
          get_loc = loc.geocode(f'{city, country}', timeout=7000)
+
+         if get_loc is None:
+             chart_form.add_error('city', f'"{city}" is not found, try again')
+             chart_form.add_error('country', f'"{country}" is not found, try again')
+             return render(request, 'chart_for_any_date.html',{'chart_form':chart_form })
 
          loc_tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
          local_dt = chart_dt.replace(tzinfo=ZoneInfo(loc_tz))
@@ -117,7 +128,7 @@ def chart_for_any_date(request):
                             'latitude': get_loc.latitude,
                             'longitude': get_loc.longitude,
                             'mode_name': mode_name, 'hs_name': hs_name,
-                            'graph': graph })
+                            'graph': graph, 'tz': loc_tz })
 
          elif house_system == 'Without houses':
 

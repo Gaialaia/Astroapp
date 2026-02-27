@@ -75,7 +75,6 @@ table, th, td {
   text-align: center;
   padding: 1px;
   font-size: 103%;
-
 }
 
 
@@ -150,7 +149,6 @@ td {
 
 .menu-choice-dd {
     position:relative;
-
 }
 
 .menu-choice-dd-content {
@@ -187,13 +185,12 @@ menu-choice-dd-content a {
 }
 
 
-
-
 #sd-title {
   display: flex;
   flex-direction: row;
   justify-self: stretch;
 }
+
 
 
 /*.content-data {
@@ -508,9 +505,6 @@ input[type="number"] {
     text-align: start;
 }
 
-}
-
-
 
 #my-chart-tf-title {
     grid-column-start: 1;
@@ -572,6 +566,7 @@ input[type="number"] {
      background-color:  rgba(159,0,255, 0.4);
      border: 1px solid rgb(159,0,255);
      width: max-content;
+     color: aliceblue;
 
 }
 
@@ -605,14 +600,6 @@ input[type="number"] {
     justify-content: space-between;
 }
 
-.ul-plot-links-under-fig {
-    font-variant-caps: all-petite-caps;
-    font-size: 170%;
-    padding: 7px;
-    margin-left: 5px;
-    background-color:  rgba(159,0,255, 0.4);
-    border: 1px solid rgb(159,0,255);
-}
 
 .user-welcome-div {
     margin-bottom: 50px;

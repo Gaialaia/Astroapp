@@ -6,10 +6,12 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.image as mpi
-from adjustText import adjust_text
 from matplotlib.patches import ConnectionPatch
+
+from adjustText import adjust_text
+
 from pycirclize import Circos
-import string, random
+
 import numpy as np
 
 from datetime import datetime as dt
@@ -19,11 +21,6 @@ import swisseph as swe
 import julian as jl
 
 import base64
-from io import BytesIO
-from django.shortcuts import render
-from django.template.context_processors import request
-from geopy.geocoders import Nominatim
-from pytz import timezone
 
 from astroknow import settings
 
@@ -117,6 +114,7 @@ PLANET_METADATA = {
     8: ['♆', 'indigo', marker_size, font_size],
     9: ['♇', 'darkmagenta', marker_size, font_size]
 }
+
 signs = []
 sign = ''
 
