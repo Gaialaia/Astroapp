@@ -1,9 +1,8 @@
 import io
 import os
 
-import boto3
 import matplotlib
-matplotlib.use('Agg')
+
 import matplotlib.pyplot as plt
 import matplotlib.image as mpi
 from matplotlib.patches import ConnectionPatch
@@ -24,9 +23,9 @@ import base64
 
 from astroknow import settings
 
+matplotlib.use('Agg')
 matplotlib.rcParams['axes.edgecolor'] = '#ffd700'
 matplotlib.rcParams['axes.linewidth'] = 1.5
-
 
 flags = swe.FLG_SIDEREAL
 
@@ -53,12 +52,12 @@ op_angle = []
 t_angle = []
 c_angle = []
 
-planet_symbols = ['☼', '☾', '☿', '♀', '♂', '♃', '♄', '♅', '♆', '♇',' ⯓']
+planet_symbols = ['☼', '☾', '☿', '♀', '♂', '♃', '♄', '♅', '♆', '♇', ' ⯓']
 
 px = 1 / plt.rcParams['figure.dpi']
 
-def get_graph(fig_name):
 
+def get_graph(fig_name):
     buffer = io.BytesIO()
     fig_name.savefig(buffer, format='png')
     plt.close(fig_name)
@@ -69,14 +68,14 @@ def get_graph(fig_name):
 
     return graph, buffer
 
+
 marker_size = 9
 font_size = 26
-color = ''
 
 swe.set_ephe_path('/home/gaia/Документы/eph files')
 
-def get_moon_symbol():
 
+def get_moon_symbol():
     now = dt.now()
     jd_ev = jl.to_jd(now, fmt='jd')
     sun = swe.calc_ut(jd_ev, 0)
@@ -91,17 +90,19 @@ def get_moon_symbol():
     elif 78.75 <= moon_phase < 101.25:
         return "◐"  # First Quarter (U+25D0)
     elif 101.25 <= moon_phase < 168.75:
-        return "🌔︎" # Waxing Gibbous (Text style)
+        return "🌔︎"  # Waxing Gibbous (Text style)
     elif 168.75 <= moon_phase < 191.25:
         return "○"  # Full Moon (U+25CB)
     elif 191.25 <= moon_phase < 258.75:
-        return "🌖︎" # Waning Gibbous (Text style)
+        return "🌖︎"  # Waning Gibbous (Text style)
     elif 258.75 <= moon_phase < 281.25:
         return "◑"  # Last Quarter (U+25D1)
     else:
         return "☾"  # Waning Crescent (U+263E)
 
+
 stage = get_moon_symbol()
+
 PLANET_METADATA = {
     0: ['☼', 'yellow', marker_size, font_size],
     1: [stage, 'aliceblue', marker_size, font_size],
@@ -116,23 +117,24 @@ PLANET_METADATA = {
 }
 
 signs = []
-sign = ''
 
-def get_planet_data(jd, ch_mode, chart=None):
 
+def get_planet_data(jd, ch_mode):
     pd = {}
     chart_mode = int(ch_mode)
 
     for pl_number, meta in PLANET_METADATA.items():
-
         planet_name = swe.get_planet_name(pl_number)
 
         ecliptic_latitude = swe.calc_ut(jd, pl_number, chart_mode)[0][0]
         ecliptic_longitude = swe.calc_ut(jd, pl_number, chart_mode)[0][1]
-        pd[planet_name] = [meta[0], meta[1], meta[2], meta[3],ecliptic_latitude, ecliptic_longitude]
+        pd[planet_name] = [meta[0], meta[1], meta[2], meta[3], ecliptic_latitude,
+                           ecliptic_longitude]
     return pd
 
+
 def set_signs(name_list, deg_list):
+    sign = ''
     if signs:
         signs.clear()
     round_deg = [round(d) for d in deg_list]
@@ -168,8 +170,8 @@ def set_signs(name_list, deg_list):
     return list(sign_table)
 
 
-def draw_chart(fig_name, planet_ax = None, house_ax=None,
-               ha_color = None, ha_lab_cl = None, ha_lbl_size=None,
+def draw_chart(fig_name, planet_ax, house_ax=None,
+               ha_color=None, ha_lab_cl=None, ha_lbl_size=None,
                ha_lw=None, houses_data=None, chart_path=None):
     hl = ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII']
     fig_name = plt.figure(figsize=(870 * px, 870 * px))
@@ -203,10 +205,10 @@ def draw_chart(fig_name, planet_ax = None, house_ax=None,
         house_ax.set_theta_direction(1)
         house_ax.set_rticks([])
         house_ax.tick_params(labelsize=20, grid_color='aliceblue', grid_linewidth=1,
-                                 labelfontfamily='monospace',
-                                 labelcolor='aliceblue')
+                             labelfontfamily='monospace',
+                             labelcolor='aliceblue')
 
-        house_ax.set_thetagrids(houses_data,hl)
+        house_ax.set_thetagrids(houses_data, hl)
 
         if ha_color and ha_lab_cl:
             house_ax.tick_params(labelsize=ha_lbl_size, grid_color=ha_color,
@@ -216,21 +218,20 @@ def draw_chart(fig_name, planet_ax = None, house_ax=None,
     plt.close(fig_name)
     plt.close('all')
 
-
     return (fig_name, planet_ax, house_ax, ha_color, ha_lab_cl,
-            ha_lbl_size, ha_lw, chart_path,houses_data)
+            ha_lbl_size, ha_lw, chart_path, houses_data)
 
 
-
-def draw_transit_chart(event_one_ax, event_two_ax, event_one_houses=None, event_two_houses=None,
-                       event_one_ha=None, event_two_ha=None):
-
+def draw_transit_chart(event_one_ax, event_two_ax, event_one_houses=None,
+                       event_two_houses=None, event_one_ha=None,
+                       event_two_ha=None):
     tr_fig, (event_one_ax, event_two_ax) = (
-        plt.subplots(1, 2, subplot_kw={'projection': 'polar'}, figsize=(12, 6)))
+        plt.subplots(1, 2, subplot_kw={'projection': 'polar'},
+                     figsize=(12, 6)))
     tr_fig.patch.set_alpha(0.0)
     img = mpi.imread('astroplan/static/images/zr_final_dp_pp.png')
 
-    hl =  ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII']
+    hl = ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII']
 
     def set_zr_ax(ax_name):
         ax_name.set_theta_direction('counterclockwise')
@@ -262,9 +263,8 @@ def draw_transit_chart(event_one_ax, event_two_ax, event_one_houses=None, event_
     set_zr_ax(event_two_ax)
 
     if event_one_ha is not None:
-
         set_zr_ax(event_one_ax)
-        event_one_ha= set_ha(event_one_ax, angles=event_one_houses, labels=hl)
+        event_one_ha = set_ha(event_one_ax, angles=event_one_houses, labels=hl)
 
     if event_two_ha is not None:
         set_zr_ax(event_two_ax)
@@ -272,9 +272,9 @@ def draw_transit_chart(event_one_ax, event_two_ax, event_one_houses=None, event_
 
     return tr_fig, event_one_ax, event_two_ax, event_one_ha, event_two_ha
 
+
 def build_aspects(ax_name, planet_data, marker_clr=None, symbol_clr=None,
                   pl_marker_size=None, symbol_size=None):
-
     aspect_table_s = None
     aspect_table_ops = None
     aspect_table_c = None
@@ -293,9 +293,9 @@ def build_aspects(ax_name, planet_data, marker_clr=None, symbol_clr=None,
     sq_angle.clear()
     c_angle.clear()
 
-
     for key, value in planet_data.items():
-        event_data.append((key, value[4], value[5], value[0], value[1], value[2], value[3]))
+        event_data.append((key, value[4], value[5], value[0], value[1],
+                           value[2], value[3]))
 
     for value in range(len(event_data)):
 
@@ -312,168 +312,158 @@ def build_aspects(ax_name, planet_data, marker_clr=None, symbol_clr=None,
                 event_one_td.clear()
                 event_one_td.append(t_one)
 
-
     for value in range(len(event_data) - 1):
         for pl in range(0, 10):
 
             if event_data[pl][1] != event_data[value + 1][1]:
 
-                    aspect = abs(event_data[pl][1] - event_data[value + 1][1])
+                aspect = abs(event_data[pl][1] - event_data[value + 1][1])
 
-                    pl_one = np.array(
-                                [np.deg2rad(event_data[pl][1]), np.deg2rad(event_data[value + 1][1])])
-                    pl_two = np.array(
-                                [np.deg2rad(event_data[pl][2]), np.deg2rad(event_data[value + 1][2])])
+                pl_one = (np.array([np.deg2rad(event_data[pl][1]),
+                                    np.deg2rad(event_data[value + 1][1])]))
+                pl_two = np.array([np.deg2rad(event_data[pl][2]),
+                                   np.deg2rad(event_data[value + 1][2])])
 
+                ax_name.plot(np.deg2rad(event_data[pl][1]), event_data[pl][2], 'o',
+                             mfc=planet_data[swe.get_planet_name(pl)][1],
+                             ms=planet_data[swe.get_planet_name(pl)][2])
+                if marker_clr and pl_marker_size:
                     ax_name.plot(np.deg2rad(event_data[pl][1]), event_data[pl][2], 'o',
-                                          mfc=planet_data[swe.get_planet_name(pl)][1],
-                                          ms=planet_data[swe.get_planet_name(pl)][2])
-                    if marker_clr and pl_marker_size:
-                        ax_name.plot(np.deg2rad(event_data[pl][1]), event_data[pl][2], 'o',
-                                     mfc=marker_clr,
-                                     ms=pl_marker_size)
+                                 mfc=marker_clr,
+                                 ms=pl_marker_size)
 
-                    color = None
-                    line_width = None
+                color = None
+                line_width = None
 
-                    round_aspect = f'{round(aspect, 2)}'
-                    ready_aspect = str(round_aspect).replace('.', '°') + "'"
+                round_aspect = f'{round(aspect, 2)}'
+                ready_aspect = str(round_aspect).replace('.', '°') + "'"
 
-                    if 0 <= aspect <= 7:
+                if 0 <= aspect <= 7:
 
-                        color = 'pink'
-                        line_width = 1
+                    color = '#f10ecc'
+                    line_width = 1
+                    ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
+                    aspected_planet_c.append(event_data[pl][3])
+                    c_angle.append(ready_aspect)
+                    conjunctions.append(event_data[value + 1][3])
+                    aspect_table_c = zip(aspected_planet_c, c_angle,
+                                         conjunctions)
 
-                        ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
+                if 119 <= aspect <= 121:
 
-                        aspected_planet_c.append(event_data[pl][3])
-                        c_angle.append(ready_aspect)
-                        conjunctions.append(event_data[value + 1][3])
-                        aspect_table_c = zip(aspected_planet_c, c_angle, conjunctions)
+                    color = '#01ff00'
+                    line_width = 3.5
 
-                    if 119 <= aspect <= 121:
+                    ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
+                    aspected_planet_t.append(event_data[pl][3])
+                    t_angle.append(ready_aspect)
+                    trines.append(event_data[value + 1][3])
+                    aspect_table_t = zip(aspected_planet_t, t_angle, trines)
 
-                        color = '#01ff00'
-                        line_width = 3.5
+                elif 122 <= aspect <= 123:
 
-                        ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
-                        aspected_planet_t.append(event_data[pl][3])
-                        t_angle.append(ready_aspect)
-                        trines.append(event_data[value + 1][3])
-                        aspect_table_t = zip(aspected_planet_t, t_angle, trines)
+                    color = '#01ff00'
+                    line_width = 2.0
+                    ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
+                    aspected_planet_t.append(event_data[pl][3])
+                    t_angle.append(ready_aspect)
+                    trines.append(event_data[value + 1][3])
+                    aspect_table_t = zip(aspected_planet_t, t_angle, trines)
 
+                elif 123 <= aspect <= 125:
 
-                    elif 122 <= aspect <= 123:
+                    color = '#01ff00'
+                    line_width = 1.8
+                    ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
+                    aspected_planet_t.append(event_data[pl][3])
+                    t_angle.append(ready_aspect)
+                    trines.append(event_data[value + 1][3])
+                    aspect_table_t = zip(aspected_planet_t, t_angle, trines)
 
-                        color = '#01ff00'
-                        line_width = 2.0
+                if 89 < aspect < 91:
 
-                        ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
-                        aspected_planet_t.append(event_data[pl][3])
-                        t_angle.append(ready_aspect)
-                        trines.append(event_data[value + 1][3])
-                        aspect_table_t = zip(aspected_planet_t, t_angle, trines)
+                    color = '#e20000'
+                    line_width = 3.5
+                    ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
+                    aspected_planet_s.append(event_data[pl][3])
+                    sq_angle.append(ready_aspect)
+                    squares.append(event_data[value + 1][3])
+                    aspect_table_s = zip(aspected_planet_s, sq_angle, squares)
 
-                    elif 123 <= aspect <= 125:
+                elif 91 < aspect < 93:
 
-                        color = '#01ff00'
-                        line_width = 1.8
-                        ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
+                    color = '#e20000'
+                    line_width = 2.3
+                    ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
+                    aspected_planet_s.append(event_data[pl][3])
+                    sq_angle.append(ready_aspect)
+                    squares.append(event_data[value + 1][3])
+                    aspect_table_s = zip(aspected_planet_s, sq_angle, squares)
 
-                        aspected_planet_t.append(event_data[pl][3])
-                        t_angle.append(ready_aspect)
-                        trines.append(event_data[value + 1][3])
-                        aspect_table_t = zip(aspected_planet_t, t_angle, trines)
+                elif 93 < aspect < 95:
 
-                    if 89 < aspect < 91:
-                        color = '#e20000'
-                        line_width = 3.5
+                    color = '#e20000'
+                    line_width = 1.8
+                    ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
+                    aspected_planet_s.append(event_data[pl][3])
+                    sq_angle.append(ready_aspect)
+                    squares.append(event_data[value + 1][3])
+                    aspect_table_s = zip(aspected_planet_s, sq_angle, squares)
 
-                        ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
+                if 179 <= aspect <= 181:
 
-                        aspected_planet_s.append(event_data[pl][3])
-                        sq_angle.append(ready_aspect)
-                        squares.append(event_data[value + 1][3])
-                        aspect_table_s = zip(aspected_planet_s, sq_angle, squares)
+                    color = '#0400ff'
+                    line_width = 3.5
+                    ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
+                    aspected_planet_op.append(event_data[pl][3])
+                    op_angle.append(ready_aspect)
+                    oppositions.append(event_data[value + 1][3])
+                    aspect_table_ops = zip(aspected_planet_op, op_angle,
+                                           oppositions)
 
-                    elif 91 < aspect < 93:
-                        color = '#e20000'
-                        line_width = 2.3
-                        ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
+                elif 181 <= aspect <= 184:
 
-                        aspected_planet_s.append(event_data[pl][3])
-                        sq_angle.append(ready_aspect)
-                        squares.append(event_data[value + 1][3])
-                        aspect_table_s = zip(aspected_planet_s, sq_angle, squares)
+                    color = '#0400ff'
+                    line_width = 2.0
+                    ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
+                    aspected_planet_op.append(event_data[pl][3])
+                    op_angle.append(ready_aspect)
+                    oppositions.append(event_data[value + 1][3])
+                    aspect_table_ops = zip(aspected_planet_op, op_angle,
+                                           oppositions)
 
-                    elif 93 < aspect < 95:
-                        color = '#e20000'
-                        line_width = 1.8
-                        ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
+                elif 183 <= aspect <= 186:
 
-                        aspected_planet_s.append(event_data[pl][3])
-                        sq_angle.append(ready_aspect)
-                        squares.append(event_data[value + 1][3])
-                        aspect_table_s = zip(aspected_planet_s, sq_angle, squares)
-
-
-                    if 179 <= aspect <= 181:
-                        color = '#0400ff'
-                        line_width = 3.5
-                        ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
-
-                        aspected_planet_op.append(event_data[pl][3])
-                        op_angle.append(ready_aspect)
-                        oppositions.append(event_data[value + 1][3])
-                        aspect_table_ops = zip(aspected_planet_op, op_angle, oppositions)
-
-
-                    elif 181 <= aspect <= 184:
-                        color = '#0400ff'
-                        line_width = 2.0
-                        ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
-
-                        aspected_planet_op.append(event_data[pl][3])
-                        op_angle.append(ready_aspect)
-                        oppositions.append(event_data[value + 1][3])
-                        aspect_table_ops = zip(aspected_planet_op, op_angle, oppositions)
-
-
-
-                    elif 183 <= aspect <= 186:
-                        color = '#0400ff'
-                        line_width = 1.8
-                        ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
-
-                        aspected_planet_op.append(event_data[pl][3])
-                        op_angle.append(ready_aspect)
-                        oppositions.append(event_data[value + 1][3])
-                        aspect_table_ops = zip(aspected_planet_op, op_angle, oppositions)
-
+                    color = '#0400ff'
+                    line_width = 1.8
+                    ax_name.plot(pl_one, pl_two, color=color, lw=line_width)
+                    aspected_planet_op.append(event_data[pl][3])
+                    op_angle.append(ready_aspect)
+                    oppositions.append(event_data[value + 1][3])
+                    aspect_table_ops = zip(aspected_planet_op, op_angle,
+                                           oppositions)
 
     if event_one_td:
         adjust_text(event_one_td, ax=ax_name,
-        arrowprops=dict(arrowstyle='-', color='aliceblue', lw=1),
-        expand_text=(1.5, 1.5),
-        force_text=(0.5, 0.5))
+                    arrowprops=dict(arrowstyle='-', color='aliceblue', lw=1),
+                    expand_text=(1.5, 1.5),
+                    force_text=(0.5, 0.5))
 
-    return aspect_table_s,aspect_table_ops, aspect_table_t, aspect_table_c
-
-
+    return aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c
 
 
-def draw_zodiac_one_color(face_color, edge_color, text_color, tick_clr, deg_clr, font_size, line_width):
+def draw_zodiac_one_color(face_color, edge_color, text_color, tick_clr, deg_clr,
+                          font_size, line_width):
     for s in sectors.keys():
         zodiac_sector = circos.get_sector(s)
-        zodiac_track = zodiac_sector.add_track((70,94))
+        zodiac_track = zodiac_sector.add_track((70, 94))
         zodiac_track.axis(fc=face_color, ec=edge_color, lw=line_width)
-        zodiac_track.text(f'{s}',size=font_size,color=text_color)
+        zodiac_track.text(f'{s}', size=font_size, color=text_color)
 
         for sector in circos.sectors:
             track_deg = sector.add_track((94, 100))
             track_deg.axis(ec=tick_clr)
             track_deg.grid(y_grid_num=None, x_grid_interval=1, color=deg_clr)
-
 
     fig = circos.plotfig()
     fig.patch.set_alpha(0.0)
@@ -488,8 +478,8 @@ def draw_zodiac_one_color(face_color, edge_color, text_color, tick_clr, deg_clr,
     return chart_path
 
 
-def build_transit_aspects(event_one_data, event_two_data, event_one_ax, event_two_ax, fig):
-
+def build_transit_aspects(event_one_data, event_two_data, event_one_ax,
+                          event_two_ax, fig):
     event_one_pp = []
     event_two_pp = []
 
@@ -517,22 +507,24 @@ def build_transit_aspects(event_one_data, event_two_data, event_one_ax, event_tw
     trines.clear()
 
     for key, value in event_one_data.items():
-        event_one_pp.append((key, value[4], value[5], value[0], value[1], value[2], value[3]))
+        event_one_pp.append((key, value[4], value[5], value[0], value[1],
+                             value[2], value[3]))
     event_one_pp.insert(len(event_one_pp), 0)
 
     for key, value in event_two_data.items():
-        event_two_pp.append(('tr_'+ key, value[4], value[5], value[0], value[1], value[2], value[3]))
+        event_two_pp.append(('tr_' + key, value[4], value[5], value[0], value[1],
+                             value[2], value[3]))
     event_two_pp.insert(len(event_two_pp), 0)
 
     for i in range(len(event_one_pp) - 1):
         t_one = event_one_ax.text(np.deg2rad(event_one_pp[i][1]), event_one_pp[i][2],
-                                  event_one_pp[i][3], color=event_one_pp[i][4], fontsize=event_one_pp[i][6])
+                                  event_one_pp[i][3], color=event_one_pp[i][4],
+                                  fontsize=event_one_pp[i][6])
 
         event_one_td.append(t_one)
 
         for k in range(len(event_two_pp) - 1):
             aspect = abs(event_one_pp[i][1] - event_two_pp[k][1])
-
 
             pl_one = (np.deg2rad(event_one_pp[i][1]), event_one_pp[i][2])
 
@@ -549,74 +541,84 @@ def build_transit_aspects(event_one_data, event_two_data, event_one_ax, event_tw
             line_width = None
 
             if 0 <= aspect <= 7:
-                color = 'pink'
-                line_width = 1
 
+                color = '#f10ecc'
+                line_width = 1
                 aspected_planet_c.append(event_one_pp[i][3])
-                c_angle.append(f'{round(aspect,2)}°')
+                c_angle.append(f'{round(aspect, 2)}°')
                 conjunctions.append(event_two_pp[k][3])
 
             if 119 <= aspect <= 121:
+
                 color = '#01ff00'
                 line_width = 3.5
                 aspected_planet_t.append(event_one_pp[i][3])
                 t_angle.append(f'{round(aspect, 2)}°')
                 trines.append(event_two_pp[k][3])
+
             elif 122 <= aspect <= 123:
+
                 color = '#01ff00'
                 line_width = 2.0
                 aspected_planet_t.append(event_one_pp[i][3])
                 t_angle.append(f'{round(aspect, 2)}°')
                 trines.append(event_two_pp[k][3])
+
             elif 123 <= aspect <= 125:
+
                 color = '#01ff00'
                 line_width = 1.8
                 aspected_planet_t.append(event_one_pp[i][3])
                 t_angle.append(f'{round(aspect, 2)}°')
                 trines.append(event_two_pp[k][3])
 
-
             if 89 < aspect < 91:
-               color='#e20000'
-               line_width = 3.5
 
-               aspected_planet_s.append((event_one_pp[i][3]))
-               sq_angle.append(f'{round(aspect, 2)}°')
-               squares.append(event_two_pp[k][3])
-            elif 91 < aspect < 93:
-                color='#e20000'
-                line_width=2.3
-
+                color = '#e20000'
+                line_width = 3.5
                 aspected_planet_s.append((event_one_pp[i][3]))
                 sq_angle.append(f'{round(aspect, 2)}°')
                 squares.append(event_two_pp[k][3])
-            elif 93 < aspect < 95:
-                color='#e20000'
-                line_width=1.8
 
+            elif 91 < aspect < 93:
+
+                color = '#e20000'
+                line_width = 2.3
+                aspected_planet_s.append((event_one_pp[i][3]))
+                sq_angle.append(f'{round(aspect, 2)}°')
+                squares.append(event_two_pp[k][3])
+
+            elif 93 < aspect < 95:
+
+                color = '#e20000'
+                line_width = 1.8
                 aspected_planet_s.append((event_one_pp[i][3]))
                 sq_angle.append(f'{round(aspect, 2)}°')
                 squares.append(event_two_pp[k][3])
 
             if 179 <= aspect <= 181:
-                color='#0400ff'
-                line_width=3.5
-                aspected_planet_op.append(event_one_pp[i][3])
-                op_angle.append(f'{round(aspect, 2)}°')
-                oppositions.append(event_two_pp[k][3])
-            elif 181 <= aspect <= 184:
-                color='#0400ff'
-                line_width=2.0
-                aspected_planet_op.append(event_one_pp[i][3])
-                op_angle.append(f'{round(aspect, 2)}°')
-                oppositions.append(event_two_pp[k][3])
-            elif 183 <= aspect <= 186:
-                 color='#0400ff'
-                 line_width=1.8
 
-                 aspected_planet_op.append(event_one_pp[i][3])
-                 op_angle.append(f'{round(aspect, 2)}°')
-                 oppositions.append(event_two_pp[k][3])
+                color = '#0400ff'
+                line_width = 3.5
+                aspected_planet_op.append(event_one_pp[i][3])
+                op_angle.append(f'{round(aspect, 2)}°')
+                oppositions.append(event_two_pp[k][3])
+
+            elif 181 <= aspect <= 184:
+
+                color = '#0400ff'
+                line_width = 2.0
+                aspected_planet_op.append(event_one_pp[i][3])
+                op_angle.append(f'{round(aspect, 2)}°')
+                oppositions.append(event_two_pp[k][3])
+
+            elif 183 <= aspect <= 186:
+
+                color = '#0400ff'
+                line_width = 1.8
+                aspected_planet_op.append(event_one_pp[i][3])
+                op_angle.append(f'{round(aspect, 2)}°')
+                oppositions.append(event_two_pp[k][3])
 
             aspect_table_ops = zip(aspected_planet_op, op_angle, oppositions)
             aspect_table_c = zip(aspected_planet_c, c_angle, conjunctions)
@@ -630,8 +632,6 @@ def build_transit_aspects(event_one_data, event_two_data, event_one_ax, event_tw
                                       color=color, lw=line_width,
                                       shrinkA=0, shrinkB=0)
                 fig.add_artist(con)
-
-
 
     for k in range(len(event_two_pp) - 1):
         t_two = event_two_ax.text(np.deg2rad(event_two_pp[k][1]), event_two_pp[k][2],
@@ -650,7 +650,5 @@ def build_transit_aspects(event_one_data, event_two_data, event_one_ax, event_tw
                     expand_text=(1.5, 1.5),
                     force_text=(0.5, 0.5))
 
-
-    return (aspect_table_s, aspect_table_ops, aspect_table_t,aspect_table_c,
+    return (aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c,
             event_one_pp, event_two_pp)
-

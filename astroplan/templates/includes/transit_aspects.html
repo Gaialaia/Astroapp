@@ -13,7 +13,7 @@
                     <tr>
 
                         <td> {{ pn }} </td>
-                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> square </span></td>
+                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext square"> square </span></td>
                          <td> {{ ap }} </td>
                     </tr>
                     {% endfor %}
@@ -21,14 +21,14 @@
                      {% for pn, angle, ap in att %}
                     <tr>
                         <td> {{ pn }} </td>
-                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> trine  </span></td>
+                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext trine"> trine  </span></td>
                          <td> {{ ap }} </td>
                     </tr>
                     {% endfor %}
                      {% for pn, angle, ap in ato %}
                     <tr>
                         <td> {{ pn }} </td>
-                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> opposition </span></td>
+                         <td class="tooltip"> {{ angle }}  <span class="tooltiptext opposition"> opposition </span></td>
                          <td> {{ ap }} </td>
                         {% endfor %}
                     </tr>
@@ -36,7 +36,7 @@
                       {% for pn, angle, ap in atc %}
                     <tr>
                         <td> {{ pn }} </td>
-                           <td class="tooltip"> {{ angle }}  <span class="tooltiptext"> conjunction  </span></td>
+                           <td class="tooltip"> {{ angle }}  <span class="tooltiptext conjunction"> conjunction  </span></td>
                          <td> {{ ap }} </td>
                          {% endfor %}
                     </tr>
