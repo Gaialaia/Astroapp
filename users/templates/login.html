@@ -1,69 +1,86 @@
-{% extends "base.html" %}
-{% load static %}
-{% load crispy_forms_tags %}
+{% extends "base.html" %} {% load static %} {% load crispy_forms_tags %} {%
+block title %} Login {% endblock %} {% block navigation %}
 
-{% block title %} Login {% endblock %}
-
-{% block navigation %}
-
-<div class="menu-choice" id="today-chart" >
-    <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
+<div class="menu-choice" id="today-chart">
+  <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
 <div class="menu-choice">
-    <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
+  <a class="menu-link" href="{% url 'chart for ad' %}" target="_blank"
+    >Chart for any date</a
+  >
 </div>
 
 <div class="menu-choice">
-    <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
+  <a class="menu-link" href="{% url 'transit form chart' %}" target="_blank"
+    >Transits</a
+  >
 </div>
-
 
 <div class="menu-choice menu-choice-dd">
-    <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
-        <div class="menu-choice-dd-content">
-            <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
-        </div>
+  <div>
+    C
+    <img id="clr-chart-icon" src="{% static 'images/zr_clr_icon.png' %}" /> LOR
+  </div>
+  <div class="menu-choice-dd-content">
+    <div class="menu-choice-dd-content-links">
+      <a href="{% url 'color your chart' %}"> color chart </a>
+    </div>
+  </div>
 </div>
 
-
 <div class="menu-choice menu-choice-dd opened-tab">
-     {% if user.is_authenticated %}
-    <div>
-        <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
-        <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
+  {% if user.is_authenticated %}
+  <div>
+    <a href="{% url 'user lounge' user.username %}" target="_blank">
+      {{ user.username }}
+    </a>
+    <div class="menu-choice-dd-content">
+      <a href="{% url 'logout' %}"> Log out </a>
     </div>
-        {% else %}
-        <div> Logging in</div>
-        {% endif %}
-{% endblock %}
+    {% else %}
+    <div>Logging in</div>
+    {% endif %} {% endblock %} {% block content-data %}
 
-{% block content-data %}
-
-  <div class="chart-form" id="auth-form">
+    <div class="chart-form" id="auth-form">
       <div class="sign-up">
-     <a href="{% url 'register' %}" target = '_blank'> <h3 class="auth-form-login"> Sign Up </h3></a>
+        <a href="{% url 'register' %}" target="_blank">
+          <h3 class="auth-form-login">Sign Up</h3></a
+        >
       </div>
-                      <div class="instruction-text"> <h3> To get logged in, enter:</h3></div>
-                    <form class="chart-forms" id="login-form" target="_blank"  method="post">
-                        {{ auth_form.media }}
-                        {% csrf_token %}
-                        <div class="form-row">
-                            <label for="id_username">Username or Email:</label>
-                            <input type="text" name="username" placeholder="Username or Email" maxlength="150" required id="id_username">
-                        </div>
+      <div class="instruction-text"><h3>To get logged in, enter:</h3></div>
+      <form class="chart-forms" id="login-form" target="_blank" method="post">
+        {{ auth_form.media }} {% csrf_token %}
+        <div class="form-row">
+          <label for="id_username">Username or Email:</label>
+          <input
+            type="text"
+            name="username"
+            placeholder="Username or Email"
+            maxlength="150"
+            required
+            id="id_username"
+          />
+        </div>
 
-                        <div class="form-row">
-                            <label for="id_password">Password:</label>
-                            <input type="password" name="password" class="form-control" placeholder="Password" required id="id_password">
-                        </div>
+        <div class="form-row">
+          <label for="id_password">Password:</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            placeholder="Password"
+            required
+            id="id_password"
+          />
+        </div>
 
-                        <button class="show-chart" type="submit" > Log In </button>
-                    </form>
+        <button class="show-chart" type="submit">Log In</button>
+      </form>
+    </div>
 
-            </div>
+    <!--                <a href="#"> Forgot Passoword? </a>-->
 
-
-<!--                <a href="#"> Forgot Passoword? </a>-->
-
-{% endblock %}
+    {% endblock %}
+  </div>
+</div>

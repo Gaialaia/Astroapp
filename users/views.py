@@ -1,6 +1,8 @@
-import io, os
-import boto3, uuid
+import matplotlib
 
+import swisseph as swe
+import julian as jl
+import datetime
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -17,41 +19,32 @@ from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
 
 from .tokens import account_activation_token
-
-import matplotlib
-matplotlib.use('Agg')
-
-import matplotlib.pyplot as plt
-import swisseph as swe
-import julian as jl
-
-
 from geopy.geocoders import Nominatim
 
 from astroplan.models import (Chart, TransitChart, ZodiacInColors, FullChart,
                               TransitFullChart, OneColorZodiacRingMF,
                               HOUSE_SYSTEM_CHOICES, MODE_CHOICES)
 
-from astroplan.forms import (FullChartForm, TransitFullChartForm,
-                             ZodiacInColorForm, OneColorZodiacRingFM)
+from astroplan.forms import (FullChartForm, TransitFullChartForm,OneColorZodiacRingFM)
 
 from timezonefinder import TimezoneFinder
 from zoneinfo import ZoneInfo
 
 from .utils import draw_zodiac_one_color, get_s3_client, upload_to_storage
-from astroplan.utils import (get_planet_data,
-                    build_aspects, draw_chart, get_graph, build_transit_aspects,
-                    draw_transit_chart, set_signs)
-from PIL import Image
-from astroknow import settings
-import datetime
+from astroplan.utils import (get_planet_data, build_aspects, draw_chart,
+                             get_graph, build_transit_aspects, set_signs,
+                             draw_transit_chart)
 
-flags =  swe.FLG_SIDEREAL | swe.SIDM_LAHIRI
+from astroknow import settings
+
+matplotlib.use('Agg')
+
+flags = swe.FLG_SIDEREAL | swe.SIDM_LAHIRI
 
 planet_names = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter',
                 'Saturn', 'Uranus', 'Neptune', 'Pluto']
 
-tr_planet_names = ['tr_Sun','tr_Moon', 'tr_Mercury', 'tr_Venus', 'tr_Mars',
+tr_planet_names = ['tr_Sun', 'tr_Moon', 'tr_Mercury', 'tr_Venus', 'tr_Mars',
                    'tr_Jupiter', 'tr_Saturn', 'tr_Uranus', 'tr_Neptune', 'tr_Pluto']
 
 house_names = ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', 'XI', 'XII']
@@ -59,26 +52,29 @@ house_names = ['ASC', 'II', 'III', 'IC', 'V', 'VI', 'DSC', 'VIII', 'IX', 'MC', '
 tf = TimezoneFinder()
 loc = Nominatim(user_agent="GetLoc")
 
-
 swe.set_ephe_path('/home/gaia/Документы/eph files')
 
 
 def activate(request, uidb64, token):
     User = get_user_model()
+
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
-    except:
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
 
-        messages.success(request, "Thank you for your email confirmation. Now you can login your account.")
+        (messages.success
+         (request, "E-mail's been confirmed. Please, log in."))
         return redirect('login')
     else:
         messages.error(request, "Activation link is invalid!")
+        return None
+
 
 def activate_email(request, user, to_email):
     mail_subject = 'Activate your user account.'
@@ -91,10 +87,16 @@ def activate_email(request, user, to_email):
     })
     email = EmailMessage(mail_subject, message, to=[to_email])
     if email.send():
-        messages.success(request, f'Dear <b>{user}</b>, please go to you email <b>{to_email}</b> inbox and click on \
-            received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.')
+        messages.success(request, f'Dear <b>{user}</b>, '
+                                  f'please go to you email <b>{to_email}'
+                                  f'</b> inbox and click on \
+            received activation link to confirm and complete the registration. '
+                                  f'<b>Note:</b> Check your spam folder.')
     else:
-        messages.error(request, f'Problem sending confirmation email to {to_email}, check if you typed it correctly.')
+        messages.error(request, f'Problem sending confirmation '
+                                f'email to {to_email}, '
+                                f'check if you typed it correctly.')
+
 
 @user_not_auth
 def register(request):
@@ -104,9 +106,9 @@ def register(request):
             user = reg_form.save(commit=False)
             user.is_active = False
             user.save()
-            # login(request, user)
             activate_email(request, user, reg_form.cleaned_data.get('email'))
-            messages.success(request, f"New account created: {user.username}")
+            (messages.success
+             (request, f"A new account created: {user.username}"))
             return redirect('showed chart')
         else:
             for error in list(reg_form.errors.values()):
@@ -115,7 +117,7 @@ def register(request):
     else:
         reg_form = UserRegistrationForm()
 
-    return render(request,"register.html",{"reg_form":reg_form})
+    return render(request, "register.html", {"reg_form": reg_form})
 
 
 @login_required
@@ -124,9 +126,9 @@ def custom_logout(request):
     messages.info(request, 'You have logged out')
     return redirect('showed chart')
 
+
 @user_not_auth
 def custom_login(request):
-
     if request.method == 'POST':
         auth_form = UserLoginForm(request=request, data=request.POST)
         if auth_form.is_valid():
@@ -136,21 +138,16 @@ def custom_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f' Welcome, {user.username}')
-                return redirect('user lounge',user.username)
-
-
+                return redirect('user lounge', user.username)
         else:
             for error in list(auth_form.errors.values()):
                 messages.error(request, error)
-        # auth_form.clean()
     auth_form = UserLoginForm()
 
-    return render(request,'login.html', {'auth_form': auth_form})
-
+    return render(request, 'login.html', {'auth_form': auth_form})
 
 
 def user_chart_for_date_form(request):
-
     username = request.user.username
 
     user_chart_form = FullChartForm(request.POST or None, request.FILES or None)
@@ -164,7 +161,7 @@ def user_chart_for_date_form(request):
         house_system = HOUSE_SYSTEM_CHOICES.get(chart.house_system)
         mode = MODE_CHOICES.get(chart.chart_mode)
 
-        chart.drawer = get_object_or_404(get_user_model(),username=username)
+        chart.drawer = get_object_or_404(get_user_model(), username=username)
         loc_tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
         local_dt = d.replace(tzinfo=ZoneInfo(loc_tz))
 
@@ -174,7 +171,8 @@ def user_chart_for_date_form(request):
         planet_data = get_planet_data(jd, chart.chart_mode)
         planet_data_values = list(planet_data.values())
 
-        planet_data_for_db = [(set_signs(planet_names, [p[4] for p in planet_data_values]))]
+        planet_data_for_db = [(set_signs(planet_names,
+                                         [p[4] for p in planet_data_values]))]
 
         chart.Sun_deg = planet_data_for_db[0][0][1]
         chart.Sun_sign = f' {planet_data_for_db[0][0][2]}'
@@ -208,17 +206,23 @@ def user_chart_for_date_form(request):
 
         if chart.house_system != 'Without houses':
 
-            houses = swe.houses_ex(jd, get_loc.latitude, get_loc.longitude, us_hs, (int(chart.chart_mode)))
+            houses = (
+                swe.houses_ex(jd, get_loc.latitude, get_loc.longitude,
+                              us_hs, (int(chart.chart_mode))))
 
-            fig_form, planet_ax, house_ax, _, _, _, _, _,_ = draw_chart(fig_name='fig_form', planet_ax='planet_ax',
-                                                                         house_ax='house_ax', houses_data=houses[0])
+            fig_form, planet_ax, house_ax, _, _, _, _, _, _ = (
+                draw_chart(fig_name='fig_form',
+                           planet_ax='planet_ax',
+                           house_ax='house_ax',
+                           houses_data=houses[0]))
 
             aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, = \
                 build_aspects(ax_name=planet_ax, planet_data=planet_data)
 
             graph, buffer = get_graph(fig_form)
             plot_name = f'{chart.drawer}_{d}.png'
-            chart.chart_image.save(plot_name, ContentFile(buffer.getvalue()), save=True)
+            chart.chart_image.save(plot_name, ContentFile(buffer.getvalue()),
+                                   save=True)
             buffer.close()
             user_chart_form.save()
 
@@ -276,16 +280,18 @@ def user_chart_for_date_form(request):
 
             chart.save()
 
-            return render(request, 'user_chart.html', { 'planet_data': set_signs(planet_names,
-                                                  [p[4] for p in planet_data_values]),
-                                                 'house_data': set_signs(house_names, list(houses[0])),
-                                                 'ats': aspect_table_s, 'ato': aspect_table_ops,
-                                                 'att': aspect_table_t, 'atc': aspect_table_c, 'date': d,
-                                                  'chart':chart, 'house_system': house_system,
-                                                  'mode': mode, 'graph':graph})
+            return render(request, 'user_chart.html',
+                          {'planet_data': set_signs(planet_names,
+                                                    [p[4] for p in planet_data_values]),
+                           'house_data': set_signs(house_names, list(houses[0])),
+                           'ats': aspect_table_s, 'ato': aspect_table_ops,
+                           'att': aspect_table_t, 'atc': aspect_table_c, 'date': d,
+                           'chart': chart, 'house_system': house_system,
+                           'mode': mode, 'graph': graph})
 
         else:
-            fig_form, planet_ax, _, _, _, _, _, _, _ = draw_chart(fig_name='fig_form', planet_ax='planet_ax')
+            fig_form, planet_ax, _, _, _, _, _, _, _ \
+                = draw_chart(fig_name='fig_form', planet_ax='planet_ax')
 
             aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, = \
                 build_aspects(planet_data=planet_data, ax_name=planet_ax)
@@ -294,29 +300,33 @@ def user_chart_for_date_form(request):
 
             graph, buffer = get_graph(fig_form)
             plot_name = f'{chart.drawer}_{d}.png'
-            chart.chart_image.save(plot_name, ContentFile(buffer.getvalue()), save=True)
+            chart.chart_image.save(plot_name, ContentFile(buffer.getvalue()),
+                                   save=True)
             buffer.close()
 
             user_chart_form.save()
 
-            return render(request, 'user_chart_nh.html', {'planet_data': set_signs(planet_names, [p[4] for p in planet_data_values]),
-                                                       'ats': aspect_table_s, 'ato': aspect_table_ops,
-                                                       'att': aspect_table_t, 'atc': aspect_table_c, 'date': d,
-                                                        'chart': chart, 'house_system': house_system,
-                                                        'mode': mode, 'graph': graph})
+            return render(request, 'user_chart_nh.html',
+                          {'planet_data': set_signs(planet_names,
+                                                    [p[4] for p in planet_data_values]),
+                           'ats': aspect_table_s, 'ato': aspect_table_ops,
+                           'att': aspect_table_t, 'atc': aspect_table_c, 'date': d,
+                           'chart': chart, 'house_system': house_system,
+                           'mode': mode, 'graph': graph})
 
-    return render(request, 'user_chart_for_date_form.html', {'user_chart_form': user_chart_form })
+    return render(request, 'user_chart_for_date_form.html',
+                  {'user_chart_form': user_chart_form})
 
 
 def user_lounge(request, username):
-
     if request.method == 'POST':
         user = request.user
         form = UserUpdateForm(request.POST, request.FILES, instance=user)
 
         if form.is_valid():
             user_form = form.save()
-            messages.success(request, f'{user_form.username}, Your profile has been updated!')
+            messages.success(request, f'{user_form.username}, '
+                                      f'Your profile has been updated!')
             return redirect('user lounge', user_form.username)
 
         for error in list(form.errors.values()):
@@ -333,7 +343,6 @@ def user_lounge(request, username):
 
 
 def user_transit_chart_form(request):
-
     username = request.user.username
     tr_form = TransitFullChartForm(request.POST or None, request.FILES or None)
 
@@ -353,19 +362,26 @@ def user_transit_chart_form(request):
         et_hs = HOUSE_SYSTEM_CHOICES.get(tr_user_chart.tr_house_system)
         ev_mode = MODE_CHOICES.get(tr_user_chart.ev_chart_mode)
 
-        ev_get_loc = loc.geocode(f'{tr_user_chart.event_city, tr_user_chart.event_country}', timeout=7000)
-        ev_loc_tz = tf.timezone_at(lng=ev_get_loc.longitude, lat=ev_get_loc.latitude)
+        ev_get_loc = loc.geocode(f'{tr_user_chart.event_city,
+        tr_user_chart.event_country}', timeout=7000)
+
+        ev_loc_tz = tf.timezone_at(lng=ev_get_loc.longitude,
+                                   lat=ev_get_loc.latitude)
         ev_local_dt = ev_d.replace(tzinfo=ZoneInfo(ev_loc_tz))
         ev_utc_dt = ev_local_dt.astimezone(datetime.timezone.utc)
         jd_ev = jl.to_jd(ev_utc_dt, fmt='jd')
 
-        tr_get_loc = loc.geocode(f'{tr_user_chart.transit_city, tr_user_chart.transit_country}', timeout=7000)
-        tr_loc_tz = tf.timezone_at(lng=tr_get_loc.longitude, lat=tr_get_loc.latitude)
+        tr_get_loc = loc.geocode(f'{tr_user_chart.transit_city,
+        tr_user_chart.transit_country}', timeout=7000)
+
+        tr_loc_tz = tf.timezone_at(lng=tr_get_loc.longitude,
+                                   lat=tr_get_loc.latitude)
         tr_local_dt = tr_d.replace(tzinfo=ZoneInfo(tr_loc_tz))
         tr_utc_dt = tr_local_dt.astimezone(datetime.timezone.utc)
         jd_tr = jl.to_jd(tr_utc_dt, fmt='jd')
 
-        tr_user_chart.drawer = get_object_or_404(get_user_model(), username=username)
+        tr_user_chart.drawer = get_object_or_404(get_user_model(),
+                                                 username=username)
 
         event_data = get_planet_data(jd_ev, tr_user_chart.ev_chart_mode)
         transit_data = get_planet_data(jd_tr, tr_user_chart.tr_chart_mode)
@@ -373,9 +389,8 @@ def user_transit_chart_form(request):
         ev_d_val = list(event_data.values())
         tr_d_val = list(transit_data.values())
 
-
-
-        planet_data_for_db = [(set_signs(planet_names, [p[4] for p in ev_d_val]))]
+        planet_data_for_db = [(set_signs(planet_names,
+                                         [p[4] for p in ev_d_val]))]
 
         tr_user_chart.Sun_deg = planet_data_for_db[0][0][1]
         tr_user_chart.Sun_sign = f' {planet_data_for_db[0][0][2]}'
@@ -407,7 +422,8 @@ def user_transit_chart_form(request):
         tr_user_chart.Pluto_deg = f'{planet_data_for_db[0][9][1]}'
         tr_user_chart.Pluto_sign = planet_data_for_db[0][9][2]
 
-        tr_planet_data_for_db = [(set_signs(planet_names, [p[4] for p in tr_d_val]))]
+        tr_planet_data_for_db = [(set_signs(planet_names,
+                                            [p[4] for p in tr_d_val]))]
 
         tr_user_chart.tr_Sun_deg = tr_planet_data_for_db[0][0][1]
         tr_user_chart.tr_Sun_sign = tr_planet_data_for_db[0][0][2]
@@ -439,16 +455,18 @@ def user_transit_chart_form(request):
         tr_user_chart.tr_Pluto_deg = tr_planet_data_for_db[0][9][1]
         tr_user_chart.tr_Pluto_sign = tr_planet_data_for_db[0][9][1]
 
-        if tr_user_chart.ev_house_system == 'Without houses' and tr_user_chart.tr_house_system == 'Without houses':
+        if (tr_user_chart.ev_house_system == 'Without houses'
+            and tr_user_chart.tr_house_system == 'Without houses'):
             tr_fig, event_one_ax, event_two_ax, _, _ = (
                 draw_transit_chart('event_one_ax', 'event_two_ax'))
 
             aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, \
                 event_one_pp, event_two_pp = (
-                build_transit_aspects(event_one_data=event_data, event_two_data=transit_data,
-                                      event_one_ax=event_one_ax, event_two_ax=event_two_ax,
+                build_transit_aspects(event_one_data=event_data,
+                                      event_two_data=transit_data,
+                                      event_one_ax=event_one_ax,
+                                      event_two_ax=event_two_ax,
                                       fig=tr_fig))
-
 
             graph, buffer = get_graph(tr_fig)
             plot_name = f'{tr_user_chart.drawer}_{ev_d}.png'
@@ -470,16 +488,17 @@ def user_transit_chart_form(request):
                        'tr_mode': tr_mode, 'ev_mode': ev_mode,
                        'graph': graph}
 
-
             return render(request, 'tr_user_chart_dtl_wh.html', context)
 
+        if (tr_user_chart.ev_house_system != 'Without houses'
+            and tr_user_chart.tr_house_system != 'Without houses'):
 
-        if tr_user_chart.ev_house_system != 'Without houses' and tr_user_chart.tr_house_system != 'Without houses':
-
-            houses = swe.houses_ex(jd_ev, ev_get_loc.latitude, ev_get_loc.longitude, tr_uc_ev_hs,
+            houses = swe.houses_ex(jd_ev, ev_get_loc.latitude,
+                                   ev_get_loc.longitude, tr_uc_ev_hs,
                                    int(tr_user_chart.ev_chart_mode))
 
-            tr_houses = swe.houses_ex(jd_tr, tr_get_loc.latitude, tr_get_loc.longitude, tr_uc_tr_hs,
+            tr_houses = swe.houses_ex(jd_tr, tr_get_loc.latitude,
+                                      tr_get_loc.longitude, tr_uc_tr_hs,
                                       int(tr_user_chart.tr_chart_mode))
 
             tr_fig, event_one_ax, event_two_ax, event_one_ha, event_two_ha = (
@@ -491,11 +510,13 @@ def user_transit_chart_form(request):
                                    event_two_houses=tr_houses[0]))
 
             aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, \
-                event_one_pp, event_two_pp = build_transit_aspects(event_one_data=event_data,
-                                                                   event_two_data=transit_data,
-                                                                   event_one_ax=event_one_ax,
-                                                                   event_two_ax=event_two_ax,
-                                                                   fig=tr_fig)
+                event_one_pp, event_two_pp = (
+                build_transit_aspects(event_one_data=event_data,
+                                      event_two_data=transit_data,
+                                      event_one_ax=event_one_ax,
+                                      event_two_ax=event_two_ax,
+                                      fig=tr_fig))
+
             graph, buffer = get_graph(tr_fig)
             plot_name = f'{tr_user_chart.drawer}_{ev_d}.png'
             tr_user_chart.tr_chart_image.save(plot_name, ContentFile(buffer.getvalue()), save=True)
@@ -618,7 +639,7 @@ def user_transit_chart_form(request):
                        'tr_uc_tr_name': tr_user_chart.event_name,
                        'tr_uc_ev_name': tr_user_chart.transit_name,
                        'tr_mode': tr_mode, 'ev_mode': ev_mode,
-                       'graph': graph, 'ev_one_hs': eo_hs, 'ev_two_hs': et_hs }
+                       'graph': graph, 'ev_one_hs': eo_hs, 'ev_two_hs': et_hs}
 
             return render(request, 'tr_user_chart_dtl.html', context)
 
@@ -684,11 +705,12 @@ def user_transit_chart_form(request):
                                    event_two_houses=tr_houses[0]))
 
             aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, \
-                event_one_pp, event_two_pp = build_transit_aspects(event_one_data=event_data,
-                                                                   event_two_data=transit_data,
-                                                                   event_one_ax=event_one_ax,
-                                                                   event_two_ax=event_two_ax,
-                                                                   fig=tr_fig)
+                event_one_pp, event_two_pp = (
+                build_transit_aspects(event_one_data=event_data,
+                                      event_two_data=transit_data,
+                                      event_one_ax=event_one_ax,
+                                      event_two_ax=event_two_ax,
+                                      fig=tr_fig))
 
             graph, buffer = get_graph(tr_fig)
             plot_name = f'{tr_user_chart.drawer}_{ev_d}.png'
@@ -696,11 +718,13 @@ def user_transit_chart_form(request):
             buffer.close()
             tr_user_chart.save()
 
-            context = {'planet_data': set_signs(planet_names, [p[4] for p in ev_d_val]),
+            context = {'planet_data': set_signs(planet_names,
+                                                [p[4] for p in ev_d_val]),
                        'tr_house_data': set_signs(house_names, list(tr_houses[0])),
                        'ats': aspect_table_s, 'ato': aspect_table_ops,
                        'att': aspect_table_t, 'atc': aspect_table_c,
-                       'tr_planet_data': set_signs(tr_planet_names, [p[4] for p in tr_d_val]),
+                       'tr_planet_data': set_signs(tr_planet_names,
+                                                   [p[4] for p in tr_d_val]),
                        'event_date': ev_d, 'tr_date': tr_d,
                        'event_city': tr_user_chart.event_city,
                        'event_country': tr_user_chart.event_country,
@@ -709,15 +733,15 @@ def user_transit_chart_form(request):
                        'tr_uc_tr_name': tr_user_chart.event_name,
                        'tr_uc_ev_name': tr_user_chart.transit_name,
                        'tr_mode': tr_mode, 'ev_mode': ev_mode,
-                       'graph': graph, 'ev_two_hs': et_hs }
+                       'graph': graph, 'ev_two_hs': et_hs}
 
             return render(request, 'tr_user_chart_dtl_th.html', context)
 
+        elif (tr_user_chart.tr_house_system == 'Without houses'
+              and tr_user_chart.ev_house_system):
 
-
-        elif tr_user_chart.tr_house_system == 'Without houses' and tr_user_chart.ev_house_system:
-
-            houses = swe.houses_ex(jd_ev, ev_get_loc.latitude, ev_get_loc.longitude, tr_uc_ev_hs,
+            houses = swe.houses_ex(jd_ev, ev_get_loc.latitude,
+                                   ev_get_loc.longitude, tr_uc_ev_hs,
                                    int(tr_user_chart.ev_chart_mode))
 
             hc_data_for_db = [set_signs(house_names, list(houses[0]))]
@@ -778,12 +802,12 @@ def user_transit_chart_form(request):
                                    ))
 
             aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, \
-                event_one_pp, event_two_pp = build_transit_aspects(event_one_data=event_data,
-                                                                   event_two_data=transit_data,
-                                                                   event_one_ax=event_one_ax,
-                                                                   event_two_ax=event_two_ax,
-                                                                   fig=tr_fig)
-
+                event_one_pp, event_two_pp =\
+                build_transit_aspects(event_one_data=event_data,
+                                      event_two_data=transit_data,
+                                      event_one_ax=event_one_ax,
+                                      event_two_ax=event_two_ax,
+                                      fig=tr_fig)
 
             swe.close()
 
@@ -806,15 +830,14 @@ def user_transit_chart_form(request):
                        'tr_uc_tr_name': tr_user_chart.event_name,
                        'tr_uc_ev_name': tr_user_chart.transit_name,
                        'tr_mode': tr_mode, 'ev_mode': ev_mode,
-                       'graph': graph, 'ev_one_hs': eo_hs }
+                       'graph': graph, 'ev_one_hs': eo_hs}
 
             return render(request, 'tr_user_chart_dtl_eh.html', context)
 
-    return render(request, 'user_transit_chart_form.html', {'tr_form':tr_form})
+    return render(request, 'user_transit_chart_form.html', {'tr_form': tr_form})
 
 
 def user_color_chart_form(request):
-
     if request.method == 'POST':
 
         color_form = OneColorZodiacRingFM(request.POST, request.FILES)
@@ -829,7 +852,7 @@ def user_color_chart_form(request):
             ev_cc_hs = HOUSE_SYSTEM_CHOICES.get(color_chart.chart_house_system)
             ev_cc_cm = MODE_CHOICES.get(color_chart.chart_mode)
             cc_city = color_chart.chart_city
-            cc_country =  color_chart.chart_country
+            cc_country = color_chart.chart_country
             cc_date = color_chart.chart_date
 
             loc_tz = tf.timezone_at(lng=get_loc.longitude, lat=get_loc.latitude)
@@ -840,14 +863,18 @@ def user_color_chart_form(request):
             username = request.user.username
             color_chart.drawer = get_object_or_404(get_user_model(), username=username)
 
-            img = draw_zodiac_one_color(color_chart.face_color, color_chart.edge_color, color_chart.text_color,
-                                  color_chart.tick_color, color_chart.deg_color, color_chart.font_size,
-                                  color_chart.line_width)
+            img = draw_zodiac_one_color(color_chart.face_color,
+                                        color_chart.edge_color,
+                                        color_chart.text_color,
+                                        color_chart.tick_color,
+                                        color_chart.deg_color,
+                                        color_chart.font_size,
+                                        color_chart.line_width)
 
             matplotlib.rcParams['axes.edgecolor'] = color_chart.house_track_color
             matplotlib.rcParams['axes.linewidth'] = color_chart.house_track_lw
 
-            planet_data = get_planet_data(jd, color_chart. chart_mode)
+            planet_data = get_planet_data(jd, color_chart.chart_mode)
             pd_val = list(planet_data.values())
 
             planet_data_for_db = [(set_signs(planet_names, [p[4] for p in pd_val]))]
@@ -884,7 +911,9 @@ def user_color_chart_form(request):
 
             if color_chart.chart_house_system != 'Without houses':
 
-                houses = swe.houses_ex(jd, get_loc.latitude, get_loc.longitude, us_hs, int(color_chart.chart_mode))
+                houses = (
+                    swe.houses_ex(jd, get_loc.latitude, get_loc.longitude,
+                                  us_hs, int(color_chart.chart_mode)))
 
                 hc_data_for_db = [set_signs(house_names, list(houses[0]))]
 
@@ -936,19 +965,23 @@ def user_color_chart_form(request):
                 color_chart.benefits_deg = hc_data_for_db[0][11][1]
                 color_chart.benefits_sign = hc_data_for_db[0][11][2]
 
-                fig_form, planet_ax, house_ax, _, _, _, _, _, _ = draw_chart(fig_name='fig_form',
-                                                                             planet_ax='planet_ax',
-                                                                             house_ax='house_ax',
-                                                                             ha_color=color_chart.house_ax_color,
-                                                                             ha_lbl_size=color_chart.house_num_fs,
-                                                                             ha_lw=color_chart.house_ax_lw,
-                                                                             ha_lab_cl=color_chart.house_number_color,
-                                                                             chart_path=img,
-                                                                             houses_data=houses[0])
+                fig_form, planet_ax, house_ax, _, _, _, _, _, _ = (
+                    draw_chart(fig_name='fig_form',
+                               planet_ax='planet_ax',
+                               house_ax='house_ax',
+                               ha_color=color_chart.house_ax_color,
+                               ha_lbl_size=color_chart.house_num_fs,
+                               ha_lw=color_chart.house_ax_lw,
+                               ha_lab_cl=color_chart.house_number_color,
+                               chart_path=img,
+                               houses_data=houses[0]))
 
                 aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, = \
-                    build_aspects(planet_data=planet_data, ax_name=planet_ax, marker_clr=color_chart.marker_color,
-                                  pl_marker_size=color_chart.marker_size, symbol_size=color_chart.symbol_size,
+                    build_aspects(planet_data=planet_data,
+                                  ax_name=planet_ax,
+                                  marker_clr=color_chart.marker_color,
+                                  pl_marker_size=color_chart.marker_size,
+                                  symbol_size=color_chart.symbol_size,
                                   symbol_clr=color_chart.symbol_color)
 
                 swe.close()
@@ -956,25 +989,30 @@ def user_color_chart_form(request):
                 get_s3_client()
                 graph, buffer = get_graph(fig_form)
                 plot_name = f'{color_chart.drawer}{color_chart.id}.png'
-                color_chart.chart_image = upload_to_storage(buffer, plot_name, 'chart_plots/colored_charts_nh/')
+                color_chart.chart_image \
+                    = upload_to_storage(buffer, plot_name,
+                                        'chart_plots/colored_charts_nh/')
 
                 color_chart.save()
 
                 return render(request, 'user_color_chart.html',
-                              {'planet_data': set_signs(planet_names, [p[4] for p in pd_val]),
-                               'house_data': set_signs(house_names,list(houses[0])),
+                              {'planet_data': set_signs(planet_names,
+                                                        [p[4] for p in pd_val]),
+                               'house_data': set_signs(house_names, list(houses[0])),
                                'ats': aspect_table_s, 'ato': aspect_table_ops,
-                               'att': aspect_table_t, 'atc': aspect_table_c, 'date': color_chart.chart_date,
-                               'color_chart': color_chart, 'graph':graph,
+                               'att': aspect_table_t, 'atc': aspect_table_c,
+                               'date': color_chart.chart_date,
+                               'color_chart': color_chart, 'graph': graph,
                                'cc_hs': ev_cc_hs, 'cc_mode': ev_cc_cm,
                                'cc_city': cc_city, 'cc_country': cc_country,
-                               'cc_date': cc_date.strftime("%B %d, %Y, %H:%M:%S, %A"),})
+                               'cc_date': cc_date.strftime("%B %d, %Y, %H:%M:%S, %A")})
 
             else:
 
-                fig_form, planet_ax, _, _, _, _, _, _, _ = draw_chart(fig_name='fig_form',
-                                                                      planet_ax='planet_ax',
-                                                                      chart_path=img)
+                fig_form, planet_ax, _, _, _, _, _, _, _ = (
+                    draw_chart(fig_name='fig_form',
+                               planet_ax='planet_ax',
+                               chart_path=img))
 
                 aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, = \
                     build_aspects(planet_data=planet_data, ax_name=planet_ax)
@@ -995,9 +1033,9 @@ def user_color_chart_form(request):
                                'color_chart': color_chart, 'graph': graph,
                                'cc_hs': ev_cc_hs, 'cc_mode': ev_cc_cm,
                                'cc_city': cc_city, 'cc_country': cc_country,
-                               'cc_date': cc_date.strftime("%B %d, %Y, %H:%M:%S, %A"),})
+                               'cc_date': cc_date.strftime("%B %d, %Y, %H: %M: %S, %A")})
 
     else:
         color_form = OneColorZodiacRingFM(request.POST, request.FILES)
 
-    return render(request, 'user_color_chart_form.html', {'color_form':color_form})
+    return render(request, 'user_color_chart_form.html', {'color_form': color_form})

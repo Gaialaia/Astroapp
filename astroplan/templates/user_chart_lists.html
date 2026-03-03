@@ -1,99 +1,156 @@
-{% extends "base.html" %}
-{% load static %}
-{% load crispy_forms_tags %}
-
+{% extends "base.html" %} {% load static %} {% load crispy_forms_tags %}
 
 {% block title %} Saved charts {% endblock %}
 
 {% block navigation %}
-<div class="menu-choice" id="today-chart" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
-    <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
+
+<div
+  class="menu-choice"
+  id="today-chart"
+  style="background-image: linear-gradient(gold, rgba(159, 0, 255, 0.4))"
+>
+  <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
-    <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
+<div
+  class="menu-choice"
+  style="background-image: linear-gradient(gold, rgba(159, 0, 255, 0.4))"
+>
+  <a class="menu-link" href="{% url 'chart for ad' %}" target="_blank"
+    >Chart for any date</a
+  >
 </div>
 
 <div class="menu-choice">
-    <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
+  <a class="menu-link" href="{% url 'transit form chart' %}" target="_blank"
+    >Transits</a
+  >
 </div>
-
 
 <div class="menu-choice menu-choice-dd">
-    <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
-        <div class="menu-choice-dd-content">
-            <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
-        </div>
+  <div>
+    C
+    <img id="clr-chart-icon" src="{% static 'images/zr_clr_icon.png' %}" /> LOR
+  </div>
+  <div class="menu-choice-dd-content">
+    <div class="menu-choice-dd-content-links">
+      <a href="{% url 'color your chart' %}"> color chart </a>
+    </div>
+  </div>
 </div>
-
 
 <div class="menu-choice menu-choice-dd opened-tab">
-     {% if user.is_authenticated %}
-    <div>
-        <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
-        <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
+  {% if user.is_authenticated %}
+  <div>
+    <a href="{% url 'user lounge' user.username %}" target="_blank">
+      {{ user.username }}
+    </a>
+    <div class="menu-choice-dd-content">
+      <a href="{% url 'logout' %}"> Log out </a>
     </div>
-        {% else %}
-        <div> GET INSIDE </div>
-            <div class="menu-choice-dd-content">
-                <div class="menu-choice-dd-content-links auth-bt">
-                    <div>
-                        <a href="{% url 'login' %}"> LOG IN </a>
-                    </div>
-                     <div>
-                          <a href="{% url 'register' %}"> SIGN UP </a>
-                    </div>
-
-                </div>
-            </div>
-
-         {% endif %}
-</div>
-{% endblock %}
-
-
-{% block content-data %}
-<div class="ul-link-div">
-    <div class="ul-links">
-          <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
+    {% else %}
+    <div>GET INSIDE</div>
+    <div class="menu-choice-dd-content">
+      <div class="menu-choice-dd-content-links auth-bt">
+        <div>
+          <a href="{% url 'login' %}"> LOG IN </a>
+        </div>
+        <div>
+          <a href="{% url 'register' %}"> SIGN UP </a>
+        </div>
+      </div>
     </div>
 
-    <div class="ul-links">
-         <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a>
-    </div>
+    {% endif %}
+  </div>
+  {% endblock %}
 
+    {% block content-data %}
+
+    <div class="ul-link-div">
     <div class="ul-links">
-            <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
+      <a href="{% url 'user lounge' user.username %}"
+        style="color: aliceblue"
+        class="ul-plot-links">
+        To my lounge </a>
     </div>
 
     <div class="ul-links">
-          <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
+      <a
+        href="{% url 'user tc f'  %}"
+        style="color: aliceblue"
+        class="ul-plot-links"
+      >
+        To transit chart form
+      </a>
     </div>
 
+    <div class="ul-links">
+      <a
+        href="{% url 'ad user chart' %}"
+        style="color: aliceblue"
+        class="ul-plot-links"
+      >
+        To chart form
+      </a>
+    </div>
+
+    <div class="ul-links">
+      <a
+        href="{% url 'user c ch f'  %}"
+        style="color: aliceblue"
+        class="ul-plot-links"
+      >
+        To color form
+      </a>
+    </div>
+  </div>
+
+  <div class="chart-list">
+    <h3 class="ul-list-names">My charts</h3>
+    {% for chart in my_charts %}
+    <p>
+      <a
+        href="/chart/{{ chart.id }}/"
+        class="chart_link tooltip"
+        style="color: aliceblue"
+      >
+        {{ chart.chart_name }}
+        <span class="tooltiptext"> {{ chart.chart_date }} </span></a
+      >
+    </p>
+    {% endfor %}
+  </div>
+
+  <div class="chart-list">
+    <h3 class="ul-list-names">My transit charts</h3>
+    {% for tr_user_chart in my_tr_charts %}
+    <p>
+      <a
+        href="/tr_chart/{{ tr_user_chart.id }}/"
+        class="chart_link tooltip"
+        style="color: aliceblue"
+      >
+        {{ tr_user_chart.transit_name }} / {{ tr_user_chart.event_name }}
+      </a>
+    </p>
+    {% endfor %}
+  </div>
+
+  <div class="chart-list">
+    <h3 class="ul-list-names">My colored charts</h3>
+    {% for clr_user_chart in my_clr_charts %}
+    <p>
+      <a
+        href="/clr_chart/{{ clr_user_chart.id }}/"
+        class="chart_link tooltip"
+        style="color: aliceblue"
+      >
+        {{ clr_user_chart.chart_name }}</a
+      >
+    </p>
+    {% endfor %}
+  </div>
+
+  {% endblock %}
 </div>
-
-
-<div class="chart-list">
-        <h3 class="ul-list-names"> My charts </h3>
-        {% for chart in my_charts %}
-        <p> <a href="/chart/{{ chart.id }}/"  class="chart_link tooltip" style="color: aliceblue" >  {{ chart.chart_name }}
-            <span class="tooltiptext"> {{ chart.chart_date }} </span></a> </p>
-        {% endfor %}
-</div>
-
-<div class="chart-list">
-        <h3 class="ul-list-names"> My transit charts </h3>
-        {% for tr_user_chart in my_tr_charts %}
-         <p> <a href="/tr_chart/{{ tr_user_chart.id }}/"  class="chart_link tooltip" style="color: aliceblue" >  {{ tr_user_chart.transit_name }} /
-            {{ tr_user_chart.event_name }} </a> </p>
-        {% endfor %}
-</div>
-
-<div class="chart-list">
-        <h3 class="ul-list-names"> My colored charts </h3>
-        {% for clr_user_chart in my_clr_charts %}
-         <p> <a href="/clr_chart/{{ clr_user_chart.id }}/"  class="chart_link tooltip" style="color: aliceblue" >  {{ clr_user_chart.chart_name }}</a> </p>
-        {% endfor %}
-</div>
-
-{% endblock %}

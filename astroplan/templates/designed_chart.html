@@ -1,102 +1,97 @@
-{% extends "base.html" %}
-{% load static %}
-{% load crispy_forms_tags %}
+{% extends "base.html" %} {% load static %} {% load crispy_forms_tags %}
 
 {% block title %} Designed chart {% endblock %}
 
 {% block navigation %}
 
 <div class="menu-choice" id="today-chart">
-    <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/"> Today chart </a>
+  <a class="menu-link" href="http://127.0.0.1:8000/show_td_chart/">
+    Today chart
+  </a>
 </div>
 
 <div class="menu-choice">
-    <a  class="menu-link" href="http://127.0.0.1:8000/transit_form" target = '_blank'>Transits</a>
+  <a class="menu-link" href="http://127.0.0.1:8000/transit_form" target="_blank"
+    >Transits</a
+  >
 </div>
 
 <div class="menu-choice">
-    <a href="http://127.0.0.1:8000/wheel_year" target = '_blank'>Wheel Year</a>
+  <a href="http://127.0.0.1:8000/wheel_year" target="_blank">Wheel Year</a>
 </div>
 
- <div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4));">
-                <div class="menu-choice-dd">
-                    Denotions
-                     <div class="menu-choice-dd-content">
-                          <a href="{% url 'signs' %}"> SIGNS </a>
-                           <a href="{% url 'houses' %}"> HOUSES </a>
-                          <a href="{% url 'planets' %}"> PLANETS </a>
-                         </div>
-                </div>
- </div>
-
-<div class="menu-choice" style="background-image:linear-gradient(gold, rgba(159,0,255, 0.4))">
-    <div class="menu-choice-dd"> Creative Astrology
-        <div class="menu-choice-dd-content">
-           <a href="{% url 'color your chart' %}"> chose colors for your chart </a>
-             <a href="#"> imaginery chart </a>
-        </div>
+<div
+  class="menu-choice"
+  style="background-image: linear-gradient(gold, rgba(159, 0, 255, 0.4))"
+>
+  <div class="menu-choice-dd">
+    Denotions
+    <div class="menu-choice-dd-content">
+      <a href="{% url 'signs' %}"> SIGNS </a>
+      <a href="{% url 'houses' %}"> HOUSES </a>
+      <a href="{% url 'planets' %}"> PLANETS </a>
     </div>
+  </div>
+</div>
+
+<div
+  class="menu-choice"
+  style="background-image: linear-gradient(gold, rgba(159, 0, 255, 0.4))"
+>
+  <div class="menu-choice-dd">
+    Creative Astrology
+    <div class="menu-choice-dd-content">
+      <a href="{% url 'color your chart' %}"> chose colors for your chart </a>
+      <a href="#"> imaginery chart </a>
+    </div>
+  </div>
 </div>
 
 <div class="menu-choice">
-    <a href="http://127.0.0.1:8000/shop" target = '_blank'>Shop</a>
+  <a href="http://127.0.0.1:8000/shop" target="_blank">Shop</a>
 </div>
 
 <div class="menu-choice">
-     {% if user.is_authenticated %}
+  {% if user.is_authenticated %}
+  <div class="menu-choice-dd">
+    <a href="{% url 'user-lounge' user.username %}" target="_blank">
+      My chart {{ user.username }}
+    </a>
+    <div class="menu-choice-dd-content">
+      <a href="{% url 'logout' %}"> Log out </a>
+    </div>
+    {% else %}
     <div class="menu-choice-dd">
-        <a href= "{% url 'user-lounge' user.username %}" target = '_blank'> My chart {{ user.username }} </a>
-        <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
-    </div>
-        {% else %}
-        <div class="menu-choice-dd"> LOG IN / SIGN UP
-            <div class="menu-choice-dd-content">
-                <div style="background-color: purple">
-                     <a href="{% url 'login' %}"> LOG IN </a>
-                </div>
-                <div>
-                    <a href="{% url 'register' %}"> SIGN UP </a>
-                </div>
-
-            </div>
+      LOG IN / SIGN UP
+      <div class="menu-choice-dd-content">
+        <div style="background-color: purple">
+          <a href="{% url 'login' %}"> LOG IN </a>
         </div>
-         {% endif %}
-</div>
-{% endblock %}
-
-
-{% block chart-data %}
- <div class="table-cont">
-     <div class="table-data">
-         {% include 'includes/planet_list.html' %}
-     </div>
- </div>
- <div class="table-cont">
-     <div class="table-data">
-          {% include 'includes/house_cusps.html' %}
-     </div>
- </div>
-
- <div class ="chart-fig">
-     <h1> Planet chart for {{ date }}</h1>
-     <img src="{% static 'plots/designed_chart.png' %}" alt="plot" id="chart-plot">
- </div>
-
-  <div class="table-data">
-      {% include 'includes/aspects.html' %}
+        <div>
+          <a href="{% url 'register' %}"> SIGN UP </a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {% endblock %} {% block chart-data %}
+  <div class="table-cont">
+    <div class="table-data">{% include 'includes/planet_list.html' %}</div>
+  </div>
+  <div class="table-cont">
+    <div class="table-data">{% include 'includes/house_cusps.html' %}</div>
   </div>
 
-{% endblock %}
+  <div class="chart-fig">
+    <h1>Planet chart for {{ date }}</h1>
+    <img
+      src="{% static 'plots/designed_chart.png' %}"
+      alt="plot"
+      id="chart-plot"
+    />
+  </div>
 
+  <div class="table-data">{% include 'includes/aspects.html' %}</div>
 
-
-
-
-
-
-
-
-
-
-
-
+  {% endblock %}
+</div>

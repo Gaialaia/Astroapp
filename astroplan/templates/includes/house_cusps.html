@@ -1,44 +1,67 @@
-
 <table id="house-cusps-table">
-                    <caption> House cusps data </caption>
-                <thead>
-                  <tr>
-                        <th> number</th>
-                        <th> Degrees </th>
-                        <th> Sign </th>
-                  </tr>
-                </thead>
-                <tbody>
-                     {% for hn, deg, sign in house_data %}
-                    <tr> {% if hn == 'ASC' %}
-                         <td class="tooltip"> {{ hn }}   <span class="tooltiptext"> Appearance </span> </td>
-                        {% elif hn == 'II' %}
-                         <td class="tooltip">  {{ hn }} <span class="tooltiptext"> Resource </span> </td>
-                         {% elif hn == 'III' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Mental abilities </span> </td>
-                        {% elif hn == 'IC' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Housing </span> </td>
-                        {% elif hn == 'V' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Fun, entertainment, art </span> </td>
-                        {% elif hn == 'VI' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Work, service </span> </td>
-                        {% elif hn == 'DSC' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Relationship </span> </td>
-                        {% elif hn == 'VIII' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Sex, magic </span> </td>
-                        {% elif hn == 'IX' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Higher knowledge </span> </td>
-                        {% elif hn == 'MC' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Power </span> </td>
-                        {% elif hn == 'XI' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Friends, interests </span> </td>
-                        {% elif hn == 'XII' %}
-                        <td class="tooltip"> {{ hn }} <span class="tooltiptext"> Results  </span> </td>
-                        {% endif %}
-                        <td> {{ deg }}</td>
-                        <td> {{ sign }}</td>
-                    </tr>
-                     {% endfor %}
-                </tbody>
- </table>
-
+  <caption>
+    House cusps data
+  </caption>
+  <thead>
+    <tr>
+      <th>number</th>
+      <th>Degrees</th>
+      <th>Sign</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for hn, deg, sign in house_data %}
+    <tr>
+      {% if hn == 'ASC' %}
+      <td class="tooltip">
+        {{ hn }} <span class="tooltiptext"> Appearance </span>
+      </td>
+      {% elif hn == 'II' %}
+      <td class="tooltip">
+        {{ hn }} <span class="tooltiptext"> Resource </span>
+      </td>
+      {% elif hn == 'III' %}
+      <td class="tooltip">
+        {{ hn }} <span class="tooltiptext"> Mental abilities </span>
+      </td>
+      {% elif hn == 'IC' %}
+      <td class="tooltip">
+        {{ hn }} <span class="tooltiptext"> Housing </span>
+      </td>
+      {% elif hn == 'V' %}
+      <td class="tooltip">
+        {{ hn }} <span class="tooltiptext"> Fun, entertainment, art </span>
+      </td>
+      {% elif hn == 'VI' %}
+      <td class="tooltip">
+        {{ hn }} <span class="tooltiptext"> Work, service </span>
+      </td>
+      {% elif hn == 'DSC' %}
+      <td class="tooltip">
+        {{ hn }} <span class="tooltiptext"> Relationship </span>
+      </td>
+      {% elif hn == 'VIII' %}
+      <td class="tooltip">
+        {{ hn }} <span class="tooltiptext"> Sex, magic </span>
+      </td>
+      {% elif hn == 'IX' %}
+      <td class="tooltip">
+        {{ hn }} <span class="tooltiptext"> Higher knowledge </span>
+      </td>
+      {% elif hn == 'MC' %}
+      <td class="tooltip">{{ hn }} <span class="tooltiptext"> Power </span></td>
+      {% elif hn == 'XI' %}
+      <td class="tooltip">
+        {{ hn }} <span class="tooltiptext"> Friends, interests </span>
+      </td>
+      {% elif hn == 'XII' %}
+      <td class="tooltip">
+        {{ hn }} <span class="tooltiptext"> Results </span>
+      </td>
+      {% endif %}
+      <td>{{ deg }}</td>
+      <td>{{ sign }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

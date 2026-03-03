@@ -1,136 +1,191 @@
-{% extends "base.html" %}
-{% load static %}
-{% load crispy_forms_tags %}
+{% extends "base.html" %} {% load static %} {% load crispy_forms_tags %}
 
 {% block title %} Get and save chart {% endblock %}
 
 {% block navigation %}
-<div class="menu-choice" id="today-chart">
-    <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
-</div>
 
-<div class="menu-choice" >
-    <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
+<div class="menu-choice" id="today-chart">
+  <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
 <div class="menu-choice">
-    <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
+  <a class="menu-link" href="{% url 'chart for ad' %}" target="_blank"
+    >Chart for any date</a
+  >
+</div>
+
+<div class="menu-choice">
+  <a class="menu-link" href="{% url 'transit form chart' %}" target="_blank"
+    >Transits</a
+  >
 </div>
 
 <div class="menu-choice menu-choice-dd">
-    <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
-        <div class="menu-choice-dd-content">
-            <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
-        </div>
+  <div>
+    C
+    <img id="clr-chart-icon" src="{% static 'images/zr_clr_icon.png' %}" /> LOR
+  </div>
+  <div class="menu-choice-dd-content">
+    <div class="menu-choice-dd-content-links">
+      <a href="{% url 'color your chart' %}"> color chart </a>
+    </div>
+  </div>
 </div>
 
 <div class="menu-choice menu-choice-dd opened-tab">
-     {% if user.is_authenticated %}
-    <div>
-        <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
-        <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
+  {% if user.is_authenticated %}
+  <div>
+    <a href="{% url 'user lounge' user.username %}" target="_blank">
+      {{ user.username }}
+    </a>
+    <div class="menu-choice-dd-content">
+      <a href="{% url 'logout' %}"> Log out </a>
     </div>
-        {% else %}
-        <div> GET INSIDE </div>
-            <div class="menu-choice-dd-content">
-                <div class="menu-choice-dd-content-links auth-bt">
-                    <div>
-                        <a href="{% url 'login' %}"> LOG IN </a>
-                    </div>
-                     <div>
-                          <a href="{% url 'register' %}"> SIGN UP </a>
-                    </div>
-
-                </div>
-            </div>
-
-         {% endif %}
-</div>
-{% endblock %}
-
-    {% block content-data %}
-
-
-
-
-
-    <div class="my-chart-cf">
-         <div class="ul-link-div">
-
-     <div class="ul-links">
-            <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> my lounge  </a>
-     </div>
-
-     <div class="ul-links">
-           <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> chart lists  </a>
-     </div>
-
-      <div class="ul-links">
-            <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> transit form  </a>
-     </div>
-
-     <div class="ul-links">
-            <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> color form  </a>
-     </div>
-
-      <div class="ul-links">
-           <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links">  chart form  </a>
-     </div>
-
- </div>
+    {% else %}
+    <div>GET INSIDE</div>
+    <div class="menu-choice-dd-content">
+      <div class="menu-choice-dd-content-links auth-bt">
         <div>
-        <div class="instruction-text"> <h3> Get and save chart </h3></div>
-        <form class="chart-forms" method="post">
-            {{ user_chart_form.media }}
-            {% csrf_token %}
-            <div class="form-row">
-                <label for="id_chart_name">Enter event name:</label>
-                 <input type="text" name="chart_name" value="Today" required id="id_chart_name">
-            </div>
-
-          <div class="form-row">
-               <label for="id_chart_date">Enter date:</label>
-                <div class="django-flatpickr">
-                    <input type="text" name="chart_date" value="2025-12-23 15:17:49" required id="id_chart_date" data-fpconfig="{&quot;picker_type&quot;: &quot;DATETIME&quot;, &quot;options&quot;: {&quot;altInput&quot;: true, &quot;dateFormat&quot;: &quot;Y-m-d H:i:S&quot;, &quot;enableTime&quot;: true, &quot;wrap&quot;: true}}" data-debug="">
-                    <input type="hidden" name="initial-chart_date" value="2025-12-23 15:17:49" id="initial-id_chart_date">
-                </div>
-          </div>
-
-
-          <div class="form-row">
-            <label for="id_city">Enter city:</label>
-            <input type="text" name="city" value="Ufa" required id="id_city">
-          </div>
-
-          <div class="form-row">
-            <label for="id_country">Enter country:</label>
-            <input type="text" name="country" value="Russia" required id="id_country">
-          </div>
-
-          <div class="form-row">
-            <label for="id_chart_mode">Chose chart mode: :</label>
-                <select name="chart_mode" id="id_chart_mode">
-                  <option value="65536">Sidereal</option>
-                  <option value="0">Tropical</option>
-                  <option value="8">Heliocentric</option>
-                </select>
-          </div>
-
-      <div class="form-row">
-        <label for="id_house_system">Chose house system:</label>
-            <select name="house_system" id="id_house_system">
-                <option value="P">Placidus</option>
-              <option value="R">Regiomontanus</option>
-              <option value="E">Equal</option>
-              <option value="Without houses" selected>Without houses</option>
-            </select>
+          <a href="{% url 'login' %}"> LOG IN </a>
         </div>
-            <div>
-                  <button class="show-chart" type="submit"> Show chart </button>
-            </div>
-        </form>
+        <div>
+          <a href="{% url 'register' %}"> SIGN UP </a>
+        </div>
       </div>
     </div>
 
+    {% endif %}
+  </div>
+  {% endblock %} {% block content-data %}
 
-{% endblock %}
+  <div class="my-chart-cf">
+    <div class="ul-link-div">
+      <div class="ul-links">
+        <a
+          href="{% url 'user lounge' user.username %}"
+          style="color: aliceblue"
+          class="ul-plot-links"
+        >
+          my lounge
+        </a>
+      </div>
+
+      <div class="ul-links">
+        <a
+          href="{% url 'user chart lists' %}"
+          style="color: aliceblue"
+          class="ul-plot-links"
+        >
+          chart lists
+        </a>
+      </div>
+
+      <div class="ul-links">
+        <a
+          href="{% url 'user tc f'  %}"
+          style="color: aliceblue"
+          class="ul-plot-links"
+        >
+          transit form
+        </a>
+      </div>
+
+      <div class="ul-links">
+        <a
+          href="{% url 'user c ch f'  %}"
+          style="color: aliceblue"
+          class="ul-plot-links"
+        >
+          color form
+        </a>
+      </div>
+
+      <div class="ul-links">
+        <a
+          href="{% url 'ad user chart' %}"
+          style="color: aliceblue"
+          class="ul-plot-links"
+        >
+          chart form
+        </a>
+      </div>
+    </div>
+    <div>
+      <div class="instruction-text"><h3>Get and save chart</h3></div>
+      <form class="chart-forms" method="post">
+        {{ user_chart_form.media }} {% csrf_token %}
+        <div class="form-row">
+          <label for="id_chart_name">Enter event name:</label>
+          <input
+            type="text"
+            name="chart_name"
+            value="Today"
+            required
+            id="id_chart_name"
+          />
+        </div>
+
+        <div class="form-row">
+          <label for="id_chart_date">Enter date:</label>
+          <div class="django-flatpickr">
+            <input
+              type="text"
+              name="chart_date"
+              value="2025-12-23 15:17:49"
+              required
+              id="id_chart_date"
+              data-fpconfig='{"picker_type": "DATETIME", "options": {"altInput": true, "dateFormat": "Y-m-d H:i:S", "enableTime": true, "wrap": true}}'
+              data-debug=""
+            />
+            <input
+              type="hidden"
+              name="initial-chart_date"
+              value="2025-12-23 15:17:49"
+              id="initial-id_chart_date"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="id_city">Enter city:</label>
+          <input type="text" name="city" value="Ufa" required id="id_city" />
+        </div>
+
+        <div class="form-row">
+          <label for="id_country">Enter country:</label>
+          <input
+            type="text"
+            name="country"
+            value="Russia"
+            required
+            id="id_country"
+          />
+        </div>
+
+        <div class="form-row">
+          <label for="id_chart_mode">Chose chart mode: :</label>
+          <select name="chart_mode" id="id_chart_mode">
+            <option value="65536">Sidereal</option>
+            <option value="0">Tropical</option>
+            <option value="8">Heliocentric</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="id_house_system">Chose house system:</label>
+          <select name="house_system" id="id_house_system">
+            <option value="P">Placidus</option>
+            <option value="R">Regiomontanus</option>
+            <option value="E">Equal</option>
+            <option value="Without houses" selected>Without houses</option>
+          </select>
+        </div>
+        <div>
+          <button class="show-chart" type="submit">Show chart</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  {% endblock %}
+</div>

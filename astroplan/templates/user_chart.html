@@ -1,109 +1,121 @@
-{% extends "base.html" %}
-{% load static %}
-{% load crispy_forms_tags %}
+{% extends "base.html" %} {% load static %} {% load crispy_forms_tags %}
 
 {% block title %} Chart for your date {% endblock %}
 
- {% block navigation %}
+{% block navigation %}
+
 <div class="menu-choice">
-    <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
+  <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
 <div class="menu-choice">
-    <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
+  <a class="menu-link" href="{% url 'chart for ad' %}" target="_blank"
+    >Chart for any date</a
+  >
 </div>
 
 <div class="menu-choice">
-    <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
+  <a class="menu-link" href="{% url 'transit form chart' %}" target="_blank"
+    >Transits</a
+  >
 </div>
-
 
 <div class="menu-choice menu-choice-dd">
-    <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
-        <div class="menu-choice-dd-content">
-            <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
-        </div>
+  <div>
+    C
+    <img id="clr-chart-icon" src="{% static 'images/zr_clr_icon.png' %}" /> LOR
+  </div>
+  <div class="menu-choice-dd-content">
+    <div class="menu-choice-dd-content-links">
+      <a href="{% url 'color your chart' %}"> color chart </a>
+    </div>
+  </div>
 </div>
-
 
 <div class="menu-choice menu-choice-dd opened-tab">
-     {% if user.is_authenticated %}
-    <div>
-        <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
-        <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
+  {% if user.is_authenticated %}
+  <div>
+    <a href="{% url 'user lounge' user.username %}" target="_blank">
+      {{ user.username }}
+    </a>
+    <div class="menu-choice-dd-content">
+      <a href="{% url 'logout' %}"> Log out </a>
     </div>
-        {% else %}
-        <div> GET INSIDE </div>
-            <div class="menu-choice-dd-content">
-                <div class="menu-choice-dd-content-links auth-bt">
-                    <div>
-                        <a href="{% url 'login' %}"> LOG IN </a>
-                    </div>
-                     <div>
-                          <a href="{% url 'register' %}"> SIGN UP </a>
-                    </div>
-
-                </div>
-            </div>
-         {% endif %}
-</div>
-{% endblock %}
+    {% else %}
+    <div>GET INSIDE</div>
+    <div class="menu-choice-dd-content">
+      <div class="menu-choice-dd-content-links auth-bt">
+        <div>
+          <a href="{% url 'login' %}"> LOG IN </a>
+        </div>
+        <div>
+          <a href="{% url 'register' %}"> SIGN UP </a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {% endblock %}
 
     {% block chart-data %}
-    <div class="ul-link-div">
-        <div class="ul-links">
-            <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
-        </div>
-
-        <div class="ul-links">
-            <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
-        </div>
-
-        <div class="ul-links">
-            <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a>
-        </div>
-
-        <div class="ul-links">
-            <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
-        </div>
-    </div>
-    <div class="table-data">
-        {% include 'includes/planet_list.html' %}
-          {% include 'includes/house_cusps.html' %}
+  <div class="ul-link-div">
+    <div class="ul-links">
+      <a
+        href="{% url 'user lounge' user.username %}"
+        style="color: aliceblue"
+        class="ul-plot-links"
+      >
+        To my lounge
+      </a>
     </div>
 
-    <div class="chart-fig">
-        <h1> Planet chart for {{ date }}</h1>
-        <div class="event-info">
-                         <p class="form-info-data-title"> City : {{ chart.city }} </p>
-                         <p class="form-info-data-title"> Country: {{ chart.country }} </p>
-                         <p class="form-info-data-title"> House system: {{ house_system }}</p>
-                         <p class="form-info-data-title"> Chart mode: {{ mode }}</p>
-        </div>
-
-                     <img src="data:image/png;base64,{{ graph }}">
-    </div>
-    <div class="table-data">
-                     {% include 'includes/aspects.html' %}
+    <div class="ul-links">
+      <a
+        href="{% url 'user chart lists' %}"
+        style="color: aliceblue"
+        class="ul-plot-links"
+      >
+        To chart lists
+      </a>
     </div>
 
- {% endblock %}
+    <div class="ul-links">
+      <a
+        href="{% url 'user tc f'  %}"
+        style="color: aliceblue"
+        class="ul-plot-links"
+      >
+        To transit chart form
+      </a>
+    </div>
 
+    <div class="ul-links">
+      <a
+        href="{% url 'user c ch f'  %}"
+        style="color: aliceblue"
+        class="ul-plot-links"
+      >
+        To color form
+      </a>
+    </div>
+  </div>
+  <div class="table-data">
+    {% include 'includes/planet_list.html' %} {% include
+    'includes/house_cusps.html' %}
+  </div>
 
+  <div class="chart-fig">
+    <h1>Planet chart for {{ date }}</h1>
+    <div class="event-info">
+      <p class="form-info-data-title">City : {{ chart.city }}</p>
+      <p class="form-info-data-title">Country: {{ chart.country }}</p>
+      <p class="form-info-data-title">House system: {{ house_system }}</p>
+      <p class="form-info-data-title">Chart mode: {{ mode }}</p>
+    </div>
 
+    <img src="data:image/png;base64,{{ graph }}" />
+  </div>
+  <div class="table-data">{% include 'includes/aspects.html' %}</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  {% endblock %}
+</div>

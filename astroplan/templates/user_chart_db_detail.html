@@ -1,276 +1,311 @@
-{% extends "base.html" %}
-{% load static %}
-{% load crispy_forms_tags %}
+{% extends "base.html" %} {% load static %} {% load crispy_forms_tags %}
 
 {% block title %} {{ chart.chart_name}} {% endblock %}
-
 
 {% block navigation %}
 
 <div class="menu-choice" id="today-chart">
-    <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
-</div>
-
-
-<div class="menu-choice">
-    <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
+  <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
 <div class="menu-choice">
-    <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
+  <a class="menu-link" href="{% url 'chart for ad' %}" target="_blank"
+    >Chart for any date</a
+  >
 </div>
 
+<div class="menu-choice">
+  <a class="menu-link" href="{% url 'transit form chart' %}" target="_blank"
+    >Transits</a
+  >
+</div>
 
 <div class="menu-choice menu-choice-dd">
-    <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
-        <div class="menu-choice-dd-content">
-            <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
-        </div>
+  <div>
+    C
+    <img id="clr-chart-icon" src="{% static 'images/zr_clr_icon.png' %}" /> LOR
+  </div>
+  <div class="menu-choice-dd-content">
+    <div class="menu-choice-dd-content-links">
+      <a href="{% url 'color your chart' %}"> color chart </a>
+    </div>
+  </div>
 </div>
-
 
 <div class="menu-choice menu-choice-dd opened-tab">
-     {% if user.is_authenticated %}
-    <div>
-        <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
-        <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
+  {% if user.is_authenticated %}
+  <div>
+    <a href="{% url 'user lounge' user.username %}" target="_blank">
+      {{ user.username }}
+    </a>
+    <div class="menu-choice-dd-content">
+      <a href="{% url 'logout' %}"> Log out </a>
     </div>
-        {% else %}
-        <div> GET INSIDE </div>
-            <div class="menu-choice-dd-content">
-                <div class="menu-choice-dd-content-links auth-bt">
-                    <div>
-                        <a href="{% url 'login' %}"> LOG IN </a>
-                    </div>
-                     <div>
-                          <a href="{% url 'register' %}"> SIGN UP </a>
-                    </div>
-
-                </div>
-            </div>
-
-         {% endif %}
-
-</div>
-{% endblock %}
-
-{% block chart-data %}
- <div class="ul-link-div">
-        <div class="ul-links">
-            <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
-            </div>
-        <div class="ul-links">
-                <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
+    {% else %}
+    <div>GET INSIDE</div>
+    <div class="menu-choice-dd-content">
+      <div class="menu-choice-dd-content-links auth-bt">
+        <div>
+          <a href="{% url 'login' %}"> LOG IN </a>
         </div>
-         <div class="ul-links">
-              <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a>
+        <div>
+          <a href="{% url 'register' %}"> SIGN UP </a>
         </div>
-         <div class="ul-links">
-             <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
-        </div>
-         <div class="ul-links">
-                <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
-        </div>
- </div>
+      </div>
+    </div>
 
-<div class="table-data">
+    {% endif %}
+  </div>
+  {% endblock %}
+
+    {% block chart-data %}
+
+  <div class="ul-link-div">
+    <div class="ul-links">
+      <a
+        href="{% url 'user lounge' user.username %}"
+        style="color: aliceblue"
+        class="ul-plot-links"
+      >
+        To my lounge
+      </a>
+    </div>
+    <div class="ul-links">
+      <a
+        href="{% url 'user chart lists' %}"
+        style="color: aliceblue"
+        class="ul-plot-links"
+      >
+        To chart lists
+      </a>
+    </div>
+    <div class="ul-links">
+      <a
+        href="{% url 'user tc f'  %}"
+        style="color: aliceblue"
+        class="ul-plot-links"
+      >
+        To transit chart form
+      </a>
+    </div>
+    <div class="ul-links">
+      <a
+        href="{% url 'user c ch f'  %}"
+        style="color: aliceblue"
+        class="ul-plot-links"
+      >
+        To color form
+      </a>
+    </div>
+    <div class="ul-links">
+      <a
+        href="{% url 'ad user chart' %}"
+        style="color: aliceblue"
+        class="ul-plot-links"
+      >
+        To chart form
+      </a>
+    </div>
+  </div>
+
+  <div class="table-data">
     <table>
-        <caption> Planet data </caption>
-         <thead>
-             <tr>
-                 <th> Planet </th>
-                 <th> Degrees </th>
-                 <th> Sign </th>
-             </tr>
-             </thead>
+      <caption>
+        Planet data
+      </caption>
+      <thead>
+        <tr>
+          <th>Planet</th>
+          <th>Degrees</th>
+          <th>Sign</th>
+        </tr>
+      </thead>
 
-             <tbody>
-                    <tr>
-                        <td> Sun </td>
-                         <td> {{ chart.Sun_deg }} </td>
-                        <td> {{ chart.Sun_sign }} </td>
-                    </tr>
+      <tbody>
+        <tr>
+          <td>Sun</td>
+          <td>{{ chart.Sun_deg }}</td>
+          <td>{{ chart.Sun_sign }}</td>
+        </tr>
 
-                     <tr>
-                        <td> Moon  </td>
-                         <td> {{ chart.Moon_deg}} </td>
-                        <td> {{ chart.Moon_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Moon</td>
+          <td>{{ chart.Moon_deg}}</td>
+          <td>{{ chart.Moon_sign }}</td>
+        </tr>
 
-                     <tr>
-                        <td> Mercury </td>
-                         <td> {{ chart.Mercury_deg }} </td>
-                        <td> {{ chart.Mercury_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Mercury</td>
+          <td>{{ chart.Mercury_deg }}</td>
+          <td>{{ chart.Mercury_sign }}</td>
+        </tr>
 
-                     <tr>
-                        <td> Venus </td>
-                         <td> {{ chart.Venus_deg }} </td>
-                        <td> {{ chart.Venus_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Venus</td>
+          <td>{{ chart.Venus_deg }}</td>
+          <td>{{ chart.Venus_sign }}</td>
+        </tr>
 
-                    <tr>
-                        <td> Mars </td>
-                         <td> {{ chart.Mars_deg }} </td>
-                        <td> {{ chart.Mars_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Mars</td>
+          <td>{{ chart.Mars_deg }}</td>
+          <td>{{ chart.Mars_sign }}</td>
+        </tr>
 
-                    <tr>
-                        <td> Jupiter </td>
-                         <td> {{ chart.Jupiter_deg }} </td>
-                        <td> {{ chart.Jupiter_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Jupiter</td>
+          <td>{{ chart.Jupiter_deg }}</td>
+          <td>{{ chart.Jupiter_sign }}</td>
+        </tr>
 
-                    <tr>
-                        <td> Saturn </td>
-                         <td> {{ chart.Saturn_deg }} </td>
-                        <td> {{ chart.Saturn_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Saturn</td>
+          <td>{{ chart.Saturn_deg }}</td>
+          <td>{{ chart.Saturn_sign }}</td>
+        </tr>
 
+        <tr>
+          <td>Uranus</td>
+          <td>{{ chart.Uranus_deg }}</td>
+          <td>{{ chart.Uranus_sign }}</td>
+        </tr>
 
-                    <tr>
-                        <td> Uranus </td>
-                         <td> {{ chart.Uranus_deg }} </td>
-                        <td> {{ chart.Uranus_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Neptune</td>
+          <td>{{ chart.Neptune_deg }}</td>
+          <td>{{ chart.Neptune_sign }}</td>
+        </tr>
 
+        <tr>
+          <td>Pluto</td>
+          <td>{{ chart.Pluto_deg }}</td>
+          <td>{{ chart.Pluto_sign }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-                    <tr>
-                        <td> Neptune </td>
-                         <td> {{ chart.Neptune_deg }} </td>
-                        <td> {{ chart.Neptune_sign }} </td>
-                    </tr>
-
-                       <tr>
-                        <td> Pluto </td>
-                         <td> {{ chart.Pluto_deg }} </td>
-                        <td> {{ chart.Pluto_sign }} </td>
-                    </tr>
-
-         </table>
-
-</div>
-
-<div class="chart-fig">
+  <div class="chart-fig">
     <div class="form-info">
-        <div class="event-info">
-                <p class="form-info-data-title"> Event name : {{ chart.chart_name }} </p>
-                 <p class="form-info-data-title">Event date: {{ chart.chart_date }} </p>
-                 <p class="form-info-data-title">Event city : {{ chart.city }} </p>
-                 <p class="form-info-data-title">Event country : {{ chart.country }}</p>
-                 <p class="form-info-data-title">House system : {{ chart.house_system }}</p>
-        </div>
+      <div class="event-info">
+        <p class="form-info-data-title">Event name : {{ chart.chart_name }}</p>
+        <p class="form-info-data-title">Event date: {{ chart.chart_date }}</p>
+        <p class="form-info-data-title">Event city : {{ chart.city }}</p>
+        <p class="form-info-data-title">Event country : {{ chart.country }}</p>
+        <p class="form-info-data-title">
+          House system : {{ chart.house_system }}
+        </p>
+      </div>
     </div>
 
-    <img src="/media/{{ chart.chart_image }}/" alt="{{ chart.chart_image }}">
+    <img src="/media/{{ chart.chart_image }}/" alt="{{ chart.chart_image }}" />
 
-    <form method = "POST">
-         {% csrf_token %}
-        <button class="show-chart"  type="submit"> Delete {{ chart.chart_name }} </button>
+    <form method="POST">
+      {% csrf_token %}
+      <button class="show-chart" type="submit">
+        Delete {{ chart.chart_name }}
+      </button>
     </form>
+  </div>
 
-</div>
-
-<div class="table-data">
+  <div class="table-data">
     <table id="chart-hc-data">
-        <caption> HC data </caption>
-         <thead>
-         <tr>
-                       <th>HC</th>
-                        <th>Degree</th>
-                        <th>Sign</th>
-                   </tr>
-                   </thead>
+      <caption>
+        HC data
+      </caption>
+      <thead>
+        <tr>
+          <th>HC</th>
+          <th>Degree</th>
+          <th>Sign</th>
+        </tr>
+      </thead>
 
-                   <tbody>
-                        <tr>
-                            <td> {{ chart.first_house }}</td>
-                            <td> {{ chart.asc_deg }}</td>
-                             <td> {{ chart.asc_sign }}</td>
-                        </tr>
+      <tbody>
+        <tr>
+          <td>{{ chart.first_house }}</td>
+          <td>{{ chart.asc_deg }}</td>
+          <td>{{ chart.asc_sign }}</td>
+        </tr>
 
-                        <tr>
-                            <td> {{ chart.second_house }}</td>
-                            <td> {{ chart.resource_deg }}</td>
-                             <td> {{ chart.resource_sign }}</td>
-                        </tr>
+        <tr>
+          <td>{{ chart.second_house }}</td>
+          <td>{{ chart.resource_deg }}</td>
+          <td>{{ chart.resource_sign }}</td>
+        </tr>
 
-                        <tr>
-                            <td> {{ chart.third_house }}</td>
-                            <td> {{ chart.mental_deg }}</td>
-                             <td> {{ chart.mental_sign }}</td>
-                        </tr>
+        <tr>
+          <td>{{ chart.third_house }}</td>
+          <td>{{ chart.mental_deg }}</td>
+          <td>{{ chart.mental_sign }}</td>
+        </tr>
 
-                        <tr>
-                            <td> {{ chart.forth_house }}</td>
-                            <td> {{ chart.home_deg }}</td>
-                             <td> {{ chart.home_sign }}</td>
-                        </tr>
+        <tr>
+          <td>{{ chart.forth_house }}</td>
+          <td>{{ chart.home_deg }}</td>
+          <td>{{ chart.home_sign }}</td>
+        </tr>
 
+        <tr>
+          <td>{{ chart.fifth_house }}</td>
+          <td>{{ chart.game_deg }}</td>
+          <td>{{ chart.game_sign }}</td>
+        </tr>
 
-                        <tr>
-                            <td> {{ chart.fifth_house }}</td>
-                            <td> {{ chart.game_deg }}</td>
-                             <td> {{ chart.game_sign }}</td>
-                        </tr>
+        <tr>
+          <td>{{ chart.sixth_house }}</td>
+          <td>{{ chart.work_deg }}</td>
+          <td>{{ chart.work_sign }}</td>
+        </tr>
 
-                        <tr>
-                            <td> {{ chart.sixth_house }}</td>
-                            <td> {{ chart.work_deg }}</td>
-                             <td> {{ chart.work_sign }}</td>
-                        </tr>
+        <tr>
+          <td>{{ chart.seventh_house }}</td>
+          <td>{{ chart.rel_deg }}</td>
+          <td>{{ chart.rel_sign }}</td>
+        </tr>
 
-                         <tr>
-                            <td> {{ chart.seventh_house }}</td>
-                            <td> {{ chart.rel_deg }}</td>
-                             <td> {{ chart.rel_sign }}</td>
-                        </tr>
+        <tr>
+          <td>{{ chart.eighth_house }}</td>
+          <td>{{ chart.magic_deg }}</td>
+          <td>{{ chart.magic_sign }}</td>
+        </tr>
 
+        <tr>
+          <td>{{ chart.nineth_house }}</td>
+          <td>{{ chart.esoteric_deg }}</td>
+          <td>{{ chart.esoteric_sign }}</td>
+        </tr>
 
-                         <tr>
-                            <td> {{ chart.eighth_house }}</td>
-                            <td> {{ chart.magic_deg }}</td>
-                             <td> {{ chart.magic_sign }}</td>
-                        </tr>
+        <tr>
+          <td>{{ chart.tenth_house }}</td>
+          <td>{{ chart.status_deg }}</td>
+          <td>{{ chart.status_sign }}</td>
+        </tr>
 
+        <tr>
+          <td>{{ chart.eleventh_house }}</td>
+          <td>{{ chart.interests_deg }}</td>
+          <td>{{ chart.interests_sign }}</td>
+        </tr>
 
-                         <tr>
-                            <td> {{ chart.nineth_house }}</td>
-                            <td> {{ chart.esoteric_deg }}</td>
-                             <td> {{ chart.esoteric_sign }}</td>
-                        </tr>
-
-
-                         <tr>
-                            <td> {{ chart.tenth_house }}</td>
-                            <td> {{ chart.status_deg }}</td>
-                             <td> {{ chart.status_sign }}</td>
-                        </tr>
-
-                         <tr>
-                            <td> {{ chart.eleventh_house }}</td>
-                            <td> {{ chart.interests_deg }}</td>
-                             <td> {{ chart.interests_sign }}</td>
-                        </tr>
-
-                         <tr>
-                            <td> {{ chart.twelfth_house }}</td>
-                            <td> {{ chart.benefits_deg }}</td>
-                             <td> {{ chart.benefits_sign }}</td>
-                        </tr>
-                   </tbody>
-
+        <tr>
+          <td>{{ chart.twelfth_house }}</td>
+          <td>{{ chart.benefits_deg }}</td>
+          <td>{{ chart.benefits_sign }}</td>
+        </tr>
+      </tbody>
     </table>
-</div>
-<script>
-      window.onload = function() {
-        const table = document.getElementById('chart-hc-data');
-        if (table) {
-            const tbodyRows = table.querySelectorAll('tbody tr');
-            if (tbodyRows.length === 0) {
-                table.style.display = 'none';
-            }
+  </div>
+  <script>
+    window.onload = function () {
+      const table = document.getElementById("chart-hc-data");
+      if (table) {
+        const tbodyRows = table.querySelectorAll("tbody tr");
+        if (tbodyRows.length === 0) {
+          table.style.display = "none";
         }
+      }
     };
-</script>
-{% endblock %}
+  </script>
+  {% endblock %}
+</div>

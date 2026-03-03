@@ -63,7 +63,22 @@ td.tooltip {
   position: absolute;
   z-index: 1;
   top: 105%;
+}
 
+.tooltiptext.conjunction {
+    background-color: #f10ecc;
+}
+
+.tooltiptext.sqaure {
+    background-color: #e20000;
+}
+
+.tooltiptext.trine {
+    background-color:  #01ff00;
+}
+
+.tooltiptext.opposition {
+    background-color: #0400ff;
 }
 
 .tooltip:hover .tooltiptext {

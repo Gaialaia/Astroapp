@@ -1,9 +1,9 @@
+import swisseph as swe
+
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
-
 from datetime import datetime as dt
-import swisseph as swe
 
 now = dt.now()
 
@@ -36,10 +36,12 @@ class Chart(models.Model):
     country = models.CharField(default='Russia')
 
     chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
-    house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
+    house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES,
+                                    default='Without houses')
 
     def __str__(self):
-        return f'{self.chart_date}, {self.city}, {self.country}, {self.chart_mode}, {self.house_system}'
+        return (f'{self.chart_date}, {self.city}, {self.country}, '
+                f'{self.chart_mode}, {self.house_system}')
 
 
 class FullChart(models.Model):  # model for ul chart model
@@ -53,9 +55,11 @@ class FullChart(models.Model):  # model for ul chart model
     country = models.CharField(default='Russia')
 
     chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
-    house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
+    house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES,
+                                    default='Without houses')
 
-    drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, blank=True)
+    drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,
+                               null=True, blank=True)
 
     Sun_deg = models.CharField(default='5°05')
     Sun_sign = models.CharField(default='Aquarius')
@@ -70,7 +74,7 @@ class FullChart(models.Model):  # model for ul chart model
     Venus_sign = models.CharField(default='Aquarius')
 
     Mars_deg = models.CharField(default='15°21')
-    Mars_sign =  models.CharField(default='Scorpio')
+    Mars_sign = models.CharField(default='Scorpio')
 
     Jupiter_deg = models.CharField(default='5°37')
     Jupiter_sign = models.CharField(default='Aquarius')
@@ -135,7 +139,6 @@ class FullChart(models.Model):  # model for ul chart model
     benefits_deg = models.CharField(default='330°')
     benefits_sign = models.CharField(default='Pisces')
 
-
     chart_image = models.ImageField(upload_to='chart_plots/')
 
     def __str__(self):
@@ -164,7 +167,6 @@ class FullChart(models.Model):  # model for ul chart model
                 )
 
 
-
 class TransitFullChart(models.Model):  # model for ul transit chart model
 
     objects = None
@@ -175,8 +177,8 @@ class TransitFullChart(models.Model):  # model for ul transit chart model
     event_country = models.CharField(default='Russia')
 
     ev_chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
-    ev_house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
-
+    ev_house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES,
+                                       default='Without houses')
 
     transit_name = models.CharField(default='My enlightenment day')
     transit_date = models.DateTimeField(default=timezone.now)
@@ -184,7 +186,8 @@ class TransitFullChart(models.Model):  # model for ul transit chart model
     transit_country = models.CharField(default='USA')
 
     tr_chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
-    tr_house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
+    tr_house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES,
+                                       default='Without houses')
 
     Sun_deg = models.CharField(default='5°05')
     Sun_sign = models.CharField(default='Aquarius')
@@ -348,8 +351,10 @@ class TransitFullChart(models.Model):  # model for ul transit chart model
 
 
     def __str__(self):
-        return (f'{self.event_date}, {self.event_city}, {self.event_country}, {self.event_name},'
-                f'{self.Sun_deg},{self.Sun_sign}, {self.Moon_deg},{self.Moon_sign},'
+        return (f'{self.event_date}, {self.event_city}, {self.event_country}, '
+                f'{self.event_name},'
+                f'{self.Sun_deg},{self.Sun_sign}, {self.Moon_deg},'
+                f'{self.Moon_sign},'
                 f' {self.Mercury_deg},{self.Mercury_sign}, {self.Venus_deg},'
                 f'{self.Venus_sign}, {self.Mars_deg}, {self.Mars_sign},'
                 f'{self.Jupiter_deg},{self.Jupiter_sign},'
@@ -369,8 +374,10 @@ class TransitFullChart(models.Model):  # model for ul transit chart model
                 f'{self.tenth_house}, {self.status_sign}, {self.status_deg},'
                 f'{self.eleventh_house}, {self.interests_deg}, {self.interests_sign},'
                 f'{self.twelfth_house}, {self.benefits_deg}, {self.benefits_sign},'
-                f'{self.transit_date}, {self.transit_city}, {self.transit_country}, {self.transit_name},'
-                f'{self.tr_Sun_deg},{self.tr_Sun_sign}, {self.tr_Moon_deg},{self.tr_Moon_sign},'
+                f'{self.transit_date}, {self.transit_city}, {self.transit_country},'
+                f' {self.transit_name},'
+                f'{self.tr_Sun_deg},{self.tr_Sun_sign}, {self.tr_Moon_deg},'
+                f'{self.tr_Moon_sign},'
                 f' {self.tr_Mercury_deg},{self.tr_Mercury_sign}, {self.tr_Venus_deg},'
                 f'{self.tr_Venus_sign}, {self.tr_Mars_deg}, {self.tr_Mars_sign},'
                 f'{self.tr_Jupiter_deg},{self.tr_Jupiter_sign},'
@@ -395,10 +402,8 @@ class TransitFullChart(models.Model):  # model for ul transit chart model
                 )
 
 
-
-
-
 class TransitChart(models.Model):
+
     objects = None
 
     event_date = models.DateTimeField(default=timezone.now)
@@ -414,8 +419,8 @@ class TransitChart(models.Model):
                 f'{self.transit_date},{self.transit_city},  {self.transit_country}')
 
 
-
 class OneColorZodiacRingMF(models.Model):
+
     objects = None
 
     chart_name = models.CharField(default='Got the Olympic Prize')
@@ -424,7 +429,8 @@ class OneColorZodiacRingMF(models.Model):
     chart_country = models.CharField(default='Russia')
 
     chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
-    chart_house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
+    chart_house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES,
+                                          default='Without houses')
 
     face_color = models.CharField(default='#300c63')
     edge_color = models.CharField(default='#3dffc8')
@@ -443,7 +449,7 @@ class OneColorZodiacRingMF(models.Model):
     font_size = models.IntegerField(default=50)
 
     line_width = models.IntegerField(default=3)
-    house_ax_lw= models.IntegerField(default=3)
+    house_ax_lw = models.IntegerField(default=3)
     house_num_fs = models.IntegerField(default=27)
     house_track_lw = models.IntegerField(default=3)
 
@@ -540,10 +546,14 @@ class OneColorZodiacRingMF(models.Model):
                 f'{self.chart_mode}, {self.chart_house_system}'
                 f'{self.face_color}, {self.edge_color}, {self.text_color}'
                 f'{self.deg_color}, {self.tick_color}, {self.marker_color}'
-                f'{self.symbol_color}, {self.house_ax_color}, {self.house_number_color}'
-                f'{self.house_track_color}, {self.marker_size}, {self.symbol_size}'
-                f'{self.font_size}, {self.line_width}, {self.house_ax_lw}, {self.house_num_fs}'
-                f'{self.house_track_lw},{self.Sun_deg},{self.Sun_sign}, {self.Moon_deg},{self.Moon_sign}'
+                f'{self.symbol_color}, {self.house_ax_color}, '
+                f'{self.house_number_color}'
+                f'{self.house_track_color}, {self.marker_size},'
+                f' {self.symbol_size}'
+                f'{self.font_size}, {self.line_width}, {self.house_ax_lw}, '
+                f'{self.house_num_fs}'
+                f'{self.house_track_lw},{self.Sun_deg},{self.Sun_sign}, '
+                f'{self.Moon_deg},{self.Moon_sign}'
                 f' {self.Mercury_deg},{self.Mercury_sign}, {self.Venus_deg}'
                 f'{self.Venus_sign}, {self.Mars_deg}, {self.Mars_sign}'
                 f'{self.Jupiter_deg},{self.Jupiter_sign}'
@@ -664,21 +674,34 @@ class ZodiacInColors(models.Model):
     
     def __str__(self):
         return (f'{self.chart_date}, {self.chart_city}, {self.chart_country}'
-                f'{self.track_aries_axis_ec},{self.track_aries_axis_tc},{self.track_aries_axis_tc}'
-                f'{self.track_leo_axis_ec},{self.track_leo_axis_tc},{self.track_leo_axis_tc}'
-                f'{self.track_sag_axis_ec},{self.track_sag_axis_tc},{self.track_sag_axis_tc}'
-                f'{self.track_aqua_axis_ec},{self.track_aqua_axis_tc},{self.track_aqua_axis_tc}'
-                f'{self.track_gemini_axis_ec},{self.track_gemini_axis_tc},{self.track_gemini_axis_tc}'
-                f'{self.track_libra_axis_ec},{self.track_libra_axis_tc},{self.track_libra_axis_tc}'
-                f'{self.track_virgo_axis_ec},{self.track_virgo_axis_tc},{self.track_virgo_axis_tc}'
-                f'{self.track_taurus_axis_ec},{self.track_taurus_axis_tc},{self.track_taurus_axis_tc}'
-                f'{self.track_capricorn_axis_ec},{self.track_capricorn_axis_tc},{self.track_capricorn_axis_tc}'
-                f'{self.track_scorpio_axis_ec},{self.track_scorpio_axis_tc},{self.track_scorpio_axis_tc}'
-                f'{self.track_cancer_axis_ec},{self.track_cancer_axis_tc},{self.track_cancer_axis_tc}'
-                f'{self.track_pisces_axis_ec},{self.track_pisces_axis_tc},{self.track_pisces_axis_tc}'
+                f'{self.track_aries_axis_ec},{self.track_aries_axis_tc},'
+                f'{self.track_aries_axis_tc}'
+                f'{self.track_leo_axis_ec},{self.track_leo_axis_tc},'
+                f'{self.track_leo_axis_tc}'
+                f'{self.track_sag_axis_ec},{self.track_sag_axis_tc},'
+                f'{self.track_sag_axis_tc}'
+                f'{self.track_aqua_axis_ec},{self.track_aqua_axis_tc},'
+                f'{self.track_aqua_axis_tc}'
+                f'{self.track_gemini_axis_ec},{self.track_gemini_axis_tc},'
+                f'{self.track_gemini_axis_tc}'
+                f'{self.track_libra_axis_ec},{self.track_libra_axis_tc},'
+                f'{self.track_libra_axis_tc}'
+                f'{self.track_virgo_axis_ec},{self.track_virgo_axis_tc},'
+                f'{self.track_virgo_axis_tc}'
+                f'{self.track_taurus_axis_ec},{self.track_taurus_axis_tc},'
+                f'{self.track_taurus_axis_tc}'
+                f'{self.track_capricorn_axis_ec},{self.track_capricorn_axis_tc},'
+                f'{self.track_capricorn_axis_tc}'
+                f'{self.track_scorpio_axis_ec},{self.track_scorpio_axis_tc},'
+                f'{self.track_scorpio_axis_tc}'
+                f'{self.track_cancer_axis_ec},{self.track_cancer_axis_tc},'
+                f'{self.track_cancer_axis_tc}'
+                f'{self.track_pisces_axis_ec},{self.track_pisces_axis_tc},'
+                f'{self.track_pisces_axis_tc}'
                 f'{self.sun_marker_c}, {self.sun_symbol_c},{self.sun_symbol_s}'
                 f'{self.moon_marker_c}, {self.moon_symbol_c},{self.moon_symbol_s}'
-                f'{self.mercury_marker_c}, {self.mercury_symbol_c},{self.mercury_symbol_s}'
+                f'{self.mercury_marker_c}, {self.mercury_symbol_c},'
+                f'{self.mercury_symbol_s}'
                 f'{self.venus_marker_c}, {self.venus_symbol_c},{self.venus_symbol_s}'
                 f'{self.mars_marker_c}, {self.mars_symbol_c},{self.mars_symbol_s}'
                 f'{self.jup_marker_c}, {self.jupiter_symbol_c},{self.jup_symbol_s}'
@@ -687,4 +710,3 @@ class ZodiacInColors(models.Model):
                 f'{self.neptune_marker_c}, {self.neptune_symbol_c},{self.neptune_symbol_s}'
                 f'{self.pluto_marker_c}, {self.pluto_symbol_c},{self.pluto_symbol_s}'
                 f'{self.degrees_ticks_color}, {self.degrees_track_ec}')
-

@@ -1,336 +1,392 @@
-{% extends "base.html" %}
-{% load static %}
-{% load crispy_forms_tags %}
+{% extends "base.html" %} {% load static %} {% load crispy_forms_tags %}
 
-{% block title %} {{ tr_chart.event_name }} / {{ tr_chart.transit_name }} {% endblock %}
+{% block title %} {{ tr_chart.event_name }} / {{ tr_chart.transit_name }}
+{% endblock %}
 
 {% block navigation %}
 
 <div class="menu-choice">
-    <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
+  <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
 <div class="menu-choice">
-    <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
+  <a class="menu-link" href="{% url 'chart for ad' %}" target="_blank">Chart for any date</a>
 </div>
 
 <div class="menu-choice">
-    <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
+  <a class="menu-link" href="{% url 'transit form chart' %}" target="_blank">
+      Transits</a>
 </div>
 
 <div class="menu-choice menu-choice-dd">
-    <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
-        <div class="menu-choice-dd-content">
-            <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
-        </div>
-</div>
-
-<div class="menu-choice opened-tab" >
-     {% if user.is_authenticated %}
-    <div class="menu-choice-dd">
-        <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
-        <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
+  <div>
+    C
+    <img id="clr-chart-icon" src="{% static 'images/zr_clr_icon.png' %}" /> LOR
+  </div>
+  <div class="menu-choice-dd-content">
+    <div class="menu-choice-dd-content-links">
+      <a href="{% url 'color your chart' %}"> color chart </a>
     </div>
-        {% else %}
-        <div class="menu-choice-dd"> ENTER
-            <div class="menu-choice-dd-content">
-                <div>
-                     <a href="{% url 'login' %}"> LOG IN </a>
-                </div>
-                <div>
-                    <a href="{% url 'register' %}"> SIGN UP </a>
-                </div>
-
-            </div>
-        </div>
-         {% endif %}
+  </div>
 </div>
-{% endblock %}
+
+<div class="menu-choice opened-tab">
+  {% if user.is_authenticated %}
+  <div class="menu-choice-dd">
+    <a href="{% url 'user lounge' user.username %}" target="_blank">
+      {{ user.username }}
+    </a>
+    <div class="menu-choice-dd-content">
+      <a href="{% url 'logout' %}"> Log out </a>
+    </div>
+    {% else %}
+    <div class="menu-choice-dd">
+      ENTER
+      <div class="menu-choice-dd-content">
+        <div>
+          <a href="{% url 'login' %}"> LOG IN </a>
+        </div>
+        <div>
+          <a href="{% url 'register' %}"> SIGN UP </a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {% endblock %}
 
     {% block chart-data %}
 
-    <div class="table-data">
-         <table>
-             <caption> Planet data </caption>
-             <thead>
-             <tr>
-                 <th> Planet </th>
-                 <th> Degrees </th>
-                 <th> Sign </th>
-             </tr>
-             </thead>
+  <div class="table-data">
+    <table>
+      <caption>
+        Planet data
+      </caption>
+      <thead>
+        <tr>
+          <th>Planet</th>
+          <th>Degrees</th>
+          <th>Sign</th>
+        </tr>
+      </thead>
 
-             <tbody>
-                    <tr>
-                        <td> Sun </td>
-                         <td> {{ tr_chart.Sun_deg}} </td>
-                        <td> {{ tr_chart.Sun_sign }} </td>
-                    </tr>
+      <tbody>
+        <tr>
+          <td>Sun</td>
+          <td>{{ tr_chart.Sun_deg}}</td>
+          <td>{{ tr_chart.Sun_sign }}</td>
+        </tr>
 
-                     <tr>
-                        <td> Moon  </td>
-                         <td> {{ tr_chart.Moon_deg}} </td>
-                        <td> {{ tr_chart.Moon_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Moon</td>
+          <td>{{ tr_chart.Moon_deg}}</td>
+          <td>{{ tr_chart.Moon_sign }}</td>
+        </tr>
 
-                     <tr>
-                        <td> Mercury </td>
-                         <td> {{ tr_chart.Mercury_deg }} </td>
-                        <td> {{ tr_chart.Mercury_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Mercury</td>
+          <td>{{ tr_chart.Mercury_deg }}</td>
+          <td>{{ tr_chart.Mercury_sign }}</td>
+        </tr>
 
-                     <tr>
-                        <td> Venus </td>
-                            <td> {{ tr_chart.Venus_deg }} </td>
-                        <td> {{ tr_chart.Venus_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Venus</td>
+          <td>{{ tr_chart.Venus_deg }}</td>
+          <td>{{ tr_chart.Venus_sign }}</td>
+        </tr>
 
-                    <tr>
-                        <td> Mars </td>
-                         <td> {{ tr_chart.Mars_deg}} </td>
-                        <td> {{ tr_chart.Mars_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Mars</td>
+          <td>{{ tr_chart.Mars_deg}}</td>
+          <td>{{ tr_chart.Mars_sign }}</td>
+        </tr>
 
-                    <tr>
-                        <td> Jupiter </td>
-                         <td> {{ tr_chart.Jupiter_deg }} </td>
-                        <td> {{ tr_chart.Jupiter_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Jupiter</td>
+          <td>{{ tr_chart.Jupiter_deg }}</td>
+          <td>{{ tr_chart.Jupiter_sign }}</td>
+        </tr>
 
-                    <tr>
-                        <td> Saturn </td>
-                         <td> {{ tr_chart.Saturn_deg }} </td>
-                        <td> {{ tr_chart.Saturn_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Saturn</td>
+          <td>{{ tr_chart.Saturn_deg }}</td>
+          <td>{{ tr_chart.Saturn_sign }}</td>
+        </tr>
 
-                    <tr>
-                        <td> Uranus </td>
-                         <td> {{ tr_chart.Uranus_deg }} </td>
-                        <td> {{ tr_chart.Uranus_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Uranus</td>
+          <td>{{ tr_chart.Uranus_deg }}</td>
+          <td>{{ tr_chart.Uranus_sign }}</td>
+        </tr>
 
-                    <tr>
-                        <td> Neptune </td>
-                         <td> {{ tr_chart.Neptune_deg }} </td>
-                        <td> {{ tr_chart.Neptune_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Neptune</td>
+          <td>{{ tr_chart.Neptune_deg }}</td>
+          <td>{{ tr_chart.Neptune_sign }}</td>
+        </tr>
 
-                       <tr>
-                        <td> Pluto </td>
-                         <td> {{ tr_chart.Pluto_deg }} </td>
-                        <td> {{ tr_chart.Pluto_sign }} </td>
-                    </tr>
-         </table>
-         <div class="ul-link-div">
-        <div class="ul-links">
-            <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
-        </div>
-        <div class="ul-links">
-                <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
-        </div>
-         <div class="ul-links">
-              <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a>
-        </div>
-         <div class="ul-links">
-             <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
-        </div>
-         <div class="ul-links">
-                <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
-        </div>
+        <tr>
+          <td>Pluto</td>
+          <td>{{ tr_chart.Pluto_deg }}</td>
+          <td>{{ tr_chart.Pluto_sign }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="ul-link-div">
+      <div class="ul-links">
+        <a
+          href="{% url 'user lounge' user.username %}"
+          style="color: aliceblue"
+          class="ul-plot-links"
+        >
+          To my lounge
+        </a>
+      </div>
+      <div class="ul-links">
+        <a
+          href="{% url 'user chart lists' %}"
+          style="color: aliceblue"
+          class="ul-plot-links"
+        >
+          To chart lists
+        </a>
+      </div>
+      <div class="ul-links">
+        <a
+          href="{% url 'user tc f'  %}"
+          style="color: aliceblue"
+          class="ul-plot-links"
+        >
+          To transit chart form
+        </a>
+      </div>
+      <div class="ul-links">
+        <a
+          href="{% url 'user c ch f'  %}"
+          style="color: aliceblue"
+          class="ul-plot-links"
+        >
+          To color form
+        </a>
+      </div>
+      <div class="ul-links">
+        <a
+          href="{% url 'ad user chart' %}"
+          style="color: aliceblue"
+          class="ul-plot-links"
+        >
+          To chart form
+        </a>
+      </div>
     </div>
-         </div>
-        <div class="chart-fig">
-            <div class="form-info" >
-                <div  class="event-info">
-                                     <p class="form-info-data-title">Event name : {{ tr_chart.event_name }} </p>
-                                     <p class="form-info-data-title">Event date: {{ tr_chart.event_date }} </p>
-                                    <p class="form-info-data-title">Event city : {{ tr_chart.event_city }}</p>
-                                    <p class="form-info-data-title">Event country : {{ tr_chart.event_country }}</p>
+  </div>
+  <div class="chart-fig">
+    <div class="form-info">
+      <div class="event-info">
+        <p class="form-info-data-title">
+          Event name : {{ tr_chart.event_name }}
+        </p>
+        <p class="form-info-data-title">
+          Event date: {{ tr_chart.event_date }}
+        </p>
+        <p class="form-info-data-title">
+          Event city : {{ tr_chart.event_city }}
+        </p>
+        <p class="form-info-data-title">
+          Event country : {{ tr_chart.event_country }}
+        </p>
+      </div>
+      <div class="transit-info">
+        <p class="form-info-data-title">
+          Transit name : {{ tr_chart.transit_name }}
+        </p>
+        <p class="form-info-data-title">
+          Transit date: {{ tr_chart.transit_date }}
+        </p>
+        <p class="form-info-data-title">
+          Transit city : {{ tr_chart.transit_city }}
+        </p>
+        <p class="form-info-data-title">
+          Transit country : {{ tr_chart.transit_country }}
+        </p>
+        <p class="form-info-data-title">HS : {{ et_hs }}</p>
+      </div>
+    </div>
 
-                </div>
-                <div class="transit-info">
-                                    <p class="form-info-data-title">Transit name : {{ tr_chart.transit_name }}</p>
-                                    <p class="form-info-data-title">Transit date: {{ tr_chart.transit_date }}</p>
-                                    <p class="form-info-data-title">Transit city : {{ tr_chart.transit_city }}</p>
-                                    <p class="form-info-data-title">Transit country : {{ tr_chart.transit_country }}</p>
-                                    <p class="form-info-data-title"> HS : {{ et_hs }}</p>
-                </div>
-            </div>
+    <img
+      src="/media/{{ tr_chart.tr_chart_image }}/"
+      alt="{{ tr_chart.tr_chart_image }}"
+    />
 
-                        <img src="/media/{{ tr_chart.tr_chart_image }}/" alt="{{ tr_chart.tr_chart_image }}">
+    <form method="POST" action="">
+      {% csrf_token %}
+      <button class="show-chart" type="submit">
+        Delete {{ tr_chart.event_name }} {{ tr_chart.transit_name }}
+      </button>
+    </form>
+  </div>
 
-                        <form method ="POST" action="">
-                            {% csrf_token %}
-                            <button  class="show-chart"  type="submit">
-                             Delete {{ tr_chart.event_name }} {{ tr_chart.transit_name }}
-                                </button>
-                        </form>
+  <div class="table-data">
+    <table>
+      <caption>
+        TP data
+      </caption>
+      <thead>
+        <tr>
+          <th>Planet</th>
+          <th>Degrees</th>
+          <th>Sign</th>
+        </tr>
+      </thead>
 
-        </div>
+      <tbody>
+        <tr>
+          <td>Sun</td>
+          <td>{{ tr_chart.tr_Sun_deg }}</td>
+          <td>{{ tr_chart.tr_Sun_sign }}</td>
+        </tr>
 
+        <tr>
+          <td>Moon</td>
+          <td>{{ tr_chart.tr_Moon_deg }}</td>
+          <td>{{ tr_chart.tr_Moon_sign }}</td>
+        </tr>
 
-    <div class="table-data">
-         <table>
-             <caption> TP data </caption>
-             <thead>
-             <tr>
-                 <th> Planet </th>
-                 <th> Degrees </th>
-                 <th> Sign </th>
-             </tr>
-             </thead>
+        <tr>
+          <td>Mercury</td>
+          <td>{{ tr_chart.tr_Mercury_deg }}</td>
+          <td>{{ tr_chart.tr_Mercury_sign }}</td>
+        </tr>
 
-             <tbody>
-                    <tr>
-                        <td> Sun </td>
-                         <td> {{ tr_chart.tr_Sun_deg }} </td>
-                        <td> {{ tr_chart.tr_Sun_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Venus</td>
+          <td>{{ tr_chart.tr_Venus_deg}}</td>
+          <td>{{ tr_chart.tr_Venus_sign }}</td>
+        </tr>
 
-                     <tr>
-                        <td> Moon  </td>
-                         <td> {{ tr_chart.tr_Moon_deg }} </td>
-                        <td> {{ tr_chart.tr_Moon_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Mars</td>
+          <td>{{ tr_chart.tr_Mars_deg}}</td>
+          <td>{{ tr_chart.tr_Mars_sign }}</td>
+        </tr>
 
-                     <tr>
-                        <td> Mercury </td>
-                         <td> {{ tr_chart.tr_Mercury_deg }} </td>
-                        <td> {{ tr_chart.tr_Mercury_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Jupiter</td>
+          <td>{{ tr_chart.tr_Jupiter_deg }}</td>
+          <td>{{ tr_chart.tr_Jupiter_sign }}</td>
+        </tr>
 
-                     <tr>
-                        <td> Venus </td>
-                         <td> {{ tr_chart.tr_Venus_deg}} </td>
-                        <td> {{ tr_chart.tr_Venus_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Saturn</td>
+          <td>{{ tr_chart.tr_Saturn_deg }}</td>
+          <td>{{ tr_chart.tr_Saturn_sign }}</td>
+        </tr>
 
-                    <tr>
-                        <td> Mars </td>
-                         <td> {{ tr_chart.tr_Mars_deg}} </td>
-                        <td>  {{ tr_chart.tr_Mars_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Uranus</td>
+          <td>{{ tr_chart.tr_Uranus_deg }}</td>
+          <td>{{ tr_chart.tr_Uranus_sign }}</td>
+        </tr>
 
-                    <tr>
-                        <td> Jupiter </td>
-                         <td> {{ tr_chart.tr_Jupiter_deg }} </td>
-                        <td> {{ tr_chart.tr_Jupiter_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Neptune</td>
+          <td>{{ tr_chart.tr_Neptune_deg }}</td>
+          <td>{{ tr_chart.tr_Neptune_sign }}</td>
+        </tr>
 
-                    <tr>
-                        <td> Saturn </td>
-                         <td> {{ tr_chart.tr_Saturn_deg }} </td>
-                        <td> {{ tr_chart.tr_Saturn_sign }} </td>
-                    </tr>
+        <tr>
+          <td>Pluto</td>
+          <td>{{ tr_chart.tr_Pluto_deg }}</td>
+          <td>{{ tr_chart.tr_Pluto_sign }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <table id="tr-hc-data">
+      <caption>
+        transit hc data
+      </caption>
+      <thead>
+        <tr>
+          <th>HC</th>
+          <th>Degree</th>
+          <th>Sign</th>
+        </tr>
+      </thead>
 
+      <tbody>
+        <tr>
+          <td>{{ tr_chart.tr_first_house }}</td>
+          <td>{{ tr_chart.tr_asc_deg }}</td>
+          <td>{{ tr_chart.tr_asc_sign }}</td>
+        </tr>
 
-                    <tr>
-                        <td> Uranus </td>
-                         <td> {{ tr_chart.tr_Uranus_deg }} </td>
-                        <td> {{ tr_chart.tr_Uranus_sign }} </td>
-                    </tr>
+        <tr>
+          <td>{{ tr_chart.tr_second_house }}</td>
+          <td>{{ tr_chart.tr_resource_deg }}</td>
+          <td>{{ tr_chart.tr_resource_sign }}</td>
+        </tr>
 
+        <tr>
+          <td>{{ tr_chart.tr_third_house }}</td>
+          <td>{{ tr_chart.tr_mental_deg }}</td>
+          <td>{{ tr_chart.tr_mental_sign }}</td>
+        </tr>
 
-                    <tr>
-                        <td> Neptune </td>
-                         <td> {{ tr_chart.tr_Neptune_deg }} </td>
-                        <td> {{ tr_chart.tr_Neptune_sign }} </td>
-                    </tr>
+        <tr>
+          <td>{{ tr_chart.tr_forth_house }}</td>
+          <td>{{ tr_chart.tr_home_deg }}</td>
+          <td>{{ tr_chart.tr_home_sign }}</td>
+        </tr>
 
-                       <tr>
-                        <td> Pluto </td>
-                         <td> {{ tr_chart.tr_Pluto_deg }} </td>
-                        <td> {{ tr_chart.tr_Pluto_sign }} </td>
-                    </tr>
+        <tr>
+          <td>{{ tr_chart.tr_fifth_house }}</td>
+          <td>{{ tr_chart.tr_game_deg }}</td>
+          <td>{{ tr_chart.tr_game_sign }}</td>
+        </tr>
 
-         </table>
-                     <table id="tr-hc-data">
-                          <caption> transit hc data   </caption>
-                   <thead>
-                   <tr>
-                       <th>HC</th>
-                        <th>Degree</th>
-                        <th>Sign</th>
-                   </tr>
-                   </thead>
+        <tr>
+          <td>{{ tr_chart.tr_sixth_house }}</td>
+          <td>{{ tr_chart.tr_work_deg }}</td>
+          <td>{{ tr_chart.tr_work_sign }}</td>
+        </tr>
 
-                   <tbody>
-                        <tr>
-                            <td> {{ tr_chart.tr_first_house }}</td>
-                            <td> {{ tr_chart.tr_asc_deg }}</td>
-                             <td> {{ tr_chart.tr_asc_sign }}</td>
-                        </tr>
+        <tr>
+          <td>{{ tr_chart.tr_seventh_house }}</td>
+          <td>{{ tr_chart.tr_rel_deg }}</td>
+          <td>{{ tr_chart.tr_rel_sign }}</td>
+        </tr>
 
-                        <tr>
-                            <td> {{ tr_chart.tr_second_house }}</td>
-                            <td> {{ tr_chart.tr_resource_deg }}</td>
-                             <td> {{ tr_chart.tr_resource_sign }}</td>
-                        </tr>
+        <tr>
+          <td>{{ tr_chart.tr_eighth_house }}</td>
+          <td>{{ tr_chart.tr_magic_deg }}</td>
+          <td>{{ tr_chart.tr_magic_sign }}</td>
+        </tr>
 
-                        <tr>
-                            <td> {{ tr_chart.tr_third_house }}</td>
-                            <td> {{ tr_chart.tr_mental_deg }}</td>
-                             <td> {{ tr_chart.tr_mental_sign }}</td>
-                        </tr>
+        <tr>
+          <td>{{ tr_chart.tr_nineth_house }}</td>
+          <td>{{ tr_chart.tr_esoteric_deg }}</td>
+          <td>{{ tr_chart.tr_esoteric_sign }}</td>
+        </tr>
 
-                        <tr>
-                            <td> {{ tr_chart.tr_forth_house }}</td>
-                            <td> {{ tr_chart.tr_home_deg }}</td>
-                             <td> {{ tr_chart.tr_home_sign }}</td>
-                        </tr>
+        <tr>
+          <td>{{ tr_chart.tr_tenth_house }}</td>
+          <td>{{ tr_chart.tr_status_deg }}</td>
+          <td>{{ tr_chart.tr_status_sign }}</td>
+        </tr>
 
+        <tr>
+          <td>{{ tr_chart.tr_eleventh_house }}</td>
+          <td>{{ tr_chart.tr_interests_deg }}</td>
+          <td>{{ tr_chart.tr_interests_sign }}</td>
+        </tr>
 
-                        <tr>
-                            <td> {{ tr_chart.tr_fifth_house }}</td>
-                            <td> {{ tr_chart.tr_game_deg }}</td>
-                             <td> {{ tr_chart.tr_game_sign }}</td>
-                        </tr>
-
-                        <tr>
-                            <td> {{ tr_chart.tr_sixth_house }}</td>
-                            <td> {{ tr_chart.tr_work_deg }}</td>
-                             <td> {{ tr_chart.tr_work_sign }}</td>
-                        </tr>
-
-                         <tr>
-                            <td> {{ tr_chart.tr_seventh_house }}</td>
-                            <td> {{ tr_chart.tr_rel_deg }}</td>
-                             <td> {{ tr_chart.tr_rel_sign }}</td>
-                        </tr>
-
-
-                         <tr>
-                            <td> {{ tr_chart.tr_eighth_house }}</td>
-                            <td> {{ tr_chart.tr_magic_deg }}</td>
-                             <td> {{ tr_chart.tr_magic_sign }}</td>
-                        </tr>
-
-
-                         <tr>
-                            <td> {{ tr_chart.tr_nineth_house }}</td>
-                            <td> {{ tr_chart.tr_esoteric_deg }}</td>
-                             <td> {{ tr_chart.tr_esoteric_sign }}</td>
-                        </tr>
-
-
-                         <tr>
-                            <td> {{ tr_chart.tr_tenth_house }}</td>
-                            <td> {{ tr_chart.tr_status_deg }}</td>
-                             <td> {{ tr_chart.tr_status_sign }}</td>
-                        </tr>
-
-                         <tr>
-                            <td> {{ tr_chart.tr_eleventh_house }}</td>
-                            <td> {{ tr_chart.tr_interests_deg }}</td>
-                             <td> {{ tr_chart.tr_interests_sign }}</td>
-                        </tr>
-
-                         <tr>
-                            <td> {{ tr_chart.tr_twelfth_house }}</td>
-                            <td> {{ tr_chart.tr_benefits_deg }}</td>
-                             <td> {{ tr_chart.tr_benefits_sign }}</td>
-                        </tr>
-                         </tbody>
-                     </table>
-           </div>
-{% endblock %}
+        <tr>
+          <td>{{ tr_chart.tr_twelfth_house }}</td>
+          <td>{{ tr_chart.tr_benefits_deg }}</td>
+          <td>{{ tr_chart.tr_benefits_sign }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  {% endblock %}
+</div>

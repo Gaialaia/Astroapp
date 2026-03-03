@@ -1,80 +1,76 @@
-{% extends "base.html" %}
-{% load static %}
-{% load crispy_forms_tags %}
+{% extends "base.html" %} {% load static %} {% load crispy_forms_tags %}
 
 {% block title %} Chart for date {% endblock %}
 
 {% block navigation %}
 
 <div class="menu-choice" id="today-chart">
-    <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
+  <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
 <div class="menu-choice opened-tab">
-    <a  class="menu-link" href="{% url 'chart for ad' %}" target = '_blank'>Chart for any date</a>
+  <a class="menu-link" href="{% url 'chart for ad' %}" target="_blank">Chart for any date</a>
 </div>
 
 <div class="menu-choice">
-    <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
+  <a class="menu-link" href="{% url 'transit form chart' %}" target="_blank">Transits</a>
 </div>
 
+<div class="menu-choice menu-choice-dd">
+  <div>
+    C
+    <img id="clr-chart-icon" src="{% static 'images/zr_clr_icon.png' %}" /> LOR
+  </div>
+  <div class="menu-choice-dd-content">
+    <div class="menu-choice-dd-content-links">
+      <a href="{% url 'color your chart' %}"> color chart </a>
+    </div>
+  </div>
+</div>
 
 <div class="menu-choice menu-choice-dd">
-    <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
-        <div class="menu-choice-dd-content">
-            <div class="menu-choice-dd-content-links">  <a href="{% url 'color your chart' %}"> color chart </a> </div>
+  {% if user.is_authenticated %}
+  <div>
+    <a href="{% url 'user lounge' user.username %}" target="_blank">
+      {{ user.username }}
+    </a>
+    <div class="menu-choice-dd-content">
+      <a href="{% url 'logout' %}"> Log out </a>
+    </div>
+    {% else %}
+    <div>GET INSIDE</div>
+    <div class="menu-choice-dd-content">
+      <div class="menu-choice-dd-content-links auth-bt">
+        <div>
+          <a href="{% url 'login' %}"> LOG IN </a>
         </div>
-</div>
-
-
-
-<div class="menu-choice menu-choice-dd">
-     {% if user.is_authenticated %}
-    <div>
-        <a href= "{% url 'user lounge' user.username %}" target = '_blank'> {{ user.username }} </a>
-        <div class="menu-choice-dd-content"> <a href="{% url 'logout' %}">  Log out </a>
-    </div>
-        {% else %}
-        <div> GET INSIDE </div>
-            <div class="menu-choice-dd-content">
-                <div class="menu-choice-dd-content-links auth-bt">
-                    <div>
-                        <a href="{% url 'login' %}"> LOG IN </a>
-                    </div>
-                     <div>
-                          <a href="{% url 'register' %}"> SIGN UP </a>
-                    </div>
-
-                </div>
-
-
-            </div>
-
-         {% endif %}
-</div>
-{% endblock %}
-
-
-{% block chart-data %}
-
-    <div class="table-data">
-        {% include 'includes/planet_list.html' %}
+        <div>
+          <a href="{% url 'register' %}"> SIGN UP </a>
+        </div>
+      </div>
     </div>
 
-    <div class="chart-fig">
-                     <div class="event-info">
-                           <p class="form-info-data-title">Date: {{  date }} </p>
-                           <p class="form-info-data-title"> Time Zone: {{ tz }} </p>
-                           <p class="form-info-data-title"> City: {{ city }}  </p>
-                           <p class="form-info-data-title"> Country: {{ country }}</p>
-                           <p class="form-info-data-title"> House system: {{ hs_name }} </p>
-                           <p class="form-info-data-title">  Chart mode: {{ mode_name }}</p>
-                     </div>
+    {% endif %}
+  </div>
+  {% endblock %}
 
-                    <img src="data:image/png;base64,{{ graph }}" alt="plot" id="chart-plot">
-                 </div>
+  {% block chart-data %}
 
-                <div class="table-data">
-                       {% include 'includes/aspects.html' %}
-                  </div>
- {% endblock %}
+  <div class="table-data">{% include 'includes/planet_list.html' %}</div>
+
+  <div class="chart-fig">
+    <div class="event-info">
+      <p class="form-info-data-title">Date: {{ date }}</p>
+      <p class="form-info-data-title">Time Zone: {{ tz }}</p>
+      <p class="form-info-data-title">City: {{ city }}</p>
+      <p class="form-info-data-title">Country: {{ country }}</p>
+      <p class="form-info-data-title">House system: {{ hs_name }}</p>
+      <p class="form-info-data-title">Chart mode: {{ mode_name }}</p>
+    </div>
+
+    <img src="data:image/png;base64,{{ graph }}" alt="plot" id="chart-plot" />
+  </div>
+
+  <div class="table-data">{% include 'includes/aspects.html' %}</div>
+  {% endblock %}
+</div>

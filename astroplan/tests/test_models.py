@@ -2,12 +2,15 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from astroplan.models import FullChart, TransitFullChart, OneColorZodiacRingMF
-from astroplan.forms import FullChartForm, TransitFullChartForm,  OneColorZodiacRingFM
+from astroplan.forms import (FullChartForm, TransitFullChartForm,
+                             OneColorZodiacRingFM)
 from datetime import datetime as dt
 from django.utils import timezone
 
 
 User = get_user_model()
+
+
 class TestAstroViews(TestCase):
 
     def setUp(self):
@@ -20,14 +23,15 @@ class TestAstroViews(TestCase):
                                                    city = 'Izhevsk', country='Russia',
                                                    chart_mode = 0, house_system='Equal')
 
-        self.transit_chart = TransitFullChart.objects.create(event_name = 'My birthdate',
+        self.transit_chart = (
+            TransitFullChart.objects.create(event_name = 'My birthdate',
                                                              event_date = dt(1986,2,17,10,20),
                                                              event_city = 'Ufa', event_country = 'Russia',
                                                              ev_chart_mode = 65536, ev_house_system='Regiomontanus',
                                                              transit_name = 'Flight to Pluto',
                                                              transit_date = dt(2032, 2,17,13,44,56),
                                                              transit_city = 'Kabakovo', transit_country = 'Russia',
-                                                             tr_chart_mode = 65536, tr_house_system='Without houses')
+                                                             tr_chart_mode = 65536, tr_house_system='Without houses'))
 
         self.color_chart = OneColorZodiacRingMF.objects.create(chart_name = 'Became a general',
                                                                chart_date = dt(1564, 5,20, 5,23),
@@ -49,6 +53,7 @@ class TestAstroViews(TestCase):
         self.url_c = reverse('user c ch f')
 
     def test_view_displays_form(self):
+
         response = self.client.get(self.url)
         self.assertEqual(response.status_code,200)
         self.assertIsInstance(response.context['user_chart_form'], FullChartForm)
@@ -78,24 +83,5 @@ class TestAstroViews(TestCase):
         print(response.context['user_chart_form'].errors)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(FullChart.objects.filter(name='Write Tests').exists()
-
-
-
-
-
-
-
-
-    #
-    #     # Check for successful redirect (302) after a valid POST
 )
-    #
-    # def test_invalid_form_submission_returns_errors(self):
-    #     """Verify the view handles bad data and remains on the page."""
-    #     payload = {'name': '', 'price': 'not-a-number'}
-    #     response = self.client.post(self.url, data=payload)
-    #
-    #     # Returns 200 (OK) to re-render the form with errors
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertFormError(response, 'form', 'name', 'This field is required.')
 
