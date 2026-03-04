@@ -30,12 +30,13 @@ SECRET_KEY = 'django-insecure-zuk@##88d9ih(hv1pu%+-+shc^%&r4*i-9^7+pbdk93d4g7vh1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', 'localhost',
+                 'bbaom7de2sjh9128ql76.containers.yandexcloud.net']
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8080',
-    # If you have other origins (e.g., in a production environment), add them here too:
-    # 'https://your-production-domain.com',
+    'https://*.containers.yandexcloud.net',
+    'https://bbaom7de2sjh9128ql76.containers.yandexcloud.net'
 ]
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -87,16 +89,12 @@ WSGI_APPLICATION = 'astroknow.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
- 'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'chart_db'),
-        'USER': os.environ.get('DB_USER', 'Gaia'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'giant'
-                                   ),
-        'HOST': os.environ.get('DB_HOST', 'db'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': '/tmp/db.sqlite3',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -149,12 +147,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-STATIC_ROOT = '/var/www/staticfiles'
-STATICFILES_DIRS = ['astroplan/static/']
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [ BASE_DIR / 'astroplan' / 'static']
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'tmp/media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

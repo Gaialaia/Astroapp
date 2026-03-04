@@ -1,24 +1,26 @@
 FROM python:3.13-slim
 
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PORT=8080
+ENV PYTHONPATH=/astro_app
+
 WORKDIR /astro_app
 
-ENV PYTHONUNBUFFERED 1
 COPY ./requirements.txt .
 
-# WORKDIR /app/astroknow
+RUN apt-get update && apt-get install -y \
+    curl \
+    gcc \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y build-essential libpq-dev netcat-traditional
 RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . /astro_app
-
-# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "astroknow.wsgi:application"]
-
-COPY ./start.sh /astro_app/start.sh
-RUN chmod +x /astro_app/start.sh
-# to run db
-CMD ["/astro_app/start.sh"]
+RUN pip install gunicorn whitenoise
 
 
+COPY . .
+
+CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && python manage.py shell -c \"from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='Gaia').exists() or User.objects.create_superuser('Gaia', 'volodeya@gmail.com', 'giant')\" && gunicorn --bind 0.0.0.0:$PORT astroknow.wsgi:application"]
 
 
