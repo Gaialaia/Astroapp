@@ -1,12 +1,8 @@
-
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from django_flatpickr.widgets import DateTimePickerInput
-from hashlib import md5
-
-
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -27,8 +23,6 @@ class UserRegistrationForm(UserCreationForm):
         css = {
             'all': ['/static/styles/form_style.css']
         }
-
-
 
 
 class UserLoginForm(AuthenticationForm):
@@ -56,7 +50,8 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ['first_name', 'last_name', 'email', 'description', 'birthdate']
+        fields = ['first_name', 'last_name', 'email', 'description',
+                  'birthdate']
         widgets = {
             'birthdate': DateTimePickerInput()}
 
@@ -64,9 +59,6 @@ class UserUpdateForm(forms.ModelForm):
     #     super().__init__(*args, **kwargs)
     #     if self.instance and self.instance.pk:
     #         self.fields['avatar'].initial = self.instance.make_avatar(128)
-
-
-
 
     class Media:
         css = {

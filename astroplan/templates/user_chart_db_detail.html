@@ -7,7 +7,7 @@
 
 {% block navigation %}
 
-<div class="menu-choice" id="today-chart">
+<div class="menu-choice">
     <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
@@ -19,7 +19,6 @@
 <div class="menu-choice">
     <a  class="menu-link" href="{% url 'transit form chart' %}" target = '_blank'>Transits</a>
 </div>
-
 
 <div class="menu-choice menu-choice-dd">
     <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
@@ -57,19 +56,19 @@
 {% block chart-data %}
  <div class="ul-link-div">
         <div class="ul-links">
-            <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> To my lounge  </a>
+            <a href="{% url 'user lounge' user.username %}"> To my lounge  </a>
             </div>
         <div class="ul-links">
-                <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> To chart lists  </a>
+                <a href="{% url 'user chart lists' %}"> To chart lists  </a>
         </div>
          <div class="ul-links">
-              <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> To transit chart form  </a>
+              <a href="{% url 'user tc f'  %}"> To transit chart form  </a>
         </div>
          <div class="ul-links">
-             <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> To color form  </a>
+             <a href="{% url 'user c ch f'  %}"> To color form  </a>
         </div>
          <div class="ul-links">
-                <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links"> To chart form  </a>
+                <a href="{% url 'ad user chart' %}"> To chart form  </a>
         </div>
  </div>
 

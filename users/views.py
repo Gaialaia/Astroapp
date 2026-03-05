@@ -28,12 +28,12 @@ import julian as jl
 
 from geopy.geocoders import Nominatim
 
-from astroplan.models import (Chart, TransitChart, ZodiacInColors, FullChart,
+from astroplan.models import (Chart, TransitChart, FullChart,
                               TransitFullChart, OneColorZodiacRingMF,
                               HOUSE_SYSTEM_CHOICES, MODE_CHOICES)
 
 from astroplan.forms import (FullChartForm, TransitFullChartForm,
-                             ZodiacInColorForm, OneColorZodiacRingFM)
+                             OneColorZodiacRingFM)
 
 from timezonefinder import TimezoneFinder
 from zoneinfo import ZoneInfo
@@ -42,7 +42,7 @@ from .utils import draw_zodiac_one_color, get_s3_client, upload_to_storage
 from astroplan.utils import (get_planet_data,
                     build_aspects, draw_chart, get_graph, build_transit_aspects,
                     draw_transit_chart, set_signs)
-from PIL import Image
+
 from astroknow import settings
 import datetime
 

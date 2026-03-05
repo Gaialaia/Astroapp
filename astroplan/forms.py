@@ -5,7 +5,7 @@ from django.forms.widgets import TextInput, Select
 from django_flatpickr.widgets import DateTimePickerInput
 from django.utils import timezone
 
-from .models import (Chart, ZodiacInColors, FullChart, TransitFullChart,
+from .models import (Chart, FullChart, TransitFullChart,
                      OneColorZodiacRingMF)
 
 from colorfield.widgets import ColorWidget
@@ -112,7 +112,7 @@ class FullChartForm(forms.ModelForm):
         model = FullChart
         fields = ['chart_name', 'chart_date', 'city', 'country', 'chart_mode',
                   'house_system']
-        labels = {'chart_name' : 'Enter event name',
+        labels = { 'chart_name' : 'Enter event name',
                 'chart_date' : 'Enter date',
                 'city' : 'Enter city',
                 'country' : 'Enter country',

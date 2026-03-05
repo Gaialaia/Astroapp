@@ -5,7 +5,7 @@
 {% block title %} Get and save chart {% endblock %}
 
 {% block navigation %}
-<div class="menu-choice" id="today-chart">
+<div class="menu-choice">
     <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
@@ -49,32 +49,27 @@
 {% endblock %}
 
     {% block content-data %}
-
-
-
-
-
     <div class="my-chart-cf">
          <div class="ul-link-div">
 
      <div class="ul-links">
-            <a href="{% url 'user lounge' user.username %}" style="color:aliceblue" class="ul-plot-links"> my lounge  </a>
+            <a href="{% url 'user lounge' user.username %}"> my lounge  </a>
      </div>
 
      <div class="ul-links">
-           <a href="{% url 'user chart lists' %}" style="color:aliceblue" class="ul-plot-links"> chart lists  </a>
+           <a href="{% url 'user chart lists' %}"> chart lists  </a>
      </div>
 
       <div class="ul-links">
-            <a href="{% url 'user tc f'  %}" style="color:aliceblue" class="ul-plot-links"> transit form  </a>
+            <a href="{% url 'user tc f'  %}"> transit form  </a>
      </div>
 
      <div class="ul-links">
-            <a href="{% url 'user c ch f'  %}" style="color:aliceblue" class="ul-plot-links"> color form  </a>
+            <a href="{% url 'user c ch f'  %}"> color form  </a>
      </div>
 
       <div class="ul-links">
-           <a href="{% url 'ad user chart' %}" style="color:aliceblue" class="ul-plot-links">  chart form  </a>
+           <a href="{% url 'ad user chart' %}">  chart form  </a>
      </div>
 
  </div>

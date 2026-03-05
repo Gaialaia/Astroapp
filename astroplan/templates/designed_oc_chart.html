@@ -6,7 +6,7 @@
 
 {% block navigation %}
 
-<div class="menu-choice" id="today-chart" >
+<div class="menu-choice">
     <a class="menu-link" href="{% url 'show by date' %}"> Today chart </a>
 </div>
 
@@ -22,7 +22,6 @@
 <div class="menu-choice menu-choice-dd">
     <div> C <img id='clr-chart-icon' src="{% static 'images/zr_clr_icon.png' %}"> LOR  </div>
 </div>
-
 
 
 <div class="menu-choice menu-choice-dd">
@@ -41,18 +40,12 @@
                      <div>
                           <a href="{% url 'register' %}"> SIGN UP </a>
                     </div>
-
                 </div>
 
-
             </div>
-
          {% endif %}
 </div>
 {% endblock %}
-
-
-
 
 {% block chart-data %}
 

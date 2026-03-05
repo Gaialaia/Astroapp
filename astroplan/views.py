@@ -151,7 +151,7 @@ def chart_for_any_date(request):
                            'ats': aspect_table_s, 'ato': aspect_table_ops,
                            'attt': aspect_table_t, 'atc': aspect_table_c,
                            'date': chart_dt.strftime("%B %d, %Y, %H:%M:%S, %A"),
-                           'city': city, 'country': country,
+                           'city': city, 'country': country,'tz': loc_tz,
                            'latitude': get_loc.latitude, 'hs_name': hs_name,
                            'longitude': get_loc.longitude, 'mode_name': mode_name,
                            'graph': graph})
