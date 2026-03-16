@@ -44,6 +44,7 @@
 {% block content-data %}
 <div class="chart-form auth" id="auth-form">
     <div class="instruction-text"> <h3 class="auth-form-login"> GET AN ACCOUNT  </h3> </div>
+      {% include 'includes/messages.html' %}
      <form class="chart-forms" action="" target="_blank"  method="post">
                         {{ reg_form.media }}
                         {% csrf_token %}

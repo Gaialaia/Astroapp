@@ -13,10 +13,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 import sys
+import requests
+import dj_database_url
 
 from django.conf.global_settings import AUTH_USER_MODEL, DEFAULT_FROM_EMAIL, SESSION_COOKIE_SECURE, CSRF_COOKIE_SECURE, \
     STATIC_ROOT
-
+os.environ["YDB_METADATA_URL"] = "169.254.169.254"
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,6 +41,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.containers.yandexcloud.net',
     'https://bbaom7de2sjh9128ql76.containers.yandexcloud.net'
 ]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -89,13 +92,131 @@ WSGI_APPLICATION = 'astroknow.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/tmp/db.sqlite3',
-    }
-}
+# def get_iam_token():
+#     try:
+#         full_token_url = "http://169.254.169.254"
+#         response = requests.get(full_token_url, headers={"Metadata-Flavor": "Yandex"}, timeout=2)
+#
+#         if response.status_code == 200:
+#             return response.json().get("access_token")
+#         else:
+#             print(f"Metadata 404/Error. Falling back to DB_PASSWORD env var.")
+#     except Exception as e:
+#         print(f"Metadata connection failed: {e}. Falling back to DB_PASSWORD.")
+#
+#     # This MUST be outside the 'if' and 'try' to catch everything
+#     return os.getenv("DB_PASSWORD", "no_token")
+#
+# TOKEN = get_iam_token()
 
+# FINAL_DB_URL = (
+#     f"postgres://user:{TOKEN}@ydb.serverless.yandexcloud.net:6432/"
+#     f"ru-central1/b1gfp68vcrh95s5vc4kv/etntgn54rjalghm763mm?sslmode=require"
+# )
+
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=FINAL_DB_URL,
+#         conn_max_age=600,
+#     )
+# }
+
+
+def get_iam_token():
+
+    env_token = os.getenv("YDB_TOKEN") or os.getenv("DB_PASSWORD")
+    if env_token:
+        return env_token
+
+    # 2. Try Metadata Service (Only works inside Yandex Cloud)
+    # Skip this if we are just building the image or running collectstatic
+    if 'collectstatic' in sys.argv:
+        return "dummy_token"
+
+    try:
+        full_token_url = "http://169.254.169.254"
+        response = requests.get(full_token_url, headers={"Metadata-Flavor": "Yandex"}, timeout=0.5)
+        if response.status_code == 200:
+            return response.json().get("access_token")
+    except Exception:
+        pass
+
+    return "no_token"
+
+TOKEN = get_iam_token()
+
+is_collectstatic = 'collectstatic' in sys.argv
+
+if is_collectstatic:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    }
+
+else:
+    DATABASES = {
+        'default': {
+            'NAME': 'ydb318',
+            'ENGINE': 'ydb_backend.backend',
+            # 'HOST': 'grpcs://ydb.serverless.yandexcloud.net:2135/?database=/ru-central1/b1gfp68vcrh95s5vc4kv/etntgn54rjalghm763mm',wont work
+            # 'HOST': 'ydb.serverless.yandexcloud.net',
+            # 'HOST': 'grpcs://ydb.serverless.yandexcloud.net:2135', wont work
+            # 'HOST': 'ydb.serverless.yandexcloud.net',
+            'HOST' : 'ydb.serverless.yandexcloud.net',
+            # 'HOST': 'ydb.serverless.yandexcloud.net:2135/?database=/ru-central1/b1gfp68vcrh95s5vc4kv/etntgn54rjalghm763mm',
+            'PORT': '2135',
+            'DATABASE': '/ru-central1/b1gfp68vcrh95s5vc4kv/etntgn54rjalghm763mm',
+            'OPTIONS': {
+                'use_service_account_auth': True,
+                'USE_SSL': True,
+            },
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #####################
+    #
+    # DATABASES = {
+    #     'default': {
+    #         'DATABASE': '/ru-central1/b1gfp68vcrh95s5vc4kv/etnqmtgs3gsf363q503g',
+    #         'ENGINE': 'ydb_backend.backend',
+    #         'NAME': '/ru-central1/b1gfp68vcrh95s5vc4kv/etnqmtgs3gsf363q503g',
+    #         'HOST': 'ydb.serverless.yandexcloud.net',  # NO grpcs://, NO port
+    #         'PORT': '2136',  # Explicitly set port
+    #         'OPTIONS': {
+    #             'USE_SSL': True,  # Let this handle the 'grpcs://'
+    #         },
+    #     }
+    # }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'temp_db.sqlite3',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -168,8 +289,10 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
 
 # Change this to False when running locally with HTTP !!! i.e on localhost
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
@@ -183,5 +306,3 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
 PASSWORD_RESET_TIMEOUT = 14400
-
-USE_TZ = True

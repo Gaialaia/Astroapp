@@ -63,3 +63,8 @@ boto==2.49.0
 ydb==3.23.2
 boto3==1.42.29
 adjustText
+psycopg2-binary
+dj-database-url
+ydb-dbapi
+ydb-sqlalchemy
+django-ydb-backend

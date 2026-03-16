@@ -32,108 +32,113 @@ class Chart(models.Model):
     objects = None
 
     chart_date = models.DateTimeField(default=timezone.now)
-    city = models.CharField(default='Ufa')
-    country = models.CharField(default='Russia')
+    city = models.CharField(max_length=50,default='Ufa')
+    country = models.CharField(max_length=50,default='Russia')
 
     chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
-    house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
+    house_system = models.CharField(max_length=20,choices=HOUSE_SYSTEM_CHOICES, 
+                                    default='Without houses')
 
     def __str__(self):
-        return f'{self.chart_date}, {self.city}, {self.country}, {self.chart_mode}, {self.house_system}'
+        return (f'{self.chart_date}, {self.city}, {self.country}, '
+                f'{self.chart_mode}, {self.house_system}')
 
 
 class FullChart(models.Model):  # model for ul chart model
 
     objects = None
 
-    chart_name = models.CharField(default='Today')
+    chart_name = models.CharField(max_length=20,default='Today')
     chart_date = models.DateTimeField(default=timezone.now)
 
-    city = models.CharField(default='Ufa')
-    country = models.CharField(default='Russia')
+    city = models.CharField(max_length=20,default='Ufa')
+    country = models.CharField(max_length=20,default='Russia')
 
     chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
-    house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
+    house_system = models.CharField(max_length=20,
+                                    choices=HOUSE_SYSTEM_CHOICES,
+                                    default='Without houses')
 
-    drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, blank=True)
+    drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,
+                               null=True, blank=True)
 
-    Sun_deg = models.CharField(default='5°05')
-    Sun_sign = models.CharField(default='Aquarius')
+    Sun_deg = models.CharField(max_length=20,default='5°05')
+    Sun_sign = models.CharField(max_length=20,default='Aquarius')
 
-    Moon_deg = models.CharField(default='14°44')
-    Moon_sign = models.CharField(default='Taurus')
+    Moon_deg = models.CharField(max_length=20,default='14°44')
+    Moon_sign = models.CharField(max_length=20,default='Taurus')
 
-    Mercury_deg = models.CharField(default='18°04')
-    Mercury_sign = models.CharField(default='Aquarius')
+    Mercury_deg = models.CharField(max_length=20,default='18°04')
+    Mercury_sign = models.CharField(max_length=20,default='Aquarius')
 
-    Venus_deg = models.CharField(default='12°05')
-    Venus_sign = models.CharField(default='Aquarius')
+    Venus_deg = models.CharField(max_length=20,default='12°05')
+    Venus_sign = models.CharField(max_length=20,default='Aquarius')
 
-    Mars_deg = models.CharField(default='15°21')
-    Mars_sign =  models.CharField(default='Scorpio')
+    Mars_deg = models.CharField(max_length=20,default='15°21')
+    Mars_sign =  models.CharField(max_length=20,default='Scorpio')
 
-    Jupiter_deg = models.CharField(default='5°37')
-    Jupiter_sign = models.CharField(default='Aquarius')
+    Jupiter_deg = models.CharField(max_length=20,default='5°37')
+    Jupiter_sign = models.CharField(max_length=20,default='Aquarius')
 
-    Saturn_deg = models.CharField(default='15°18')
-    Saturn_sign = models.CharField(default='Scorpio')
+    Saturn_deg = models.CharField(max_length=20,default='15°18')
+    Saturn_sign = models.CharField(max_length=20,default='Scorpio')
 
-    Uranus_deg = models.CharField(default='28°05')
-    Uranus_sign = models.CharField(default='Scorpio')
+    Uranus_deg = models.CharField(max_length=20,default='28°05')
+    Uranus_sign = models.CharField(max_length=20,default='Scorpio')
 
-    Neptune_deg = models.CharField(default='11°60')
-    Neptune_sign = models.CharField(default='Sagittarius')
+    Neptune_deg = models.CharField(max_length=20,default='11°60')
+    Neptune_sign = models.CharField(max_length=20,default='Sagittarius')
 
-    Pluto_deg = models.CharField(default='13°40')
-    Pluto_sign = models.CharField(default='Libra')
+    Pluto_deg = models.CharField(max_length=20,default='13°40')
+    Pluto_sign = models.CharField(max_length=20,default='Libra')
 
-    first_house = models.CharField(default='Ascendant')
-    asc_deg = models.CharField(default='0°')
-    asc_sign = models.CharField(default='Aries')
+    first_house = models.CharField(max_length=20,default='Ascendant')
+    asc_deg = models.CharField(max_length=20,default='0°')
+    asc_sign = models.CharField(max_length=20,default='Aries')
 
-    second_house = models.CharField(default='What you have with & in you')
-    resource_deg = models.CharField(default='30°')
-    resource_sign = models.CharField(default='Taurus')
+    second_house = models.CharField(max_length=20,default='What you have with & in you')
+    resource_deg = models.CharField(max_length=20,default='30°')
+    resource_sign = models.CharField(max_length=20,default='Taurus')
 
-    third_house = models.CharField(default='Mentality')
-    mental_deg = models.CharField(default='60°')
-    mental_sign = models.CharField(default='Gemini')
+    third_house = models.CharField(max_length=20,default='Mentality')
+    mental_deg = models.CharField(max_length=20,default='60°')
+    mental_sign = models.CharField(max_length=20,default='Gemini')
 
-    forth_house = models.CharField(default='Home')
-    home_deg = models.CharField(default='90°')
-    home_sign = models.CharField(default='Crab')
+    forth_house = models.CharField(max_length=20,default='Home')
+    home_deg = models.CharField(max_length=20,default='90°')
+    home_sign = models.CharField(max_length=20,default='Crab')
 
-    fifth_house = models.CharField(default='Games')
-    game_deg = models.CharField(default='120°')
-    game_sign = models.CharField(default='Crab')
+    fifth_house = models.CharField(max_length=20,default='Games')
+    game_deg = models.CharField(max_length=20,default='120°')
+    game_sign = models.CharField(max_length=20,default='Crab')
 
-    sixth_house = models.CharField(default='Work')
-    work_deg = models.CharField(default='150°')
-    work_sign = models.CharField(default='Virgo')
+    sixth_house = models.CharField(max_length=20,default='Work')
+    work_deg = models.CharField(max_length=20,default='150°')
+    work_sign = models.CharField(max_length=20,default='Virgo')
 
-    seventh_house = models.CharField(default='Relationship')
-    rel_deg = models.CharField(default='180°')
-    rel_sign = models.CharField(default='Libra')
+    seventh_house = models.CharField(max_length=20,default='Relationship')
+    rel_deg = models.CharField(max_length=20,default='180°')
+    rel_sign = models.CharField(max_length=20,default='Libra')
 
-    eighth_house = models.CharField(default='Magic')
-    magic_deg = models.CharField(default='210°')
-    magic_sign = models.CharField(default='Scorpio')
+    eighth_house = models.CharField(max_length=20,default='Magic')
+    magic_deg = models.CharField(max_length=20,default='210°')
+    magic_sign = models.CharField(max_length=20,default='Scorpio')
 
-    nineth_house = models.CharField(default='Esoteric knowledge')
-    esoteric_deg = models.CharField(default='230°')
-    esoteric_sign = models.CharField(default='Sagittarius')
+    nineth_house = models.CharField(max_length=20,default='Esoteric knowledge')
+    esoteric_deg = models.CharField(max_length=20,default='230°')
+    esoteric_sign = models.CharField(max_length=20,default='Sagittarius')
 
-    tenth_house = models.CharField(default='Status')
-    status_deg = models.CharField(default='260°')
-    status_sign = models.CharField(default='Capricorn')
+    tenth_house = models.CharField(max_length=20,default='Status')
+    status_deg = models.CharField(max_length=20,default='260°')
+    status_sign = models.CharField(max_length=20,default='Capricorn')
 
-    eleventh_house = models.CharField(default='Interests')
-    interests_deg = models.CharField(default='290°')
-    interests_sign = models.CharField(default='Aquarius')
+    eleventh_house = models.CharField(max_length=20,default='Interests')
+    interests_deg = models.CharField(max_length=20,default='290°')
+    interests_sign = models.CharField(max_length=20,default='Aquarius')
 
-    twelfth_house = models.CharField(default='Benefits')
-    benefits_deg = models.CharField(default='330°')
-    benefits_sign = models.CharField(default='Pisces')
+    twelfth_house = models.CharField(max_length=20,default='Benefits')
+    benefits_deg = models.CharField(max_length=20,default='330°')
+    benefits_sign = models.CharField(max_length=20,default='Pisces')
 
 
     chart_image = models.ImageField(upload_to='chart_plots/')
@@ -169,178 +174,182 @@ class TransitFullChart(models.Model):  # model for ul transit chart model
 
     objects = None
 
-    event_name = models.CharField(default='My birthdate')
+    event_name = models.CharField(max_length=20,default='My birthdate')
     event_date = models.DateTimeField(default=timezone.now)
-    event_city = models.CharField(default='Ufa')
-    event_country = models.CharField(default='Russia')
+    event_city = models.CharField(max_length=20,default='Ufa')
+    event_country = models.CharField(max_length=20,default='Russia')
 
     ev_chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
-    ev_house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
+    ev_house_system = models.CharField(max_length=20,
+                                       choices=HOUSE_SYSTEM_CHOICES,
+                                       default='Without houses')
 
 
-    transit_name = models.CharField(default='My enlightenment day')
+    transit_name = models.CharField(max_length=20,default='My enlightenment day')
     transit_date = models.DateTimeField(default=timezone.now)
-    transit_city = models.CharField(default='Los-Angeles')
-    transit_country = models.CharField(default='USA')
+    transit_city = models.CharField(max_length=20,default='Los-Angeles')
+    transit_country = models.CharField(max_length=20,default='USA')
 
     tr_chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
-    tr_house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
+    tr_house_system = models.CharField(max_length=20,
+                                       choices=HOUSE_SYSTEM_CHOICES,
+                                       default='Without houses')
 
-    Sun_deg = models.CharField(default='5°05')
-    Sun_sign = models.CharField(default='Aquarius')
+    Sun_deg = models.CharField(max_length=20,default='5°05')
+    Sun_sign = models.CharField(max_length=20,default='Aquarius')
 
-    Moon_deg = models.CharField(default='14°44')
-    Moon_sign = models.CharField(default='Taurus')
+    Moon_deg = models.CharField(max_length=20,default='14°44')
+    Moon_sign = models.CharField(max_length=20,default='Taurus')
 
-    Mercury_deg = models.CharField(default='18°04')
-    Mercury_sign = models.CharField(default='Aquarius')
+    Mercury_deg = models.CharField(max_length=20,default='18°04')
+    Mercury_sign = models.CharField(max_length=20,default='Aquarius')
 
-    Venus_deg = models.CharField(default='12°05')
-    Venus_sign = models.CharField(default='Aquarius')
+    Venus_deg = models.CharField(max_length=20,default='12°05')
+    Venus_sign = models.CharField(max_length=20,default='Aquarius')
 
-    Mars_deg = models.CharField(default='15°21')
-    Mars_sign = models.CharField(default='Scorpio')
+    Mars_deg = models.CharField(max_length=20,default='15°21')
+    Mars_sign = models.CharField(max_length=20,default='Scorpio')
 
-    Jupiter_deg = models.CharField(default='5°37')
-    Jupiter_sign = models.CharField(default='Aquarius')
+    Jupiter_deg = models.CharField(max_length=20,default='5°37')
+    Jupiter_sign = models.CharField(max_length=20,default='Aquarius')
 
-    Saturn_deg = models.CharField(default='15°18')
-    Saturn_sign = models.CharField(default='Scorpio')
+    Saturn_deg = models.CharField(max_length=20,default='15°18')
+    Saturn_sign = models.CharField(max_length=20,default='Scorpio')
 
-    Uranus_deg = models.CharField(default='28°05')
-    Uranus_sign = models.CharField(default='Scorpio')
+    Uranus_deg = models.CharField(max_length=20,default='28°05')
+    Uranus_sign = models.CharField(max_length=20,default='Scorpio')
 
-    Neptune_deg = models.CharField(default='11°60')
-    Neptune_sign = models.CharField(default='Sagittarius')
+    Neptune_deg = models.CharField(max_length=20,default='11°60')
+    Neptune_sign = models.CharField(max_length=20,default='Sagittarius')
 
-    Pluto_deg = models.CharField(default='13°40')
-    Pluto_sign = models.CharField(default='Libra')
+    Pluto_deg = models.CharField(max_length=20,default='13°40')
+    Pluto_sign = models.CharField(max_length=20,default='Libra')
 
-    first_house = models.CharField(default='Ascendant')
-    asc_deg = models.CharField(default='0°')
-    asc_sign = models.CharField(default='Aries')
+    first_house = models.CharField(max_length=20,default='Ascendant')
+    asc_deg = models.CharField(max_length=20,default='0°')
+    asc_sign = models.CharField(max_length=20,default='Aries')
 
-    second_house = models.CharField(default='What you have with & in you')
-    resource_deg = models.CharField(default='30°')
-    resource_sign = models.CharField(default='Taurus')
+    second_house = models.CharField(max_length=20,default='What you have with & in you')
+    resource_deg = models.CharField(max_length=20,default='30°')
+    resource_sign = models.CharField(max_length=20,default='Taurus')
 
-    third_house = models.CharField(default='Mentality')
-    mental_deg = models.CharField(default='60°')
-    mental_sign = models.CharField(default='Gemini')
+    third_house = models.CharField(max_length=20,default='Mentality')
+    mental_deg = models.CharField(max_length=20,default='60°')
+    mental_sign = models.CharField(max_length=20,default='Gemini')
 
-    forth_house = models.CharField(default='Home')
-    home_deg = models.CharField(default='90°')
-    home_sign = models.CharField(default='Crab')
+    forth_house = models.CharField(max_length=20,default='Home')
+    home_deg = models.CharField(max_length=20,default='90°')
+    home_sign = models.CharField(max_length=20,default='Crab')
 
-    fifth_house = models.CharField(default='Games')
-    game_deg = models.CharField(default='120°')
-    game_sign = models.CharField(default='Crab')
+    fifth_house = models.CharField(max_length=20,default='Games')
+    game_deg = models.CharField(max_length=20,default='120°')
+    game_sign = models.CharField(max_length=20,default='Crab')
 
-    sixth_house = models.CharField(default='Work')
-    work_deg = models.CharField(default='150°')
-    work_sign = models.CharField(default='Virgo')
+    sixth_house = models.CharField(max_length=20,default='Work')
+    work_deg = models.CharField(max_length=20,default='150°')
+    work_sign = models.CharField(max_length=20,default='Virgo')
 
-    seventh_house = models.CharField(default='Relationship')
-    rel_deg = models.CharField(default='180°')
-    rel_sign = models.CharField(default='Libra')
+    seventh_house = models.CharField(max_length=20,default='Relationship')
+    rel_deg = models.CharField(max_length=20,default='180°')
+    rel_sign = models.CharField(max_length=20,default='Libra')
 
-    eighth_house = models.CharField(default='Magic')
-    magic_deg = models.CharField(default='210°')
-    magic_sign = models.CharField(default='Scorpio')
+    eighth_house = models.CharField(max_length=20,default='Magic')
+    magic_deg = models.CharField(max_length=20,default='210°')
+    magic_sign = models.CharField(max_length=20,default='Scorpio')
 
-    nineth_house = models.CharField(default='Esoteric knowledge')
-    esoteric_deg = models.CharField(default='230°')
-    esoteric_sign = models.CharField(default='Sagittarius')
+    nineth_house = models.CharField(max_length=20,default='Esoteric knowledge')
+    esoteric_deg = models.CharField(max_length=20,default='230°')
+    esoteric_sign = models.CharField(max_length=20,default='Sagittarius')
 
-    tenth_house = models.CharField(default='Status')
-    status_deg = models.CharField(default='260°')
-    status_sign = models.CharField(default='Capricorn')
+    tenth_house = models.CharField(max_length=20,default='Status')
+    status_deg = models.CharField(max_length=20,default='260°')
+    status_sign = models.CharField(max_length=20,default='Capricorn')
 
-    eleventh_house = models.CharField(default='Interests')
-    interests_deg = models.CharField(default='290°')
-    interests_sign = models.CharField(default='Aquarius')
+    eleventh_house = models.CharField(max_length=20,default='Interests')
+    interests_deg = models.CharField(max_length=20,default='290°')
+    interests_sign = models.CharField(max_length=20,default='Aquarius')
 
-    twelfth_house = models.CharField(default='Benefits')
-    benefits_deg = models.CharField(default='330°')
-    benefits_sign = models.CharField(default='Pisces')
+    twelfth_house = models.CharField(max_length=20,default='Benefits')
+    benefits_deg = models.CharField(max_length=20,default='330°')
+    benefits_sign = models.CharField(max_length=20,default='Pisces')
 
-    tr_Sun_deg = models.CharField(default='5°05')
-    tr_Sun_sign = models.CharField(default='Aquarius')
+    tr_Sun_deg = models.CharField(max_length=20,default='5°05')
+    tr_Sun_sign = models.CharField(max_length=20,default='Aquarius')
 
-    tr_Moon_deg = models.CharField(default='14°44')
-    tr_Moon_sign = models.CharField(default='Taurus')
+    tr_Moon_deg = models.CharField(max_length=20,default='14°44')
+    tr_Moon_sign = models.CharField(max_length=20,default='Taurus')
 
-    tr_Mercury_deg = models.CharField(default='18°04')
-    tr_Mercury_sign = models.CharField(default='Aquarius')
+    tr_Mercury_deg = models.CharField(max_length=20,default='18°04')
+    tr_Mercury_sign = models.CharField(max_length=20,default='Aquarius')
 
-    tr_Venus_deg = models.CharField(default='12°05')
-    tr_Venus_sign = models.CharField(default='Aquarius')
+    tr_Venus_deg = models.CharField(max_length=20,default='12°05')
+    tr_Venus_sign = models.CharField(max_length=20,default='Aquarius')
 
-    tr_Mars_deg = models.CharField(default='15°21')
-    tr_Mars_sign = models.CharField(default='Scorpio')
+    tr_Mars_deg = models.CharField(max_length=20,default='15°21')
+    tr_Mars_sign = models.CharField(max_length=20,default='Scorpio')
 
-    tr_Jupiter_deg = models.CharField(default='5°37')
-    tr_Jupiter_sign = models.CharField(default='Aquarius')
+    tr_Jupiter_deg = models.CharField(max_length=20,default='5°37')
+    tr_Jupiter_sign = models.CharField(max_length=20,default='Aquarius')
 
-    tr_Saturn_deg = models.CharField(default='15°18')
-    tr_Saturn_sign = models.CharField(default='Scorpio')
+    tr_Saturn_deg = models.CharField(max_length=20,default='15°18')
+    tr_Saturn_sign = models.CharField(max_length=20,default='Scorpio')
 
-    tr_Uranus_deg = models.CharField(default='28°05')
-    tr_Uranus_sign = models.CharField(default='Scorpio')
+    tr_Uranus_deg = models.CharField(max_length=20,default='28°05')
+    tr_Uranus_sign = models.CharField(max_length=20,default='Scorpio')
 
-    tr_Neptune_deg = models.CharField(default='11°60')
-    tr_Neptune_sign = models.CharField(default='Sagittarius')
+    tr_Neptune_deg = models.CharField(max_length=20,default='11°60')
+    tr_Neptune_sign = models.CharField(max_length=20,default='Sagittarius')
 
-    tr_Pluto_deg = models.CharField(default='13°40')
-    tr_Pluto_sign = models.CharField(default='Libra')
+    tr_Pluto_deg = models.CharField(max_length=20,default='13°40')
+    tr_Pluto_sign = models.CharField(max_length=20,default='Libra')
 
-    tr_first_house = models.CharField(default='Ascendant')
-    tr_asc_deg = models.CharField(default='0°')
-    tr_asc_sign = models.CharField(default='Aries')
+    tr_first_house = models.CharField(max_length=20,default='Ascendant')
+    tr_asc_deg = models.CharField(max_length=20,default='0°')
+    tr_asc_sign = models.CharField(max_length=20,default='Aries')
 
-    tr_second_house = models.CharField(default='What you have with & in you')
-    tr_resource_deg = models.CharField(default='30°')
-    tr_resource_sign = models.CharField(default='Taurus')
+    tr_second_house = models.CharField(max_length=20,default='What you have with & in you')
+    tr_resource_deg = models.CharField(max_length=20,default='30°')
+    tr_resource_sign = models.CharField(max_length=20,default='Taurus')
 
-    tr_third_house = models.CharField(default='Mentality')
-    tr_mental_deg = models.CharField(default='60°')
-    tr_mental_sign = models.CharField(default='Gemini')
+    tr_third_house = models.CharField(max_length=20,default='Mentality')
+    tr_mental_deg = models.CharField(max_length=20,default='60°')
+    tr_mental_sign = models.CharField(max_length=20,default='Gemini')
 
-    tr_forth_house = models.CharField(default='Home')
-    tr_home_deg = models.CharField(default='90°')
-    tr_home_sign = models.CharField(default='Crab')
+    tr_forth_house = models.CharField(max_length=20,default='Home')
+    tr_home_deg = models.CharField(max_length=20,default='90°')
+    tr_home_sign = models.CharField(max_length=20,default='Crab')
 
-    tr_fifth_house = models.CharField(default='Games')
-    tr_game_deg = models.CharField(default='120°')
-    tr_game_sign = models.CharField(default='Crab')
+    tr_fifth_house = models.CharField(max_length=20,default='Games')
+    tr_game_deg = models.CharField(max_length=20,default='120°')
+    tr_game_sign = models.CharField(max_length=20,default='Crab')
 
-    tr_sixth_house = models.CharField(default='Work')
-    tr_work_deg = models.CharField(default='150°')
-    tr_work_sign = models.CharField(default='Virgo')
+    tr_sixth_house = models.CharField(max_length=20,default='Work')
+    tr_work_deg = models.CharField(max_length=20,default='150°')
+    tr_work_sign = models.CharField(max_length=20,default='Virgo')
 
-    tr_seventh_house = models.CharField(default='Relationship')
-    tr_rel_deg = models.CharField(default='180°')
-    tr_rel_sign = models.CharField(default='Libra')
+    tr_seventh_house = models.CharField(max_length=20,default='Relationship')
+    tr_rel_deg = models.CharField(max_length=20,default='180°')
+    tr_rel_sign = models.CharField(max_length=20,default='Libra')
 
-    tr_eighth_house = models.CharField(default='Magic')
-    tr_magic_deg = models.CharField(default='210°')
-    tr_magic_sign = models.CharField(default='Scorpio')
+    tr_eighth_house = models.CharField(max_length=20,default='Magic')
+    tr_magic_deg = models.CharField(max_length=20,default='210°')
+    tr_magic_sign = models.CharField(max_length=20,default='Scorpio')
 
-    tr_nineth_house = models.CharField(default='Esoteric knowledge')
-    tr_esoteric_deg = models.CharField(default='230°')
-    tr_esoteric_sign = models.CharField(default='Sagittarius')
+    tr_nineth_house = models.CharField(max_length=20,default='Esoteric knowledge')
+    tr_esoteric_deg = models.CharField(max_length=20,default='230°')
+    tr_esoteric_sign = models.CharField(max_length=20,default='Sagittarius')
 
-    tr_tenth_house = models.CharField(default='Status')
-    tr_status_deg = models.CharField(default='260°')
-    tr_status_sign = models.CharField(default='Capricorn')
+    tr_tenth_house = models.CharField(max_length=20,default='Status')
+    tr_status_deg = models.CharField(max_length=20,default='260°')
+    tr_status_sign = models.CharField(max_length=20,default='Capricorn')
 
-    tr_eleventh_house = models.CharField(default='Interests')
-    tr_interests_deg = models.CharField(default='290°')
-    tr_interests_sign = models.CharField(default='Aquarius')
+    tr_eleventh_house = models.CharField(max_length=20,default='Interests')
+    tr_interests_deg = models.CharField(max_length=20,default='290°')
+    tr_interests_sign = models.CharField(max_length=20,default='Aquarius')
 
-    tr_twelfth_house = models.CharField(default='Benefits')
-    tr_benefits_deg = models.CharField(default='330°')
-    tr_benefits_sign = models.CharField(default='Pisces')
+    tr_twelfth_house = models.CharField(max_length=20,default='Benefits')
+    tr_benefits_deg = models.CharField(max_length=20,default='330°')
+    tr_benefits_sign = models.CharField(max_length=20,default='Pisces')
 
     tr_chart_image = models.ImageField(upload_to='chart_plots/')
     drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,
@@ -395,19 +404,16 @@ class TransitFullChart(models.Model):  # model for ul transit chart model
                 )
 
 
-
-
-
 class TransitChart(models.Model):
     objects = None
 
     event_date = models.DateTimeField(default=timezone.now)
-    event_city = models.CharField(default='Ufa')
-    event_country = models.CharField(default='Russia')
+    event_city = models.CharField(max_length=50,default='Ufa')
+    event_country = models.CharField(max_length=50,default='Russia')
 
     transit_date = models.DateTimeField(default=timezone.now)
-    transit_city = models.CharField(default=None)
-    transit_country = models.CharField(default=None)
+    transit_city = models.CharField(max_length=50,default=None)
+    transit_country = models.CharField(max_length=50,default=None)
 
     def __str__(self):
         return (f'{self.event_date}, {self.event_city}, {self.event_country}'
@@ -418,25 +424,25 @@ class TransitChart(models.Model):
 class OneColorZodiacRingMF(models.Model):
     objects = None
 
-    chart_name = models.CharField(default='Got the Olympic Prize')
+    chart_name = models.CharField(max_length=20,default='Got the Olympic Prize')
     chart_date = models.DateTimeField(default=timezone.now)
-    chart_city = models.CharField(default='Ufa')
-    chart_country = models.CharField(default='Russia')
+    chart_city = models.CharField(max_length=20,default='Ufa')
+    chart_country = models.CharField(max_length=20,default='Russia')
 
     chart_mode = models.IntegerField(choices=MODE_CHOICES, default='Sidereal')
-    chart_house_system = models.CharField(choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
+    chart_house_system = models.CharField(max_length=20,choices=HOUSE_SYSTEM_CHOICES, default='Without houses')
 
-    face_color = models.CharField(default='#300c63')
-    edge_color = models.CharField(default='#3dffc8')
-    text_color = models.CharField(default='#3dffc8')
-    tick_color = models.CharField(default='#63ffd3')
-    deg_color = models.CharField(default='#63ffd3')
-    marker_color = models.CharField(default='#ffc83d')
-    symbol_color = models.CharField(default='#ff3d74')
+    face_color = models.CharField(max_length=20,default='#300c63')
+    edge_color = models.CharField(max_length=20,default='#3dffc8')
+    text_color = models.CharField(max_length=20,default='#3dffc8')
+    tick_color = models.CharField(max_length=20,default='#63ffd3')
+    deg_color = models.CharField(max_length=20,default='#63ffd3')
+    marker_color = models.CharField(max_length=20,default='#ffc83d')
+    symbol_color = models.CharField(max_length=20,default='#ff3d74')
 
-    house_ax_color = models.CharField(default='#ffc83d')
-    house_number_color = models.CharField(default='#ffc83d')
-    house_track_color = models.CharField(default='#ffc83d')
+    house_ax_color = models.CharField(max_length=20,default='#ffc83d')
+    house_number_color = models.CharField(max_length=20,default='#ffc83d')
+    house_track_color = models.CharField(max_length=20,default='#ffc83d')
 
     marker_size = models.IntegerField(default=25)
     symbol_size = models.IntegerField(default=15)
@@ -450,83 +456,83 @@ class OneColorZodiacRingMF(models.Model):
     drawer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,
                                null=True, blank=True)
 
-    Sun_deg = models.CharField(default='5°05')
-    Sun_sign = models.CharField(default='Aquarius')
+    Sun_deg = models.CharField(max_length=20,default='5°05')
+    Sun_sign = models.CharField(max_length=20,default='Aquarius')
 
-    Moon_deg = models.CharField(default='14°44')
-    Moon_sign = models.CharField(default='Taurus')
+    Moon_deg = models.CharField(max_length=20,default='14°44')
+    Moon_sign = models.CharField(max_length=20,default='Taurus')
 
-    Mercury_deg = models.CharField(default='18°04')
-    Mercury_sign = models.CharField(default='Aquarius')
+    Mercury_deg = models.CharField(max_length=20,default='18°04')
+    Mercury_sign = models.CharField(max_length=20,default='Aquarius')
 
-    Venus_deg = models.CharField(default='12°05')
-    Venus_sign = models.CharField(default='Aquarius')
+    Venus_deg = models.CharField(max_length=20,default='12°05')
+    Venus_sign = models.CharField(max_length=20,default='Aquarius')
 
-    Mars_deg = models.CharField(default='15°21')
-    Mars_sign = models.CharField(default='Scorpio')
+    Mars_deg = models.CharField(max_length=20,default='15°21')
+    Mars_sign = models.CharField(max_length=20,default='Scorpio')
 
-    Jupiter_deg = models.CharField(default='5°37')
-    Jupiter_sign = models.CharField(default='Aquarius')
+    Jupiter_deg = models.CharField(max_length=20,default='5°37')
+    Jupiter_sign = models.CharField(max_length=20,default='Aquarius')
 
-    Saturn_deg = models.CharField(default='15°18')
-    Saturn_sign = models.CharField(default='Scorpio')
+    Saturn_deg = models.CharField(max_length=20,default='15°18')
+    Saturn_sign = models.CharField(max_length=20,default='Scorpio')
 
-    Uranus_deg = models.CharField(default='28°05')
-    Uranus_sign = models.CharField(default='Scorpio')
+    Uranus_deg = models.CharField(max_length=20,default='28°05')
+    Uranus_sign = models.CharField(max_length=20,default='Scorpio')
 
-    Neptune_deg = models.CharField(default='11°60')
-    Neptune_sign = models.CharField(default='Sagittarius')
+    Neptune_deg = models.CharField(max_length=20,default='11°60')
+    Neptune_sign = models.CharField(max_length=20,default='Sagittarius')
 
-    Pluto_deg = models.CharField(default='13°40')
-    Pluto_sign = models.CharField(default='Libra')
+    Pluto_deg = models.CharField(max_length=20,default='13°40')
+    Pluto_sign = models.CharField(max_length=20,default='Libra')
 
-    first_house = models.CharField(default='Ascendant')
-    asc_deg = models.CharField(default='0°')
-    asc_sign = models.CharField(default='Aries')
+    first_house = models.CharField(max_length=20,default='Ascendant')
+    asc_deg = models.CharField(max_length=20,default='0°')
+    asc_sign = models.CharField(max_length=20,default='Aries')
 
-    second_house = models.CharField(default='What you have with & in you')
-    resource_deg = models.CharField(default='30°')
-    resource_sign = models.CharField(default='Taurus')
+    second_house = models.CharField(max_length=20,default='What you have with & in you')
+    resource_deg = models.CharField(max_length=20,default='30°')
+    resource_sign = models.CharField(max_length=20,default='Taurus')
 
-    third_house = models.CharField(default='Mentality')
-    mental_deg = models.CharField(default='60°')
-    mental_sign = models.CharField(default='Gemini')
+    third_house = models.CharField(max_length=20,default='Mentality')
+    mental_deg = models.CharField(max_length=20,default='60°')
+    mental_sign = models.CharField(max_length=20,default='Gemini')
 
-    forth_house = models.CharField(default='Home')
-    home_deg = models.CharField(default='90°')
-    home_sign = models.CharField(default='Crab')
+    forth_house = models.CharField(max_length=20,default='Home')
+    home_deg = models.CharField(max_length=20,default='90°')
+    home_sign = models.CharField(max_length=20,default='Crab')
 
-    fifth_house = models.CharField(default='Games')
-    game_deg = models.CharField(default='120°')
-    game_sign = models.CharField(default='Crab')
+    fifth_house = models.CharField(max_length=20,default='Games')
+    game_deg = models.CharField(max_length=20,default='120°')
+    game_sign = models.CharField(max_length=20,default='Crab')
 
-    sixth_house = models.CharField(default='Work')
-    work_deg = models.CharField(default='150°')
-    work_sign = models.CharField(default='Virgo')
+    sixth_house = models.CharField(max_length=20,default='Work')
+    work_deg = models.CharField(max_length=20,default='150°')
+    work_sign = models.CharField(max_length=20,default='Virgo')
 
-    seventh_house = models.CharField(default='Relationship')
-    rel_deg = models.CharField(default='180°')
-    rel_sign = models.CharField(default='Libra')
+    seventh_house = models.CharField(max_length=20,default='Relationship')
+    rel_deg = models.CharField(max_length=20,default='180°')
+    rel_sign = models.CharField(max_length=20,default='Libra')
 
-    eighth_house = models.CharField(default='Magic')
-    magic_deg = models.CharField(default='210°')
-    magic_sign = models.CharField(default='Scorpio')
+    eighth_house = models.CharField(max_length=20,default='Magic')
+    magic_deg = models.CharField(max_length=20,default='210°')
+    magic_sign = models.CharField(max_length=20,default='Scorpio')
 
-    nineth_house = models.CharField(default='Esoteric knowledge')
-    esoteric_deg = models.CharField(default='230°')
-    esoteric_sign = models.CharField(default='Sagittarius')
+    nineth_house = models.CharField(max_length=20,default='Esoteric knowledge')
+    esoteric_deg = models.CharField(max_length=20,default='230°')
+    esoteric_sign = models.CharField(max_length=20,default='Sagittarius')
 
-    tenth_house = models.CharField(default='Status')
-    status_deg = models.CharField(default='260°')
-    status_sign = models.CharField(default='Capricorn')
+    tenth_house = models.CharField(max_length=20,default='Status')
+    status_deg = models.CharField(max_length=20,default='260°')
+    status_sign = models.CharField(max_length=20,default='Capricorn')
 
-    eleventh_house = models.CharField(default='Interests')
-    interests_deg = models.CharField(default='290°')
-    interests_sign = models.CharField(default='Aquarius')
+    eleventh_house = models.CharField(max_length=20,default='Interests')
+    interests_deg = models.CharField(max_length=20,default='290°')
+    interests_sign = models.CharField(max_length=20,default='Aquarius')
 
-    twelfth_house = models.CharField(default='Benefits')
-    benefits_deg = models.CharField(default='330°')
-    benefits_sign = models.CharField(default='Pisces')
+    twelfth_house = models.CharField(max_length=20,default='Benefits')
+    benefits_deg = models.CharField(max_length=20,default='330°')
+    benefits_sign = models.CharField(max_length=20,default='Pisces')
 
     # chart_image = models.ImageField(upload_to='chart_plots/',
     #                                 default='chart_plots/Gaia_2026-01-04_1138000000',
@@ -567,8 +573,8 @@ class OneColorZodiacRingMF(models.Model):
 class ZodiacInColors(models.Model):
 
     chart_date = models.DateTimeField(default=timezone.now)
-    chart_city = models.CharField(default='Ufa')
-    chart_country = models.CharField(default='Russia')
+    chart_city = models.CharField(max_length=500,default='Ufa')
+    chart_country = models.CharField(max_length=50,default='Russia')
 
     track_aries_axis_fc = models.CharField(max_length=20, default='#A800D8')
     track_aries_axis_ec = models.CharField(max_length=20, default='aliceblue')
@@ -625,11 +631,11 @@ class ZodiacInColors(models.Model):
     sun_symbol_s = models.IntegerField(default=7)
     sun_marker_c = models.CharField(max_length=20, default='gold')
 
-    moon_symbol_c = models.CharField(max_length=20,  default='aliceblue')
+    moon_symbol_c = models.CharField(max_length=20, default='aliceblue')
     moon_symbol_s = models.IntegerField(default=8)
     moon_marker_c = models.CharField(max_length=20, default='aliceblue')
 
-    mercury_symbol_c = models.CharField(max_length=20, default='aliceblue')
+    mercury_symbol_c = models.CharField(max_length=20,default='aliceblue')
     mercury_symbol_s = models.IntegerField(default=5)
     mercury_marker_c = models.CharField(max_length=20, default='grey')
 
@@ -637,7 +643,7 @@ class ZodiacInColors(models.Model):
     venus_symbol_s = models.IntegerField(default=9)
     venus_marker_c = models.CharField(max_length=20, default='pink')
 
-    mars_symbol_c = models.CharField(max_length=20,  default='aliceblue')
+    mars_symbol_c = models.CharField(max_length=20, default='aliceblue')
     mars_symbol_s = models.IntegerField(default=6)
     mars_marker_c = models.CharField(max_length=20, default='red')
 

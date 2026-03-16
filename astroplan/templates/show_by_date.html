@@ -44,12 +44,8 @@
                      <div>
                           <a href="{% url 'register' %}"> SIGN UP </a>
                     </div>
-
                 </div>
-
-
             </div>
-
          {% endif %}
 </div>
 {% endblock %}
@@ -59,6 +55,7 @@
 
                  <div class="table-data">
                         {% include 'includes/planet_list.html' %}
+                       {% include 'includes/messages.html' %}
                  </div>
 
                  <div class="chart-fig">
