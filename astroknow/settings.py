@@ -164,8 +164,8 @@ else:
             # 'HOST': 'grpcs://ydb.serverless.yandexcloud.net:2135/?database=/ru-central1/b1gfp68vcrh95s5vc4kv/etntgn54rjalghm763mm',wont work
             # 'HOST': 'ydb.serverless.yandexcloud.net',
             # 'HOST': 'grpcs://ydb.serverless.yandexcloud.net:2135', wont work
-            # 'HOST': 'ydb.serverless.yandexcloud.net',
-            'HOST' : 'ydb.serverless.yandexcloud.net',
+            # 'HOST' : 'ydb.serverless.yandexcloud.net',
+            'HOST': '158.160.179.120',
             # 'HOST': 'ydb.serverless.yandexcloud.net:2135/?database=/ru-central1/b1gfp68vcrh95s5vc4kv/etntgn54rjalghm763mm',
             'PORT': '2135',
             'DATABASE': '/ru-central1/b1gfp68vcrh95s5vc4kv/etntgn54rjalghm763mm',
