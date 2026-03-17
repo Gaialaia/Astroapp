@@ -15,9 +15,6 @@ services:
       DJANGO_SETTINGS_MODULE: astroknow.settings
       # --> Add this temporary debug setting <--
       DJANGO_DEBUG: True
-    depends_on:
-      # Django app needs to wait for the database
-      - db
     env_file:
       - .env
     deploy:
@@ -32,7 +29,7 @@ services:
     image: my-custom-nginx-image:latest
     build:
         context: .
-        dockerfile: Dockerfile.nginx # <-- We will create this file
+        dockerfile: Dockerfile.nginx
     ports:
       - "8080:81"
     volumes:
@@ -41,17 +38,8 @@ services:
           - media_volume:/var/www/media
     depends_on:
       - astro-service
-  db:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: chart_db
-      POSTGRES_USER: Gaia
-      POSTGRES_PASSWORD: giant
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
 
 volumes:
-  postgres_data:
   static_volume:
   media_volume:
 

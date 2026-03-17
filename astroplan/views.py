@@ -4,12 +4,10 @@ import matplotlib
 import swisseph as swe
 import julian as jl
 
-from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render
 from astroknow import settings
 from datetime import datetime as dt
 from geopy.geocoders import Nominatim
-from .models import FullChart, TransitFullChart, OneColorZodiacRingMF
 from .forms import (ShowChart, TransitForm, OneColorZodiacRing,
                     HOUSE_SYSTEM_CHOICES, MODE_CHOICES)
 from .utils import (draw_zodiac_one_color, get_planet_data,
@@ -489,79 +487,3 @@ def one_color_chart(request):
                                    'city': zf_city, 'country': zf_country, })
 
     return render(request, 'design_one_clr_ch.html', {'z_form': zodiac_oc_form})
-
-
-def chart_detail(request, id):
-    chart = get_object_or_404(FullChart, id=id)
-    username = request.user.username
-
-    if request.method == 'POST':
-        chart.delete()
-        messages.success(request, 'Chart deleted')
-        return redirect('user lounge', username=username)
-
-    context = {'chart': chart}
-
-    if chart.house_system == 'Without houses':
-        return render(request, 'user_chart_db_dtl_wh.html', context)
-
-    return render(request, 'user_chart_db_detail.html', context)
-
-
-def tr_chart_detail(request, id):
-    tr_chart_db_dtl = TransitFullChart.objects.get(id=id)
-
-    eo_hs = HOUSE_SYSTEM_CHOICES.get(tr_chart_db_dtl.ev_house_system)
-    et_hs = HOUSE_SYSTEM_CHOICES.get(tr_chart_db_dtl.tr_house_system)
-
-    username = request.user.username
-
-    if request.method == 'POST':
-        tr_chart_db_dtl.delete()
-        messages.success(request, 'Chart deleted')
-        return redirect('user lounge', username=username)
-
-    context = {'tr_chart': tr_chart_db_dtl,
-               'eo_hs': eo_hs, 'et_hs': et_hs}
-
-    if (tr_chart_db_dtl.ev_house_system == 'Without houses'
-        and tr_chart_db_dtl.tr_house_system == 'Without houses'):
-        return render(request, 'transit_chart_db_detail_nh.html', context)
-    elif (tr_chart_db_dtl.ev_house_system == 'Without houses'
-          and tr_chart_db_dtl.tr_house_system != 'Without houses'):
-        return render(request, 'transit_chart_db_detail_th.html', context)
-    elif (tr_chart_db_dtl.ev_house_system != 'Without houses'
-          and tr_chart_db_dtl.tr_house_system == 'Without houses'):
-        return render(request, 'transit_chart_db_detail_eh.html', context)
-    else:
-        return render(request, 'transit_chart_db_detail.html', context)
-
-
-def clr_chart_detail(request, id):
-    clr_chart_dtl = get_object_or_404(OneColorZodiacRingMF, id=id)
-    hs = HOUSE_SYSTEM_CHOICES.get(clr_chart_dtl.chart_house_system)
-
-    if request.method == 'POST':
-        clr_chart_dtl.delete()
-        messages.success(request, 'Chart deleted')
-        return redirect('user lounge', username=request.user.username)
-
-    context = {'clr_chart': clr_chart_dtl, 'hs': hs}
-
-    if clr_chart_dtl.chart_house_system == 'Without houses':
-        return render(request, 'user_clr_chart_db_dtl_wh.html', context)
-    return render(request, 'user_clr_chart_db_dtl.html', context)
-
-
-def user_chart_lists(request):
-    my_charts = (
-        FullChart.objects.filter(drawer__id=request.user.id))
-    my_tr_charts = (
-        TransitFullChart.objects.filter(drawer__id=request.user.id))
-    my_clr_charts = (
-        OneColorZodiacRingMF.objects.filter(drawer__id=request.user.id))
-
-    return render(request, 'user_chart_lists.html',
-                  {'my_charts': my_charts,
-                   'my_tr_charts': my_tr_charts,
-                   'my_clr_charts': my_clr_charts})
