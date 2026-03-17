@@ -69,12 +69,13 @@ td.tooltip {
     background-color: #f10ecc;
 }
 
-.tooltiptext.sqaure {
+.tooltiptext.square {
     background-color: #e20000;
 }
 
 .tooltiptext.trine {
     background-color:  #01ff00;
+    color: #fe00ff;
 }
 
 .tooltiptext.opposition {

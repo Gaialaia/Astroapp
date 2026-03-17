@@ -61,9 +61,6 @@ a {
 
 }
 
-
-
-
   #cfl-chart {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -81,8 +78,6 @@ a {
 .dp-input-size {
     width: 17%;
     justify-self: end;
-    maxlength: 2;
-
 
 }
 
@@ -109,12 +104,9 @@ a {
      width: fit-content !important;
 }
 
-
-
-
- .show-chart {
+.show-chart {
       display: block;
-      appearance: none;
+     appearance: none;
       background-color: rgb(139,50,193);
       border: 0;
       border-radius: 6px;

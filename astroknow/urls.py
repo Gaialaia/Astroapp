@@ -8,8 +8,6 @@ urlpatterns = [
 
     path('', include('astroplan.urls')),
     path('', views.show_td_chart),
-    path('admin/', admin.site.urls),
-    path("", include('users.urls')),
 ]
 
 if settings.DEBUG:

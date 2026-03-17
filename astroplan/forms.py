@@ -5,9 +5,6 @@ from django.forms.widgets import TextInput, Select
 from django_flatpickr.widgets import DateTimePickerInput
 from django.utils import timezone
 
-from .models import (Chart, FullChart, TransitFullChart,
-                     OneColorZodiacRingMF)
-
 from colorfield.widgets import ColorWidget
 from colorfield.forms import ColorField
 
@@ -35,25 +32,6 @@ HOUSE_SYSTEM_CHOICES = \
     }
 
 
-class ChartForm(forms.ModelForm):
-    class Meta:
-        model = Chart
-        fields = '__all__'
-        labels = {'chart_date' : 'Enter date',
-                  'city' : 'Enter city',
-                  'country':  'Enter country',
-                  'chart_mode' : 'Chose chart mode',
-                  'house_system' : 'Chose house system'
-
-                  }
-        widgets = {
-            'chart_date' : DateTimePickerInput()}
-
-        class Media:
-            css = {
-                'all' : ['/static/styles/form_style.css']
-            }
-
 class ShowChart(forms.Form):
 
     chart_date = forms.DateTimeField(widget=DateTimePickerInput(),
@@ -66,8 +44,6 @@ class ShowChart(forms.Form):
     house_system = forms.ChoiceField(label='Chose house system',
                                      choices=HOUSE_SYSTEM_CHOICES,
                                      initial='Regiomontanus')
-
-
 
     class Media:
         css = {
@@ -100,71 +76,10 @@ class TransitForm(forms.Form):
                                         choices=HOUSE_SYSTEM_CHOICES,
                                         initial='Regiomontanus',
                                         widget=forms.Select)
-
     class Media:
         css = {
             'all': ['/static/styles/form_style.css']
         }
-
-
-class FullChartForm(forms.ModelForm):
-    class Meta:
-        model = FullChart
-        fields = ['chart_name', 'chart_date', 'city', 'country', 'chart_mode',
-                  'house_system']
-        labels = { 'chart_name' : 'Enter event name',
-                'chart_date' : 'Enter date',
-                'city' : 'Enter city',
-                'country' : 'Enter country',
-                'chart_mode' : 'Chose chart mode:',
-                'house_system' : 'Chose house system:'
-                  }
-        widgets = {
-            'chart_date' : DateTimePickerInput(),
-            'chart_mode' : Select(),
-            'house_system' : Select(),
-        }
-
-        class Media:
-            css = {
-                'all' : ['/static/styles/form_style.css']
-            }
-
-class TransitFullChartForm(forms.ModelForm):
-
-    class Meta:
-
-        model = TransitFullChart
-        fields = ['event_name', 'event_date',
-                  'event_city', 'event_country',
-                  'ev_chart_mode', 'ev_house_system',
-                  'transit_name', 'transit_date',
-                  'transit_city', 'transit_country',
-                  'tr_chart_mode', 'tr_house_system',
-                  ]
-
-        widgets = {'event_date': DateTimePickerInput(),
-                   'transit_date': DateTimePickerInput()}
-
-
-        labels = {'event_date' : 'Enter an event date',
-                  'event_city' : 'Enter city',
-                  'event_country' : 'Enter country',
-                  'ev_chart_mode' : 'Enter event mode: ',
-                  'ev_house_sy stem' : 'Enter house system',
-
-                  'transit_date' : 'Enter transit date',
-                  'transit_city' :  'Enter city',
-                  'transit_country' : 'Enter country',
-                  'tr_chart_mode' : 'Enter event mode: ',
-                  'tr_house_system': 'Enter house system',
-                  }
-
-        class Media:
-            css = {
-                'all': ['/static/styles/form_style.css']
-            }
-
 
 class OneColorZodiacRing(forms.Form):
     # auto_id = True
@@ -249,53 +164,6 @@ class OneColorZodiacRing(forms.Form):
     house_track_lw = forms.IntegerField(label='Enter ht lw',
                                         initial=3)
 
-
-class OneColorZodiacRingFM(forms.ModelForm):
-
-    class Meta:
-
-        model = OneColorZodiacRingMF
-
-        fields = ['chart_name','chart_date', 'chart_mode', 'chart_house_system',
-                  'face_color', 'edge_color', 'text_color', 'tick_color',
-                  'deg_color', 'marker_color', 'symbol_color',
-                  'house_ax_color', 'house_number_color', 'house_track_color',
-                  'marker_size', 'symbol_size', 'font_size',
-                  'line_width', 'house_ax_lw','house_num_fs', 'house_track_lw']
-
-        widgets =  {'chart_date' : DateTimePickerInput(),
-                    'chart_mode' : Select(),
-                    'chart_house_system' : Select(),
-                    'face_color' : ColorWidget(),
-                    'edge_color' : ColorWidget(),
-                    'text_color' : ColorWidget(),
-                    'tick_color' : ColorWidget(),
-                    'deg_color' : ColorWidget(),
-                    'marker_color' : ColorWidget(),
-                    'symbol_color' : ColorWidget(),
-                    'house_ax_color' : ColorWidget(),
-                    'house_number_color' : ColorWidget(),
-                    'house_track_color': ColorWidget() }
-
-        labels = {'chart_name' : 'Enter chart name',
-                  'face_color' : 'Enter face color',
-                  'edge_color' : 'Enter edge color',
-                  'text_color' : 'Enter text color',
-                  'tick_color' : 'Enter tick color',
-                  'deg_color' : 'Enter degrees color',
-                  'marker_color' : 'Enter marker color',
-                  'symbol_color' : 'Enter symbol color',
-                  'house_ax_color' : 'Enter house axes color',
-                  'house_number_color' : 'Enter house number color',
-                  'house_track_color' : 'Enter house track color',
-                  'chart_date' : 'Enter chart date',
-                  'chart_mode': 'Enter chart mode',
-                  'chart_house_system' : 'Enter house system'}
-
-    class Media:
-        css = {
-            'all': ['/static/styles/form_style.css']
-        }
 
 
 
