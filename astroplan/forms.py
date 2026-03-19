@@ -82,7 +82,7 @@ class TransitForm(forms.Form):
         }
 
 class OneColorZodiacRing(forms.Form):
-    # auto_id = True
+
     oc_chart_date = (forms.DateTimeField
                      (widget=DateTimePickerInput
                      (attrs={'class' : 'form-control',
