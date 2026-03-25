@@ -32,8 +32,9 @@
 
 <div class="instruction-text">
     <h3>To get planet chart for a certain date, enter the following data:</h3>
+</div>
 
-    <form class="chart-forms" id="color-form" target="_blank" method="post" style="border: 1px solid;">
+    <form class="chart-forms" id="color-form" target="_blank" method="post">
         {{ z_form.media }}
         {% csrf_token %}
         <div class="one-clr-cd">
@@ -215,8 +216,8 @@
                         />
                         <script id="coloris-htr-color" type="application/json">{"format": "hex", "required": true, "clearButton": false, "alpha": false, "forceAlpha": false, "swatches": [], "swatchesOnly": false}</script>
                 </div>
-            </div>
         </div>
+
 
         <div class="one-clr-chart-fs" >
             <h3 class="one-clr-form-title"> Font and lines </h3>
@@ -256,12 +257,8 @@
                 <input type="number" name="house_track_lw" value="3" class="dp-input-size" required id="id_house_track_lw">
             </div>
         </div>
-
          <button class="show-chart" type="submit"> DRAW CHART </button>
-
     </form>
-
-
 
 <div id="chart-instruction">
     <img src="{% static 'images/instruction.png' %}" alt="instruction">

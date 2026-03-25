@@ -2,7 +2,7 @@
 services:
   astro-service:
     build: .
-    command: ["/astro_app/start.sh"]
+    command: ["sh", "/astro_app/start.sh"]
     volumes:
       - .:/astro_app
       - ./staticfiles:/var/www/staticfiles
@@ -13,8 +13,7 @@ services:
     environment:
       PYTHONUNBUFFERED: 1
       DJANGO_SETTINGS_MODULE: astroknow.settings
-      # --> Add this temporary debug setting <--
-      DJANGO_DEBUG: True
+      DJANGO_DEBUG: False
     env_file:
       - .env
     deploy:

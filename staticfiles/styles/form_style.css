@@ -210,10 +210,14 @@ a {
 .my-chart-clr-form,
 .my-chart-tr-form,
 .my-chart-cf,
-.tr-chart-form,
-.one-clr-div {
+.tr-chart-form {
     display: grid;
     place-items: center;
+}
+
+#color-form {
+    align-self: center;
+    justify-self: center;
 }
 
 .my-chart-cf,

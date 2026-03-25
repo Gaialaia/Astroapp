@@ -1,15 +1,13 @@
-import sys,os
+import sys
+import os
 
 from pathlib import Path
 
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', 'localhost',
                  'bbaom7de2sjh9128ql76.containers.yandexcloud.net']
@@ -21,12 +19,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 INSTALLED_APPS = [
-    # 'django.contrib.admin',
-    # 'django.contrib.auth',
     'django.contrib.contenttypes',
-    # 'django.contrib.auth.models',
-    # 'django.contrib.sessions',
-    # 'django.contrib.messages',
     'django.contrib.staticfiles',
     'astroplan',
     'django_flatpickr',
@@ -98,7 +91,6 @@ LOGGING = {
     },
 }
 
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -109,7 +101,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [ BASE_DIR / 'astroplan' / 'static']
+STATICFILES_DIRS = [BASE_DIR / 'astroplan' / 'static']
 
 
 MEDIA_URL = '/media/'
@@ -119,6 +111,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-# Change this to False when running locally with HTTP !!! i.e on localhost
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True

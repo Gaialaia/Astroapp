@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "Collecting static files..."
-python manage.py collectstatic --noinput
+python astroknow/manage.py collectstatic --noinput
 
 echo "Starting Gunicorn server..."
-exec gunicorn --bind 0.0.0.0:8000 astroknow.wsgi:application
+exec gunicorn --bind 0.0.0.0:8000 --chdir astroknow astroknow.wsgi:application

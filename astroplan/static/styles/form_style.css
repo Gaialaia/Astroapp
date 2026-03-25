@@ -5,8 +5,10 @@
   box-sizing: border-box;
 }
 
+
 a {
     text-decoration: none;
+
 
 }
 
@@ -22,15 +24,16 @@ a {
     font-size: 17px;
   }
 
-   label {
+
+label {
       margin-bottom: 5px;
       font-weight: bold;
       font-size: 165%;
       display: inline;
-
     }
 
- input {
+
+input {
       width: fit-content;
       padding: 12px 20px;
       margin: 8px 0;
@@ -42,13 +45,11 @@ a {
       border: 3px solid rgba(159,0,255, 0.8);
   }
 
-  textarea {
+ textarea {
     border: 3px solid rgba(159,0,255, 0.8);
-
-
   }
 
-  select {
+ select {
     padding: 12px 20px;
     margin: 8px 0;
     border: 3px solid rgba(159,0,255, 0.8);
@@ -58,16 +59,16 @@ a {
     font-weight: 500;
     color: rgb(95,0,153);
     border-radius: 6px;
-
 }
 
-  #cfl-chart {
+
+#cfl-chart {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     overflow-x: scroll;
     border: 1px solid aliceblue;
-  }
+ }
 
 
 .dp-input  {
@@ -75,11 +76,13 @@ a {
 
 }
 
+
 .dp-input-size {
     width: 17%;
     justify-self: end;
 
 }
+
 
 .one-clr-form-label-input-fl {
     display: flex;
@@ -87,6 +90,7 @@ a {
     align-items: center;
     gap: 20px;
 }
+
 
 .one-clr-form-label-input {
     margin: 20px;
@@ -96,13 +100,17 @@ a {
     width: fit-content;
 }
 
+
 .form-control {
     display: inline-block !important;
 }
 
+
+
 .colorfield_field {
      width: fit-content !important;
 }
+
 
 .show-chart {
       display: block;
@@ -110,7 +118,6 @@ a {
       background-color: rgb(139,50,193);
       border: 0;
       border-radius: 6px;
-      /*box-shadow: rgba(45, 35, 66, .4) 0 2px 4px,rgba(45, 35, 66, .3) 0 7px 13px -3px,rgba(58, 65, 111, .5) 0 -3px 0 inset;*/
       color: aliceblue;
       height: auto;
       line-height: 1,5;
@@ -130,19 +137,20 @@ a {
       margin-top: 50px;
       font-family: "Delius", cursive;
       font-weight: 700;
-
-
 }
+
 
 .show-chart:focus {
   box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
 }
+
 
 .show-chart:hover {
   box-shadow: 4px 4px 10px gold inset;
   transform: translateY(-2px);
   color: gold;
 }
+
 
 .show-chart:active {
   box-shadow: #3c4fe0 0 3px 7px inset;
@@ -188,7 +196,6 @@ a {
 }
 
 
-
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -196,6 +203,7 @@ a {
     margin-bottom: 15px;
     align-items: center;
 }
+
 
 .form-row input,
 .form-row select {
@@ -206,6 +214,7 @@ a {
     justify-self: end;
 }
 
+
 .chart-for-any-date,
 .my-chart-clr-form,
 .my-chart-tr-form,
@@ -215,9 +224,11 @@ a {
     place-items: center;
 }
 
+
 #color-form {
-    align-self: center;
+    display: grid;
     justify-self: center;
+    align-self: center;
 }
 
 .my-chart-cf,
