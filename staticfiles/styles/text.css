@@ -1,47 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Delius&display=swap');
 
- * {
+* {
+
   box-sizing: border-box;
 }
 
-.welcome-text,
-.welcome-login {
-    font-size: 180%;
-}
-
-
-
 .my-chart-tr-form-title {
+
     text-align: center;
     font-variant: small-caps;
     color: aliceblue;
     font-size: 17px;
-
 }
 
 .tr-form-title {
+
     text-align: center;
 }
 
-.auth-form-login {
-     text-align: center;
-    font-variant-caps: all-petite-caps;
-
-}
-
 .chart-title {
+
     text-align: center;
 }
 
 .instruction-text {
-    margin-bottom: 50px;
+
     text-align: center;
-    font-size: 130%;
-}
-
-.ul-list-names {
     font-size: 170%;
-    font-variant-caps: all-petite-caps;
-    color: gold;
-
+    grid-column: 1 / span 2;
 }

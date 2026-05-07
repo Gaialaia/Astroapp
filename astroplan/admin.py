@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Chart, TransitChart, ZodiacInColors, FullChart, TransitFullChart, OneColorZodiacRingMF
+from .models import (Chart, TransitChart, ZodiacInColors, FullChart,
+                     TransitFullChart, OneColorZodiacRingMF)
 
 
 admin.site.register(Chart)

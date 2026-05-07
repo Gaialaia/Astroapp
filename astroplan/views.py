@@ -1,17 +1,15 @@
 import datetime
+import swisseph as swe
+import julian as jl
+import matplotlib
+
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-import matplotlib
+
 from astroknow import settings
 from datetime import datetime as dt
 
-import swisseph as swe
-
-import julian as jl
-
 from geopy.geocoders import Nominatim
-from pytz import timezone
-
 from .models import FullChart, TransitFullChart, OneColorZodiacRingMF
 from .forms import (ShowChart, TransitForm, OneColorZodiacRing,
                     HOUSE_SYSTEM_CHOICES, MODE_CHOICES)
@@ -94,36 +92,41 @@ def chart_for_any_date(request):
          if house_system != 'Without houses':
              houses = swe.houses_ex(jd, get_loc.latitude, get_loc.longitude, hs_bytes, (int(mode)))
 
-             fig_form, planet_ax, house_ax, _, _, _, _,_,_ = draw_chart(fig_name='fig_form', planet_ax='planet_ax',
-                                                                 house_ax='house_ax', houses_data=houses[0])
-
+             fig_form, planet_ax, house_ax, _, _, _, _,_,_ = \
+                 (draw_chart(fig_name='fig_form',
+                             planet_ax='planet_ax',
+                             house_ax='house_ax',
+                             houses_data=houses[0]))
 
              aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, = \
                  build_aspects(ax_name=planet_ax, planet_data=planet_data)
-
 
              graph = get_graph(fig_form)
 
              swe.close()
 
              return render(request, 'show_by_date.html',
-                           {'planet_data': set_signs(planet_names, [p[4] for p in planet_data_values]),
-                            'house_data': set_signs(house_names, list(houses[0])),
+                           {'planet_data': set_signs(planet_names,
+                            [p[4] for p in planet_data_values]),
+                            'house_data': set_signs(house_names,
+                             list(houses[0])),
                             'ats': aspect_table_s, 'ato': aspect_table_ops,
                             'att': aspect_table_t, 'atc': aspect_table_c,
-                            'date': chart_dt.strftime("%B %d, %Y, %H:%M:%S, %A"), 'city': city,
-                            'country': country,
-                            'latitude': get_loc.latitude,
-                            'longitude': get_loc.longitude,
-                            'mode_name': mode_name, 'hs_name': hs_name,
+                            'date': chart_dt.strftime("%B %d, %Y, %H:%M:%S, %A"),
+                            'city': city, 'country': country,
+                            'latitude': get_loc.latitude, 'hs_name': hs_name,
+                            'longitude': get_loc.longitude, 'mode_name': mode_name,
                             'graph': graph })
 
          elif house_system == 'Without houses':
 
-             fig_form, planet_ax, _, _, _,_,_,_,_ = draw_chart(fig_name='fig_form', planet_ax='planet_ax')
+             fig_form, planet_ax, _, _, _,_,_,_,_ = (
+                 draw_chart(fig_name='fig_form',
+                            planet_ax='planet_ax'))
 
              aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, = \
                  build_aspects(planet_data=planet_data, ax_name=planet_ax)
+
              graph = get_graph(fig_form)
              swe.close()
 
@@ -131,14 +134,12 @@ def chart_for_any_date(request):
                            {'planet_data': set_signs(planet_names,
                             [p[4] for p in
                             planet_data_values]),
-                                                          'ats': aspect_table_s, 'ato': aspect_table_ops,
-                                                          'att': aspect_table_t, 'atc': aspect_table_c,
-                                                          'date': chart_dt.strftime("%B %d, %Y, %H:%M:%S, %A"),
-                                                          'city': city,
-                                                          'country': country, 'latitude': get_loc.latitude,
-                                                          'longitude': get_loc.longitude,
-                            'mode_name': mode_name, 'hs_name': hs_name,
-                            'graph': graph})
+                            'ats': aspect_table_s, 'ato': aspect_table_ops,
+                            'att': aspect_table_t, 'atc': aspect_table_c,
+                            'date': chart_dt.strftime("%B %d, %Y, %H:%M:%S, %A"),
+                            'city': city, 'country': country,
+                            'latitude': get_loc.latitude, 'hs_name': hs_name,
+                            'longitude': get_loc.longitude, 'graph': graph})
 
     return render(request, 'chart_for_any_date.html',
                   {'chart_form':chart_form })
@@ -184,41 +185,6 @@ def build_transit_chart(request):
         event_data = get_planet_data(jd_ev,ev_mode)
         transit_data = get_planet_data(jd_tr, tr_mode)
 
-        # def set_signs(deg_list,name_list):
-        #     if signs:
-        #         signs.clear()
-        #     round_deg = [round(d) for d in deg_list]
-        #     for i in range(len(deg_list)):
-        #         if round_deg[i] in range(300, 331):
-        #             sign = '♒'
-        #         if round_deg[i] in range(330, 361):
-        #             sign = '♓'
-        #         if round_deg[i] in range(0, 31):
-        #             sign = '♈'
-        #         if round_deg[i] in range(30, 61):
-        #             sign = '♉'
-        #         if round_deg[i] in range(60, 91):
-        #             sign = '♊'
-        #         if round_deg[i] in range(90, 121):
-        #             sign = '♋'
-        #         if round_deg[i] in range(120, 151):
-        #             sign = '♌'
-        #         if round_deg[i] in range(150, 181):
-        #             sign = '♍'
-        #         if round_deg[i] in range(180, 211):
-        #             sign = '♎'
-        #         if round_deg[i] in range(210, 241):
-        #             sign = '♏'
-        #         if round_deg[i] in range(240, 271):
-        #             sign = '♐'
-        #         if round_deg[i] in range(270, 301):
-        #             sign = '♑'
-        #         signs.append(sign)
-        #     deg_list_thirty = [round(c % 30, 2) for c in deg_list]
-        #     deg_form = [str(n).replace('.', '°').replace(',', '′,') for n in deg_list_thirty]
-        #     sign_table = zip(name_list, deg_form, signs)
-        #     return list(sign_table)
-
         if ev_hs == 'Without houses' and tr_hs == 'Without houses':
 
             tr_fig, event_one_ax, event_two_ax,_,_ = (
@@ -227,8 +193,10 @@ def build_transit_chart(request):
 
             aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c,\
                 event_one_pp, event_two_pp = (
-                build_transit_aspects(event_one_data=event_data, event_two_data=transit_data,
-                                      event_one_ax=event_one_ax,event_two_ax=event_two_ax,
+                build_transit_aspects(event_one_data=event_data,
+                                      event_two_data=transit_data,
+                                      event_one_ax=event_one_ax,
+                                      event_two_ax=event_two_ax,
                                       fig=tr_fig))
 
             swe.close()
@@ -238,22 +206,28 @@ def build_transit_chart(request):
             context = {'planet_data': set_signs([item[0] for item in event_one_pp
             if isinstance(item, (list, tuple))],
             [item[1] for item in event_one_pp if isinstance(item, (list, tuple))]),
-            'ats': aspect_table_s, 'ato': aspect_table_ops, 'att': aspect_table_t,
-             'atc' : aspect_table_c,'graph': graph,
+            'ats': aspect_table_s, 'ato': aspect_table_ops,
+            'att': aspect_table_t, 'atc': aspect_table_c,'graph': graph,
             'tr_planet_data': set_signs([item[0] for item in event_two_pp
             if isinstance(item, (list, tuple))],
             [item[1] for item in event_two_pp if isinstance(item, (list, tuple))]),
-            'event_date': event_date, 'event_city': event_city, 'event_country': event_country,
-            'tr_date': transit_date, 'tr_city': transit_city, 'tr_country': transit_country,
-                       'ev_hs_name' : ev_hs_name,'tr_hs_name': tr_hs_name, 'ev_mode': ev_m,
-                       'tr_mode': tr_m }
+            'event_date': event_date, 'event_city': event_city,
+            'event_country': event_country, 'tr_date': transit_date,
+            'tr_city':  transit_city, 'tr_country': transit_country,
+            'ev_hs_name': ev_hs_name,'tr_hs_name': tr_hs_name,
+            'ev_mode': ev_m, 'tr_mode': tr_m }
 
             return render(request, 'transit_chart_wh.html',context)
 
         elif ev_hs != 'Without houses' and tr_hs != 'Without houses':
 
-            houses = swe.houses_ex(jd_ev, ev_get_loc.latitude, ev_get_loc.longitude, ev_hs_bytes, int(ev_mode))
-            tr_houses = swe.houses_ex(jd_tr, tr_get_loc.latitude, tr_get_loc.longitude, tr_hs_bytes, int(tr_mode))
+            houses = swe.houses_ex(jd_ev, ev_get_loc.latitude,
+                                   ev_get_loc.longitude, ev_hs_bytes,
+                                   int(ev_mode))
+
+            tr_houses = swe.houses_ex(jd_tr, tr_get_loc.latitude,
+                                      tr_get_loc.longitude, tr_hs_bytes,
+                                      int(tr_mode))
 
             tr_fig, event_one_ax, event_two_ax, event_one_ha, event_two_ha = (
                 draw_transit_chart(event_one_ax='event_one_ax',
@@ -264,36 +238,41 @@ def build_transit_chart(request):
                                    event_two_houses=tr_houses[0]))
 
             aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, \
-            event_one_pp, event_two_pp = build_transit_aspects(event_one_data=event_data,
-                                                               event_two_data=transit_data,
-                                                               event_one_ax=event_one_ax,
-                                                               event_two_ax=event_two_ax,
-                                                               fig=tr_fig)
+            event_one_pp, event_two_pp = (
+                build_transit_aspects(event_one_data=event_data,
+                                      event_two_data=transit_data,
+                                      event_one_ax=event_one_ax,
+                                      event_two_ax=event_two_ax,
+                                      fig=tr_fig))
 
             graph = get_graph(tr_fig)
             context = {'planet_data': set_signs([item[0] for item in event_one_pp
-                                                 if isinstance(item, (list, tuple))],
-                                                [item[1] for item in event_one_pp if isinstance(item, (list, tuple))]),
-                       'ats': aspect_table_s, 'ato': aspect_table_ops, 'att': aspect_table_t,
-                       'atc': aspect_table_c, 'graph': graph,
+                        if isinstance(item, (list, tuple))],
+                        [item[1] for item in event_one_pp
+                         if isinstance(item, (list, tuple))]),
+                       'ats': aspect_table_s, 'ato': aspect_table_ops,
+                       'att': aspect_table_t, 'atc': aspect_table_c,
                        'tr_planet_data': set_signs([item[0] for item in event_two_pp
-                                                    if isinstance(item, (list, tuple))],
-                                                   [item[1] for item in event_two_pp if
-                                                    isinstance(item, (list, tuple))]),
-                       'event_date': event_date, 'event_city': event_city, 'event_country': event_country,
-                       'tr_date': transit_date, 'tr_city': transit_city, 'tr_country': transit_country,
-                       'ev_hs_name': ev_hs_name, 'tr_hs_name': tr_hs_name, 'ev_mode': ev_m,
-                       'tr_mode': tr_m, 'house_data': set_signs(house_names,list(houses[0])),
-                       'tr_house_data': set_signs(house_names,list(tr_houses[0]))
+                        if isinstance(item, (list, tuple))],
+                        [item[1] for item in event_two_pp if
+                        isinstance(item, (list, tuple))]),'ev_mode': ev_m,
+                       'event_date': event_date, 'event_city': event_city,
+                       'event_country': event_country,'tr_date': transit_date,
+                       'tr_city': transit_city, 'tr_country': transit_country,
+                       'ev_hs_name': ev_hs_name, 'tr_hs_name': tr_hs_name,
+                       'tr_mode': tr_m, 'graph': graph,
+                       'house_data': set_signs(house_names,list(houses[0])),
+                       'tr_house_data': set_signs(house_names, list(tr_houses[0]))
                        }
-
             swe.close()
 
             return render(request, 'transit_chart.html', context)
 
         elif ev_hs == 'Without houses' and tr_hs != 'Without houses': #event_two_ha work
 
-            tr_houses = swe.houses_ex(jd_tr, tr_get_loc.latitude, tr_get_loc.longitude, tr_hs_bytes, int(tr_mode))
+            tr_houses = swe.houses_ex(jd_tr, tr_get_loc.latitude,
+                                      tr_get_loc.longitude,
+                                      tr_hs_bytes, int(tr_mode))
 
             tr_fig, event_one_ax, event_two_ax,_,event_two_ha = (
                 draw_transit_chart(event_one_ax='event_one_ax',
@@ -302,38 +281,42 @@ def build_transit_chart(request):
                                    event_two_houses=tr_houses[0]))
 
             aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, \
-                event_one_pp, event_two_pp = build_transit_aspects(event_one_data=event_data,
-                                                                   event_two_data=transit_data,
-                                                                   event_one_ax=event_one_ax,
-                                                                   event_two_ax=event_two_ax,
-                                                                   fig=tr_fig)
-
+                event_one_pp, event_two_pp = (
+                build_transit_aspects(event_one_data=event_data,
+                                      event_two_data=transit_data,
+                                      event_one_ax=event_one_ax,
+                                      event_two_ax=event_two_ax,
+                                      fig=tr_fig))
 
             swe.close()
 
             graph = get_graph(tr_fig)
 
             context = {'planet_data': set_signs([item[1] for item in event_one_pp
-                                                 if isinstance(item, (list, tuple))],
-                                                [item[0] for item in event_one_pp if isinstance(item, (list, tuple))]),
+                        if isinstance(item, (list, tuple))],
+                        [item[0] for item in event_one_pp if isinstance(item, (list, tuple))]),
                        'ats': aspect_table_s, 'ato': aspect_table_ops, 'att': aspect_table_t,
                        'atc': aspect_table_c, 'graph': graph,
                        'tr_planet_data': set_signs([item[1] for item in event_two_pp
-                                                    if isinstance(item, (list, tuple))],
-                                                   [item[0] for item in event_two_pp if
-                                                    isinstance(item, (list, tuple))]),
-                       'event_date': event_date, 'event_city': event_city, 'event_country': event_country,
-                       'tr_date': transit_date, 'tr_city': transit_city, 'tr_country': transit_country,
-                       'ev_hs_name': ev_hs_name, 'tr_hs_name': tr_hs_name, 'ev_mode': ev_m,
+                        if isinstance(item, (list, tuple))],
+                        [item[0] for item in event_two_pp if
+                        isinstance(item, (list, tuple))]),
+                       'event_date': event_date, 'event_city': event_city,
+                       'event_country': event_country,
+                       'tr_date': transit_date, 'tr_city': transit_city,
+                       'tr_country': transit_country,'ev_hs_name': ev_hs_name,
+                       'tr_hs_name': tr_hs_name, 'ev_mode': ev_m,
                        'tr_mode': tr_m,
                        'tr_house_data': set_signs(list(tr_houses[0]), house_names)
                        }
 
             return render(request, 'transit_chart_tr_hs.html', context)
 
-        elif ev_hs != 'Without houses' and tr_hs == 'Without houses': #event_one_ha dont work
+        elif ev_hs != 'Without houses' and tr_hs == 'Without houses':
 
-            houses = swe.houses_ex(jd_ev, ev_get_loc.latitude, ev_get_loc.longitude, ev_hs_bytes, int(ev_mode))
+            houses = swe.houses_ex(jd_ev, ev_get_loc.latitude,
+                                   ev_get_loc.longitude, ev_hs_bytes,
+                                   int(ev_mode))
 
             tr_fig, event_one_ax, event_two_ax, event_one_ha,_ = (
                 draw_transit_chart(event_one_ax='event_one_ax',
@@ -343,12 +326,12 @@ def build_transit_chart(request):
                                    ))
 
             aspect_table_s, aspect_table_ops, aspect_table_t, aspect_table_c, \
-                event_one_pp, event_two_pp = build_transit_aspects(event_one_data=event_data,
-                                                                   event_two_data=transit_data,
-                                                                   event_one_ax=event_one_ax,
-                                                                   event_two_ax=event_two_ax,
-                                                                   fig=tr_fig)
-
+                event_one_pp, event_two_pp =\
+                build_transit_aspects(event_one_data=event_data,
+                                      event_two_data=transit_data,
+                                      event_one_ax=event_one_ax,
+                                      event_two_ax=event_two_ax,
+                                      fig=tr_fig)
 
             graph = get_graph(tr_fig)
             swe.close()

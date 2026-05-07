@@ -63,7 +63,23 @@ td.tooltip {
   position: absolute;
   z-index: 1;
   top: 105%;
+}
 
+.tooltiptext.conjunction {
+    background-color: #f10ecc;
+}
+
+.tooltiptext.square {
+    background-color: #e20000;
+}
+
+.tooltiptext.trine {
+    background-color:  #01ff00;
+    color: #fe00ff;
+}
+
+.tooltiptext.opposition {
+    background-color: #0400ff;
 }
 
 .tooltip:hover .tooltiptext {
@@ -75,7 +91,6 @@ table, th, td {
   text-align: center;
   padding: 1px;
   font-size: 103%;
-
 }
 
 
@@ -150,7 +165,6 @@ td {
 
 .menu-choice-dd {
     position:relative;
-
 }
 
 .menu-choice-dd-content {
@@ -187,13 +201,12 @@ menu-choice-dd-content a {
 }
 
 
-
-
 #sd-title {
   display: flex;
   flex-direction: row;
   justify-self: stretch;
 }
+
 
 
 /*.content-data {
@@ -299,6 +312,7 @@ table:empty {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
 }
 
 .transit-info {
@@ -315,6 +329,9 @@ table:empty {
 
 .form-info-data-title {
     font-variant: small-caps;
+    margin-bottom: 5px;
+    margin-top: 0;
+    line-height: 1.2;
 }
 
 
@@ -390,7 +407,7 @@ table:empty {
 
 .my-chart-tr-form {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 2fr;
     padding: 10px;
 
 }
@@ -504,9 +521,6 @@ input[type="number"] {
     text-align: start;
 }
 
-}
-
-
 
 #my-chart-tf-title {
     grid-column-start: 1;
@@ -535,10 +549,7 @@ input[type="number"] {
     zoom: 25%;
 }
 
-.ul-plot-links {
-    display: block
 
-}
 
 #chart-instruction {
     place-self: center;
@@ -570,6 +581,9 @@ input[type="number"] {
      gap: 20px;
      background-color:  rgba(159,0,255, 0.4);
      border: 1px solid rgb(159,0,255);
+     width: max-content;
+     color: aliceblue;
+
 }
 
 .tr-links {
@@ -587,11 +601,13 @@ input[type="number"] {
     color: gold;
 }
 
+
 .ul-link-div {
     display: grid;
-    gap: 20px;
+    align-content: center;
     width: fit-content;
     text-align: center;
+    margin-top: 20px;
 
 }
 
@@ -599,6 +615,7 @@ input[type="number"] {
     display: flex;
     justify-content: space-between;
 }
+
 
 .user-welcome-div {
     margin-bottom: 50px;
@@ -624,7 +641,5 @@ input[type="number"] {
     text-shadow: 2px 2px gold;
 }
 
-.ul-link-div {
-    align-self: start;
-}
+
 
