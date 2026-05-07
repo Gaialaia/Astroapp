@@ -3,10 +3,10 @@
 wait_for_db() {
 
     DB_HOST="db"
-    DB_PORT="5432" # Use 5432 for Postgres or 3306 for MySQL
+    DB_PORT="5432"
 
     echo "Waiting for database at $DB_HOST:$DB_PORT..."
-    # Loop until we can successfully connect to the database port
+
     while ! nc -z $DB_HOST $DB_PORT; do
         sleep 0.5s
     done
